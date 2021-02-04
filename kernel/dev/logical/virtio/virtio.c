@@ -5,15 +5,15 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _NETWORK_H
-#define _NETWORK_H
-
+#include <dev/logical/virtio/vblock/vblock.h>
+#include <dev/logical/virtio/virtio.h>
 #include <dev/logical/virtio/vnic/vnic.h>
-#include <dev/x86-64/network/e1000/e1000.h>
-#include <dev/x86-64/network/ne2000isa/ne2000isa.h>
-#include <dev/x86-64/network/ne2000pci/ne2000pci.h>
-#include <dev/x86-64/network/rtl8139/rtl8139.h>
 
-void network_devicemgr_register_devices();
+void virtio_devicemgr_register_devices() {
+    vblock_devicemgr_register_devices();
+    devicemgr_register_vnic_devices();
+}
 
-#endif
+bool virtio_isAligned(uint64_t address, uint32_t alignment) {
+    return ((address / alignment) * alignment) == address;
+}

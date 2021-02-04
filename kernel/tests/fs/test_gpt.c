@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/partition_table/guid_partition_table.h>
+#include <dev/logical/partition_table/guid_partition_table.h>
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>

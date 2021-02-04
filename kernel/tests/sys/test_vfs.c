@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/null/null.h>
+#include <dev/logical/null/null.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>

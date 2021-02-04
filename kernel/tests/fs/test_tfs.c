@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/fs/tfs/tfs.h>
+#include <dev/logical/fs/tfs/tfs.h>
 #include <sys/deviceapi/deviceapi_block.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>

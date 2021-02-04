@@ -1,3 +1,4 @@
+
 //*****************************************************************
 // This file is part of CosmOS                                    *
 // Copyright (C) 2020-2021 Tom Everett                            *
@@ -5,15 +6,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _NETWORK_H
-#define _NETWORK_H
+#include <dev/logical/tcpip/net_endian.h>
 
-#include <dev/logical/virtio/vnic/vnic.h>
-#include <dev/x86-64/network/e1000/e1000.h>
-#include <dev/x86-64/network/ne2000isa/ne2000isa.h>
-#include <dev/x86-64/network/ne2000pci/ne2000pci.h>
-#include <dev/x86-64/network/rtl8139/rtl8139.h>
+uint16_t switch_endian16(uint16_t nb) {
+    return (nb >> 8) | (nb << 8);
+}
 
-void network_devicemgr_register_devices();
-
-#endif
+uint32_t switch_endian32(uint32_t nb) {
+    return ((nb >> 24) & 0xff) | ((nb << 8) & 0xff0000) | ((nb >> 8) & 0xff00) | ((nb << 24) & 0xff000000);
+}

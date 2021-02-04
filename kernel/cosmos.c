@@ -5,18 +5,18 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <dev/console/serial_console.h>
-#include <dev/console/vga_console.h>
-#include <dev/ethernet/ethernet.h>
-#include <dev/null/null.h>
-#include <dev/ramdisk/ramdisk.h>
-#include <dev/rand/rand.h>
-#include <dev/tcpip/arp/arpdev.h>
-#include <dev/tcpip/icmp/icmpdev.h>
-#include <dev/tcpip/ip/ipdev.h>
-#include <dev/tcpip/tcp/tcpdev.h>
-#include <dev/tcpip/udp/udpdev.h>
-#include <dev/tick/tick.h>
+#include <dev/logical/console/serial_console.h>
+#include <dev/logical/console/vga_console.h>
+#include <dev/logical/ethernet/ethernet.h>
+#include <dev/logical/null/null.h>
+#include <dev/logical/ramdisk/ramdisk.h>
+#include <dev/logical/rand/rand.h>
+#include <dev/logical/tcpip/arp/arpdev.h>
+#include <dev/logical/tcpip/icmp/icmpdev.h>
+#include <dev/logical/tcpip/ip/ipdev.h>
+#include <dev/logical/tcpip/tcp/tcpdev.h>
+#include <dev/logical/tcpip/udp/udpdev.h>
+#include <dev/logical/tick/tick.h>
 #include <sys/asm/asm.h>
 #include <sys/deviceapi/deviceapi_console.h>
 #include <sys/deviceapi/deviceapi_cpu.h>

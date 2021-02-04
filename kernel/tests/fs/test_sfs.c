@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/fs/sfs/sfs.h>
+#include <dev/logical/fs/sfs/sfs.h>
 #include <sys/debug/debug.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>

@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/fs/initrd/initrd.h>
+#include <dev/logical/fs/initrd/initrd.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/devicemgr.h>

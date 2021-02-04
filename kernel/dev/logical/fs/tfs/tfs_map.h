@@ -5,20 +5,17 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/fs/fat/fat.h>
-#include <sys/debug/debug.h>
+#ifndef _TFS_MAP_H
+#define _TFS_MAP_H
+
+#include <dev/logical/fs/tfs/tfs_block.h>
 #include <sys/devicemgr/devicemgr.h>
-#include <sys/kprintf/kprintf.h>
-#include <tests/fs/test_fat.h>
+#include <types.h>
 
-void test_fat() {
-    uint8_t devicename[] = {"disk1"};
+#define TFS_MAP_BLOCK_FREE 0
+#define TFS_MAP_BLOCK_USED 1
 
-    struct device* dsk = devicemgr_find_device(devicename);
-    if (0 != dsk) {
-        struct device* dev = fat_attach(dsk);
-        fat_detach(dev);
-    } else {
-        kprintf("Unable to find %s\n", devicename);
-    }
-}
+uint32_t tfs_map_find_free_block(struct device* dev, struct tfs_superblock_block* superblock);
+void tfs_map_release_block(struct device* dev, uint64_t block, struct tfs_superblock_block* superblock);
+uint32_t tfs_map_block_count(struct device* dev);
+#endif

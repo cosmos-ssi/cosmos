@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/fs/cfs/cfs.h>
+#include <dev/logical/fs/cfs/cfs.h>
 #include <sys/deviceapi/deviceapi_block.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/fs/test_cfs.h>

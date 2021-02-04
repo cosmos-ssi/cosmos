@@ -5,7 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <dev/fs/fs_util.h>
+#include <dev/logical/fs/fs_util.h>
 #include <dev/x86-64/ata/ata.h>
 #include <dev/x86-64/ata/ata_disk.h>
 #include <dev/x86-64/ata/ata_util.h>

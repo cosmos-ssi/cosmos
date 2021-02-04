@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/fs/cpm/cpm.h>
+#include <dev/logical/fs/cpm/cpm.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/fs/test_cfs.h>

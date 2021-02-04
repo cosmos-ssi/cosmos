@@ -8,9 +8,9 @@
 #ifndef _DEV_H
 #define _DEV_H
 
-#include <dev/fs/swap/swap.h>
-#include <dev/ramdisk/ramdisk.h>
-#include <dev/virtio/virtio.h>
+#include <dev/logical/fs/swap/swap.h>
+#include <dev/logical/ramdisk/ramdisk.h>
+#include <dev/logical/virtio/virtio.h>
 
 #ifdef TARGET_PLATFORM_i386
 

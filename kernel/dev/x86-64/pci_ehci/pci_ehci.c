@@ -5,7 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <dev/ehci/ehci.h>
+#include <dev/logical/ehci/ehci.h>
 #include <dev/x86-64/pci/pci.h>
 #include <dev/x86-64/pci_ehci/pci_ehci.h>
 #include <sys/asm/asm.h>
