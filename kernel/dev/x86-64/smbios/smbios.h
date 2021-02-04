@@ -45,9 +45,9 @@ enum smbios_header_type {
 };
 
 struct smbios_header {
-    uint8_t Type;
-    uint8_t Length;
-    uint16_t Handle;
+    uint8_t type;
+    uint8_t length;
+    uint16_t handle;
 };
 
 void smbios_devicemgr_register_devices();
