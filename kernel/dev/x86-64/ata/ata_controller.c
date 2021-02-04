@@ -1,6 +1,6 @@
 /*****************************************************************
  * This file is part of CosmOS                                   *
- * Copyright (C) 2020 Kurt M. Weber                              *
+ * Copyright (C) 2020-2021 Kurt M. Weber                         *
  * Released under the stated terms in the file LICENSE           *
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
@@ -37,6 +37,7 @@ void ata_detect_addresses(struct device* dev) {
     uint8_t function = dev->pci->function;
 
     uint32_t bar_result;
+    uint32_t bar_base;
 
     bar_result = pci_header_read_bar0(bus, device, function);
     controller->channels[ATA_PRIMARY].base_io = (((bar_result == 0) || (bar_result == 1)) ? 0x1F0 : bar_result);
@@ -64,7 +65,14 @@ void ata_detect_addresses(struct device* dev) {
             panic("Invalid BAR type!");
             break;
     }
-    //controller->channels[ATA_PRIMARY].dma_address.command = pci_get_bar_base(bar_result);
+
+    bar_base = pci_get_bar_base(bar_result);
+    controller->channels[ATA_PRIMARY].dma_address.command = bar_base;
+    controller->channels[ATA_PRIMARY].dma_address.status = bar_base + 2;
+    controller->channels[ATA_PRIMARY].dma_address.prdt = bar_base + 4;
+    controller->channels[ATA_SECONDARY].dma_address.command = bar_base + 8;
+    controller->channels[ATA_SECONDARY].dma_address.status = bar_base + 10;
+    controller->channels[ATA_SECONDARY].dma_address.prdt = bar_base + 12;
 }
 
 /*
