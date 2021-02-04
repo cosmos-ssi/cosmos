@@ -29,6 +29,9 @@ typedef enum ata_dma_address_types { ATA_DMA_ADDR_PIO, ATA_DMA_ADDR_MMIO } ata_d
 
 typedef struct ata_dma_address {
     ata_dma_address_types addr_type;
+    uint32_t command;
+    uint32_t status;
+    uint32_t prdt;
 } ata_dma_address;
 
 struct ide_channel {

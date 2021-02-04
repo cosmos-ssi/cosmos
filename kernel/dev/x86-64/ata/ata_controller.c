@@ -51,8 +51,20 @@ void ata_detect_addresses(struct device* dev) {
     controller->channels[ATA_SECONDARY].base_io_ctrl = (((bar_result == 0) || (bar_result == 1)) ? 0x376 : bar_result);
 
     bar_result = pci_header_read_bar4(bus, device, function);
-    kprintf("bar4 %#llX\n", bar_result);
-    kprintf("bar4 type: %llu\n", (uint64_t)pci_get_bar_type(bar_result));
+    switch (pci_get_bar_type(bar_result)) {
+        case PCI_BAR_MMIO:
+            controller->channels[ATA_PRIMARY].dma_address.addr_type = ATA_DMA_ADDR_MMIO;
+            controller->channels[ATA_SECONDARY].dma_address.addr_type = ATA_DMA_ADDR_MMIO;
+            break;
+        case PCI_BAR_PORT:
+            controller->channels[ATA_PRIMARY].dma_address.addr_type = ATA_DMA_ADDR_PIO;
+            controller->channels[ATA_SECONDARY].dma_address.addr_type = ATA_DMA_ADDR_PIO;
+            break;
+        default:
+            panic("Invalid BAR type!");
+            break;
+    }
+    //controller->channels[ATA_PRIMARY].dma_address.command = pci_get_bar_base(bar_result);
 }
 
 /*
