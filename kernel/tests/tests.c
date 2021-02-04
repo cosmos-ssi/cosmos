@@ -43,5 +43,6 @@ void tests_run() {
     test_gpt();
     test_bda();
     test_smbios();
+    test_ramdisk();
     //  test_rand();
 }

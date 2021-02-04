@@ -63,7 +63,7 @@ void ramdisk_read(struct device* dev, uint32_t sector, uint8_t* data, uint32_t c
     ASSERT(count <= device_data->sector_size);
     ASSERT(sector < device_data->sector_count);
     uint64_t block = ramdisk_calc_address(device_data, sector);
-    kprintf("block %#hX\n", block);
+    //   kprintf("block %#hX\n", block);
     memcpy((uint8_t*)data, (uint8_t*)block, count * sizeof(uint8_t));
 }
 
@@ -75,7 +75,7 @@ void ramdisk_write(struct device* dev, uint32_t sector, uint8_t* data, uint32_t 
     ASSERT(count <= device_data->sector_size);
     ASSERT(sector < device_data->sector_count);
     uint64_t block = ramdisk_calc_address(device_data, sector);
-    kprintf("block %#hX\n", block);
+    //   kprintf("block %#hX\n", block);
     memcpy((uint8_t*)block, (uint8_t*)data, count * sizeof(uint8_t));
 }
 
@@ -112,6 +112,7 @@ struct device* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     device_data->sector_size = sector_size;
     device_data->sector_count = sector_count;
     device_data->data = kmalloc(device_data->size);
+    memzero(device_data->data, device_data->size);
     deviceinstance->device_data = device_data;
     /*
      * the device api
