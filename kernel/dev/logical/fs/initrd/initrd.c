@@ -72,10 +72,10 @@ void initrd_read_filetable(struct device* dev, struct initrd_filetable* filetabl
     /*
     * read 1st sector to get header_sectors
     */
-    uint32_t sector_size = block_get_sector_size(device_data->partition_device);
+    uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
     uint8_t datablock[sector_size];
     memzero(datablock, sector_size);
-    block_read_sectors(device_data->partition_device, 0, datablock, 1);
+    blockutil_read_sectors(device_data->partition_device, 0, datablock, 1);
     debug_show_memblock(datablock, sector_size);
     uint32_t total_header_sectors = ((struct initrd_filetable*)datablock)->header_sectors;
     kprintf("ts %llu\n", total_header_sectors);
@@ -89,7 +89,7 @@ void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetab
     /*
     * figure out how many sectors
     */
-    uint32_t sector_size = block_get_sector_size(device_data->partition_device);
+    uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
     filetable->header_sectors = sizeof(struct initrd_filetable) / sector_size;
     if ((sizeof(struct initrd_filetable) % sector_size) != 0) {
         filetable->header_sectors += 1;
@@ -100,7 +100,7 @@ void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetab
     uint8_t datablock[sector_size * filetable->header_sectors];
     memzero(datablock, sector_size * filetable->header_sectors);
     memcpy(datablock, (uint8_t*)&filetable, sizeof(struct initrd_filetable));
-    block_write_sectors(device_data->partition_device, 0, datablock, filetable->header_sectors);
+    blockutil_write_sectors(device_data->partition_device, 0, datablock, filetable->header_sectors);
     /*
     * read it back
     */

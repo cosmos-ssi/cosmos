@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <dev/logical/fs/block_util.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_block.h>
@@ -36,6 +37,13 @@ void test_block_device_base_api(struct device* dev) {
 
     ASSERT(readdata[0] == 'W');
     ASSERT(strlen(readdata) == strlen(testdata));
+}
+
+void test_block_block_api(struct device* dev) {
+    //   uint32_t s = strlen(testdata);
+    //  uint8_t buffer[s + 1];
+
+    // blockutil_write(dev, 0, testdata);
 }
 
 void test_block_device(struct device* dev) {

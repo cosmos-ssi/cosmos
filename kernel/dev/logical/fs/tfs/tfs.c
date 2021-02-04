@@ -41,8 +41,8 @@ void tfs_format(struct device* dev) {
     struct tfs_superblock_block superblock;
     memset((uint8_t*)&superblock, 0, sizeof(struct tfs_superblock_block));
     superblock.magic = TFS_MAGIC_SUPERBLOCK;
-    superblock.blocks_size = (uint64_t)block_get_sector_size(device_data->partition_device);
-    superblock.blocks_count = (uint64_t)block_get_sector_count(device_data->partition_device);
+    superblock.blocks_size = (uint64_t)blockutil_get_sector_size(device_data->partition_device);
+    superblock.blocks_count = (uint64_t)blockutil_get_sector_count(device_data->partition_device);
     superblock.number_map_blocks = number_map_blocks;
     superblock.root_dir = number_map_blocks + 1;  // sector one, since sector zero is the super-block
     kprintf("blocks_count %llu\n", superblock.blocks_count);

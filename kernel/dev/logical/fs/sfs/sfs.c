@@ -122,7 +122,7 @@ bool sfs_is_valid_superblock(struct sfs_superblock* superblock) {
 
 void sfs_read_superblock(struct device* dev, struct sfs_superblock* superblock) {
     ASSERT_NOT_NULL(dev);
-    block_read(dev, 0, (uint8_t*)superblock);
+    blockutil_read(dev, 0, (uint8_t*)superblock);
 }
 
 void sfs_format(struct device* dev) {
@@ -131,9 +131,9 @@ void sfs_format(struct device* dev) {
     struct sfs_devicedata* device_data = (struct sfs_devicedata*)dev->device_data;
 
     // device parameters
-    //    uint64_t total_size = block_get_total_size(device_data->block_device);
-    uint32_t sector_size = block_get_sector_size(device_data->partition_device);
-    uint32_t total_sectors = block_get_sector_count(device_data->partition_device);
+    //    uint64_t total_size = blockutil_get_total_size(device_data->block_device);
+    uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
+    uint32_t total_sectors = blockutil_get_sector_count(device_data->partition_device);
 
     // create a superblock struct
     struct sfs_superblock superblock;
@@ -150,7 +150,7 @@ void sfs_format(struct device* dev) {
     superblock.block_size = (sector_size / 512) + 1;
 
     // write superblock
-    block_write(device_data->partition_device, 0, (uint8_t*)&superblock);
+    blockutil_write(device_data->partition_device, 0, (uint8_t*)&superblock);
 }
 
 /*

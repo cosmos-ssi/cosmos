@@ -63,5 +63,5 @@ void tfs_map_release_block(struct device* dev, uint64_t block, struct tfs_superb
 
 uint32_t tfs_map_block_count(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    return (block_get_sector_count(dev) / TFS_SECTORS_PER_MAP_BLOCK) + 1;
+    return (blockutil_get_sector_count(dev) / TFS_SECTORS_PER_MAP_BLOCK) + 1;
 }

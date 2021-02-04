@@ -48,28 +48,28 @@ void swap_read(struct device* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
-    block_read(device_data->block_device, block, data);
+    blockutil_read(device_data->block_device, block, data);
 }
 
 void swap_write(struct device* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
-    block_write(device_data->block_device, block, data);
+    blockutil_write(device_data->block_device, block, data);
 }
 
 uint16_t swap_block_size(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
-    return block_get_sector_size(device_data->block_device);
+    return blockutil_get_sector_size(device_data->block_device);
 }
 
 uint16_t swap_block_count(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
-    return block_get_sector_count(device_data->block_device);
+    return blockutil_get_sector_count(device_data->block_device);
 }
 
 struct device* swap_attach(struct device* block_device) {
@@ -102,7 +102,7 @@ struct device* swap_attach(struct device* block_device) {
      */
     struct swap_devicedata* device_data = (struct swap_devicedata*)kmalloc(sizeof(struct swap_devicedata));
     device_data->block_device = block_device;
-    device_data->block_size = block_get_sector_size(block_device);
+    device_data->block_size = blockutil_get_sector_size(block_device);
     deviceinstance->device_data = device_data;
     /*
      * register

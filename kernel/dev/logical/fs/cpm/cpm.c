@@ -67,7 +67,7 @@ void cpm_format(struct device* dev) {
     memset(buffer, 0, device_data->byte_size_dir);
     memcpy(buffer, (uint8_t*)&dir, sizeof(struct cpm_dir));
     for (uint8_t i = 0; i < device_data->sectors_needed_for_dir; i++) {
-        block_write(device_data->partition_device, i, &(buffer[i]));
+        blockutil_write(device_data->partition_device, i, &(buffer[i]));
     }
     kfree(buffer);
 }
@@ -80,7 +80,7 @@ void cpm_read_dir(struct device* dev, struct cpm_dir* dir) {
     uint8_t* buffer = kmalloc(device_data->byte_size_dir);
     memset(buffer, 0, device_data->byte_size_dir);
     for (uint8_t i = 0; i < device_data->sectors_needed_for_dir; i++) {
-        block_read(device_data->partition_device, i, &(buffer[i]));
+        blockutil_read(device_data->partition_device, i, &(buffer[i]));
     }
 
     // copy to dest
@@ -141,7 +141,7 @@ struct device* cpm_attach(struct device* partition_device) {
      */
     struct cpm_devicedata* device_data = (struct cpm_devicedata*)kmalloc(sizeof(struct cpm_devicedata));
     device_data->partition_device = partition_device;
-    device_data->block_device_sector_size = block_get_sector_size(device_data->partition_device);
+    device_data->block_device_sector_size = blockutil_get_sector_size(device_data->partition_device);
     // blocks needed for dir
     uint8_t sectors_needed = sizeof(struct cpm_dir) / device_data->block_device_sector_size;
     if (0 != (sizeof(struct cpm_dir) % device_data->block_device_sector_size)) {
