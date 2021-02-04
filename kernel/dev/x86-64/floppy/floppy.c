@@ -104,7 +104,7 @@ struct floppy_devicedata {
 
 volatile uint64_t irq_count = 0;
 
-void floppy_irq_read(stackFrame* frame) {
+void floppy_irq_read(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     irq_count = irq_count + 1;
     kprintf("^");
@@ -170,9 +170,9 @@ void command(uint8_t commandByte) {
  */
 uint8_t floppy_device_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    //   struct floppy_devicedata* deviceData = (struct floppy_devicedata*)dev->deviceData;
+    //   struct floppy_devicedata* device_data = (struct floppy_devicedata*)dev->device_data;
     kprintf("Init %s at IRQ %llu (%s)\n", dev->description, FLOPPY_IRQ_NUMBER, dev->name);
-    //	printDriveType(deviceData->type);
+    //	printDriveType(device_data->type);
     interrupt_router_register_interrupt_handler(FLOPPY_IRQ_NUMBER, &floppy_irq_read);
 
     // set CCR, DSR to zero
@@ -239,11 +239,11 @@ void floppy_register_device(uint64_t port, uint8_t type, bool master) {
     /*
      * device data
      */
-    struct floppy_devicedata* deviceData = (struct floppy_devicedata*)kmalloc(sizeof(struct floppy_devicedata));
-    deviceData->port = port;
-    deviceData->type = type;
-    deviceData->master = master;
-    deviceinstance->deviceData = deviceData;
+    struct floppy_devicedata* device_data = (struct floppy_devicedata*)kmalloc(sizeof(struct floppy_devicedata));
+    device_data->port = port;
+    device_data->type = type;
+    device_data->master = master;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */

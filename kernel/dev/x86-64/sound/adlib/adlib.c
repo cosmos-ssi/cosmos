@@ -41,7 +41,7 @@ C0..C8	Feedback strength / Connection type
 E0..F5	Wave Select
 */
 
-void adlib_handle_irq(stackFrame* frame) {
+void adlib_handle_irq(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
 }
 

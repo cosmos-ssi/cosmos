@@ -12,7 +12,7 @@
 #include <sys/x86-64/idt/exceptions.h>
 #include <types.h>
 
-void isrPFE_handler(stackFrame* frame, uint64_t error) {
+void isrPFE_handler(stack_frame* frame, uint64_t error) {
     ASSERT_NOT_NULL(frame);
 
     page_fault_handler(error, asm_cr2_read(), asm_cr3_read());

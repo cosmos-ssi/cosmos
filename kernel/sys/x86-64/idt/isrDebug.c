@@ -10,7 +10,7 @@
 #include <sys/x86-64/idt/exceptions.h>
 #include <types.h>
 
-void isrDebug_handler(stackFrame* frame) {
+void isrDebug_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     kprintf("Debug Exception\n");
 }

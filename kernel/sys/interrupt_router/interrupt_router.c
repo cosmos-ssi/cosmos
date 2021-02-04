@@ -15,27 +15,27 @@
 /**
  * array of lists
  */
-struct array* interruptHandlers;
+struct array* interrupt_handlers;
 
 /**
  * create the array of interrupts and then add a list for each entry
  */
 void interrupt_router_init() {
-    interruptHandlers = array_new(NUMBER_INTERRUPTS);
+    interrupt_handlers = array_new(NUMBER_INTERRUPTS);
     for (int i = 0; i < NUMBER_INTERRUPTS; i++) {
-        array_set(interruptHandlers, i, arraylist_new());
+        array_set(interrupt_handlers, i, arraylist_new());
     }
 }
 
 /**
  * register an interrupt handler callback
  */
-void interrupt_router_register_interrupt_handler(int interruptNumber, interruptHandler func) {
+void interrupt_router_register_interrupt_handler(int interruptNumber, interrupt_handler func) {
     ASSERT_NOT_NULL(func);
-    ASSERT_NOT_NULL(interruptHandlers);
+    ASSERT_NOT_NULL(interrupt_handlers);
 
     if ((interruptNumber >= 0) && (interruptNumber < NUMBER_INTERRUPTS)) {
-        struct arraylist* lst = array_get(interruptHandlers, interruptNumber);
+        struct arraylist* lst = array_get(interrupt_handlers, interruptNumber);
         if (0 == lst) {
             panic("List should not be null");
         }
@@ -48,17 +48,17 @@ void interrupt_router_register_interrupt_handler(int interruptNumber, interruptH
 /**
  * route an interrupt
  */
-void interrupt_router_route_interrupt(int interruptNumber, stackFrame* frame) {
+void interrupt_router_route_interrupt(int interruptNumber, stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
-    ASSERT_NOT_NULL(interruptHandlers);
+    ASSERT_NOT_NULL(interrupt_handlers);
 
     if ((interruptNumber >= 0) && (interruptNumber < NUMBER_INTERRUPTS)) {
-        struct arraylist* lst = array_get(interruptHandlers, interruptNumber);
+        struct arraylist* lst = array_get(interrupt_handlers, interruptNumber);
         if (0 == lst) {
             panic("List should not be null");
         }
         for (uint16_t i = 0; i < arraylist_count(lst); i++) {
-            interruptHandler handler = (interruptHandler)arraylist_get(lst, i);
+            interrupt_handler handler = (interrupt_handler)arraylist_get(lst, i);
             if (0 != handler) {
                 (*handler)(frame);
             } else {

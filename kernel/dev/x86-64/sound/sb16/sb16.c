@@ -74,7 +74,7 @@ struct sb16_devicedata {
 /*
  * interrupt handler
  */
-void sb16_handle_irq(stackFrame* frame) {
+void sb16_handle_irq(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     kprintf("SSSSSSSSSSSSSSS");
 }
@@ -84,7 +84,7 @@ void sb16_handle_irq(stackFrame* frame) {
  */
 uint8_t sb16_device_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->deviceData;
+    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->device_data;
     ASSERT_NOT_NULL(sb16_data);
     kprintf("Init %s at IRQ %llu Port %#llX (%s)\n", dev->description, sb16_data->irq, sb16_data->port, dev->name);
     interrupt_router_register_interrupt_handler(sb16_data->irq, &sb16_handle_irq);
@@ -98,7 +98,7 @@ uint8_t sb16_device_init(struct device* dev) {
  */
 void sb16_set_stereo_output(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->deviceData;
+    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->device_data;
     ASSERT_NOT_NULL(sb16_data);
     /*
      * set stero
@@ -113,7 +113,7 @@ void sb16_set_stereo_output(struct device* dev) {
  */
 uint8_t sb16_get_speaker_status(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->deviceData;
+    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->device_data;
     ASSERT_NOT_NULL(sb16_data);
 
     asm_out_b(sb16_data->port + SB16_PORT_WRITE, SB16_COMMAND_GET_SPEAKER_STATUS);
@@ -125,7 +125,7 @@ uint8_t sb16_get_speaker_status(struct device* dev) {
  */
 uint8_t sb16_get_dsp_version(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->deviceData;
+    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->device_data;
     ASSERT_NOT_NULL(sb16_data);
 
     asm_out_b(sb16_data->port + SB16_PORT_WRITE, SB16_COMMAND_GET_DSP_VERSION);
@@ -137,7 +137,7 @@ uint8_t sb16_get_dsp_version(struct device* dev) {
  */
 void sb16_reset(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->deviceData;
+    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->device_data;
     ASSERT_NOT_NULL(sb16_data);
     asm_out_b(sb16_data->port + SB16_PORT_RESET, 0x01);
     sleep_wait(100);
@@ -149,7 +149,7 @@ void sb16_reset(struct device* dev) {
  */
 void sb16_speaker_on(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->deviceData;
+    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->device_data;
     ASSERT_NOT_NULL(sb16_data);
     asm_out_b(sb16_data->port + SB16_PORT_WRITE, SB16_COMMAND_SPEAKER_ON);
 }
@@ -159,7 +159,7 @@ void sb16_speaker_on(struct device* dev) {
  */
 void sb16_speaker_off(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->deviceData;
+    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->device_data;
     ASSERT_NOT_NULL(sb16_data);
     asm_out_b(sb16_data->port + SB16_PORT_WRITE, SB16_COMMAND_SPEAKER_OFF);
 }
@@ -169,7 +169,7 @@ void sb16_speaker_off(struct device* dev) {
  */
 void sb16_set_master_volume(struct device* dev, uint8_t v) {
     ASSERT_NOT_NULL(dev);
-    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->deviceData;
+    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->device_data;
     ASSERT_NOT_NULL(sb16_data);
     asm_out_b(sb16_data->port + SB16_PORT_MIXER, SB16_COMMAND_MASTER_VOLUME);
     asm_out_b(sb16_data->port + SB16_PORT_MIXER_DATA, v);
@@ -180,7 +180,7 @@ void sb16_set_master_volume(struct device* dev, uint8_t v) {
  */
 void sb16_set_time_constant(struct device* dev, uint32_t samplerate, uint8_t channels) {
     ASSERT_NOT_NULL(dev);
-    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->deviceData;
+    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->device_data;
     ASSERT_NOT_NULL(sb16_data);
 
     // calc time constant
@@ -203,7 +203,7 @@ void sb16_set_time_constant(struct device* dev, uint32_t samplerate, uint8_t cha
 
 void sb16_start_transfer_size(struct device* dev, uint16_t size, uint8_t command, uint8_t mode) {
     ASSERT_NOT_NULL(dev);
-    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->deviceData;
+    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->device_data;
     ASSERT_NOT_NULL(sb16_data);
 
     // command
@@ -260,7 +260,7 @@ void sb16_start_transfer_size(struct device* dev, uint16_t size, uint8_t command
 void sb16_play(struct device* dev, uint8_t* buffer, uint16_t rate, uint8_t depth, uint8_t channels, uint64_t len) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(buffer);
-    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->deviceData;
+    struct sb16_devicedata* sb16_data = (struct sb16_devicedata*)dev->device_data;
     ASSERT_NOT_NULL(sb16_data);
 
     kprintf("Incoming buffer %#llX\n", buffer);
@@ -369,10 +369,10 @@ void sb16_devicemgr_register_device(uint64_t port) {
     /*
      * device data
      */
-    struct sb16_devicedata* deviceData = (struct sb16_devicedata*)kmalloc(sizeof(struct sb16_devicedata));
-    deviceData->port = port;
-    deviceData->irq = SB16_IRQ;
-    deviceinstance->deviceData = deviceData;
+    struct sb16_devicedata* device_data = (struct sb16_devicedata*)kmalloc(sizeof(struct sb16_devicedata));
+    device_data->port = port;
+    device_data->irq = SB16_IRQ;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */

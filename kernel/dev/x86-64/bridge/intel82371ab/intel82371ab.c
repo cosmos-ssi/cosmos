@@ -22,10 +22,10 @@ struct intel8237_deviceddata {
  */
 uint8_t i982371_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct intel8237_deviceddata* deviceData = (struct intel8237_deviceddata*)dev->deviceData;
-    deviceData->base = pci_calcbar(dev->pci);
+    struct intel8237_deviceddata* device_data = (struct intel8237_deviceddata*)dev->device_data;
+    device_data->base = pci_calcbar(dev->pci);
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, deviceData->base, dev->name);
+            dev->pci->vendor_id, dev->pci->device_id, device_data->base, dev->name);
     return 1;
 }
 
@@ -42,9 +42,9 @@ void i982371_search_cb(struct pci_device* dev) {
     /*
      * device data
      */
-    struct intel8237_deviceddata* deviceData =
+    struct intel8237_deviceddata* device_data =
         (struct intel8237_deviceddata*)kmalloc(sizeof(struct intel8237_deviceddata));
-    deviceinstance->deviceData = deviceData;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */

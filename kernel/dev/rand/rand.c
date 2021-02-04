@@ -21,7 +21,7 @@ struct rand_devicedata {
  */
 uint8_t rand_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
 }
@@ -31,7 +31,7 @@ uint8_t rand_init(struct device* dev) {
  */
 uint8_t rand_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
 
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
@@ -42,10 +42,10 @@ uint8_t rand_uninit(struct device* dev) {
 */
 uint64_t rand_read(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct rand_devicedata* deviceData = (struct rand_devicedata*)dev->deviceData;
-    deviceData->last = (deviceData->last * 214013 + 2531011) & RAND_MAX >> 16;
-    return deviceData->last;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct rand_devicedata* device_data = (struct rand_devicedata*)dev->device_data;
+    device_data->last = (device_data->last * 214013 + 2531011) & RAND_MAX >> 16;
+    return device_data->last;
 }
 
 struct device* rand_attach() {
@@ -68,9 +68,9 @@ struct device* rand_attach() {
     /*
      * device data
      */
-    struct rand_devicedata* deviceData = (struct rand_devicedata*)kmalloc(sizeof(struct rand_devicedata));
-    deviceData->last = 7;
-    deviceinstance->deviceData = deviceData;
+    struct rand_devicedata* device_data = (struct rand_devicedata*)kmalloc(sizeof(struct rand_devicedata));
+    device_data->last = 7;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */

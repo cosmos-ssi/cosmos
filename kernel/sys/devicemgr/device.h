@@ -15,10 +15,10 @@
 struct pci_device;
 struct device;
 
-typedef uint8_t (*deviceInit)(struct device* dev);
-typedef uint8_t (*deviceUnInit)(struct device* dev);
+typedef uint8_t (*device_init)(struct device* dev);
+typedef uint8_t (*device_uninit)(struct device* dev);
 
-typedef enum deviceType {
+typedef enum device_type {
     NONE = 0x00,
     SERIAL = 0x01,           // serial0, deviceapi_serial
     VGA = 0x02,              // vga0, deviceapi_vga
@@ -35,7 +35,7 @@ typedef enum deviceType {
     PIT = 0x0D,              // pit0, deviceapi_pit
     DSP = 0x0E,              // dsp0, deviceapi_dsp
     CMOS = 0x0F,             // cmos0, deviceapi_cmos
-    DMA = 0x10,              // dma0
+    ISADMA = 0x10,           // isadma0
     CPU = 0x11,              // cpu0, deviceapi_cpu
     RAMDISK = 0x12,          // rd0, deviceapi_block
     VNIC = 0x13,             // vnic0, deviceapi_nic
@@ -60,16 +60,16 @@ typedef enum deviceType {
     ETHERNET = 0x26,         // eth0, deviceapi_ethernet
     SDHCI = 0x27,            // sdhci0
     SMBIOS = 0x28            // smbios0
-} deviceType;
+} device_type;
 
 /*
- * array of names, indexed by deviceType
+ * array of names, indexed by device_type
  */
-extern int8_t* DeviceTypeNames[];
+extern int8_t* device_type_names[];
 
 typedef struct device {
     /*
-     * the combination of name (from DeviceTypeNames) and index
+     * the combination of name (from device_type_names) and index
      * create the device name.  ie "serial0".
      */
     int8_t* name;
@@ -77,15 +77,15 @@ typedef struct device {
     /*
      * the type (SERIAL, VGA etc)
      */
-    enum deviceType devicetype;
+    enum device_type devicetype;
     /*
      * init function
      */
-    deviceInit init;
+    device_init init;
     /*
      * un-init function
      */
-    deviceUnInit uninit;
+    device_uninit uninit;
     /*
      * human readable description provided by the driver
      */
@@ -93,7 +93,7 @@ typedef struct device {
     /*
      * device-specific data
      */
-    void* deviceData;
+    void* device_data;
     /*
      * For PCI devices, this is a struct pci_device*.
      */

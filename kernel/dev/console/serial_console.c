@@ -22,9 +22,9 @@ struct serial_console_devicedata {
  */
 uint8_t serial_console_dev_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct serial_console_devicedata* deviceData = (struct serial_console_devicedata*)dev->deviceData;
-    kprintf("Init %s on %s (%s)\n", dev->description, deviceData->serial_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct serial_console_devicedata* device_data = (struct serial_console_devicedata*)dev->device_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, device_data->serial_device->name, dev->name);
     return 1;
 }
 
@@ -33,12 +33,12 @@ uint8_t serial_console_dev_init(struct device* dev) {
  */
 uint8_t serial_console_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
 
-    struct serial_console_devicedata* deviceData = (struct serial_console_devicedata*)dev->deviceData;
-    kprintf("Uninit %s on %s (%s)\n", dev->description, deviceData->serial_device->name, dev->name);
+    struct serial_console_devicedata* device_data = (struct serial_console_devicedata*)dev->device_data;
+    kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->serial_device->name, dev->name);
     kfree(dev->api);
-    kfree(dev->deviceData);
+    kfree(dev->device_data);
     return 1;
 }
 
@@ -49,11 +49,11 @@ uint8_t serial_console_setpos(struct device* dev, uint8_t x, uint8_t y) {
 
 void serial_console_dev_write(struct device* dev, const char* s) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct serial_console_devicedata* deviceData = (struct serial_console_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct serial_console_devicedata* device_data = (struct serial_console_devicedata*)dev->device_data;
 
-    struct deviceapi_serial* serial_api = (struct deviceapi_serial*)deviceData->serial_device->api;
-    (*serial_api->write)(deviceData->serial_device, s);
+    struct deviceapi_serial* serial_api = (struct deviceapi_serial*)device_data->serial_device->api;
+    (*serial_api->write)(device_data->serial_device, s);
 }
 
 struct device* serial_console_attach(struct device* serial_device) {
@@ -80,10 +80,10 @@ struct device* serial_console_attach(struct device* serial_device) {
     /*
      * device data
      */
-    struct serial_console_devicedata* deviceData =
+    struct serial_console_devicedata* device_data =
         (struct serial_console_devicedata*)kmalloc(sizeof(struct serial_console_devicedata));
-    deviceData->serial_device = serial_device;
-    deviceinstance->deviceData = deviceData;
+    device_data->serial_device = serial_device;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */
@@ -93,7 +93,7 @@ struct device* serial_console_attach(struct device* serial_device) {
         */
         return deviceinstance;
     } else {
-        kfree(deviceData);
+        kfree(device_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;

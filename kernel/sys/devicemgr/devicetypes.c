@@ -19,7 +19,7 @@ void devicetypes_init() {
     }
 }
 
-struct arraylist* devicetypes_get_devicelist(deviceType dt) {
+struct arraylist* devicetypes_get_devicelist(device_type dt) {
     ASSERT_NOT_NULL(types);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         return (struct arraylist*)array_get(types, dt);
@@ -29,7 +29,7 @@ struct arraylist* devicetypes_get_devicelist(deviceType dt) {
     return 0;
 }
 
-void devicetypes_set_devicelist(deviceType dt, struct arraylist* lst) {
+void devicetypes_set_devicelist(device_type dt, struct arraylist* lst) {
     ASSERT_NOT_NULL(types);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         array_set(types, dt, lst);

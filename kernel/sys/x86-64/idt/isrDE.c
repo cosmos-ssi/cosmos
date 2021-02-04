@@ -9,7 +9,7 @@
 #include <sys/x86-64/idt/exceptions.h>
 #include <types.h>
 
-void isrDE_handler(stackFrame* frame) {
+void isrDE_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     panic("Division by zero!");
 }

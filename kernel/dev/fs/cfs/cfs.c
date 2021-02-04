@@ -126,10 +126,10 @@ void cfs_read_blockmap(struct device* dev, struct cfs_blockmap* blockmap, uint32
  * format. I just guessed here.
  */
 void cfs_format(struct device* dev) {
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct cfs_devicedata* deviceData = (struct cfs_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct cfs_devicedata* device_data = (struct cfs_devicedata*)dev->device_data;
 
-    uint32_t total_sectors_blockmap = cfs_total_sectormap_sectors(deviceData->partition_device);
+    uint32_t total_sectors_blockmap = cfs_total_sectormap_sectors(device_data->partition_device);
     // kprintf("Blockmap sectors %llu\n",total_sectors_blockmap);
     /*
      * superblock
@@ -141,14 +141,14 @@ void cfs_format(struct device* dev) {
     superblock.primary_data_space = 2;
     superblock.primary_presentation_space = 3;
     superblock.primary_group_directory = 4;
-    cfs_write_superblock(deviceData->partition_device, &superblock);
+    cfs_write_superblock(device_data->partition_device, &superblock);
     /*
      * blockmaps.  first one at lba 1.
      */
     for (uint32_t i = 0; i < total_sectors_blockmap; i++) {
         struct cfs_blockmap blockmap;
         memset((uint8_t*)&blockmap, 0, sizeof(struct cfs_superblock));
-        cfs_write_blockmap(deviceData->partition_device, &blockmap, 1 + i);
+        cfs_write_blockmap(device_data->partition_device, &blockmap, 1 + i);
     }
 }
 
@@ -157,9 +157,9 @@ void cfs_format(struct device* dev) {
  */
 uint8_t cfs_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct cfs_devicedata* deviceData = (struct cfs_devicedata*)dev->deviceData;
-    kprintf("Init %s on %s (%s)\n", dev->description, deviceData->partition_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct cfs_devicedata* device_data = (struct cfs_devicedata*)dev->device_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
     return 1;
 }
 
@@ -168,12 +168,12 @@ uint8_t cfs_init(struct device* dev) {
  */
 uint8_t cfs_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct cfs_devicedata* deviceData = (struct cfs_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct cfs_devicedata* device_data = (struct cfs_devicedata*)dev->device_data;
 
-    kprintf("Uninit %s on %s (%s)\n", dev->description, deviceData->partition_device->name, dev->name);
+    kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
     kfree(dev->api);
-    kfree(dev->deviceData);
+    kfree(dev->device_data);
     return 1;
 }
 
@@ -202,9 +202,9 @@ struct device* cfs_attach(struct device* partition_device) {
     /*
      * device data
      */
-    struct cfs_devicedata* deviceData = (struct cfs_devicedata*)kmalloc(sizeof(struct cfs_devicedata));
-    deviceData->partition_device = partition_device;
-    deviceinstance->deviceData = deviceData;
+    struct cfs_devicedata* device_data = (struct cfs_devicedata*)kmalloc(sizeof(struct cfs_devicedata));
+    device_data->partition_device = partition_device;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */
@@ -214,7 +214,7 @@ struct device* cfs_attach(struct device* partition_device) {
         */
         return deviceinstance;
     } else {
-        kfree(deviceData);
+        kfree(device_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;

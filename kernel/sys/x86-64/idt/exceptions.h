@@ -12,11 +12,11 @@
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 
-void isrDE(stackFrame* frame);
-void isrPFE(stackFrame* frame, uint64_t error);
-void isrGeneric(stackFrame* frame);
-void isrGPF(stackFrame* frame);
-void isrDebug(stackFrame* frame);
-void isrBreakpoint(stackFrame* frame);
+void isrDE(stack_frame* frame);
+void isrPFE(stack_frame* frame, uint64_t error);
+void isrGeneric(stack_frame* frame);
+void isrGPF(stack_frame* frame);
+void isrDebug(stack_frame* frame);
+void isrBreakpoint(stack_frame* frame);
 
 #endif

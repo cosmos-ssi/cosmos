@@ -20,36 +20,36 @@
 
 void rtl8139_write_dword(struct device* dev, uint16_t offset, uint32_t dword) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct rtl8139_devicedata* devicedata = (struct rtl8139_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct rtl8139_devicedata* devicedata = (struct rtl8139_devicedata*)dev->device_data;
     asm_out_d(devicedata->base + offset, dword);
 }
 
 void rtl8139_write_word(struct device* dev, uint16_t offset, uint16_t word) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct rtl8139_devicedata* devicedata = (struct rtl8139_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct rtl8139_devicedata* devicedata = (struct rtl8139_devicedata*)dev->device_data;
     asm_out_w(devicedata->base + offset, word);
 }
 
 void rtl8139_write_byte(struct device* dev, uint16_t offset, uint8_t byte) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct rtl8139_devicedata* devicedata = (struct rtl8139_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct rtl8139_devicedata* devicedata = (struct rtl8139_devicedata*)dev->device_data;
     asm_out_b(devicedata->base + offset, byte);
 }
 
 uint8_t rtl8139_read_byte(struct device* dev, uint16_t offset) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct rtl8139_devicedata* devicedata = (struct rtl8139_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct rtl8139_devicedata* devicedata = (struct rtl8139_devicedata*)dev->device_data;
     return asm_in_b(devicedata->base + offset);
 }
 
 uint16_t rtl8139_read_word(struct device* dev, uint16_t offset) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct rtl8139_devicedata* devicedata = (struct rtl8139_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct rtl8139_devicedata* devicedata = (struct rtl8139_devicedata*)dev->device_data;
     return asm_in_w(devicedata->base + offset);
 }
 

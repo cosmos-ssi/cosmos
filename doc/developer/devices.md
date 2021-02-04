@@ -33,9 +33,9 @@ Non-PCI bus devices such as Keyboard, RTC, and RS-232 will need to use hard-code
 
 PCI devices generally use the `pci` field of the `device` struct to contain their appropriate `pci_device` struct.  Non-PCI devices can use this field to hold a pointer to their own custom configuration.
 
-All devices can use the `deviceData` field of the `device` struct to hold device instance specific configuration such as base ports or queues.
+All devices can use the `device_data` field of the `device` struct to hold device instance specific configuration such as base ports or queues.
 
-All devices must assign a value to the field `devicetype` from the enum `deviceType`.  Additionally devices which expose an API must assign an API struct to the field `api`.   Appropriate API structs are in `kernel/devicemgr/deviceapi`
+All devices must assign a value to the field `devicetype` from the enum `device_type`.  Additionally devices which expose an API must assign an API struct to the field `api`.   Appropriate API structs are in `kernel/devicemgr/deviceapi`
 
 
 # Dynamic registration
@@ -53,16 +53,16 @@ These devices should expose an attach() API, and an unattach() API which can dyn
 
 The function `void initDevices();` is used by the device manager to initialize all fixed hardware devices. The devices will have passed a pointer to a init function with this prototype:
 
-`typedef void (*deviceInit)(struct device* dev);`
+`typedef void (*device_init)(struct device* dev);`
 
 The DeviceMgr will assign a unique name to each device such as "serial0".
 
 # Device Types
 
-The enum `deviceType` includes all types of devices known by CosmOS.  
+The enum `device_type` includes all types of devices known by CosmOS.  
 
 ```java
-typedef enum deviceType {
+typedef enum device_type {
     NONE = 0x00,
     SERIAL = 0x01,
     VGA = 0x02,
@@ -91,7 +91,7 @@ typedef enum deviceType {
     SWAP = 0x19,
     FILESYSTEM = 0x1A,
     PARITION_TABLE = 0x1B
-} deviceType;
+} device_type;
 ```
 Devices can be queried by type in order to find appropriate devices for higher level functions to use.  For example, a screen driver could search for VGA devices, or a storage driver could search for ATA devices. 
 

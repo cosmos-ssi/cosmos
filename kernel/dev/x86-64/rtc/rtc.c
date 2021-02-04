@@ -37,7 +37,7 @@ typedef enum rtc_registers {
     RTC_REGISTER_CENTURY = 0x32
 } rtc_registers;
 
-void rtc_handle_irq(stackFrame* frame) {
+void rtc_handle_irq(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     for (uint32_t i = 0; i < arraylist_count(rtcEvents); i++) {
         rtc_event rtcEvent = (rtc_event)arraylist_get(rtcEvents, i);

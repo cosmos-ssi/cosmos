@@ -21,15 +21,16 @@ void test_smbios() {
      */
     struct device* smbios = devicemgr_find_device(devicename);
     if (0 != smbios) {
-        ASSERT_NOT_NULL(smbios->deviceData);
-        struct sm_bios_entry_point* smbios_entry = smbios_get_sm_bios_entry_point(smbios);
+        ASSERT_NOT_NULL(smbios->device_data);
+        struct smbios_entry_point* smbios_entry = smbios_get_smbios_entry_point(smbios);
 
         ASSERT_NOT_NULL(smbios_entry);
         ASSERT(smbios_entry->entry_point_string[0] == '_');
         ASSERT(smbios_entry->entry_point_string[1] == 'S');
         ASSERT(smbios_entry->entry_point_string[2] == 'M');
         ASSERT(smbios_entry->entry_point_string[3] == '_');
-        kprintf("table len %llu, table address %#hX\n", smbios_entry->table_length, smbios_entry->table_address);
+        kprintf("structures %llu, table len %llu, table address %#hX\n", smbios_entry->number_of_structures,
+                smbios_entry->table_length, smbios_entry->table_address);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

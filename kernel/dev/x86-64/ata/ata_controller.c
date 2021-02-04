@@ -28,10 +28,10 @@ void ata_detect_devices(struct device* device, struct ata_controller* controller
  */
 void ata_detect_addresses(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(dev->pci);
 
-    struct ata_controller* controller = (struct ata_controller*)dev->deviceData;
+    struct ata_controller* controller = (struct ata_controller*)dev->device_data;
     uint8_t bus = dev->pci->bus;
     uint8_t device = dev->pci->device;
     uint8_t function = dev->pci->function;
@@ -61,8 +61,8 @@ void ata_detect_addresses(struct device* dev) {
  */
 uint8_t device_init_ata(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct ata_controller* controller = (struct ata_controller*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct ata_controller* controller = (struct ata_controller*)dev->device_data;
 
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX (%s)\n", dev->description, dev->pci->irq, dev->pci->vendor_id,
             dev->pci->device_id, dev->name);
@@ -104,8 +104,8 @@ void ata_search_cb(struct pci_device* dev) {
     /*
      * device data
      */
-    struct ata_controller* deviceData = (struct ata_controller*)kmalloc(sizeof(struct ata_controller));
-    deviceinstance->deviceData = deviceData;
+    struct ata_controller* device_data = (struct ata_controller*)kmalloc(sizeof(struct ata_controller));
+    deviceinstance->device_data = device_data;
     /*
      * register
      */
@@ -164,9 +164,9 @@ void ata_detect_devices(struct device* device, struct ata_controller* controller
 
 struct ata_device* ata_get_disk(struct device* dev, uint8_t channel, uint8_t disk) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
     ASSERT(((channel >= 0) && (channel <= 1)));
     ASSERT(((disk >= 0) && (disk <= 1)));
-    struct ata_controller* controller = (struct ata_controller*)dev->deviceData;
+    struct ata_controller* controller = (struct ata_controller*)dev->device_data;
     return &(controller->channels[channel].devices[disk]);
 }

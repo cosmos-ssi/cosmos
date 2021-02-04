@@ -15,21 +15,21 @@ void deviceregistry_registerdevice(struct device* dev);
 void deviceregistry_unregisterdevice(struct device* dev);
 
 uint16_t deviceregistry_devicecount();
-uint16_t deviceregistry_devicecount_type(deviceType dt);
-struct device* deviceregistry_get_device(deviceType dt, uint16_t idx);
+uint16_t deviceregistry_devicecount_type(device_type dt);
+struct device* deviceregistry_get_device(device_type dt, uint16_t idx);
 
 typedef void (*DeviceIterator)(struct device* dev);
 
 void deviceregistry_iterate(DeviceIterator deviceIterator);
-void deviceregistry_iterate_type(deviceType dt, DeviceIterator deviceIterator);
+void deviceregistry_iterate_type(device_type dt, DeviceIterator deviceIterator);
 
 // find a device by name ie "rtc0"
 struct device* deviceregistry_findDevice(const int8_t* name);
 
 // find devices by devicetype and description
-void deviceregistry_find_devices_by_description(deviceType dt, const int8_t* description, deviceSearchCallback cb);
+void deviceregistry_find_devices_by_description(device_type dt, const int8_t* description, deviceSearchCallback cb);
 
 // find devices by devicetype
-void deviceregistry_find_devices_by_devicetype(deviceType dt, deviceSearchCallback cb);
+void deviceregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallback cb);
 
 #endif

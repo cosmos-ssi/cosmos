@@ -43,8 +43,8 @@ void serial_write_char(const uint8_t c) {
 
 void serial_irq_handler_for_device(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    //    struct serial_devicedata* deviceData = (struct serial_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    //    struct serial_devicedata* device_data = (struct serial_devicedata*)dev->device_data;
 
     // TODO figure out if it was THIS dev that made the interrupt and respond accordingly (like by putting the data into the ringbuffer)
     struct rs232_16550* comport = (struct rs232_16550*)COM1_ADDRESS;
@@ -53,7 +53,7 @@ void serial_irq_handler_for_device(struct device* dev) {
     // echo the data
     serial_write_char(data);
 }
-void serial_irq_handler(stackFrame* frame) {
+void serial_irq_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     devicemgr_find_devices_by_description(SERIAL, SERIAL_DESCRIPTION, &serial_irq_handler_for_device);
 }
@@ -90,10 +90,11 @@ void serial_init_port(uint64_t portAddress) {
  */
 uint8_t serial_device_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct serial_devicedata* deviceData = (struct serial_devicedata*)dev->deviceData;
-    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", dev->description, deviceData->irq, deviceData->address, dev->name);
-    interrupt_router_register_interrupt_handler(deviceData->irq, &serial_irq_handler);
-    serial_init_port(deviceData->address);
+    struct serial_devicedata* device_data = (struct serial_devicedata*)dev->device_data;
+    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", dev->description, device_data->irq, device_data->address,
+            dev->name);
+    interrupt_router_register_interrupt_handler(device_data->irq, &serial_irq_handler);
+    serial_init_port(device_data->address);
     return 1;
 }
 
@@ -106,16 +107,16 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * ISA serial port specific data
      */
-    struct serial_devicedata* deviceData = kmalloc(sizeof(struct serial_devicedata));
-    deviceData->irq = irq;
-    deviceData->address = base;
-    deviceData->buffer = ringbuffer_new(SERIAL_RINGBUFFER_SIZE);
+    struct serial_devicedata* device_data = kmalloc(sizeof(struct serial_devicedata));
+    device_data->irq = irq;
+    device_data->address = base;
+    device_data->buffer = ringbuffer_new(SERIAL_RINGBUFFER_SIZE);
     /*
      * the device instance
      */
     struct device* deviceinstance = devicemgr_new_device();
     deviceinstance->init = &serial_device_init;
-    deviceinstance->deviceData = deviceData;
+    deviceinstance->device_data = device_data;
     deviceinstance->devicetype = SERIAL;
     devicemgr_set_device_description(deviceinstance, SERIAL_DESCRIPTION);
     /*

@@ -422,7 +422,7 @@ void isadma_devicemgr_register_devices() {
      */
     struct device* deviceinstance = devicemgr_new_device();
     devicemgr_set_device_description(deviceinstance, "8237 ISA DMA");
-    deviceinstance->devicetype = DMA;
+    deviceinstance->devicetype = ISADMA;
     deviceinstance->init = &isadma_device_init;
     deviceinstance->uninit = &isadma_device_uninit;
     devicemgr_register_device(deviceinstance);

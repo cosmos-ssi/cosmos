@@ -133,7 +133,7 @@ uint8_t net_mac_isa[6];
 
 void ne2000isa_init(void);
 
-void ne2000isa_irq_handler(stackFrame* frame) {
+void ne2000isa_irq_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     kprintf("%");
 }

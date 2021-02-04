@@ -79,7 +79,7 @@ struct vblock_block_request* vblock_block_request_new() {
     return ret;
 }
 
-void vblock_irq_handler(stackFrame* frame) {
+void vblock_irq_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     kprintf("#");
 }
@@ -89,63 +89,63 @@ void vblock_irq_handler(stackFrame* frame) {
  */
 uint8_t vblock_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
 
-    struct vblock_devicedata* deviceData = (struct vblock_devicedata*)dev->deviceData;
+    struct vblock_devicedata* device_data = (struct vblock_devicedata*)dev->device_data;
     interrupt_router_register_interrupt_handler(dev->pci->irq, &vblock_irq_handler);
-    deviceData->base = pci_calcbar(dev->pci);
+    device_data->base = pci_calcbar(dev->pci);
 
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, deviceData->base, dev->name);
+            dev->pci->vendor_id, dev->pci->device_id, device_data->base, dev->name);
 
     // acknowledge device and set the driver loaded bit
-    asm_out_b(deviceData->base + VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_DEVICE_ACKNOWLEGED);
+    asm_out_b(device_data->base + VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_DEVICE_ACKNOWLEGED);
 
     // get the feature bits
-    //   uint32_t features = asm_in_b(deviceData->base + VIRTIO_DEVICE_FEATURES);
+    //   uint32_t features = asm_in_b(device_data->base + VIRTIO_DEVICE_FEATURES);
 
     // we kinda care about geometry and block size
-    asm_out_b(deviceData->base + VIRTIO_GUEST_FEATURES, VIRTIO_BLK_F_GEOMETRY | VIRTIO_BLK_F_BLK_SIZE);
+    asm_out_b(device_data->base + VIRTIO_GUEST_FEATURES, VIRTIO_BLK_F_GEOMETRY | VIRTIO_BLK_F_BLK_SIZE);
 
     // write features ok
-    asm_out_b(deviceData->base + VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_FEATURES_OK);
+    asm_out_b(device_data->base + VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_FEATURES_OK);
 
     // read features ok.  we good?
-    uint32_t status = asm_in_b(deviceData->base + VIRTIO_DEVICE_STATUS);
+    uint32_t status = asm_in_b(device_data->base + VIRTIO_DEVICE_STATUS);
     if (VIRTIO_STATUS_FEATURES_OK != status) {
         panic("virtio feature negotiation failed");
     }
 
     // cool
-    asm_out_b(deviceData->base + VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_DRIVER_READY);
+    asm_out_b(device_data->base + VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_DRIVER_READY);
 
     /*
      * length*totalSectors should equal the byte size of the mounted file (currently hda.img)
      */
-    deviceData->totalSectors = asm_in_d(deviceData->base + VIRTIO_BLOCK_TOTAL_SECTORS);
-    deviceData->sectorLength = asm_in_d(deviceData->base + VIRTIO_BLOCK_LENGTH);
-    uint64_t totalBytes = deviceData->totalSectors * (deviceData->sectorLength);
+    device_data->totalSectors = asm_in_d(device_data->base + VIRTIO_BLOCK_TOTAL_SECTORS);
+    device_data->sectorLength = asm_in_d(device_data->base + VIRTIO_BLOCK_LENGTH);
+    uint64_t totalBytes = device_data->totalSectors * (device_data->sectorLength);
     kprintf("   Total byte size of mounted media: %llu\n", totalBytes);
 
     // select queue 0
-    asm_out_w(deviceData->base + VIRTIO_QUEUE_SELECT, 0);
+    asm_out_w(device_data->base + VIRTIO_QUEUE_SELECT, 0);
 
     // get the needed size
-    uint16_t queue_size_needed = asm_in_w(deviceData->base + VIRTIO_QUEUE_SIZE);
+    uint16_t queue_size_needed = asm_in_w(device_data->base + VIRTIO_QUEUE_SIZE);
     kprintf("   Queue size needed: %llu\n", queue_size_needed);
 
     // make the queue
     struct virtq* q = virtq_new(queue_size_needed);
     bool all = virtio_isAligned(((uint64_t)q), 4096);
     ASSERT(all);
-    deviceData->request_queue = q;
+    device_data->request_queue = q;
 
     // divide by 4096
     uint32_t q_shifted = (uint64_t)q >> 12;
 
     // set the queue.  The API takes a 32 bit pointer, but we have a 64 bit pointer, so ... some conversions
     kprintf("   Queue Address: %#hX %#hX\n", q, q_shifted);
-    asm_out_d(deviceData->base + VIRTIO_QUEUE_ADDRESS, q_shifted);
+    asm_out_d(device_data->base + VIRTIO_QUEUE_ADDRESS, q_shifted);
 
     return 1;
 }
@@ -154,8 +154,8 @@ void vblock_read(struct device* dev, uint32_t sector, uint8_t* data, uint32_t co
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct vblock_devicedata* deviceData = (struct vblock_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct vblock_devicedata* device_data = (struct vblock_devicedata*)dev->device_data;
 
     /*
      * drop a message
@@ -180,12 +180,12 @@ void vblock_read(struct device* dev, uint32_t sector, uint8_t* data, uint32_t co
     kprintf("desc next %llu\n", desc->next);
 
     // enqueue
-    virtq_enqueue_descriptor(deviceData->request_queue, desc);
+    virtq_enqueue_descriptor(device_data->request_queue, desc);
 
     // there is an available buffer
-    //    uint16_t avail_idx = virtq_get_available_idx(deviceData->vblock_queue);
+    //    uint16_t avail_idx = virtq_get_available_idx(device_data->vblock_queue);
     //    kprintf("avail_idx %llu\n",avail_idx);
-    asm_out_w(deviceData->base + VIRTIO_QUEUE_NOTIFY, 0);
+    asm_out_w(device_data->base + VIRTIO_QUEUE_NOTIFY, 0);
 }
 
 void vblock_write(struct device* dev, uint32_t sector, uint8_t* data, uint32_t count) {
@@ -196,16 +196,16 @@ void vblock_write(struct device* dev, uint32_t sector, uint8_t* data, uint32_t c
 
 uint16_t vblock_sector_size(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct vblock_devicedata* deviceData = (struct vblock_devicedata*)dev->deviceData;
-    return deviceData->sectorLength;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct vblock_devicedata* device_data = (struct vblock_devicedata*)dev->device_data;
+    return device_data->sectorLength;
 }
 
 uint32_t vblock_total_size(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct vblock_devicedata* deviceData = (struct vblock_devicedata*)dev->deviceData;
-    return deviceData->totalSectors * deviceData->sectorLength;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct vblock_devicedata* device_data = (struct vblock_devicedata*)dev->device_data;
+    return device_data->totalSectors * device_data->sectorLength;
 }
 
 void vblock_search_cb(struct pci_device* dev) {
@@ -221,8 +221,8 @@ void vblock_search_cb(struct pci_device* dev) {
     /*
      * device data
      */
-    struct vblock_devicedata* deviceData = (struct vblock_devicedata*)kmalloc(sizeof(struct vblock_devicedata));
-    deviceinstance->deviceData = deviceData;
+    struct vblock_devicedata* device_data = (struct vblock_devicedata*)kmalloc(sizeof(struct vblock_devicedata));
+    deviceinstance->device_data = device_data;
     /*
      * the device api
      */

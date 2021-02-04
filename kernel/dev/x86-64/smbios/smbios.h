@@ -12,7 +12,7 @@
 
 struct device;
 
-struct sm_bios_entry_point {
+struct smbios_entry_point {
     uint8_t entry_point_string[4];  //This is _SM_
     uint8_t checksum;               //This value summed with all the values of the table, should be 0 (overflow)
     uint8_t length;                 //Length of the Entry Point Table. Since version 2.1 of SMBIOS, this is 0x1F
@@ -29,8 +29,29 @@ struct sm_bios_entry_point {
     uint8_t bcd_revision;           //Unused
 } __attribute__((packed));
 
+enum smbios_header_type {
+    BIOS = 0,
+    SYSINFO = 1,
+    MAINBOARD = 2,
+    CHASSIS = 3,
+    PROCESSOR = 4,
+    CACHE = 7,
+    SLOTS = 9,
+    PHYSMEM = 16,
+    MEMDEV = 17,
+    MEMARRAY = 19,
+    MEMDEVMAPPED = 20,
+    SYSTEMBOOT = 32
+};
+
+struct smbios_header {
+    uint8_t Type;
+    uint8_t Length;
+    uint16_t Handle;
+};
+
 void smbios_devicemgr_register_devices();
 
-struct sm_bios_entry_point* smbios_get_sm_bios_entry_point(struct device* dev);
+struct smbios_entry_point* smbios_get_smbios_entry_point(struct device* dev);
 
 #endif

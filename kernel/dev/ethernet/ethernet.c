@@ -20,9 +20,9 @@ struct ethernet_devicedata {
  */
 uint8_t ethernet_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct ethernet_devicedata* deviceData = (struct ethernet_devicedata*)dev->deviceData;
-    kprintf("Init %s on %s (%s)\n", dev->description, deviceData->nic_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct ethernet_devicedata* device_data = (struct ethernet_devicedata*)dev->device_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, device_data->nic_device->name, dev->name);
     return 1;
 }
 
@@ -33,27 +33,27 @@ uint8_t ethernet_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
-    kfree(dev->deviceData);
+    kfree(dev->device_data);
 
     return 1;
 }
 
 void ethernet_read(struct device* dev, struct eth_hdr* eth, uint16_t size) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(eth);
-    struct ethernet_devicedata* deviceData = (struct ethernet_devicedata*)dev->deviceData;
-    struct deviceapi_nic* nic_api = (struct deviceapi_nic*)deviceData->nic_device->api;
-    (*nic_api->read)(deviceData->nic_device, (uint8_t*)eth, size);
+    struct ethernet_devicedata* device_data = (struct ethernet_devicedata*)dev->device_data;
+    struct deviceapi_nic* nic_api = (struct deviceapi_nic*)device_data->nic_device->api;
+    (*nic_api->read)(device_data->nic_device, (uint8_t*)eth, size);
 }
 
 void ethernet_write(struct device* dev, struct eth_hdr* eth, uint16_t size) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(eth);
-    struct ethernet_devicedata* deviceData = (struct ethernet_devicedata*)dev->deviceData;
-    struct deviceapi_nic* nic_api = (struct deviceapi_nic*)deviceData->nic_device->api;
-    (*nic_api->read)(deviceData->nic_device, (uint8_t*)eth, size);
+    struct ethernet_devicedata* device_data = (struct ethernet_devicedata*)dev->device_data;
+    struct deviceapi_nic* nic_api = (struct deviceapi_nic*)device_data->nic_device->api;
+    (*nic_api->read)(device_data->nic_device, (uint8_t*)eth, size);
 }
 
 struct device* ethernet_attach(struct device* nic_device) {
@@ -80,9 +80,9 @@ struct device* ethernet_attach(struct device* nic_device) {
     /*
      * device data
      */
-    struct ethernet_devicedata* deviceData = (struct ethernet_devicedata*)kmalloc(sizeof(struct ethernet_devicedata));
-    deviceData->nic_device = nic_device;
-    deviceinstance->deviceData = deviceData;
+    struct ethernet_devicedata* device_data = (struct ethernet_devicedata*)kmalloc(sizeof(struct ethernet_devicedata));
+    device_data->nic_device = nic_device;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */
@@ -93,7 +93,7 @@ struct device* ethernet_attach(struct device* nic_device) {
         return deviceinstance;
     } else {
         kfree(api);
-        kfree(deviceData);
+        kfree(device_data);
         kfree(deviceinstance);
         return 0;
     }

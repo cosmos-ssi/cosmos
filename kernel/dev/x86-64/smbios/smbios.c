@@ -42,11 +42,11 @@ uint64_t smbios_find() {
     }
 }
 
-struct sm_bios_entry_point* smbios_get_sm_bios_entry_point(struct device* dev) {
+struct smbios_entry_point* smbios_get_smbios_entry_point(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct smbios_devicedata* deviceData = (struct smbios_devicedata*)dev->deviceData;
-    return (struct sm_bios_entry_point*)deviceData->base;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct smbios_devicedata* device_data = (struct smbios_devicedata*)dev->device_data;
+    return (struct smbios_entry_point*)device_data->base;
 }
 
 /*
@@ -54,11 +54,11 @@ struct sm_bios_entry_point* smbios_get_sm_bios_entry_point(struct device* dev) {
  */
 uint8_t smbios_device_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct smbios_devicedata* deviceData = (struct smbios_devicedata*)dev->deviceData;
-    deviceData->base = smbios_find();
-    if (0 != deviceData->base) {
-        kprintf("Init %s (%s) at Base %#hX\n", dev->description, dev->name, deviceData->base);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct smbios_devicedata* device_data = (struct smbios_devicedata*)dev->device_data;
+    device_data->base = smbios_find();
+    if (0 != device_data->base) {
+        kprintf("Init %s (%s) at Base %#hX\n", dev->description, dev->name, device_data->base);
         return 1;
     } else {
         // cant find the mem region, we cant init it
@@ -77,9 +77,9 @@ void smbios_devicemgr_register_devices() {
     /*
      * device data
      */
-    struct smbios_devicedata* deviceData = (struct smbios_devicedata*)kmalloc(sizeof(struct smbios_devicedata));
-    deviceData->base = 0;
-    deviceinstance->deviceData = deviceData;
+    struct smbios_devicedata* device_data = (struct smbios_devicedata*)kmalloc(sizeof(struct smbios_devicedata));
+    device_data->base = 0;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */

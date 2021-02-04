@@ -10,7 +10,7 @@
 #include <sys/x86-64/idt/exceptions.h>
 #include <types.h>
 
-void isrBreakpoint_handler(stackFrame* frame) {
+void isrBreakpoint_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     kprintf("Breakpoint Exception\n");
 }

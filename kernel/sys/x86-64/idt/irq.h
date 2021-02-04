@@ -10,29 +10,29 @@
 
 #include <types.h>
 
-typedef struct stackFrame {
+typedef struct stack_frame {
     uint64_t rip;
     uint64_t cs;
     uint64_t fflags;
     uint64_t rsp;
     uint64_t ss;
-} __attribute__((packed)) stackFrame;
+} __attribute__((packed)) stack_frame;
 
-void irq0_handler(stackFrame* frame);
-void irq1_handler(stackFrame* frame);
-void irq2_handler(stackFrame* frame);
-void irq3_handler(stackFrame* frame);
-void irq4_handler(stackFrame* frame);
-void irq5_handler(stackFrame* frame);
-void irq6_handler(stackFrame* frame);
-void irq7_handler(stackFrame* frame);
-void irq8_handler(stackFrame* frame);
-void irq9_handler(stackFrame* frame);
-void irq10_handler(stackFrame* frame);
-void irq11_handler(stackFrame* frame);
-void irq12_handler(stackFrame* frame);
-void irq13_handler(stackFrame* frame);
-void irq14_handler(stackFrame* frame);
-void irq15_handler(stackFrame* frame);
+void irq0_handler(stack_frame* frame);
+void irq1_handler(stack_frame* frame);
+void irq2_handler(stack_frame* frame);
+void irq3_handler(stack_frame* frame);
+void irq4_handler(stack_frame* frame);
+void irq5_handler(stack_frame* frame);
+void irq6_handler(stack_frame* frame);
+void irq7_handler(stack_frame* frame);
+void irq8_handler(stack_frame* frame);
+void irq9_handler(stack_frame* frame);
+void irq10_handler(stack_frame* frame);
+void irq11_handler(stack_frame* frame);
+void irq12_handler(stack_frame* frame);
+void irq13_handler(stack_frame* frame);
+void irq14_handler(stack_frame* frame);
+void irq15_handler(stack_frame* frame);
 
 #endif

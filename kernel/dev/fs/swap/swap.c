@@ -25,9 +25,9 @@ struct swap_devicedata {
  */
 uint8_t swap_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct swap_devicedata* deviceData = (struct swap_devicedata*)dev->deviceData;
-    kprintf("Init %s on %s (%s)\n", dev->description, deviceData->block_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, device_data->block_device->name, dev->name);
     return 1;
 }
 
@@ -36,40 +36,40 @@ uint8_t swap_init(struct device* dev) {
  */
 uint8_t swap_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct swap_devicedata* deviceData = (struct swap_devicedata*)dev->deviceData;
-    kprintf("Uninit %s on %s (%s)\n", dev->description, deviceData->block_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
+    kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->block_device->name, dev->name);
     kfree(dev->api);
-    kfree(dev->deviceData);
+    kfree(dev->device_data);
     return 1;
 }
 
 void swap_read(struct device* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct swap_devicedata* deviceData = (struct swap_devicedata*)dev->deviceData;
-    block_read(deviceData->block_device, block, data);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
+    block_read(device_data->block_device, block, data);
 }
 
 void swap_write(struct device* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct swap_devicedata* deviceData = (struct swap_devicedata*)dev->deviceData;
-    block_write(deviceData->block_device, block, data);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
+    block_write(device_data->block_device, block, data);
 }
 
 uint16_t swap_block_size(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct swap_devicedata* deviceData = (struct swap_devicedata*)dev->deviceData;
-    return block_get_sector_size(deviceData->block_device);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
+    return block_get_sector_size(device_data->block_device);
 }
 
 uint16_t swap_block_count(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct swap_devicedata* deviceData = (struct swap_devicedata*)dev->deviceData;
-    return block_get_sector_count(deviceData->block_device);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
+    return block_get_sector_count(device_data->block_device);
 }
 
 struct device* swap_attach(struct device* block_device) {
@@ -100,10 +100,10 @@ struct device* swap_attach(struct device* block_device) {
     /*
      * device data
      */
-    struct swap_devicedata* deviceData = (struct swap_devicedata*)kmalloc(sizeof(struct swap_devicedata));
-    deviceData->block_device = block_device;
-    deviceData->block_size = block_get_sector_size(block_device);
-    deviceinstance->deviceData = deviceData;
+    struct swap_devicedata* device_data = (struct swap_devicedata*)kmalloc(sizeof(struct swap_devicedata));
+    device_data->block_device = block_device;
+    device_data->block_size = block_get_sector_size(block_device);
+    deviceinstance->device_data = device_data;
     /*
      * register
      */
@@ -113,7 +113,7 @@ struct device* swap_attach(struct device* block_device) {
         */
         return deviceinstance;
     } else {
-        kfree(deviceData);
+        kfree(device_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;

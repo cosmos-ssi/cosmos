@@ -44,9 +44,9 @@ struct initrd_filetable {
  */
 uint8_t initrd_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct initrd_devicedata* deviceData = (struct initrd_devicedata*)dev->deviceData;
-    kprintf("Init %s on %s (%s)\n", dev->description, deviceData->partition_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
     return 1;
 }
 
@@ -55,27 +55,27 @@ uint8_t initrd_init(struct device* dev) {
  */
 uint8_t initrd_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
 
-    struct initrd_devicedata* deviceData = (struct initrd_devicedata*)dev->deviceData;
-    kprintf("Uninit %s on %s (%s)\n", dev->description, deviceData->partition_device->name, dev->name);
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
+    kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
     kfree(dev->api);
-    kfree(dev->deviceData);
+    kfree(dev->device_data);
     return 1;
 }
 
 void initrd_read_filetable(struct device* dev, struct initrd_filetable* filetable) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(filetable);
-    struct initrd_devicedata* deviceData = (struct initrd_devicedata*)dev->deviceData;
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
     /*
     * read 1st sector to get header_sectors
     */
-    uint32_t sector_size = block_get_sector_size(deviceData->partition_device);
+    uint32_t sector_size = block_get_sector_size(device_data->partition_device);
     uint8_t datablock[sector_size];
     memzero(datablock, sector_size);
-    block_read_sectors(deviceData->partition_device, 0, datablock, 1);
+    block_read_sectors(device_data->partition_device, 0, datablock, 1);
     debug_show_memblock(datablock, sector_size);
     uint32_t total_header_sectors = ((struct initrd_filetable*)datablock)->header_sectors;
     kprintf("ts %llu\n", total_header_sectors);
@@ -83,13 +83,13 @@ void initrd_read_filetable(struct device* dev, struct initrd_filetable* filetabl
 
 void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetable) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(filetable);
-    struct initrd_devicedata* deviceData = (struct initrd_devicedata*)dev->deviceData;
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
     /*
     * figure out how many sectors
     */
-    uint32_t sector_size = block_get_sector_size(deviceData->partition_device);
+    uint32_t sector_size = block_get_sector_size(device_data->partition_device);
     filetable->header_sectors = sizeof(struct initrd_filetable) / sector_size;
     if ((sizeof(struct initrd_filetable) % sector_size) != 0) {
         filetable->header_sectors += 1;
@@ -100,7 +100,7 @@ void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetab
     uint8_t datablock[sector_size * filetable->header_sectors];
     memzero(datablock, sector_size * filetable->header_sectors);
     memcpy(datablock, (uint8_t*)&filetable, sizeof(struct initrd_filetable));
-    block_write_sectors(deviceData->partition_device, 0, datablock, filetable->header_sectors);
+    block_write_sectors(device_data->partition_device, 0, datablock, filetable->header_sectors);
     /*
     * read it back
     */
@@ -111,7 +111,7 @@ void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetab
 
 void initrd_fs_format(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
     /*
     * create the header struct
     */
@@ -151,9 +151,9 @@ struct device* initrd_attach(struct device* partition_device) {
     /*
      * device data
      */
-    struct initrd_devicedata* deviceData = (struct initrd_devicedata*)kmalloc(sizeof(struct initrd_devicedata));
-    deviceData->partition_device = partition_device;
-    deviceinstance->deviceData = deviceData;
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)kmalloc(sizeof(struct initrd_devicedata));
+    device_data->partition_device = partition_device;
+    deviceinstance->device_data = device_data;
 
     /*
      * register
@@ -164,7 +164,7 @@ struct device* initrd_attach(struct device* partition_device) {
         */
         return deviceinstance;
     } else {
-        kfree(deviceData);
+        kfree(device_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;

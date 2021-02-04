@@ -19,9 +19,9 @@ struct udp_devicedata {
  */
 uint8_t udp_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct udp_devicedata* deviceData = (struct udp_devicedata*)dev->deviceData;
-    kprintf("Init %s on %s (%s)\n", dev->description, deviceData->ip_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct udp_devicedata* device_data = (struct udp_devicedata*)dev->device_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, device_data->ip_device->name, dev->name);
     return 1;
 }
 
@@ -32,20 +32,20 @@ uint8_t udp_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
-    kfree(dev->deviceData);
+    kfree(dev->device_data);
 
     return 1;
 }
 
 void udp_read(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    //  struct ip_devicedata* deviceData = (struct ip_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    //  struct ip_devicedata* device_data = (struct ip_devicedata*)dev->device_data;
 }
 void udp_write(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    //   struct ip_devicedata* deviceData = (struct ip_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    //   struct ip_devicedata* device_data = (struct ip_devicedata*)dev->device_data;
 }
 
 struct device* udp_attach(struct device* ip_device) {
@@ -73,9 +73,9 @@ struct device* udp_attach(struct device* ip_device) {
     /*
      * device data
      */
-    struct udp_devicedata* deviceData = (struct udp_devicedata*)kmalloc(sizeof(struct udp_devicedata));
-    deviceData->ip_device = ip_device;
-    deviceinstance->deviceData = deviceData;
+    struct udp_devicedata* device_data = (struct udp_devicedata*)kmalloc(sizeof(struct udp_devicedata));
+    device_data->ip_device = ip_device;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */
@@ -86,7 +86,7 @@ struct device* udp_attach(struct device* ip_device) {
         return deviceinstance;
     } else {
         kfree(api);
-        kfree(deviceData);
+        kfree(device_data);
         kfree(deviceinstance);
         return 0;
     }

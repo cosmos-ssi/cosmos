@@ -36,7 +36,7 @@ struct ringbuffer* keyboard_ringbuffer;
 
 void keyboard_add_command_queue(uint8_t command) {}
 
-void keyboard_irq_read(stackFrame* frame) {
+void keyboard_irq_read(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     ASSERT_NOT_NULL(keyboard_ringbuffer);
 
@@ -172,7 +172,7 @@ void keyboard_send_command_queue() {}
  */
 uint8_t keyboard_device_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    //  struct pci_device* pci_dev = (struct pci_device*)dev->deviceData;
+    //  struct pci_device* pci_dev = (struct pci_device*)dev->device_data;
     kprintf("Init %s at IRQ %llu (%s)\n", dev->description, KB_IRQ_NUMBER, dev->name);
     interrupt_router_register_interrupt_handler(KB_IRQ_NUMBER, &keyboard_irq_read);
     return 1;

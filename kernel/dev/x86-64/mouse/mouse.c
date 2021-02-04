@@ -44,7 +44,7 @@
 
 struct mouse_status* current_mouse_status;
 
-void mouse_irq_read(stackFrame* frame) {
+void mouse_irq_read(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     ASSERT_NOT_NULL(current_mouse_status);
 

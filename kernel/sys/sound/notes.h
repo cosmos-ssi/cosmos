@@ -12,7 +12,6 @@
 
 #define NOTE_A4 440.00
 #define NOTE_AS4 466.16
-
 #define NOTE_B4 493.88
 #define NOTE_C5 523.25
 #define NOTE_CS5 554.37

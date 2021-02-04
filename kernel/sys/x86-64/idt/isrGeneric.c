@@ -9,7 +9,7 @@
 #include <sys/x86-64/idt/exceptions.h>
 #include <types.h>
 
-void isrGeneric_handler(stackFrame* frame) {
+void isrGeneric_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     panic("Unhandled Exception");
 }

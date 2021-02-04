@@ -16,7 +16,7 @@ void partition_table_write(struct device* partition_table_device, uint8_t partit
                            uint8_t* data) {
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
-    ASSERT_NOT_NULL(partition_table_device->deviceData);
+    ASSERT_NOT_NULL(partition_table_device->device_data);
     ASSERT_NOT_NULL(data);
     struct deviceapi_part_table* pt_api = (struct deviceapi_part_table*)partition_table_device->api;
     (*pt_api->write)(partition_table_device, partition_index, sector, data, 1);
@@ -28,7 +28,7 @@ void partition_table_read(struct device* partition_table_device, uint8_t partiti
                           uint8_t* data) {
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
-    ASSERT_NOT_NULL(partition_table_device->deviceData);
+    ASSERT_NOT_NULL(partition_table_device->device_data);
     ASSERT_NOT_NULL(data);
     struct deviceapi_part_table* pt_api = (struct deviceapi_part_table*)partition_table_device->api;
     (*pt_api->read)(partition_table_device, partition_index, sector, data, 1);
@@ -41,7 +41,7 @@ void partition_table_write_sectors(struct device* partition_table_device, uint8_
                                    uint8_t* data, uint32_t count) {
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
-    ASSERT_NOT_NULL(partition_table_device->deviceData);
+    ASSERT_NOT_NULL(partition_table_device->device_data);
     ASSERT_NOT_NULL(data);
     struct deviceapi_part_table* pt_api = (struct deviceapi_part_table*)partition_table_device->api;
     (*pt_api->write)(partition_table_device, partition_index, sector, data, count);
@@ -53,7 +53,7 @@ void partition_table_read_sectors(struct device* partition_table_device, uint8_t
                                   uint8_t* data, uint32_t count) {
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
-    ASSERT_NOT_NULL(partition_table_device->deviceData);
+    ASSERT_NOT_NULL(partition_table_device->device_data);
     ASSERT_NOT_NULL(data);
     struct deviceapi_part_table* pt_api = (struct deviceapi_part_table*)partition_table_device->api;
     (*pt_api->read)(partition_table_device, partition_index, sector, data, count);
@@ -62,7 +62,7 @@ void partition_table_read_sectors(struct device* partition_table_device, uint8_t
 uint16_t partition_table_sector_size(struct device* partition_table_device, uint8_t partition_index) {
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
-    ASSERT_NOT_NULL(partition_table_device->deviceData);
+    ASSERT_NOT_NULL(partition_table_device->device_data);
     panic("not implemented");
     return 0;
 }
@@ -70,7 +70,7 @@ uint16_t partition_table_sector_size(struct device* partition_table_device, uint
 uint32_t partition_table_total_size(struct device* partition_table_device, uint8_t partition_index) {
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
-    ASSERT_NOT_NULL(partition_table_device->deviceData);
+    ASSERT_NOT_NULL(partition_table_device->device_data);
     panic("not implemented");
     return 0;
 }

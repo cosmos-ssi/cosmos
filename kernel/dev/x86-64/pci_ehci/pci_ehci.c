@@ -17,7 +17,7 @@
 
 // https://wiki.osdev.org/Enhanced_Host_Controller_Interface
 
-void pci_ehci_handle_irq(stackFrame* frame) {
+void pci_ehci_handle_irq(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
 }
 
@@ -44,8 +44,8 @@ void pci_ehci_search_cb(struct pci_device* dev) {
     /*
      * device data
      */
-    //	struct intelisapca_deviceddata* deviceData = (struct intelisapca_deviceddata*) kmalloc(sizeof(struct intelisapca_deviceddata));
-    //	deviceinstance->deviceData = deviceData;
+    //	struct intelisapca_deviceddata* device_data = (struct intelisapca_deviceddata*) kmalloc(sizeof(struct intelisapca_deviceddata));
+    //	deviceinstance->device_data = device_data;
     /*
      * register
      */

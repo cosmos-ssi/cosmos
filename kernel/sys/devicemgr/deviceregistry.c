@@ -121,7 +121,7 @@ uint16_t deviceregistry_devicecount() {
     return ret;
 }
 
-uint16_t deviceregistry_devicecount_type(deviceType dt) {
+uint16_t deviceregistry_devicecount_type(device_type dt) {
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = devicetypes_get_devicelist(dt);
         if (0 != lst) {
@@ -134,7 +134,7 @@ uint16_t deviceregistry_devicecount_type(deviceType dt) {
     return 0;
 }
 
-struct device* deviceregistry_get_device(deviceType dt, uint16_t idx) {
+struct device* deviceregistry_get_device(device_type dt, uint16_t idx) {
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = devicetypes_get_devicelist(dt);
         if (0 != lst) {
@@ -168,7 +168,7 @@ void deviceregistry_iterate(DeviceIterator deviceIterator) {
     }
 }
 
-void deviceregistry_iterate_type(deviceType dt, DeviceIterator deviceIterator) {
+void deviceregistry_iterate_type(device_type dt, DeviceIterator deviceIterator) {
     ASSERT_NOT_NULL(deviceIterator);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = devicetypes_get_devicelist(dt);
@@ -183,11 +183,11 @@ void deviceregistry_iterate_type(deviceType dt, DeviceIterator deviceIterator) {
             }
         }
     } else {
-        panic("Invalid deviceType passed to deviceregistry_iterate");
+        panic("Invalid device_type passed to deviceregistry_iterate");
     }
 }
 
-void deviceregistry_find_devices_by_description(deviceType dt, const int8_t* description, deviceSearchCallback cb) {
+void deviceregistry_find_devices_by_description(device_type dt, const int8_t* description, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(description);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
@@ -205,11 +205,11 @@ void deviceregistry_find_devices_by_description(deviceType dt, const int8_t* des
             }
         }
     } else {
-        panic("Invalid deviceType passed to devicemgr_find_devices_by_description");
+        panic("Invalid device_type passed to devicemgr_find_devices_by_description");
     }
 }
 
-void deviceregistry_find_devices_by_devicetype(deviceType dt, deviceSearchCallback cb) {
+void deviceregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = devicetypes_get_devicelist(dt);
@@ -224,7 +224,7 @@ void deviceregistry_find_devices_by_devicetype(deviceType dt, deviceSearchCallba
             }
         }
     } else {
-        panic("Invalid deviceType passed to devicemgr_find_devices_by_description");
+        panic("Invalid device_type passed to devicemgr_find_devices_by_description");
     }
 }
 

@@ -39,7 +39,7 @@ void calculate_ida_lba_register_values(uint32_t lba, uint8_t* registers) {
 void ata_rw(struct device* dev, uint32_t sector, uint8_t* data, uint32_t count, bool read) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
-    struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->deviceData;
+    struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->device_data;
     struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
     uint16_t sector_size = disk->bytes_per_sector;
 
@@ -134,7 +134,7 @@ void ata_write(struct device* dev, uint32_t sector, uint8_t* data, uint32_t coun
 
 uint16_t ata_sector_size(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->deviceData;
+    struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->device_data;
     struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
     ASSERT_NOT_NULL(disk);
     return disk->bytes_per_sector;
@@ -142,7 +142,7 @@ uint16_t ata_sector_size(struct device* dev) {
 
 uint32_t ata_total_size(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->deviceData;
+    struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->device_data;
     struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
     ASSERT_NOT_NULL(disk);
     return disk->size;
@@ -150,8 +150,8 @@ uint32_t ata_total_size(struct device* dev) {
 
 uint8_t device_init_ata_disk(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct ata_disk_devicedata* disk = (struct ata_disk_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct ata_disk_devicedata* disk = (struct ata_disk_devicedata*)dev->device_data;
     struct ata_device* dsk = ata_get_disk(disk->device, disk->channel, disk->disk);
     ASSERT_NOT_NULL(dsk);
 
@@ -181,12 +181,12 @@ void ata_register_disk(struct device* controllerDevice, uint8_t channel, uint8_t
     /*
      * device data
      */
-    struct ata_disk_devicedata* deviceData = (struct ata_disk_devicedata*)kmalloc(sizeof(struct ata_disk_devicedata));
-    deviceData->controller = controllerDevice->deviceData;
-    deviceData->channel = channel;
-    deviceData->device = controllerDevice;
-    deviceData->disk = disk;
-    deviceinstance->deviceData = deviceData;
+    struct ata_disk_devicedata* device_data = (struct ata_disk_devicedata*)kmalloc(sizeof(struct ata_disk_devicedata));
+    device_data->controller = controllerDevice->device_data;
+    device_data->channel = channel;
+    device_data->device = controllerDevice;
+    device_data->disk = disk;
+    deviceinstance->device_data = device_data;
     /*
      * the device api
      */

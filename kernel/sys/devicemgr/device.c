@@ -7,8 +7,8 @@
 
 #include <sys/devicemgr/device.h>
 
-int8_t* DeviceTypeNames[] = {"None", "serial",  "vga",    "rtc",     "keyboard", "nic",  "bridge", "usb",  "ata",
-                             "pic",  "mouse",   "floppy", "speaker", "pit",      "dsp",  "cmos",   "dma",  "cpu",
-                             "rd",   "vnic",    "vblock", "disk",    "par",      "bda",  "acpi",   "swap", "fs",
-                             "pt",   "console", "part",   "null",    "tick",     "rand", "ip",     "tcp",  "arp",
-                             "udp",  "icmp",    "eth",    "sdhci",   "smbios"};
+int8_t* device_type_names[] = {"None", "serial",  "vga",    "rtc",     "keyboard", "nic",  "bridge", "usb",    "ata",
+                               "pic",  "mouse",   "floppy", "speaker", "pit",      "dsp",  "cmos",   "isadma", "cpu",
+                               "rd",   "vnic",    "vblock", "disk",    "parallel", "bda",  "acpi",   "swap",   "fs",
+                               "pt",   "console", "part",   "null",    "tick",     "rand", "ip",     "tcp",    "arp",
+                               "udp",  "icmp",    "eth",    "sdhci",   "smbios"};

@@ -14,7 +14,7 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 
-void e1000_irq_handler(stackFrame* frame) {
+void e1000_irq_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
 }
 

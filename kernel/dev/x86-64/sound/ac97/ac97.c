@@ -41,19 +41,19 @@ struct ac97_devicedata {
     uint64_t base;
 } __attribute__((packed));
 
-void ac97_handle_irq(stackFrame* frame) {
+void ac97_handle_irq(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
 }
 
 /*
  * perform device instance specific init here
  */
-uint8_t deviceInitAC97(struct device* dev) {
+uint8_t device_initAC97(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct ac97_devicedata* deviceData = (struct ac97_devicedata*)dev->deviceData;
-    deviceData->base = pci_calcbar(dev->pci);
+    struct ac97_devicedata* device_data = (struct ac97_devicedata*)dev->device_data;
+    device_data->base = pci_calcbar(dev->pci);
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, deviceData->base, dev->name);
+            dev->pci->vendor_id, dev->pci->device_id, device_data->base, dev->name);
     interrupt_router_register_interrupt_handler(dev->pci->irq, &ac97_handle_irq);
     return 1;
 }
@@ -64,7 +64,7 @@ void AC97PCISearchCB(struct pci_device* dev) {
      * register device
      */
     struct device* deviceinstance = devicemgr_new_device();
-    deviceinstance->init = &deviceInitAC97;
+    deviceinstance->init = &device_initAC97;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = DSP;
     devicemgr_set_device_description(deviceinstance, "Intel 82801AA AC97");
@@ -74,11 +74,11 @@ void AC97PCISearchCB(struct pci_device* dev) {
     struct deviceapi_dsp* api = (struct deviceapi_dsp*)kmalloc(sizeof(struct deviceapi_dsp));
     deviceinstance->api = api;
     /*
-     * the deviceData
+     * the device_data
      */
-    struct ac97_devicedata* deviceData = (struct ac97_devicedata*)kmalloc(sizeof(struct ac97_devicedata));
-    deviceData->base = 0;
-    deviceinstance->deviceData = deviceData;
+    struct ac97_devicedata* device_data = (struct ac97_devicedata*)kmalloc(sizeof(struct ac97_devicedata));
+    device_data->base = 0;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */

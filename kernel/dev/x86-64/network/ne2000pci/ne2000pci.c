@@ -134,7 +134,7 @@ struct ne2000pci_devicedata {
 
 void ne2000pci_init(void);
 
-void ne2000pci_irq_handler(stackFrame* frame) {
+void ne2000pci_irq_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     kprintf("%");
 }
@@ -143,10 +143,10 @@ void ne2000pci_irq_handler(stackFrame* frame) {
  */
 uint8_t ne2000_pci_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct ne2000pci_devicedata* deviceData = (struct ne2000pci_devicedata*)dev->deviceData;
-    deviceData->base = pci_calcbar(dev->pci);
+    struct ne2000pci_devicedata* device_data = (struct ne2000pci_devicedata*)dev->device_data;
+    device_data->base = pci_calcbar(dev->pci);
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, deviceData->base, dev->name);
+            dev->pci->vendor_id, dev->pci->device_id, device_data->base, dev->name);
     interrupt_router_register_interrupt_handler(dev->pci->irq, &ne2000pci_irq_handler);
     // do the init
     ne2000pci_init();
@@ -183,12 +183,12 @@ void ne2000_pci_search_cb(struct pci_device* dev) {
     api->read = &ne2000pci_ethernet_write;
     deviceinstance->api = api;
     /*
-     * the deviceData
+     * the device_data
      */
-    struct ne2000pci_devicedata* deviceData =
+    struct ne2000pci_devicedata* device_data =
         (struct ne2000pci_devicedata*)kmalloc(sizeof(struct ne2000pci_devicedata));
-    deviceData->base = 0;
-    deviceinstance->deviceData = deviceData;
+    device_data->base = 0;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */

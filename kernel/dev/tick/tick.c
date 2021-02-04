@@ -20,9 +20,9 @@ struct tick_devicedata {
  */
 uint8_t tick_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct tick_devicedata* deviceData = (struct tick_devicedata*)dev->deviceData;
-    kprintf("Init %s on %s (%s)\n", dev->description, deviceData->pit_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct tick_devicedata* device_data = (struct tick_devicedata*)dev->device_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, device_data->pit_device->name, dev->name);
     return 1;
 }
 
@@ -31,7 +31,7 @@ uint8_t tick_init(struct device* dev) {
  */
 uint8_t tick_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
+    ASSERT_NOT_NULL(dev->device_data);
 
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
@@ -40,11 +40,11 @@ uint8_t tick_uninit(struct device* dev) {
 
 uint64_t tick_read(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct tick_devicedata* deviceData = (struct tick_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    struct tick_devicedata* device_data = (struct tick_devicedata*)dev->device_data;
 
-    struct deviceapi_pit* api = (struct deviceapi_pit*)deviceData->pit_device->api;
-    return (*api->tickcount)(deviceData->pit_device);
+    struct deviceapi_pit* api = (struct deviceapi_pit*)device_data->pit_device->api;
+    return (*api->tickcount)(device_data->pit_device);
 }
 
 struct device* tick_attach(struct device* pit_device) {
@@ -69,9 +69,9 @@ struct device* tick_attach(struct device* pit_device) {
     /*
      * device data
      */
-    struct tick_devicedata* deviceData = (struct tick_devicedata*)kmalloc(sizeof(struct tick_devicedata));
-    deviceData->pit_device = pit_device;
-    deviceinstance->deviceData = deviceData;
+    struct tick_devicedata* device_data = (struct tick_devicedata*)kmalloc(sizeof(struct tick_devicedata));
+    device_data->pit_device = pit_device;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */

@@ -40,10 +40,10 @@ struct device* devicemgr_find_device(const uint8_t* name);
 
 // find devices by the device description
 typedef void (*deviceSearchCallback)(struct device* dev);
-void devicemgr_find_devices_by_description(deviceType dt, const uint8_t* description, deviceSearchCallback cb);
+void devicemgr_find_devices_by_description(device_type dt, const uint8_t* description, deviceSearchCallback cb);
 
-// find devices by deviceType
-void devicemgr_find_devices_by_deviceType(deviceType dt, deviceSearchCallback cb);
+// find devices by device_type
+void devicemgr_find_devices_by_device_type(device_type dt, deviceSearchCallback cb);
 
 // attach a device (non-fixed devices... like RAM disks and SWAP)
 uint8_t devicemgr_attach_device(struct device* dev);

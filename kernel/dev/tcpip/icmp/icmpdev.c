@@ -19,9 +19,9 @@ struct icmp_devicedata {
  */
 uint8_t icmp_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    struct icmp_devicedata* deviceData = (struct icmp_devicedata*)dev->deviceData;
-    kprintf("Init %s on %s (%s)\n", dev->description, deviceData->ethernet_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct icmp_devicedata* device_data = (struct icmp_devicedata*)dev->device_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, device_data->ethernet_device->name, dev->name);
     return 1;
 }
 
@@ -32,20 +32,20 @@ uint8_t icmp_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
-    kfree(dev->deviceData);
+    kfree(dev->device_data);
 
     return 1;
 }
 
 void icmp_read(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    //  struct icmp_devicedata* deviceData = (struct icmp_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    //  struct icmp_devicedata* device_data = (struct icmp_devicedata*)dev->device_data;
 }
 void icmp_write(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->deviceData);
-    //   struct icmp_devicedata* deviceData = (struct icmp_devicedata*)dev->deviceData;
+    ASSERT_NOT_NULL(dev->device_data);
+    //   struct icmp_devicedata* device_data = (struct icmp_devicedata*)dev->device_data;
 }
 
 struct device* icmp_attach(struct device* ethernet_device) {
@@ -73,9 +73,9 @@ struct device* icmp_attach(struct device* ethernet_device) {
     /*
      * device data
      */
-    struct icmp_devicedata* deviceData = (struct icmp_devicedata*)kmalloc(sizeof(struct icmp_devicedata));
-    deviceData->ethernet_device = ethernet_device;
-    deviceinstance->deviceData = deviceData;
+    struct icmp_devicedata* device_data = (struct icmp_devicedata*)kmalloc(sizeof(struct icmp_devicedata));
+    device_data->ethernet_device = ethernet_device;
+    deviceinstance->device_data = device_data;
     /*
      * register
      */
@@ -86,7 +86,7 @@ struct device* icmp_attach(struct device* ethernet_device) {
         return deviceinstance;
     } else {
         kfree(api);
-        kfree(deviceData);
+        kfree(device_data);
         kfree(deviceinstance);
         return 0;
     }
