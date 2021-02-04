@@ -40,7 +40,7 @@ struct iobuffers_buffer {
 
 void iobuffers_init() {
     ASSERT_NOT_NULL(io_buf);
-    kprintf("   IO space size (bytes): %llu\n", io_buf_bytes);
+    kprintf("   IO space size (bytes): %#hX\n", io_buf_bytes);
 
     number_io_buffers = io_buf_bytes / IOBUFFERS_BUFFER_SIZE;
 
