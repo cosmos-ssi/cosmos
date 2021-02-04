@@ -1,6 +1,6 @@
 /*****************************************************************
  * This file is part of CosmOS                                   *
- * Copyright (C) 2020 Kurt M. Weber                              *
+ * Copyright (C) 2020-2021 Kurt M. Weber                         *
  * Released under the stated terms in the file LICENSE           *
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
@@ -37,6 +37,7 @@ void ata_detect_addresses(struct device* dev) {
     uint8_t function = dev->pci->function;
 
     uint32_t bar_result;
+    uint32_t bar_base;
 
     bar_result = pci_header_read_bar0(bus, device, function);
     controller->channels[ATA_PRIMARY].base_io = (((bar_result == 0) || (bar_result == 1)) ? 0x1F0 : bar_result);
@@ -51,9 +52,27 @@ void ata_detect_addresses(struct device* dev) {
     controller->channels[ATA_SECONDARY].base_io_ctrl = (((bar_result == 0) || (bar_result == 1)) ? 0x376 : bar_result);
 
     bar_result = pci_header_read_bar4(bus, device, function);
-    //  kprintf("bar4 %#llX\n", bar_result);
-    controller->channels[ATA_PRIMARY].dma_bus_master_register = bar_result;
-    controller->channels[ATA_SECONDARY].dma_bus_master_register = bar_result + 0x08;
+    switch (pci_get_bar_type(bar_result)) {
+        case PCI_BAR_MMIO:
+            controller->channels[ATA_PRIMARY].dma_address.addr_type = ATA_DMA_ADDR_MMIO;
+            controller->channels[ATA_SECONDARY].dma_address.addr_type = ATA_DMA_ADDR_MMIO;
+            break;
+        case PCI_BAR_PORT:
+            controller->channels[ATA_PRIMARY].dma_address.addr_type = ATA_DMA_ADDR_PIO;
+            controller->channels[ATA_SECONDARY].dma_address.addr_type = ATA_DMA_ADDR_PIO;
+            break;
+        default:
+            panic("Invalid BAR type!");
+            break;
+    }
+
+    bar_base = pci_get_bar_base(bar_result);
+    controller->channels[ATA_PRIMARY].dma_address.command = bar_base;
+    controller->channels[ATA_PRIMARY].dma_address.status = bar_base + 2;
+    controller->channels[ATA_PRIMARY].dma_address.prdt = bar_base + 4;
+    controller->channels[ATA_SECONDARY].dma_address.command = bar_base + 8;
+    controller->channels[ATA_SECONDARY].dma_address.status = bar_base + 10;
+    controller->channels[ATA_SECONDARY].dma_address.prdt = bar_base + 12;
 }
 
 /*

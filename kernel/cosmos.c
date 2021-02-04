@@ -183,6 +183,41 @@ void mount_rand() {
     rand_attach();
 }
 
+void show_cpu_data() {
+    /*
+	* show CPU features
+	*/
+    // get the CPU
+    struct device* cpu = devicemgr_find_device("cpu0");
+    struct deviceapi_cpu* cpu_api = (struct deviceapi_cpu*)cpu->api;
+
+    /*
+	* show all CPU features
+	*/
+    struct cpu_id id;
+    (*cpu_api->features)(&id);
+    kprintf("CPU Features %#X\n", id.edx);
+
+    /*
+	* enable interrupts
+	*/
+    asm_sti();
+
+    /*
+	* play
+	*/
+    //	playsb16();
+    //	floppyread();
+
+    //	test_vblock();
+    //	test_ata();
+    //	test_ramdisk();
+
+    while (1) {
+        asm_hlt();
+    }
+}
+
 void mount_tick() {
     struct device* pit = devicemgr_find_device("pit0");
     if (0 != pit) {

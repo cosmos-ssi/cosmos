@@ -10,6 +10,42 @@
 #include <sys/debug/assert.h>
 #include <types.h>
 
+uint32_t pci_get_bar_base(uint32_t bar) {
+    /*
+     * This function does not handle 64-bit address space BARs, since they
+     * require two separate BARs.  Instead, it returns 0 if a 64-bit BAR is
+     * encountered.
+     */
+    switch (pci_get_bar_type(bar)) {
+        case PCI_BAR_PORT:
+            return (bar & 0xFFFFFFFC);
+        case PCI_BAR_MMIO:
+            switch ((bar & 0x6) >> 1) {
+                case 0:  // 32-bit
+                    return (bar & 0xFFFFFFF0);
+                case 1:  // 16-bit
+                    return (bar & 0xFFF0);
+                default:
+                    return 0;
+            }
+        default:
+            panic("Invalid BAR type!");
+            __builtin_unreachable();
+    }
+}
+
+pci_bar_type pci_get_bar_type(uint32_t bar) {
+    /*
+     * Determines whether the BAR is referencing a memory-mapped or port-mapped
+     * IO address
+     */
+    if (bar & 0x1) {
+        return PCI_BAR_PORT;
+    } else {
+        return PCI_BAR_MMIO;
+    }
+}
+
 uint32_t pci_header_read_bar0(uint8_t bus, uint8_t device, uint8_t function) {
     asm_out_d(PCI_CONFIG_ADDRESS_PORT, pci_config_address_build(bus, device, function, PCI_BAR0_OFFSET, 1));
     return asm_in_d(PCI_CONFIG_DATA_PORT);
