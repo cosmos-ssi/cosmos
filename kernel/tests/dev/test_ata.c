@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <dev/x86-64/ata/ata_dma.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_block.h>
@@ -74,7 +75,16 @@ void test_ata2() {
     }
 }
 
+void test_ata_dma() {
+    kprintf("Testing ATA DMA...\n");
+
+    device_t* dev = devicemgr_find_device("disk0");
+
+    ata_dma_read(dev, 0, 129, 0);
+}
+
 void test_ata() {
-    test_ata1();
+    //test_ata1();
     //	test_ata2();
+    test_ata_dma();
 }

@@ -8,6 +8,7 @@
 #include <dev/x86-64/ata/ata.h>
 #include <dev/x86-64/ata/ata_controller.h>
 #include <dev/x86-64/ata/ata_disk.h>
+#include <dev/x86-64/ata/ata_dma.h>
 #include <dev/x86-64/ata/ata_identity.h>
 #include <dev/x86-64/ata/ata_util.h>
 #include <dev/x86-64/pci/pci.h>
@@ -73,6 +74,8 @@ void ata_detect_addresses(struct device* dev) {
     controller->channels[ATA_SECONDARY].dma_address.command = bar_base + 8;
     controller->channels[ATA_SECONDARY].dma_address.status = bar_base + 10;
     controller->channels[ATA_SECONDARY].dma_address.prdt = bar_base + 12;
+
+    return;
 }
 
 /*
@@ -106,6 +109,8 @@ uint8_t device_init_ata(struct device* dev) {
     ata_interrupt_enable(controller, ATA_SECONDARY, false);
 
     ata_detect_devices(dev, controller);
+
+    ata_dma_init();
 
     return 1;
 }
