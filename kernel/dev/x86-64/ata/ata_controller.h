@@ -9,6 +9,7 @@
 #define _ATA_CONTROLLER_H
 
 #include <dev/x86-64/ata/ata.h>
+#include <dev/x86-64/ata/ata_dma.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
@@ -24,15 +25,6 @@ struct ata_device {
     uint32_t bytes_per_sector;
     const char* identity;
 };
-
-typedef enum ata_dma_address_types { ATA_DMA_ADDR_PIO, ATA_DMA_ADDR_MMIO } ata_dma_address_types;
-
-typedef struct ata_dma_address {
-    ata_dma_address_types addr_type;
-    uint32_t command;
-    uint32_t status;
-    uint32_t prdt;
-} ata_dma_address;
 
 struct ide_channel {
     uint16_t base_io;

@@ -14,6 +14,15 @@
 #define ATA_DMA_BUF_BASE 0x200000
 #define ATA_DMA_BUF_SIZE 0x100000
 
+typedef enum ata_dma_address_types { ATA_DMA_ADDR_PIO, ATA_DMA_ADDR_MMIO } ata_dma_address_types;
+
+typedef struct ata_dma_address {
+    ata_dma_address_types addr_type;
+    uint32_t command;
+    uint32_t status;
+    uint32_t prdt;
+} ata_dma_address;
+
 typedef struct ata_dma_prd {
     uint32_t buf_addr;
     uint16_t bytes;
