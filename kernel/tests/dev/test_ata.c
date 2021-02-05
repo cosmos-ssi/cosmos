@@ -17,6 +17,7 @@
 #include <tests/dev/test_blockdevice.h>
 
 void test_ata1() {
+    // disk 3 is mounted to blank.img.  We can use it for testing.
     uint8_t devicename[] = {"disk3"};
 
     struct device* ata = devicemgr_find_device(devicename);
