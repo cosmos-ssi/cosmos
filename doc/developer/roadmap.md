@@ -25,14 +25,15 @@ CosmOS R1 will support multitasking and a user-land fork() API
 
 CosmOS R1 will support the jump to userland, kernel API's to read and write from boot disk, kernel APIs to read and write to serial, and to fork additional processes.
 
-| Task          | Developer  | Status
-|---------------|------------|---------------------|
-| FS Support    | Tom        | Started             |
-| Multitasking  | Kurt       | Not Started         |
-| Userland Jump | Kurt       | Not Started         |
-| Loader        | ?          | Not Started         |
-| Syscalls      | ?          | Not Started         |
-| init program  | Tom.       | Not Started         |
+| Task                 | Developer  | Status
+|----------------------|------------|--------------------------------|
+| initrd FS Support    | Tom        | Started                        |
+| Multitasking         | Kurt       | Not Started                    |
+| Userland Jump        | Kurt       | Not Started                    |
+| Flat binary Support  | Kurt       | Not Started                    |
+| Loader               | ?          | Not Started                    |
+| Syscalls             | Tom        | Requires Userland Jump         |
+| init program         | Tom        | Not Started                    |
 
 
 ## CosmOS Release Two (R2)
@@ -43,12 +44,15 @@ CosmOS R2 will add prototypical TCP/IP networking.
 
 CosmOS R1 will support one network card (potentially virtio) and enough of the TCP/IP stack to implement ARP, ICMP and DHCP
 
-| Task          | Developer  | Status
-|---------------|------------|---------------------|
-| Virtio NIC    | Jeff       | Started             |
-| ARP           | ?          | Not Started         |
-| ICMP          | ?          | Not Started         |
-| DHCP          | ?          | Not Started         |
+| Task          | Developer   | Status
+|-----------------------------|------------|---------------------|
+| Virtio NIC                  | Jeff       | Started             |
+| Virtio Disk                 | Jeff       | Started             |
+| ARP                         | ?          | Not Started         |
+| ICMP                        | ?          | Not Started         |
+| DHCP                        | ?          | Not Started         |
+| Relocatable Binary Support  | Kurt       | Not Started         |
+| ELF Support                 | Kurt       | Not Started         |
 
 
 ## CosmOS Release Threw (R3)
