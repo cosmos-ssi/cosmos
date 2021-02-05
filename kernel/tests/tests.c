@@ -44,5 +44,6 @@ void tests_run() {
     test_bda();
     test_smbios();
     test_ramdisk();
+    test_swap();
     //  test_rand();
 }
