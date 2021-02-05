@@ -49,6 +49,9 @@ typedef BYTE ata_dma_buf[65536];
 extern ata_dma_prd* prdt;
 extern ata_dma_buf* bufs;
 
+// Tracking the availability of a DMA buffer
+extern bool ata_dma_buf_avail[15];
+
 void ata_dma_init();
 void ata_dma_read(device_t* dev, uint64_t start, uint16_t count, BYTE* buf);
 

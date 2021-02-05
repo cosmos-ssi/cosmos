@@ -20,6 +20,8 @@ ata_dma_prd* prdt;
 // PRDs, maximum of 15 buffers of 65536 bytes each
 ata_dma_buf* bufs;
 
+bool ata_dma_buf_avail[15];
+
 void ata_dma_init() {
     // Clear DMA buffer area
     memset((uint8_t*)CONV_PHYS_ADDR(ATA_DMA_BUF_AREA_BASE), 0, ATA_DMA_BUF_AREA_SIZE);
