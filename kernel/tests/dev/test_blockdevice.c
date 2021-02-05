@@ -39,13 +39,17 @@ void test_block_device_base_api(struct device* dev) {
     ASSERT(strlen(readdata) == strlen(testdata));
 }
 
-void test_block_block_api(struct device* dev) {
-    //   uint32_t s = strlen(testdata);
-    //  uint8_t buffer[s + 1];
+void test_blockutil(struct device* dev) {
+    uint32_t s = strlen(testdata);
 
-    // blockutil_write_sector(dev, 0, testdata);
+    blockutil_write_sector(dev, 0, testdata, s + 1);
+    uint8_t buffer[s + 1];
+    blockutil_read_sector(dev, 0, (uint8_t*)buffer, s + 1);
+    ASSERT(s == strlen(buffer));
+    ASSERT(0 == strcmp(buffer, testdata));
 }
 
 void test_block_device(struct device* dev) {
-    test_block_device_base_api(dev);
+    //   test_block_device_base_api(dev);
+    test_blockutil(dev);
 }

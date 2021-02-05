@@ -15,6 +15,8 @@
 #define RAMDISK_TOTAL_SECTORS 1000
 
 void test_ramdisk() {
+    kprintf("Testing RAM Disk\n");
+
     // attach the ramdisk
     struct device* ramdisk_device = ramdisk_attach(RAMDISK_SECTOR_SIZE, RAMDISK_TOTAL_SECTORS);
 
