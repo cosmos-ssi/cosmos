@@ -73,6 +73,8 @@ void ata_detect_addresses(struct device* dev) {
     controller->channels[ATA_SECONDARY].dma_address.command = bar_base + 8;
     controller->channels[ATA_SECONDARY].dma_address.status = bar_base + 10;
     controller->channels[ATA_SECONDARY].dma_address.prdt = bar_base + 12;
+
+    return;
 }
 
 /*
