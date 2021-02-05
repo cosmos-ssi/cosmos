@@ -67,7 +67,7 @@ void cpm_format(struct device* dev) {
     memset(buffer, 0, device_data->byte_size_dir);
     memcpy(buffer, (uint8_t*)&dir, sizeof(struct cpm_dir));
     for (uint8_t i = 0; i < device_data->sectors_needed_for_dir; i++) {
-        blockutil_write(device_data->partition_device, i, &(buffer[i]));
+        blockutil_write_sector(device_data->partition_device, i, &(buffer[i]), device_data->byte_size_dir);
     }
     kfree(buffer);
 }
@@ -80,7 +80,7 @@ void cpm_read_dir(struct device* dev, struct cpm_dir* dir) {
     uint8_t* buffer = kmalloc(device_data->byte_size_dir);
     memset(buffer, 0, device_data->byte_size_dir);
     for (uint8_t i = 0; i < device_data->sectors_needed_for_dir; i++) {
-        blockutil_read(device_data->partition_device, i, &(buffer[i]));
+        blockutil_read_sector(device_data->partition_device, i, &(buffer[i]), device_data->byte_size_dir);
     }
 
     // copy to dest

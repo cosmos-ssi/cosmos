@@ -44,25 +44,25 @@ uint8_t swap_uninit(struct device* dev) {
     return 1;
 }
 
+uint16_t swap_block_size(struct device* dev) {
+    ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
+    return blockutil_get_sector_size(device_data->block_device);
+}
+
 void swap_read(struct device* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
-    blockutil_read(device_data->block_device, block, data);
+    blockutil_read_sector(device_data->block_device, block, data, swap_block_size(dev));
 }
 
 void swap_write(struct device* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
-    blockutil_write(device_data->block_device, block, data);
-}
-
-uint16_t swap_block_size(struct device* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
-    return blockutil_get_sector_size(device_data->block_device);
+    blockutil_write_sector(device_data->block_device, block, data, swap_block_size(dev));
 }
 
 uint16_t swap_block_count(struct device* dev) {

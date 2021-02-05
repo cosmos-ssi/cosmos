@@ -12,6 +12,7 @@
 #include <dev/logical/partition/partition.h>
 #include <dev/logical/partition_table/guid_partition_table.h>
 #include <sys/debug/assert.h>
+#include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_part_table.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/string/mem.h>
@@ -32,10 +33,8 @@ struct guid_pt_devicedata {
 void guid_pt_read_guid_pt_header(struct device* dev, struct guid_pt_header* header) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(header);
-    uint16_t buffer_size = blockutil_get_sector_size(dev);
-    uint8_t buffer[buffer_size];
-    blockutil_read(dev, GUID_PT_HEADER_LBA, buffer);
-    memcpy((uint8_t*)header, buffer, sizeof(struct guid_pt_header));
+    blockutil_read_sector(dev, GUID_PT_HEADER_LBA, (uint8_t*)header, sizeof(struct guid_pt_header));
+    //  debug_show_memblock((uint8_t*)header, 32);
 }
 
 /*
@@ -128,7 +127,7 @@ void guid_pt_read_guid_pt_entry(struct device* dev, struct guid_pt_entry* entry,
     * read the sector
     */
     uint8_t data[sector_size];
-    blockutil_read(device_data->block_device, header.gpt_array_lba + sector, data);
+    blockutil_read_sector(device_data->block_device, header.gpt_array_lba + sector, data, sector_size);
     //   debug_show_memblock(data, sector_size);
     /*
     * copy data
@@ -225,7 +224,7 @@ void guid_part_read_sector(struct device* dev, uint8_t partition_index, uint32_t
     ASSERT_NOT_NULL(dev->device_data);
     struct guid_pt_devicedata* device_data = (struct guid_pt_devicedata*)dev->device_data;
     uint64_t lba = guid_pt_part_table_get_partition_lba(dev, partition_index);
-    blockutil_read_sectors(device_data->block_device, lba + sector, data, count);
+    blockutil_read_sector(device_data->block_device, lba + sector, data, count);
 }
 
 void guid_part_write_sector(struct device* dev, uint8_t partition_index, uint32_t sector, uint8_t* data,
@@ -234,7 +233,7 @@ void guid_part_write_sector(struct device* dev, uint8_t partition_index, uint32_
     ASSERT_NOT_NULL(dev->device_data);
     struct guid_pt_devicedata* device_data = (struct guid_pt_devicedata*)dev->device_data;
     uint64_t lba = guid_pt_part_table_get_partition_lba(dev, partition_index);
-    blockutil_write_sectors(device_data->block_device, lba + sector, data, count);
+    blockutil_write_sector(device_data->block_device, lba + sector, data, count);
 }
 
 uint16_t guid_part_sector_size(struct device* dev, uint8_t partition_index) {

@@ -43,7 +43,7 @@ void test_block_block_api(struct device* dev) {
     //   uint32_t s = strlen(testdata);
     //  uint8_t buffer[s + 1];
 
-    // blockutil_write(dev, 0, testdata);
+    // blockutil_write_sector(dev, 0, testdata);
 }
 
 void test_block_device(struct device* dev) {

@@ -146,7 +146,7 @@ void fat_read_fs_parameters(struct device* dev, struct fat_fs_parameters* param)
     uint8_t* buffer = kmalloc(param->sector_size);
     memset(buffer, 0, param->sector_size);
 
-    blockutil_read(dev, 0, buffer);
+    blockutil_read_sector(dev, 0, buffer, param->sector_size);
 
     struct fat_BS* fat_boot = (struct fat_BS*)buffer;
     //   struct fat_extBS_16* fat_boot_ext_16 = (struct fat_extBS_16*)&(fat_boot->extended_section);
@@ -204,7 +204,7 @@ uint32_t fat_fat12_next_cluster(struct device* dev, uint32_t current_cluster, st
     uint32_t ent_offset = fat_offset % fs_parameters->sector_size;
 
     memset((uint8_t*)&FAT_table, 0, fs_parameters->sector_size);
-    blockutil_read(dev, fat_sector, (uint8_t*)&FAT_table);
+    blockutil_read_sector(dev, fat_sector, (uint8_t*)&FAT_table, fs_parameters->sector_size);
 
     unsigned short table_value = *(unsigned short*)&FAT_table[ent_offset];
 
@@ -223,7 +223,7 @@ uint32_t fat_fat16_next_cluster(struct device* dev, uint32_t current_cluster, st
     uint32_t ent_offset = fat_offset % fs_parameters->sector_size;
 
     memset((uint8_t*)&FAT_table, 0, fs_parameters->sector_size);
-    blockutil_read(dev, fat_sector, (uint8_t*)&FAT_table);
+    blockutil_read_sector(dev, fat_sector, (uint8_t*)&FAT_table, fs_parameters->sector_size);
 
     return *(unsigned short*)&FAT_table[ent_offset];
 }
@@ -246,7 +246,7 @@ struct fs_directory_listing* fat_list_dir(struct device* dev) {
             memset(buffer, 0, fs_parameters.sector_size);
 
             // read first sector of root dir
-            blockutil_read(dev, current_sector, buffer, 1);
+            blockutil_read_sector(dev, current_sector, buffer, 1);
 
             // loop entries
             for (uint16_t i = 0; i < fs_parameters.sector_size; i = i + sizeof(struct fat_dir)) {

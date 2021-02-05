@@ -34,10 +34,8 @@ struct mbr_pt_devicedata {
 void mbr_pt_read_mbr_pt_header(struct device* dev, struct mbr_pt_header* header) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(header);
-    uint16_t buffer_size = blockutil_get_sector_size(dev);
-    uint8_t buffer[buffer_size];
-    blockutil_read(dev, MBR_HEADER_LBA, buffer);
-    memcpy((uint8_t*)header, buffer, sizeof(struct mbr_pt_header));
+    blockutil_read_sector(dev, MBR_HEADER_LBA, (uint8_t*)header, sizeof(struct mbr_pt_header));
+    //  debug_show_memblock((uint8_t*)header, 32);
 }
 
 /*
@@ -150,7 +148,7 @@ void mbr_part_read_sector(struct device* dev, uint8_t partition_index, uint32_t 
     ASSERT_NOT_NULL(dev->device_data);
     struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
     uint64_t lba = mbr_pt_part_table_get_partition_lba(dev, partition_index);
-    blockutil_read_sectors(device_data->block_device, lba + sector, data, count);
+    blockutil_read_sector(device_data->block_device, lba + sector, data, count);
 }
 
 void mbr_part_write_sector(struct device* dev, uint8_t partition_index, uint32_t sector, uint8_t* data,
@@ -159,7 +157,7 @@ void mbr_part_write_sector(struct device* dev, uint8_t partition_index, uint32_t
     ASSERT_NOT_NULL(dev->device_data);
     struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
     uint64_t lba = mbr_pt_part_table_get_partition_lba(dev, partition_index);
-    blockutil_write_sectors(device_data->block_device, lba + sector, data, count);
+    blockutil_write_sector(device_data->block_device, lba + sector, data, count);
 }
 
 uint16_t mbr_part_sector_size(struct device* dev, uint8_t partition_index) {
