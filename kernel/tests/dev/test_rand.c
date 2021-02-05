@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_rand.h>
 #include <sys/kprintf/kprintf.h>
@@ -13,12 +14,14 @@
 void test_rand() {
     kprintf("Testing rand\n");
 
-    // get the time, b/c we can
     struct device* rand = devicemgr_find_device("rand0");
     if (0 != rand) {
         struct deviceapi_rand* rand_api = (struct deviceapi_rand*)rand->api;
+        uint64_t last = 0;
         for (uint64_t i = 0; i < 100; i++) {
-            kprintf("rand: %llu ", (*rand_api->read)(rand));
+            uint64_t r = (*rand_api->read)(rand);
+            ASSERT(r != last);
+            last = r;
         }
     } else {
         kprintf("Unable to find rand0\n");

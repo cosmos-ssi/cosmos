@@ -24,8 +24,8 @@ void tests_run() {
     test_smbios();
     test_ramdisk();
     test_swap();
+    test_rand();
+    test_null();
     test_initrd();
     test_ata();
-    //  test_initrd();
-    //  test_rand();
 }
