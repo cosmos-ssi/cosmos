@@ -16,9 +16,9 @@
  * count is the numvber of *sectors* to read or write.  it is assumed that data is at least as big as count*sector_size
  */
 typedef void (*blockutil_read_sector_sector_function)(struct device* dev, uint32_t sector, uint8_t* data,
-                                                      uint32_t count);
+                                                      uint32_t sector_count);
 typedef void (*blockutil_write_sector_sector_function)(struct device* dev, uint32_t sector, uint8_t* data,
-                                                       uint32_t count);
+                                                       uint32_t sector_count);
 typedef uint16_t (*block_sector_size_function)(struct device* dev);
 typedef uint32_t (*block_total_size_function)(struct device* dev);
 

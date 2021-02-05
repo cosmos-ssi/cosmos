@@ -36,7 +36,7 @@ void calculate_ida_lba_register_values(uint32_t lba, uint8_t* registers) {
     registers[5] = 0;
 }
 
-void ata_rw(struct device* dev, uint32_t sector, uint8_t* data, uint32_t count, bool read) {
+void ata_rw(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count, bool read) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->device_data;
@@ -63,7 +63,7 @@ void ata_rw(struct device* dev, uint32_t sector, uint8_t* data, uint32_t count, 
     ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_LBA_5, regs[5]);
 
     // sector count
-    ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_SECTOR_COUNT_0, count);
+    ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_SECTOR_COUNT_0, sector_count);
     ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_LBA_0, regs[0]);
     ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_LBA_1, regs[1]);
     ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_LBA_2, regs[2]);
@@ -111,7 +111,7 @@ void ata_rw(struct device* dev, uint32_t sector, uint8_t* data, uint32_t count, 
     uint16_t* buffer = (uint16_t*)data;
 
     uint32_t idx = 0;
-    for (int j = 0; j < count; j++) {
+    for (int j = 0; j < sector_count; j++) {
         ata_wait_busy(diskdata->controller, diskdata->channel);
         ata_wait_drq(diskdata->controller, diskdata->channel);
         for (int i = 0; i < sector_size / 2; i++) {
@@ -124,12 +124,12 @@ void ata_rw(struct device* dev, uint32_t sector, uint8_t* data, uint32_t count, 
     }
 }
 
-void ata_read(struct device* dev, uint32_t sector, uint8_t* data, uint32_t count) {
-    ata_rw(dev, sector, data, count, true);
+void ata_read(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count) {
+    ata_rw(dev, sector, data, sector_count, true);
 }
 
-void ata_write(struct device* dev, uint32_t sector, uint8_t* data, uint32_t count) {
-    ata_rw(dev, sector, data, count, false);
+void ata_write(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count) {
+    ata_rw(dev, sector, data, sector_count, false);
 }
 
 uint16_t ata_sector_size(struct device* dev) {

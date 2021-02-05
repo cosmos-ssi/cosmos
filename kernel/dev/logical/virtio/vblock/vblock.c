@@ -150,7 +150,7 @@ uint8_t vblock_init(struct device* dev) {
     return 1;
 }
 
-void vblockutil_read_sector(struct device* dev, uint32_t sector, uint8_t* data, uint32_t count) {
+void vblockutil_read_sector(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
@@ -160,7 +160,7 @@ void vblockutil_read_sector(struct device* dev, uint32_t sector, uint8_t* data, 
     /*
      * drop a message
      */
-    kprintf("read sector %llu, size %llu\n", sector, count);
+    kprintf("read sector %llu, size %llu\n", sector, sector_count);
 
     /*
      * block request
@@ -188,7 +188,7 @@ void vblockutil_read_sector(struct device* dev, uint32_t sector, uint8_t* data, 
     asm_out_w(device_data->base + VIRTIO_QUEUE_NOTIFY, 0);
 }
 
-void vblockutil_write_sector(struct device* dev, uint32_t sector, uint8_t* data, uint32_t count) {
+void vblockutil_write_sector(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     panic("vblock write not implemented yet");
