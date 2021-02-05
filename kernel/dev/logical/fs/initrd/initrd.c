@@ -64,7 +64,7 @@ uint8_t initrd_uninit(struct device* dev) {
     return 1;
 }
 
-void initrd_read_filetable(struct device* dev, struct initrd_filetable* filetable) {
+void initrd_read_filetable(struct device* dev, struct initrd_filetable* filetable, uint16_t sector) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(filetable);
@@ -72,13 +72,12 @@ void initrd_read_filetable(struct device* dev, struct initrd_filetable* filetabl
     /*
     * read 1st sector to get header_sectors
     */
-    uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
-    uint8_t datablock[sector_size];
-    memzero(datablock, sector_size);
-    blockutil_read_sector(device_data->partition_device, 0, datablock, sector_size);
-    debug_show_memblock(datablock, sector_size);
-    uint32_t total_header_sectors = ((struct initrd_filetable*)datablock)->header_sectors;
-    kprintf("ts %llu\n", total_header_sectors);
+    blockutil_read_sector(device_data->partition_device, 0, (uint8_t*)filetable, sizeof(struct initrd_filetable));
+    for (uint8_t i = 0; i < 4; i++) {
+        ASSERT(INITRD_MAGIC[i] == filetable->magic[i]);
+    }
+    debug_show_memblock((uint8_t*)filetable, sizeof(struct initrd_filetable));
+    kprintf("ts %llu\n", filetable->header_sectors);
 }
 
 void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetable) {
@@ -95,18 +94,18 @@ void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetab
         filetable->header_sectors += 1;
     }
     /*
-    * write it
+    * write header
     */
-    uint8_t datablock[sector_size * filetable->header_sectors];
-    memzero(datablock, sector_size * filetable->header_sectors);
-    memcpy(datablock, (uint8_t*)&filetable, sizeof(struct initrd_filetable));
-    blockutil_write_sector(device_data->partition_device, 0, datablock, sector_size * filetable->header_sectors);
+    kprintf("header sectors %llu\n", filetable->header_sectors);
+    for (uint16_t i = 0; i < filetable->header_sectors; i++) {
+        blockutil_write_sector(device_data->partition_device, i, (uint8_t*)&filetable, sizeof(struct initrd_filetable));
+    }
     /*
-    * read it back
+    * read back 1st sector
     */
     struct initrd_filetable filetable2;
     memzero((uint8_t*)&filetable2, sizeof(struct initrd_filetable));
-    initrd_read_filetable(dev, &filetable2);
+    initrd_read_filetable(dev, &filetable2, 0);
 }
 
 void initrd_fs_format(struct device* dev) {

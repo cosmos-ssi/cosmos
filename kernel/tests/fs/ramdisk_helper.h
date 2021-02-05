@@ -5,25 +5,14 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <tests/tests.h>
+#ifndef __RAMDISK_HELPER_H
+#define __RAMDISK_HELPER_H
 
-void tests_run() {
-    test_malloc();
-    test_array();
-    test_arraylist();
-    test_ringbuffer();
-    test_linkedlist();
-    test_tree();
-    test_ntree();
-    test_string();
-    test_bitmap();
-    test_iobuffers();
-    test_vfs();
-    test_gpt();
-    test_bda();
-    test_smbios();
-    test_ramdisk();
-    test_swap();
-    //  test_initrd();
-    //  test_rand();
-}
+#define RAMDISK_SECTOR_SIZE 512
+#define RAMDISK_TOTAL_SECTORS 1000
+
+#include <sys/devicemgr/devicemgr.h>
+
+void ramdisk_helper_remove_rd(struct device* rd);
+struct device* ramdisk_helper_create_rd();
+#endif

@@ -13,41 +13,15 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
-#include <tests/dev/test_ramdisk.h>
-
-#define RAMDISK_SECTOR_SIZE 512
-#define RAMDISK_TOTAL_SECTORS 1000
+#include <tests/fs/ramdisk_helper.h>
 
 const uint8_t SWAP_TEST_STRING[] = "We were very tired and we were very merry";
-
-/*
-* make a ram disk
-*/
-struct device* make_rd() {
-    // attach the ramdisk
-    struct device* ramdisk_device = ramdisk_attach(RAMDISK_SECTOR_SIZE, RAMDISK_TOTAL_SECTORS);
-
-    struct device* ramdisk = devicemgr_find_device(ramdisk_device->name);
-    if (0 != ramdisk) {
-        return ramdisk;
-    } else {
-        kprintf("Unable to find %s\n", ramdisk_device->name);
-        return 0;
-    }
-}
-
-/*
-* remove the ram disk
-*/
-void remove_rd(struct device* rd) {
-    ramdisk_detach(rd);
-}
 
 void test_swap() {
     kprintf("Testing Swap\n");
 
     // make rd
-    struct device* rd = make_rd();
+    struct device* rd = ramdisk_helper_create_rd();
     ASSERT_NOT_NULL(rd);
 
     // attach the swap
@@ -81,5 +55,5 @@ void test_swap() {
     swap_detach(swap_device);
 
     // remove rd
-    remove_rd(rd);
+    ramdisk_helper_remove_rd(rd);
 }
