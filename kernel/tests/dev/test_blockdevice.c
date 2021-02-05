@@ -22,20 +22,14 @@ And she wept, God bless you! for the apples and pears, \
 And we gave her all our money but our subway fares.";
 
 void test_block_device_base_api(struct device* dev) {
-
     struct deviceapi_block* ata_api = (struct deviceapi_block*)dev->api;
-
-    uint8_t data[256];
-    memset((uint8_t*)data, 0, 255 * sizeof(uint8_t));
-
-    (*ata_api->write)(dev, 7, testdata, strlen(testdata));
-
-    uint8_t readdata[255];
-    memset((uint8_t*)readdata, 0, 255 * sizeof(uint8_t));
-
-    (*ata_api->read)(dev, 7, readdata, 512);
-
-    ASSERT(readdata[0] == 'W');
+    ASSERT_NOT_NULL(ata_api);
+    uint32_t s = strlen(testdata);
+    (*ata_api->write)(dev, 7, testdata, s + 1);
+    uint8_t readdata[s + 1];
+    memzero((uint8_t*)readdata, s + 1);
+    (*ata_api->read)(dev, 7, readdata, s + 1);
+    ASSERT(0 == strcmp(readdata, testdata));
     ASSERT(strlen(readdata) == strlen(testdata));
 }
 
