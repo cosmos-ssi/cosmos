@@ -17,9 +17,8 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 
-#define INITRD_MAX_FILES 64
-#define INITRD_MAX_FILENAME 64
-#define INITRD_MAX_SECTORS 32
+#define INITRD_MAX_FILES 15
+#define INITRD_MAX_FILENAME 16
 #define INITRD_MAGIC_SIZE 4
 const uint8_t INITRD_MAGIC[] = {'t', 'g', 'e', '7'};
 
@@ -29,13 +28,14 @@ struct initrd_devicedata {
 
 struct initrd_file {
     uint8_t name[INITRD_MAX_FILENAME];
-    uint64_t lbas[INITRD_MAX_SECTORS];
+    uint32_t offset;
+    uint32_t size;
 } __attribute__((packed));
 
 struct initrd_filetable {
     uint8_t magic[INITRD_MAGIC_SIZE];
-    uint64_t header_sectors;
-    uint32_t number_files;
+    uint8_t header_sectors;
+    uint8_t number_files;
     struct initrd_file files[INITRD_MAX_FILES];
 } __attribute__((packed));
 
@@ -64,7 +64,7 @@ uint8_t initrd_uninit(struct device* dev) {
     return 1;
 }
 
-void initrd_read_filetable(struct device* dev, struct initrd_filetable* filetable, uint16_t sector) {
+void initrd_read_filetable(struct device* dev, struct initrd_filetable* filetable) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(filetable);
@@ -73,11 +73,9 @@ void initrd_read_filetable(struct device* dev, struct initrd_filetable* filetabl
     * read 1st sector to get header_sectors
     */
     blockutil_read_sector(device_data->partition_device, 0, (uint8_t*)filetable, sizeof(struct initrd_filetable));
-    for (uint8_t i = 0; i < 4; i++) {
+    for (uint8_t i = 0; i < INITRD_MAGIC_SIZE; i++) {
         ASSERT(INITRD_MAGIC[i] == filetable->magic[i]);
     }
-    debug_show_memblock((uint8_t*)filetable, sizeof(struct initrd_filetable));
-    kprintf("ts %llu\n", filetable->header_sectors);
 }
 
 void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetable) {
@@ -86,26 +84,20 @@ void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetab
     ASSERT_NOT_NULL(filetable);
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
     /*
-    * figure out how many sectors
+    * header is one sector
     */
-    uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
-    filetable->header_sectors = sizeof(struct initrd_filetable) / sector_size;
-    if ((sizeof(struct initrd_filetable) % sector_size) != 0) {
-        filetable->header_sectors += 1;
-    }
+    filetable->header_sectors = 1;
     /*
     * write header
     */
-    kprintf("header sectors %llu\n", filetable->header_sectors);
-    for (uint16_t i = 0; i < filetable->header_sectors; i++) {
-        blockutil_write_sector(device_data->partition_device, i, (uint8_t*)&filetable, sizeof(struct initrd_filetable));
-    }
+    //  debug_show_memblock((uint8_t*)&filetable, sizeof(struct initrd_filetable));
+    blockutil_write_sector(device_data->partition_device, 0, (uint8_t*)filetable, sizeof(struct initrd_filetable));
     /*
-    * read back 1st sector
+    * read back header
     */
     struct initrd_filetable filetable2;
     memzero((uint8_t*)&filetable2, sizeof(struct initrd_filetable));
-    initrd_read_filetable(dev, &filetable2, 0);
+    initrd_read_filetable(dev, &filetable2);
 }
 
 void initrd_fs_format(struct device* dev) {
@@ -116,6 +108,7 @@ void initrd_fs_format(struct device* dev) {
     */
     struct initrd_filetable filetable;
     memzero((uint8_t*)&filetable, sizeof(struct initrd_filetable));
+
     for (uint8_t i = 0; i < INITRD_MAGIC_SIZE; i++) {
         filetable.magic[i] = INITRD_MAGIC[i];
     }
