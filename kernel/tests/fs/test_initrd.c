@@ -20,12 +20,18 @@ void test_initrd() {
     struct device* rd = ramdisk_helper_create_rd();
     ASSERT_NOT_NULL(rd);
 
+    // attach initrd fs
     struct device* initrd = initrd_attach(rd);
     ASSERT_NOT_NULL(initrd);
+
+    // get api
     struct deviceapi_filesystem* fs_api = (struct deviceapi_filesystem*)initrd->api;
     ASSERT_NOT_NULL(fs_api);
+
+    // format
     (*fs_api->format)(initrd);
 
+    // detach
     initrd_detach(initrd);
 
     // remove rd
