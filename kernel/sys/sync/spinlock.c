@@ -8,10 +8,12 @@
 #include <sys/sync/sync.h>
 #include <types.h>
 
+kernel_spinlock dma_buf_lock;
 kernel_spinlock page_dir_lock;
 kernel_spinlock page_table_lock;
 
 void spinlocks_init() {
+    dma_buf_lock = false;
     page_dir_lock = false;
     page_table_lock = false;
 

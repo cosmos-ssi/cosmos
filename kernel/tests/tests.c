@@ -25,5 +25,7 @@ void tests_run() {
     test_ramdisk();
     test_swap();
     test_initrd();
+    test_ata();
+    //  test_initrd();
     //  test_rand();
 }
