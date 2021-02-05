@@ -20,7 +20,7 @@ ata_dma_prd* prdt;
 // PRDs, maximum of 15 buffers of 65536 bytes each
 ata_dma_buf* bufs;
 
-bool ata_dma_buf_avail[15];
+bool ata_dma_buf_avail[NUM_ATA_DMA_BUFS];
 
 void ata_dma_init() {
     // Clear DMA buffer area
