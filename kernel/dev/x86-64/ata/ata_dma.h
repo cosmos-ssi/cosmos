@@ -8,11 +8,15 @@
 #ifndef _ATA_DMA_H
 #define _ATA_DMA_H
 
+#include <sys/deviceapi/deviceapi_block.h>
 #include <types.h>
 
 // Base physical address and size of ATA DMA buffer area
-#define ATA_DMA_BUF_BASE 0x200000
-#define ATA_DMA_BUF_SIZE 0x100000
+#define ATA_DMA_BUF_AREA_BASE 0x200000
+#define ATA_DMA_BUF_AREA_SIZE 0x100000
+
+// Size of a single DMA buffer
+#define ATA_DMA_BUF_SIZE 0x10000
 
 typedef enum ata_dma_address_types { ATA_DMA_ADDR_PIO, ATA_DMA_ADDR_MMIO } ata_dma_address_types;
 
@@ -35,5 +39,6 @@ extern ata_dma_prd* prdt;
 extern ata_dma_buf* bufs;
 
 void ata_dma_init();
+void ata_dma_read(device_t* dev, uint64_t start, uint16_t count, BYTE* buf);
 
 #endif

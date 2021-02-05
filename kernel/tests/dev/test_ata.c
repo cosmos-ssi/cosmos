@@ -74,7 +74,12 @@ void test_ata2() {
     }
 }
 
+void test_ata_dma() {
+    kprintf("Testing ATA DMA...\n");
+}
+
 void test_ata() {
-    test_ata1();
+    //test_ata1();
     //	test_ata2();
+    test_ata_dma();
 }
