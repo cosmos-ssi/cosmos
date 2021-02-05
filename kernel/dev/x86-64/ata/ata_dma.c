@@ -11,6 +11,7 @@
 #include <sys/devicemgr/device.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
+#include <sys/sync/sync.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
 
@@ -53,4 +54,7 @@ void ata_dma_read(device_t* dev, uint64_t start, uint16_t count, BYTE* buf) {
      */
     bytes_to_read = count * ata_sector_size(dev);
     num_reads = (bytes_to_read / ATA_DMA_BUF_SIZE) + ((bytes_to_read % ATA_DMA_BUF_SIZE) ? 1 : 0);
+
+    spinlock_acquire(&dma_buf_lock);
+    spinlock_release(&dma_buf_lock);
 }
