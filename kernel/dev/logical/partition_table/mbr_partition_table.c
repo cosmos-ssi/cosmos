@@ -35,7 +35,6 @@ void mbr_pt_read_mbr_pt_header(struct device* dev, struct mbr_pt_header* header)
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(header);
     blockutil_read_sector(dev, MBR_HEADER_LBA, (uint8_t*)header, sizeof(struct mbr_pt_header));
-    //  debug_show_memblock((uint8_t*)header, 32);
 }
 
 /*

@@ -34,7 +34,6 @@ void guid_pt_read_guid_pt_header(struct device* dev, struct guid_pt_header* head
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(header);
     blockutil_read_sector(dev, GUID_PT_HEADER_LBA, (uint8_t*)header, sizeof(struct guid_pt_header));
-    //  debug_show_memblock((uint8_t*)header, 32);
 }
 
 /*
