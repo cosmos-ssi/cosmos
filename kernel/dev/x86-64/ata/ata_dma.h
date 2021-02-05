@@ -18,7 +18,12 @@
 // Size of a single DMA buffer
 #define ATA_DMA_BUF_SIZE 0x10000
 
+// Number of ATA DMA buffers
+#define NUM_ATA_DMA_BUFS 15
+
 typedef enum ata_dma_address_types { ATA_DMA_ADDR_PIO, ATA_DMA_ADDR_MMIO } ata_dma_address_types;
+
+typedef enum ata_dma_direction { ATA_DMA_DIR_READ, ATA_DMA_DIR_WRITE } ata_dma_direction;
 
 typedef struct ata_dma_address {
     ata_dma_address_types addr_type;
@@ -32,6 +37,12 @@ typedef struct ata_dma_prd {
     uint16_t bytes;
     uint16_t reserved;
 } __attribute__((packed)) ata_dma_prd;
+
+typedef struct ata_dma_op {
+    ata_dma_direction dir;
+    uint8_t prd_start_idx;
+    uint8_t prd_end_idx;
+} ata_dma_op;
 
 typedef BYTE ata_dma_buf[65536];
 
