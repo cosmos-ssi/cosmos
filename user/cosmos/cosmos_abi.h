@@ -5,4 +5,15 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <posix/posix.h>
+/*
+* cosmos syscalls
+*/
+
+#ifndef _COSMOS_ABI_H
+#define _COSMOS_ABI_H
+
+#include <cosmos_types.h>
+
+void cosmos_abi_com1_write(uint8_t c);
+
+#endif

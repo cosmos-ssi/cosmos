@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _BDOS_H
-#define _BDOS_H
+#ifndef _BDOS_ABI_H
+#define _BDOS_ABI_H
 
 // https://www.seasip.info/Cpm/bdosfunc.html
 // https://www.seasip.info/Cpm/fcb.html
