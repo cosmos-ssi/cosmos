@@ -160,22 +160,6 @@ uint32_t mbr_part_write_sectors(struct device* dev, uint8_t partition_index, uin
     return blockutil_write_sectors(device_data->block_device, data, data_size, lba + start_lba);
 }
 
-uint16_t mbr_part_sector_size(struct device* dev, uint8_t partition_index) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    //    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
-    panic("not implemented");
-    return 0;
-}
-
-uint32_t mbr_part_total_size(struct device* dev, uint8_t partition_index) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    //    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
-    panic("not implemented");
-    return 0;
-}
-
 struct device* mbr_pt_attach(struct device* block_device) {
     ASSERT(sizeof(struct mbr_pt_entry) == 16);
     ASSERT_NOT_NULL(block_device);
@@ -202,8 +186,6 @@ struct device* mbr_pt_attach(struct device* block_device) {
     api->detachable = &mbr_part_table_detachable;
     api->read = &mbr_part_read_sectors;
     api->write = &mbr_part_write_sectors;
-    api->sector_size = &mbr_part_sector_size;
-    api->total_size = &mbr_part_total_size;
     deviceinstance->api = api;
     /*
      * device data

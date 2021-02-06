@@ -232,22 +232,6 @@ uint32_t guid_part_write_sectors(struct device* dev, uint8_t partition_index, ui
     return blockutil_write_sectors(device_data->block_device, data, data_size, lba + start_lba);
 }
 
-uint16_t guid_part_sector_size(struct device* dev, uint8_t partition_index) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    //  struct guid_pt_devicedata* device_data = (struct guid_pt_devicedata*)dev->device_data;
-    panic("not implemented");
-    return 0;
-}
-
-uint32_t guid_part_total_size(struct device* dev, uint8_t partition_index) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    //    struct guid_pt_devicedata* device_data = (struct guid_pt_devicedata*)dev->device_data;
-    panic("not implemented");
-    return 0;
-}
-
 struct device* guid_pt_attach(struct device* block_device) {
     ASSERT_NOT_NULL(block_device);
     ASSERT(1 == blockutil_is_block_device(block_device));
@@ -273,8 +257,6 @@ struct device* guid_pt_attach(struct device* block_device) {
     api->detachable = &guid_part_table_detachable;
     api->read = &guid_part_read_sectors;
     api->write = &guid_part_write_sectors;
-    api->sector_size = &guid_part_sector_size;
-    api->total_size = &guid_part_total_size;
     deviceinstance->api = api;
     /*
      * device data
