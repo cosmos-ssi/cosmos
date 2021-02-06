@@ -178,9 +178,17 @@ uint8_t initrd_add_file(struct device* initrd_dev, uint8_t* data, uint32_t size)
     */
     if (filetable.number_files < INITRD_MAX_FILES) {
         for (uint8_t i = 0; i < INITRD_MAX_FILES; i++) {
+            // slots with null filename are free
             if (filetable.files[i].name == 0) {
-                // found slot
-                //                filetable.files[i].
+                // if the slot has size 0, its new, just use it
+                if (filetable.files[i].size == 0) {
+                } else {
+                    // ok it's not new and therefore its fixed size.  check if we can fit it.
+                    uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
+                    if (size <= (filetable.files[i].size * sector_size)) {
+                        // awesome, use it
+                    }
+                }
             }
         }
         initrd_read_filetable(initrd_dev, &filetable);

@@ -1,6 +1,6 @@
 #*****************************************************************
 # This file is part of CosmOS                                    *
-# Copyright (C) 2020-2021 Tom Everett                                 *
+# Copyright (C) 2020-2021 Tom Everett                            *
 # Released under the stated terms in the file LICENSE            *
 # See the file "LICENSE" in the source distribution for details  *
 # ****************************************************************
@@ -16,7 +16,7 @@ TARGET_PLATFORM=TARGET_PLATFORM_i386
 
 # cc (GCC tool chain)
 CC=clang
-CFLAGS=-c -target x86_64-unknown-elf -m64 -mno-red-zone -ffreestanding -fPIC -O0 -D$(COMPILE_PLATFORM) -D$(TARGET_PLATFORM)
+CFLAGS=$(COMMON_CFLAGS) -D$(COMPILE_PLATFORM) -D$(TARGET_PLATFORM)
 
 # ld
 LD=x86_64-elf-ld 
