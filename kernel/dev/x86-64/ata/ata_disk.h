@@ -15,12 +15,12 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-struct ata_disk_devicedata {
+typedef struct ata_disk_devicedata {
     struct device* device;
     struct ata_controller* controller;
     uint8_t channel;
     uint8_t disk;
-} __attribute__((packed));
+} __attribute__((packed)) ata_disk_devicedata;
 
 /*
  * a disk only needs one function; a registration called by the controller
