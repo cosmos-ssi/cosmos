@@ -34,7 +34,7 @@ struct mbr_pt_devicedata {
 void mbr_pt_read_mbr_pt_header(struct device* dev, struct mbr_pt_header* header) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(header);
-    blockutil_read_sector(dev, MBR_HEADER_LBA, (uint8_t*)header, sizeof(struct mbr_pt_header));
+    blockutil_read_sectors(dev, (uint8_t*)header, sizeof(struct mbr_pt_header), MBR_HEADER_LBA);
 }
 
 /*
@@ -142,21 +142,22 @@ uint8_t mbr_part_table_detachable(struct device* dev) {
     return 1;
 }
 
-void mbr_part_read_sector(struct device* dev, uint8_t partition_index, uint32_t sector, uint8_t* data, uint32_t count) {
+uint32_t mbr_part_read_sectors(struct device* dev, uint8_t partition_index, uint8_t* data, uint32_t data_size,
+                               uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
     uint64_t lba = mbr_pt_part_table_get_partition_lba(dev, partition_index);
-    blockutil_read_sector(device_data->block_device, lba + sector, data, count);
+    return blockutil_read_sectors(device_data->block_device, data, data_size, lba + start_lba);
 }
 
-void mbr_part_write_sector(struct device* dev, uint8_t partition_index, uint32_t sector, uint8_t* data,
-                           uint32_t count) {
+uint32_t mbr_part_write_sectors(struct device* dev, uint8_t partition_index, uint8_t* data, uint32_t data_size,
+                                uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
     uint64_t lba = mbr_pt_part_table_get_partition_lba(dev, partition_index);
-    blockutil_write_sector(device_data->block_device, lba + sector, data, count);
+    return blockutil_write_sectors(device_data->block_device, data, data_size, lba + start_lba);
 }
 
 uint16_t mbr_part_sector_size(struct device* dev, uint8_t partition_index) {
@@ -200,8 +201,8 @@ struct device* mbr_pt_attach(struct device* block_device) {
     api->type = &mbr_pt_part_table_get_partition_type;
     api->sectors = &mbr_part_table_get_sector_count_function;
     api->detachable = &mbr_part_table_detachable;
-    api->read = &mbr_part_read_sector;
-    api->write = &mbr_part_write_sector;
+    api->read = &mbr_part_read_sectors;
+    api->write = &mbr_part_write_sectors;
     api->sector_size = &mbr_part_sector_size;
     api->total_size = &mbr_part_total_size;
     deviceinstance->api = api;

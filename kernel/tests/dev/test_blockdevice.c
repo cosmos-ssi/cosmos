@@ -25,20 +25,23 @@ void test_block_device_base_api(struct device* dev) {
     struct deviceapi_block* ata_api = (struct deviceapi_block*)dev->api;
     ASSERT_NOT_NULL(ata_api);
     uint32_t s = strlen(testdata);
-    (*ata_api->write)(dev, 7, testdata, s + 1);
+    uint32_t written = (*ata_api->write)(dev, testdata, s + 1, 7);
+    ASSERT(written == s + 1);
     uint8_t readdata[s + 1];
     memzero((uint8_t*)readdata, s + 1);
-    (*ata_api->read)(dev, 7, readdata, s + 1);
+    uint32_t read = (*ata_api->read)(dev, readdata, s + 1, 7);
+    ASSERT(read == s + 1);
     ASSERT(0 == strcmp(readdata, testdata));
     ASSERT(strlen(readdata) == strlen(testdata));
 }
 
 void test_blockutil(struct device* dev) {
     uint32_t s = strlen(testdata);
-
-    blockutil_write_sector(dev, 0, testdata, s + 1);
+    uint32_t written = blockutil_write_sectors(dev, testdata, s + 1, 0);
+    ASSERT(written == s + 1);
     uint8_t buffer[s + 1];
-    blockutil_read_sector(dev, 0, (uint8_t*)buffer, s + 1);
+    uint32_t read = blockutil_read_sectors(dev, (uint8_t*)buffer, s + 1, 0);
+    ASSERT(read == s + 1);
     ASSERT(s == strlen(buffer));
     ASSERT(0 == strcmp(buffer, testdata));
 }

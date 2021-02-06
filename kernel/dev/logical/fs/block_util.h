@@ -16,13 +16,14 @@ uint32_t blockutil_get_sector_count(struct device* dev);
 uint32_t blockutil_get_total_size(struct device* dev);
 
 /*
- * write 1 sector.  data is "size" long and the reset of the sector will be padded to zero
- */
-void blockutil_write_sector(struct device* dev, uint32_t sector, uint8_t* data, uint32_t size);
-
+* read bytes into 'data'.  'data_size' is the number of bytes to read and 'start_lba' is the starting lba. 
+* return total bytes read
+*/
+uint32_t blockutil_write_sectors(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba);
 /*
- * read 1 sector. "data" is at least as big as sector_size, size is the number of bytes to read
- */
-void blockutil_read_sector(struct device* dev, uint32_t sector, uint8_t* data, uint32_t size);
+* write bytes from 'data'.  'data_size' is the number of bytes to write and 'start_lba' is the starting lba.
+* return total bytes written
+*/
+uint32_t blockutil_read_sectors(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba);
 
 #endif

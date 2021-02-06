@@ -13,18 +13,23 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 /*
- * count is the numvber of *sectors* to read or write.  it is assumed that data is at least as big as count*sector_size
- */
-typedef void (*blockutil_read_sector_sector_function)(struct device* dev, uint32_t sector, uint8_t* data,
-                                                      uint32_t sector_count);
-typedef void (*blockutil_write_sector_sector_function)(struct device* dev, uint32_t sector, uint8_t* data,
-                                                       uint32_t sector_count);
+* read bytes into 'data'.  'data_size' is the number of bytes to read and 'start_lba' is the starting lba. 
+* return total bytes read
+*/
+typedef uint32_t (*block_read_sectors_function)(struct device* dev, uint8_t* data, uint32_t data_size,
+                                                uint32_t start_lba);
+/*
+* write bytes from 'data'.  'data_size' is the number of bytes to write and 'start_lba' is the starting lba.
+* return total bytes written
+*/
+typedef uint32_t (*block_write_sectors_function)(struct device* dev, uint8_t* data, uint32_t data_size,
+                                                 uint32_t start_lba);
 typedef uint16_t (*block_sector_size_function)(struct device* dev);
 typedef uint32_t (*block_total_size_function)(struct device* dev);
 
 struct deviceapi_block {
-    blockutil_read_sector_sector_function read;
-    blockutil_write_sector_sector_function write;
+    block_read_sectors_function read;
+    block_write_sectors_function write;
     block_sector_size_function sector_size;
     block_total_size_function total_size;
 };

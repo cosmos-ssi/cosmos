@@ -71,7 +71,7 @@ void initrd_read_filetable(struct device* initrd_dev, struct initrd_filetable* f
     /*
     * read 1st sector to get header_sectors
     */
-    blockutil_read_sector(device_data->partition_device, 0, (uint8_t*)filetable, sizeof(struct initrd_filetable));
+    blockutil_read_sectors(device_data->partition_device, (uint8_t*)filetable, sizeof(struct initrd_filetable), 0);
     for (uint8_t i = 0; i < INITRD_MAGIC_SIZE; i++) {
         ASSERT(INITRD_MAGIC[i] == filetable->magic[i]);
     }
@@ -89,7 +89,7 @@ void initrd_write_filetable(struct device* initrd_dev, struct initrd_filetable* 
     /*
     * write header
     */
-    blockutil_write_sector(device_data->partition_device, 0, (uint8_t*)filetable, sizeof(struct initrd_filetable));
+    blockutil_write_sectors(device_data->partition_device, (uint8_t*)filetable, sizeof(struct initrd_filetable), 0);
 }
 
 void initrd_fs_format(struct device* dev) {

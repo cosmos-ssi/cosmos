@@ -56,24 +56,60 @@ uint8_t* ramdisk_calc_address(struct ramdisk_devicedata* device_data, uint32_t s
     return (uint8_t*)(uint64_t)((device_data->data) + (sector * device_data->sector_size));
 }
 
-void ramdisk_read(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count) {
+uint32_t ramdisk_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
+
     ASSERT_NOT_NULL(dev->device_data);
     struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
-    ASSERT(sector < device_data->sector_count);
-    uint8_t* block = ramdisk_calc_address(device_data, sector);
-    memcpy(data, block, (sector_count * device_data->sector_size) * sizeof(uint8_t));
+
+    // don't start off the end of the RAM
+    ASSERT(start_lba < device_data->sector_count);
+
+    // don't end off the end of the RAM
+    uint32_t total_sectors = data_size / device_data->sector_size;
+    if (0 != data_size % device_data->sector_size) {
+        total_sectors += 1;
+    }
+    ASSERT((start_lba + total_sectors) < device_data->sector_count);
+
+    // make sure data size is not too big
+    ASSERT(data_size <= total_sectors * device_data->sector_size);
+
+    // copy
+    uint8_t* block_address = ramdisk_calc_address(device_data, start_lba);
+    memcpy(data, block_address, data_size);
+
+    return data_size;
 }
 
-void ramdisk_write(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count) {
+uint32_t ramdisk_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
+
     ASSERT_NOT_NULL(dev->device_data);
     struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
-    ASSERT(sector < device_data->sector_count);
-    uint8_t* block = ramdisk_calc_address(device_data, sector);
-    memcpy(block, data, (sector_count * device_data->sector_size) * sizeof(uint8_t));
+
+    // don't start off the end of the RAM
+    ASSERT(start_lba < device_data->sector_count);
+
+    // don't end off the end of the RAM
+    uint32_t total_sectors = data_size / device_data->sector_size;
+    if (0 != data_size % device_data->sector_size) {
+        total_sectors += 1;
+    }
+    ASSERT((start_lba + total_sectors) < device_data->sector_count);
+
+    // make sure data size is not too small
+    ASSERT(data_size >= total_sectors * device_data->sector_size);
+
+    // copy
+    uint8_t* block_address = ramdisk_calc_address(device_data, start_lba);
+    memcpy(block_address, data, (data_size));
+
+    return data_size;
 }
 
 uint16_t ramdisk_sector_size(struct device* dev) {
