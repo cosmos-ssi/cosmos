@@ -36,7 +36,7 @@ void ata_dma_init() {
     return;
 }
 
-void ata_dma_read(device_t* dev, uint64_t start, uint16_t count, BYTE* buf) {
+void ata_dma_read(device_t* dev, uint64_t start, uint64_t count, BYTE* buf) {
     /*
      * Reads *count* sectors from device *dev* into *buf*, starting at LBA
      * address *start*

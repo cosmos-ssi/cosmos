@@ -32,17 +32,25 @@ typedef struct ata_dma_address {
     uint32_t prdt;
 } ata_dma_address;
 
-typedef struct ata_dma_prd {
-    uint32_t buf_addr;
-    uint16_t bytes;
-    uint16_t reserved;
-} __attribute__((packed)) ata_dma_prd;
+typedef struct ata_dma_job {
+    device_t* dev;
+    uint64_t sectors_total;
+    uint64_t start_sector;
+    BYTE* buf;
+    ata_dma_direction dir;
+} ata_dma_job;
 
 typedef struct ata_dma_op {
     ata_dma_direction dir;
     uint8_t prd_start_idx;
     uint8_t prd_end_idx;
 } ata_dma_op;
+
+typedef struct ata_dma_prd {
+    uint32_t buf_addr;
+    uint16_t bytes;
+    uint16_t reserved;
+} __attribute__((packed)) ata_dma_prd;
 
 typedef BYTE ata_dma_buf[65536];
 
@@ -53,6 +61,6 @@ extern ata_dma_buf* bufs;
 extern bool ata_dma_buf_avail[NUM_ATA_DMA_BUFS];
 
 void ata_dma_init();
-void ata_dma_read(device_t* dev, uint64_t start, uint16_t count, BYTE* buf);
+void ata_dma_read(device_t* dev, uint64_t start, uint64_t count, BYTE* buf);
 
 #endif
