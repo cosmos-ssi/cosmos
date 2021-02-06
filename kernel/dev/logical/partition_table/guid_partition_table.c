@@ -250,8 +250,7 @@ uint32_t guid_part_total_size(struct device* dev, uint8_t partition_index) {
 
 struct device* guid_pt_attach(struct device* block_device) {
     ASSERT_NOT_NULL(block_device);
-    ASSERT((block_device->devicetype == DISK) || (block_device->devicetype == RAMDISK) ||
-           (block_device->devicetype == VBLOCK));
+    ASSERT(1 == blockutil_is_block_device(block_device));
     ASSERT(sizeof(struct guid_pt_entry) == 128);
     /*
      * register device
