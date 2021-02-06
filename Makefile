@@ -30,6 +30,7 @@ kernel-subsystem:
 	
 clean: boot-clean kernel-clean
 	$(RM) $(BOOTIMAGE)
+	$(RM) $(BLANK_DISK)
 	$(RM) $(CRUFT_FILES)
 
 kernel-clean:
