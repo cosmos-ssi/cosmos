@@ -5,6 +5,4 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <cosmos/cosmos_abi.h>
-
-void cosmos_abi_com1_write(uint8_t c) {}
+#include <abi/posix/posix_abi.h>

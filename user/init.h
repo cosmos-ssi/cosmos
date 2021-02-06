@@ -6,14 +6,13 @@
 // ****************************************************************
 
 /*
-* cosmos syscalls
+* this is the init program, which cosmos will read from disk, and execute in user-land context to kick off userland code
+* this program will communicate with the kernel via ABI calls
 */
 
-#ifndef _COSMOS_ABI_H
-#define _COSMOS_ABI_H
+#ifndef _INIT_H
+#define _INIT_H
 
-#include <cosmos_types.h>
-
-void cosmos_abi_com1_write(uint8_t c);
+void cosmos_userland_init();
 
 #endif
