@@ -63,11 +63,11 @@ uint8_t initrd_uninit(struct device* dev) {
     return 1;
 }
 
-void initrd_read_filetable(struct device* dev, struct initrd_filetable* filetable) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
+void initrd_read_filetable(struct device* initrd_dev, struct initrd_filetable* filetable) {
+    ASSERT_NOT_NULL(initrd_dev);
+    ASSERT_NOT_NULL(initrd_dev->device_data);
     ASSERT_NOT_NULL(filetable);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
     /*
     * read 1st sector to get header_sectors
     */
@@ -77,11 +77,11 @@ void initrd_read_filetable(struct device* dev, struct initrd_filetable* filetabl
     }
 }
 
-void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetable) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
+void initrd_write_filetable(struct device* initrd_dev, struct initrd_filetable* filetable) {
+    ASSERT_NOT_NULL(initrd_dev);
+    ASSERT_NOT_NULL(initrd_dev->device_data);
     ASSERT_NOT_NULL(filetable);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
     /*
     * header is one sector
     */
@@ -90,12 +90,6 @@ void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetab
     * write header
     */
     blockutil_write_sector(device_data->partition_device, 0, (uint8_t*)filetable, sizeof(struct initrd_filetable));
-    /*
-    * read back header
-    */
-    struct initrd_filetable filetable2;
-    memzero((uint8_t*)&filetable2, sizeof(struct initrd_filetable));
-    initrd_read_filetable(dev, &filetable2);
 }
 
 void initrd_fs_format(struct device* dev) {
@@ -166,4 +160,71 @@ struct device* initrd_attach(struct device* partition_device) {
 void initrd_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     devicemgr_detach_device(dev);
+}
+
+uint8_t initrd_add_file(struct device* initrd_dev, uint8_t* data, uint32_t size) {
+    ASSERT_NOT_NULL(initrd_dev);
+    ASSERT_NOT_NULL(initrd_dev->device_data);
+    ASSERT_NOT_NULL(data);
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
+    /*
+    * header
+    */
+    struct initrd_filetable filetable;
+    memzero((uint8_t*)&filetable, sizeof(struct initrd_filetable));
+    initrd_read_filetable(initrd_dev, &filetable);
+    /*
+    * check that there is room
+    */
+    if (filetable.number_files < INITRD_MAX_FILES) {
+        for (uint8_t i = 0; i < INITRD_MAX_FILES; i++) {
+            if (filetable.files[i].name == 0) {
+                // found slot
+                //                filetable.files[i].
+            }
+        }
+        initrd_read_filetable(initrd_dev, &filetable);
+    } else {
+        // nope
+        return 0;
+    }
+}
+
+uint8_t initrd_get_file_name(struct device* initrd_dev, uint8_t idx, uint8_t* name, uint16_t size) {
+    ASSERT_NOT_NULL(initrd_dev);
+    ASSERT_NOT_NULL(initrd_dev->device_data);
+    ASSERT_NOT_NULL(name);
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
+    /*
+    * header
+    */
+    struct initrd_filetable filetable;
+    memzero((uint8_t*)&filetable, sizeof(struct initrd_filetable));
+    initrd_read_filetable(initrd_dev, &filetable);
+}
+
+uint8_t initrd_get_file_size(struct device* initrd_dev, uint8_t idx, uint16_t* size) {
+    ASSERT_NOT_NULL(initrd_dev);
+    ASSERT_NOT_NULL(initrd_dev->device_data);
+    ASSERT_NOT_NULL(size);
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
+    /*
+    * header
+    */
+    struct initrd_filetable filetable;
+    memzero((uint8_t*)&filetable, sizeof(struct initrd_filetable));
+    initrd_read_filetable(initrd_dev, &filetable);
+}
+
+uint8_t initrd_get_file_data(struct device* initrd_dev, uint8_t idx, uint8_t* data, uint32_t size) {
+    ASSERT_NOT_NULL(initrd_dev);
+    ASSERT_NOT_NULL(initrd_dev->device_data);
+    ASSERT_NOT_NULL(data);
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
+    /*
+    * header
+    */
+    struct initrd_filetable filetable;
+    memzero((uint8_t*)&filetable, sizeof(struct initrd_filetable));
+    initrd_read_filetable(initrd_dev, &filetable);
 }
