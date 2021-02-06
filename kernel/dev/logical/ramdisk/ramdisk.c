@@ -74,9 +74,6 @@ uint32_t ramdisk_read(struct device* dev, uint8_t* data, uint32_t data_size, uin
     }
     ASSERT((start_lba + total_sectors) < device_data->sector_count);
 
-    // make sure data size is not too big
-    ASSERT(data_size <= total_sectors * device_data->sector_size);
-
     // copy
     uint8_t* block_address = ramdisk_calc_address(device_data, start_lba);
     memcpy(data, block_address, data_size);
@@ -101,9 +98,6 @@ uint32_t ramdisk_write(struct device* dev, uint8_t* data, uint32_t data_size, ui
         total_sectors += 1;
     }
     ASSERT((start_lba + total_sectors) < device_data->sector_count);
-
-    // make sure data size is not too small
-    ASSERT(data_size >= total_sectors * device_data->sector_size);
 
     // copy
     uint8_t* block_address = ramdisk_calc_address(device_data, start_lba);

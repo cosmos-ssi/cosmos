@@ -38,6 +38,7 @@ void calculate_ida_lba_register_values(uint32_t lba, uint8_t* registers) {
 
 uint32_t ata_rw(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba, bool read) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(data);
     struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->device_data;
     struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
@@ -129,6 +130,7 @@ uint32_t ata_rw(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t 
         }
     }
 
+    //   kprintf("return %llu\n", data_size);
     return data_size;
 }
 
@@ -136,6 +138,7 @@ uint32_t ata_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
+    //    kprintf("ata_read %llu\n", data_size);
     return ata_rw(dev, data, data_size, start_lba, true);
 }
 
@@ -143,6 +146,8 @@ uint32_t ata_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
+    //    kprintf("ata_write %llu\n", data_size);
+
     return ata_rw(dev, data, data_size, start_lba, false);
 }
 
