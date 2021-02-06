@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/bdos/bdos.h>
+#include <bdos/bdos.h>
 
 void bdos_system_reset() {}
 uint8_t bdos_console_input() {
