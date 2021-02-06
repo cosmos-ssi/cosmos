@@ -201,7 +201,6 @@ struct device* mbr_pt_attach(struct device* block_device) {
         * increase ref count of underlying device
         */
         devicemgr_increment_device_refcount(block_device);
-
         /*
         * return device
         */

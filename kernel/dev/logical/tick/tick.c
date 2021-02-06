@@ -51,10 +51,6 @@ struct device* tick_attach(struct device* pit_device) {
     ASSERT_NOT_NULL(pit_device);
     ASSERT(pit_device->devicetype == PIT);
     /*
-    * increase ref count of underlying device
-    */
-    devicemgr_increment_device_refcount(pit_device);
-    /*
      * register device
      */
     struct device* deviceinstance = devicemgr_new_device();
@@ -80,6 +76,10 @@ struct device* tick_attach(struct device* pit_device) {
      * register
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
+        /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(pit_device);
         /*
         * return device
         */
