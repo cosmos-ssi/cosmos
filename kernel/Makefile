@@ -1,3 +1,5 @@
+
+include ../scripts/mk/flags.mk
 include ../scripts/mk/build.mk
 
 ARCHIVE_FILE=kernel.a
