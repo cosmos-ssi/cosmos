@@ -39,7 +39,6 @@ void ata_dma_init() {
     dma_jobs = 0;
     dma_ops = 0;
 
-    
     kprintf("ATA DMA buffers initialized\n");
 
     return;
