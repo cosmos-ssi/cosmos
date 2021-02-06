@@ -12,6 +12,7 @@ typedef volatile bool
 
 // spinlock.c
 extern kernel_spinlock dma_buf_lock;
+extern kernel_spinlock dma_list_lock;
 extern kernel_spinlock page_dir_lock;
 extern kernel_spinlock page_table_lock;
 

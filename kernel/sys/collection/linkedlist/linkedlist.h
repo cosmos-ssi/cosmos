@@ -10,10 +10,10 @@
 
 #include <types.h>
 
-struct linkedlist {
+typedef struct linkedlist {
     struct linkedlist* next;
     void* data;
-};
+} linkedlist;
 
 struct linkedlist* linkedlist_new();
 void linkedlist_delete(struct linkedlist* lst);
