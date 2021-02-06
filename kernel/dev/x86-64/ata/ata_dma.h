@@ -58,9 +58,7 @@ typedef ata_dma_prd prdt[2][16];
 extern prdt* ata_dma_prdt;
 extern ata_dma_buf* bufs;
 
-// Tracking the availability of a DMA buffer
-extern bool ata_dma_buf_avail[NUM_ATA_DMA_BUFS];
-
+void ata_dma_add_job(device_t* dev, uint64_t start, uint64_t count, BYTE* buf, ata_dma_direction dir);
 void ata_dma_init();
 void ata_dma_read(device_t* dev, uint64_t start, uint64_t count, BYTE* buf);
 

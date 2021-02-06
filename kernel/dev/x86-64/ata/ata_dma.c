@@ -29,6 +29,27 @@ bool ata_dma_buf_avail[NUM_ATA_DMA_BUFS];
 linkedlist* dma_jobs;
 linkedlist* dma_ops;
 
+void ata_dma_add_job(device_t* dev, uint64_t start, uint64_t count, BYTE* buf, ata_dma_direction dir) {
+    ata_dma_job* cur_job;
+
+    // Add the job queue entry
+    cur_job = kmalloc(sizeof(ata_dma_job));
+    cur_job->buf = buf;
+    cur_job->dev = dev;
+    cur_job->dir = dir;
+    cur_job->sectors_total = count;
+    cur_job->start_sector = start;
+
+    spinlock_acquire(&dma_list_lock);
+    if (!dma_jobs) {
+        dma_jobs = linkedlist_new();
+        dma_jobs->data = (void*)cur_job;
+    } else {
+        linkedlist_add(dma_jobs, (void*)cur_job);
+    }
+    spinlock_release(&dma_list_lock);
+}
+
 void ata_dma_init() {
     // Clear DMA buffer area
     memset((uint8_t*)CONV_PHYS_ADDR(ATA_DMA_BUF_AREA_BASE), 0, ATA_DMA_BUF_AREA_SIZE);
@@ -54,8 +75,6 @@ void ata_dma_read(device_t* dev, uint64_t start, uint64_t count, BYTE* buf) {
     uint64_t bytes_to_read;
     uint64_t num_reads;
 
-    ata_dma_job* cur_job;
-
     /* 
      * To know how many distinct DMA read operations we have to make, we first
      * need to know how many bytes we're reading, so we multiply count by the
@@ -66,22 +85,7 @@ void ata_dma_read(device_t* dev, uint64_t start, uint64_t count, BYTE* buf) {
     bytes_to_read = count * ata_sector_size(dev);
     num_reads = (bytes_to_read / ATA_DMA_BUF_SIZE) + ((bytes_to_read % ATA_DMA_BUF_SIZE) ? 1 : 0);
 
-    // Add the job queue entry
-    cur_job = kmalloc(sizeof(ata_dma_job));
-    cur_job->buf = buf;
-    cur_job->dev = dev;
-    cur_job->dir = ATA_DMA_DIR_READ;
-    cur_job->sectors_total = count;
-    cur_job->start_sector = start;
-
-    spinlock_acquire(&dma_list_lock);
-    if (!dma_jobs) {
-        dma_jobs = linkedlist_new();
-        dma_jobs->data = (void*)cur_job;
-    } else {
-        linkedlist_add(dma_jobs, (void*)cur_job);
-    }
-    spinlock_release(&dma_list_lock);
+    ata_dma_add_job(dev, start, count, buf, ATA_DMA_DIR_READ);
 
     spinlock_acquire(&dma_buf_lock);
     spinlock_release(&dma_buf_lock);
