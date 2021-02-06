@@ -56,7 +56,6 @@ uint8_t initrd_init(struct device* dev) {
 uint8_t initrd_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
-
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
     kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
     kfree(dev->api);
@@ -90,7 +89,6 @@ void initrd_write_filetable(struct device* dev, struct initrd_filetable* filetab
     /*
     * write header
     */
-    //  debug_show_memblock((uint8_t*)&filetable, sizeof(struct initrd_filetable));
     blockutil_write_sector(device_data->partition_device, 0, (uint8_t*)filetable, sizeof(struct initrd_filetable));
     /*
     * read back header
