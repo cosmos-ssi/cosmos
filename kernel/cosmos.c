@@ -144,6 +144,11 @@ void CosmOS() {
     kprintf("***** VFS *****\n");
     vfs_dump(cosmos_vfs);
     //  devicemgr_dump_devices();
+
+    asm volatile("int $0x80");
+    asm volatile("int $0x81");
+    asm volatile("int $0x82");
+
     while (1) {
         asm_hlt();
     }
