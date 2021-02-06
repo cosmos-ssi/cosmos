@@ -29,6 +29,7 @@ uint32_t blockutil_get_sector_size(struct device* dev) {
 
     struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
+    ASSERT_NOT_NULL(block_api->sector_size);
 
     return (*block_api->sector_size)(dev);
 }
@@ -40,6 +41,7 @@ uint32_t blockutil_get_total_size(struct device* dev) {
 
     struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
+    ASSERT_NOT_NULL(block_api->total_size);
 
     return (*block_api->total_size)(dev);
 }
@@ -54,17 +56,20 @@ uint32_t blockutil_write_sectors(struct device* dev, uint8_t* data, uint32_t dat
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT_NOT_NULL(data);
-    ASSERT_NOT_NULL(data_size);
+    ASSERT(data_size > 0);
 
     // check the device type
     ASSERT(1 == blockutil_is_block_device(dev));
 
     // check that start sector is reasonable
     uint32_t sector_count = blockutil_get_sector_count(dev);
+    ASSERT(sector_count > 0);
     ASSERT(start_lba < sector_count);
 
     // check that end sector is reasonable
     uint32_t sector_size = blockutil_get_sector_size(dev);
+    ASSERT(sector_size > 0);
+
     uint32_t total_sectors = data_size / sector_size;
     if (0 != data_size % sector_size) {
         total_sectors += 1;
@@ -74,18 +79,23 @@ uint32_t blockutil_write_sectors(struct device* dev, uint8_t* data, uint32_t dat
     // get the api
     struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
+    if (0 != block_api->write) {
+        // make the buffer
+        uint32_t buffer_size = total_sectors * sector_size;
+        uint8_t buffer[buffer_size];
+        memzero(buffer, (buffer_size));
+        memcpy(buffer, data, data_size);
 
-    // make the buffer
-    uint8_t buffer[(total_sectors * sector_size)];
-    memzero(buffer, (total_sectors * sector_size));
-    memcpy(buffer, data, data_size);
+        // write
+        uint32_t written = (*block_api->write)(dev, buffer, buffer_size, start_lba);
+        ASSERT(written == buffer_size);
 
-    // write
-    uint32_t written = (*block_api->write)(dev, buffer, (total_sectors * sector_size), start_lba);
-    ASSERT(written == (total_sectors * sector_size));
-
-    // done
-    return data_size;
+        // done
+        return data_size;
+    } else {
+        // if the write API is nt provided, then the block_device is read-only.  return 0 bytes written.
+        return 0;
+    }
 }
 
 /*
@@ -98,17 +108,19 @@ uint32_t blockutil_read_sectors(struct device* dev, uint8_t* data, uint32_t data
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT_NOT_NULL(data);
-    ASSERT_NOT_NULL(data_size);
+    ASSERT(data_size > 0);
 
     // check the device type
     ASSERT(1 == blockutil_is_block_device(dev));
 
     // check that start sector is reasonable
     uint32_t sector_count = blockutil_get_sector_count(dev);
+    ASSERT(sector_count > 0);
     ASSERT(start_lba < sector_count);
 
     // check that end sector is reasonable
     uint32_t sector_size = blockutil_get_sector_size(dev);
+    ASSERT(sector_size > 0);
     uint32_t total_sectors = data_size / sector_size;
     if (0 != data_size % sector_size) {
         total_sectors += 1;
@@ -118,14 +130,16 @@ uint32_t blockutil_read_sectors(struct device* dev, uint8_t* data, uint32_t data
     // get the api
     struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
+    ASSERT_NOT_NULL(block_api->read);
 
     // make the buffer
-    uint8_t buffer[(total_sectors * sector_size)];
-    memzero(buffer, (total_sectors * sector_size));
+    uint32_t buffer_size = total_sectors * sector_size;
+    uint8_t buffer[buffer_size];
+    memzero(buffer, buffer_size);
 
     // read
-    uint32_t read = (*block_api->read)(dev, buffer, (total_sectors * sector_size), start_lba);
-    ASSERT(read == (total_sectors * sector_size));
+    uint32_t read = (*block_api->read)(dev, buffer, buffer_size, start_lba);
+    ASSERT(read == buffer_size);
 
     // copy
     memcpy(data, buffer, data_size);
