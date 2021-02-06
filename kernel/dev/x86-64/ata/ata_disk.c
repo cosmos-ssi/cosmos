@@ -19,13 +19,6 @@
 
 // https://wiki.osdev.org/PCI_IDE_Controller
 
-struct ata_disk_devicedata {
-    struct device* device;
-    struct ata_controller* controller;
-    uint8_t channel;
-    uint8_t disk;
-} __attribute__((packed));
-
 // registers needs to be uint8_t[6]
 void calculate_ida_lba_register_values(uint32_t lba, uint8_t* registers) {
     registers[0] = (lba & 0x000000FF) >> 0;
