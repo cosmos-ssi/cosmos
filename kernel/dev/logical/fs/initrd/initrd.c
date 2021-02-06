@@ -108,7 +108,9 @@ void initrd_fs_format(struct device* dev) {
     */
     struct initrd_filetable filetable;
     memzero((uint8_t*)&filetable, sizeof(struct initrd_filetable));
-
+    /*
+    * write the magic
+    */
     for (uint8_t i = 0; i < INITRD_MAGIC_SIZE; i++) {
         filetable.magic[i] = INITRD_MAGIC[i];
     }
