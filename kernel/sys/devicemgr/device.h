@@ -15,7 +15,9 @@
 struct pci_device;
 struct device;
 
+// return 1 if successful, 0 if failed to unit
 typedef uint8_t (*device_init)(struct device* dev);
+// return 1 is successful, 0 if failed to uninit, including if device refcount>0
 typedef uint8_t (*device_uninit)(struct device* dev);
 
 typedef enum device_type {
