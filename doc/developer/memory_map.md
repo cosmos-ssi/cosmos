@@ -12,8 +12,8 @@ At kernel load, physical memory is mapped as follows:
 | 0x10000    | 0x0007FFFF | 448KB   | Early kernel page tables          |
 | 0x00100000 | 0x0017FFFF | 512k    | IO Buffers, identity mapped.      |
 | 0x00180000 | 0x001FFFFF | 512k    | Unused, identity mapped.          |
-| 0x00200000 | 0x002FFFFF | 1MB     | ATA(PI) Busmaster DMA Buffers     |
-| 0x00300000 | 0x00FFFFFF | 13MB    | Unused, accessible via direct map |
+| 0x00200000 | 0x003FFFFF | 2MB     | ATA(PI) Busmaster DMA Buffers     |
+| 0x00300000 | 0x00FFFFFF | 14MB    | Unused, accessible via direct map |
 | 0x01000000 | 0x017FFFFF | 8MB     | Kernel stack			            |
 | 0x01800000 | 0x01FFFFFF | 8MB     | Kernel heap + text.               |
 
