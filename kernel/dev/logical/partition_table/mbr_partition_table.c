@@ -164,7 +164,6 @@ struct device* mbr_pt_attach(struct device* block_device) {
     ASSERT(sizeof(struct mbr_pt_entry) == 16);
     ASSERT_NOT_NULL(block_device);
     ASSERT(1 == blockutil_is_block_device(block_device));
-
     /*
      * register device
      */
@@ -199,6 +198,11 @@ struct device* mbr_pt_attach(struct device* block_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(block_device);
+
+        /*
         * return device
         */
         return deviceinstance;
@@ -212,5 +216,14 @@ struct device* mbr_pt_attach(struct device* block_device) {
 
 void mbr_pt_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->block_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

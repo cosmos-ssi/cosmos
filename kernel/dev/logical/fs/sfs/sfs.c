@@ -181,7 +181,6 @@ uint8_t sfs_uninit(struct device* dev) {
 struct device* sfs_attach(struct device* partition_device) {
     ASSERT_NOT_NULL(partition_device);
     ASSERT(1 == blockutil_is_block_device(partition_device));
-
     /*
      * register device
      */
@@ -210,6 +209,11 @@ struct device* sfs_attach(struct device* partition_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(partition_device);
+
+        /*
         * return device
         */
         return deviceinstance;
@@ -223,5 +227,14 @@ struct device* sfs_attach(struct device* partition_device) {
 
 void sfs_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct sfs_devicedata* device_data = (struct sfs_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->partition_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

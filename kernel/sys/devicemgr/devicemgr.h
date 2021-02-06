@@ -52,4 +52,18 @@ uint8_t devicemgr_attach_device(struct device* dev);
 // be aware, this has the effect of deleting the dev struct!
 uint8_t devicemgr_detach_device(struct device* dev);
 
+/*
+* increment device reference count
+*/
+uint8_t devicemgr_increment_device_refcount(struct device* dev);
+
+/*
+* decrease device reference count
+*/
+uint8_t devicemgr_decrement_device_refcount(struct device* dev);
+
+/*
+* dump all devices to console
+*/
+void devicemgr_dump_devices();
 #endif

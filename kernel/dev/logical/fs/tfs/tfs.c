@@ -150,7 +150,6 @@ struct device* tfs_attach(struct device* partition_device) {
     ASSERT(sizeof(struct tfs_map_block) == TFS_BLOCK_SIZE);
     ASSERT_NOT_NULL(partition_device);
     ASSERT(1 == blockutil_is_block_device(partition_device));
-
     /*
      * register device
      */
@@ -179,6 +178,10 @@ struct device* tfs_attach(struct device* partition_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(partition_device);
+        /*
         * return device
         */
         return deviceinstance;
@@ -192,5 +195,14 @@ struct device* tfs_attach(struct device* partition_device) {
 
 void tfs_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct tfs_devicedata* device_data = (struct tfs_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->partition_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

@@ -51,6 +51,10 @@ struct device* tick_attach(struct device* pit_device) {
     ASSERT_NOT_NULL(pit_device);
     ASSERT(pit_device->devicetype == PIT);
     /*
+    * increase ref count of underlying device
+    */
+    devicemgr_increment_device_refcount(pit_device);
+    /*
      * register device
      */
     struct device* deviceinstance = devicemgr_new_device();
@@ -89,5 +93,14 @@ struct device* tick_attach(struct device* pit_device) {
 
 void tick_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct tick_devicedata* device_data = (struct tick_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->pit_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

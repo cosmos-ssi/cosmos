@@ -75,7 +75,6 @@ uint16_t swap_block_count(struct device* dev) {
 struct device* swap_attach(struct device* block_device) {
     ASSERT_NOT_NULL(block_device);
     ASSERT(1 == blockutil_is_block_device(block_device));
-
     /*
      * register device
      */
@@ -107,6 +106,11 @@ struct device* swap_attach(struct device* block_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(block_device);
+
+        /*
         * return device
         */
         return deviceinstance;
@@ -120,5 +124,14 @@ struct device* swap_attach(struct device* block_device) {
 
 void swap_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->block_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

@@ -137,7 +137,6 @@ void vga_console_dev_write(struct device* dev, const char* c) {
 struct device* vga_console_attach(struct device* vga_device) {
     ASSERT_NOT_NULL(vga_device);
     ASSERT(vga_device->devicetype == VGA);
-
     /*
      * register device
      */
@@ -167,6 +166,10 @@ struct device* vga_console_attach(struct device* vga_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(vga_device);
+        /*
         * return device
         */
         return deviceinstance;
@@ -180,5 +183,14 @@ struct device* vga_console_attach(struct device* vga_device) {
 
 void vga_console_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct vga_console_devicedata* device_data = (struct vga_console_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->vga_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

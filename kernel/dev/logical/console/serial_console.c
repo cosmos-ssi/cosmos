@@ -59,7 +59,6 @@ void serial_console_dev_write(struct device* dev, const char* s) {
 struct device* serial_console_attach(struct device* serial_device) {
     ASSERT_NOT_NULL(serial_device);
     ASSERT(serial_device->devicetype == SERIAL);
-
     /*
      * register device
      */
@@ -89,6 +88,10 @@ struct device* serial_console_attach(struct device* serial_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(serial_device);
+        /*
         * return device
         */
         return deviceinstance;
@@ -102,5 +105,14 @@ struct device* serial_console_attach(struct device* serial_device) {
 
 void serial_console_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct serial_console_devicedata* device_data = (struct serial_console_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->serial_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

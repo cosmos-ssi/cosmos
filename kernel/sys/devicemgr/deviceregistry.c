@@ -148,7 +148,7 @@ struct device* deviceregistry_get_device(device_type dt, uint16_t idx) {
     return 0;
 }
 
-void deviceregistry_iterate(DeviceIterator deviceIterator) {
+void deviceregistry_iterate(device_iterator deviceIterator) {
     if (0 != deviceIterator) {
         for (uint32_t i = 0; i < MAX_DEVICE_TYPES; i++) {
             struct arraylist* lst = devicetypes_get_devicelist(i);
@@ -168,7 +168,7 @@ void deviceregistry_iterate(DeviceIterator deviceIterator) {
     }
 }
 
-void deviceregistry_iterate_type(device_type dt, DeviceIterator deviceIterator) {
+void deviceregistry_iterate_type(device_type dt, device_iterator deviceIterator) {
     ASSERT_NOT_NULL(deviceIterator);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = devicetypes_get_devicelist(dt);

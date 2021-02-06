@@ -143,7 +143,7 @@ void CosmOS() {
     // show the vfs
     kprintf("***** VFS *****\n");
     vfs_dump(cosmos_vfs);
-
+    //  devicemgr_dump_devices();
     while (1) {
         asm_hlt();
     }

@@ -102,6 +102,11 @@ typedef struct device {
      * pointer to the type-specific API struct
      */
     void* api;
+    /*
+    * reference count.  incremented when a device attaches to this device
+    * and decremented when a device detaches from this device
+    */
+    uint8_t reference_count;
 } device_t;
 
 #endif

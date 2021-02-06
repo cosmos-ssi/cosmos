@@ -208,6 +208,10 @@ struct device* cfs_attach(struct device* partition_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(partition_device);
+        /*
         * return device
         */
         return deviceinstance;
@@ -221,5 +225,14 @@ struct device* cfs_attach(struct device* partition_device) {
 
 void cfs_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct cfs_devicedata* device_data = (struct cfs_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->partition_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

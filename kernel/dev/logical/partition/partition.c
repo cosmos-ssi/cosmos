@@ -92,7 +92,6 @@ uint32_t partition_write_sectors(struct device* dev, uint8_t* data, uint32_t dat
 struct device* partition_attach(struct device* partition_table_device, uint8_t partition_index) {
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
-
     /*
      * register device
      */
@@ -128,6 +127,10 @@ struct device* partition_attach(struct device* partition_table_device, uint8_t p
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(partition_table_device);
+        /*
         * return device
         */
         return deviceinstance;
@@ -141,5 +144,14 @@ struct device* partition_attach(struct device* partition_table_device, uint8_t p
 
 void partition_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct partition_devicedata* device_data = (struct partition_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->partition_table_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }
