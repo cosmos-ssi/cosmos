@@ -13,13 +13,13 @@
 
 // Base physical address and size of ATA DMA buffer area
 #define ATA_DMA_BUF_AREA_BASE 0x200000
-#define ATA_DMA_BUF_AREA_SIZE 0x100000
+#define ATA_DMA_BUF_AREA_SIZE 0x200000
 
 // Size of a single DMA buffer
 #define ATA_DMA_BUF_SIZE 0x10000
 
 // Number of ATA DMA buffers
-#define NUM_ATA_DMA_BUFS 15
+#define NUM_ATA_DMA_BUFS 32
 
 typedef enum ata_dma_address_types { ATA_DMA_ADDR_PIO, ATA_DMA_ADDR_MMIO } ata_dma_address_types;
 
@@ -52,7 +52,7 @@ typedef struct ata_dma_prd {
     uint16_t reserved;
 } __attribute__((packed)) ata_dma_prd;
 
-typedef BYTE ata_dma_buf[65536];
+typedef BYTE ata_dma_buf[2][16][65536];
 typedef ata_dma_prd prdt[2][16];
 
 extern prdt* ata_dma_prdt;
