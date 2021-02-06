@@ -68,4 +68,4 @@ dkms.conf
 /qemu.log
 /img/hda.img
 /img/Dos622-1.img
-img/blank.img
+/img/blank.img
