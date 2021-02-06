@@ -14,8 +14,8 @@
 
 uint32_t blockutil_get_sector_count(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT((dev->devicetype == DISK) || (dev->devicetype == VBLOCK) || (dev->devicetype == RAMDISK) ||
-           (dev->devicetype == PARTITION));
+    ASSERT_NOT_NULL(dev->api);
+    ASSERT(1 == blockutil_is_block_device(dev));
 
     uint32_t total_size = blockutil_get_total_size(dev);
     uint32_t sector_size = blockutil_get_sector_size(dev);
@@ -24,8 +24,8 @@ uint32_t blockutil_get_sector_count(struct device* dev) {
 
 uint32_t blockutil_get_sector_size(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT((dev->devicetype == DISK) || (dev->devicetype == VBLOCK) || (dev->devicetype == RAMDISK) ||
-           (dev->devicetype == PARTITION));
+    ASSERT_NOT_NULL(dev->api);
+    ASSERT(1 == blockutil_is_block_device(dev));
 
     struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
@@ -35,8 +35,8 @@ uint32_t blockutil_get_sector_size(struct device* dev) {
 
 uint32_t blockutil_get_total_size(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT((dev->devicetype == DISK) || (dev->devicetype == VBLOCK) || (dev->devicetype == RAMDISK) ||
-           (dev->devicetype == PARTITION));
+    ASSERT_NOT_NULL(dev->api);
+    ASSERT(1 == blockutil_is_block_device(dev));
 
     struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
@@ -57,8 +57,7 @@ uint32_t blockutil_write_sectors(struct device* dev, uint8_t* data, uint32_t dat
     ASSERT_NOT_NULL(data_size);
 
     // check the device type
-    ASSERT((dev->devicetype == DISK) || (dev->devicetype == VBLOCK) || (dev->devicetype == RAMDISK) ||
-           (dev->devicetype == PARTITION));
+    ASSERT(1 == blockutil_is_block_device(dev));
 
     // check that start sector is reasonable
     uint32_t sector_count = blockutil_get_sector_count(dev);
@@ -102,8 +101,7 @@ uint32_t blockutil_read_sectors(struct device* dev, uint8_t* data, uint32_t data
     ASSERT_NOT_NULL(data_size);
 
     // check the device type
-    ASSERT((dev->devicetype == DISK) || (dev->devicetype == VBLOCK) || (dev->devicetype == RAMDISK) ||
-           (dev->devicetype == PARTITION));
+    ASSERT(1 == blockutil_is_block_device(dev));
 
     // check that start sector is reasonable
     uint32_t sector_count = blockutil_get_sector_count(dev);
@@ -134,4 +132,12 @@ uint32_t blockutil_read_sectors(struct device* dev, uint8_t* data, uint32_t data
 
     // done
     return data_size;
+}
+
+uint8_t blockutil_is_block_device(struct device* dev) {
+    if ((dev->devicetype == DISK) || (dev->devicetype == VBLOCK) || (dev->devicetype == RAMDISK) ||
+        (dev->devicetype == PARTITION)) {
+        return 1;
+    }
+    return 0;
 }

@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <dev/logical/fs/block_util.h>
 #include <dev/logical/fs/fat/fat.h>
 #include <dev/logical/fs/fs_util.h>
 #include <dev/logical/fs/tfs/tfs.h>
@@ -17,7 +18,8 @@
 
 void fsutil_attach_partition_tables(struct device* block_dev) {
     ASSERT_NOT_NULL(block_dev);
-    ASSERT((block_dev->devicetype == DISK) || (block_dev->devicetype == VBLOCK) || (block_dev->devicetype == RAMDISK));
+    ASSERT_NOT_NULL(block_dev->api);
+    ASSERT(1 == blockutil_is_block_device(block_dev));
 
     // try to attach gpt
     struct device* gpt = guid_pt_attach(block_dev);
@@ -31,7 +33,9 @@ void fsutil_attach_partition_tables(struct device* block_dev) {
 
 void fsutil_detach_partition_tables(struct device* block_dev) {
     ASSERT_NOT_NULL(block_dev);
-    ASSERT((block_dev->devicetype == DISK) || (block_dev->devicetype == VBLOCK) || (block_dev->devicetype == RAMDISK));
+    ASSERT_NOT_NULL(block_dev->api);
+    ASSERT(1 == blockutil_is_block_device(block_dev));
+    panic("not implemented");
 }
 
 void fsutil_attach_partitions(struct device* partition_table_dev) {

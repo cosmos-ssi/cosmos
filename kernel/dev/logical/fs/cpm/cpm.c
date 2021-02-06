@@ -116,9 +116,7 @@ uint8_t cpm_uninit(struct device* dev) {
 struct device* cpm_attach(struct device* partition_device) {
     ASSERT(sizeof(struct cpm_file_entry) == CPM_FILE_ENTRY_LEN);
     ASSERT_NOT_NULL(partition_device);
-    // basically the device needs to implement deviceapi_block
-    ASSERT((partition_device->devicetype == PARTITION) || (partition_device->devicetype == VBLOCK) ||
-           (partition_device->devicetype == DISK) || (partition_device->devicetype == RAMDISK));
+    ASSERT(1 == blockutil_is_block_device(partition_device));
 
     /*
      * register device

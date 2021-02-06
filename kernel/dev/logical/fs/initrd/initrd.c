@@ -114,9 +114,7 @@ void initrd_fs_format(struct device* dev) {
 
 struct device* initrd_attach(struct device* partition_device) {
     ASSERT_NOT_NULL(partition_device);
-    // basically the device needs to implement deviceapi_block
-    ASSERT((partition_device->devicetype == PARTITION) || (partition_device->devicetype == VBLOCK) ||
-           (partition_device->devicetype == DISK) || (partition_device->devicetype == RAMDISK));
+    ASSERT(1 == blockutil_is_block_device(partition_device));
 
     /*
      * register device

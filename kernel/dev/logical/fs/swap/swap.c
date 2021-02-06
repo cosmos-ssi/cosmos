@@ -74,9 +74,7 @@ uint16_t swap_block_count(struct device* dev) {
 
 struct device* swap_attach(struct device* block_device) {
     ASSERT_NOT_NULL(block_device);
-    // basically the device needs to implement deviceapi_block
-    ASSERT((block_device->devicetype == PARTITION) || (block_device->devicetype == VBLOCK) ||
-           (block_device->devicetype == DISK) || (block_device->devicetype == RAMDISK));
+    ASSERT(1 == blockutil_is_block_device(block_device));
 
     /*
      * register device

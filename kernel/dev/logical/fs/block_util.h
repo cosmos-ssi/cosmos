@@ -25,5 +25,8 @@ uint32_t blockutil_write_sectors(struct device* dev, uint8_t* data, uint32_t dat
 * return total bytes written
 */
 uint32_t blockutil_read_sectors(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba);
-
+/*
+* check if a device is a block device (this is, supports deviceapi_block)
+*/
+uint8_t blockutil_is_block_device(struct device* dev);
 #endif
