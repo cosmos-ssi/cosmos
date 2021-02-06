@@ -53,8 +53,9 @@ typedef struct ata_dma_prd {
 } __attribute__((packed)) ata_dma_prd;
 
 typedef BYTE ata_dma_buf[65536];
+typedef ata_dma_prd prdt[2][16];
 
-extern ata_dma_prd* prdt;
+extern prdt* ata_dma_prdt;
 extern ata_dma_buf* bufs;
 
 // Tracking the availability of a DMA buffer

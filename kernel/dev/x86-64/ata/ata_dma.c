@@ -10,6 +10,7 @@
 #include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/deviceapi/deviceapi_block.h>
 #include <sys/devicemgr/device.h>
+#include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
@@ -17,8 +18,8 @@
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
 
-// PRDT, maximum of 8192 entries
-ata_dma_prd* prdt;
+// PRDT, two channels with 16 possible entries each
+prdt* ata_dma_prdt;
 
 // PRDs, maximum of 15 buffers of 65536 bytes each
 ata_dma_buf* bufs;
@@ -33,13 +34,12 @@ void ata_dma_init() {
     memset((uint8_t*)CONV_PHYS_ADDR(ATA_DMA_BUF_AREA_BASE), 0, ATA_DMA_BUF_AREA_SIZE);
 
     // Set up pointers
-    prdt = (ata_dma_prd*)CONV_PHYS_ADDR(0x00200000);
-    bufs = (ata_dma_buf*)CONV_PHYS_ADDR(0x00210000);
+    ata_dma_prdt = (prdt*)iobuffers_request_buffer(sizeof(prdt));
+    bufs = (ata_dma_buf*)CONV_PHYS_ADDR(0x00200000);
 
     dma_jobs = 0;
     dma_ops = 0;
 
-    
     kprintf("ATA DMA buffers initialized\n");
 
     return;

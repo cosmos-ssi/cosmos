@@ -12,6 +12,7 @@ cosmos.elf
 cosmos.bin
 cosmos.map
 kernel/cosmos
+*.img
 
 # Linker output
 *.ilk
@@ -67,3 +68,4 @@ dkms.conf
 /qemu.log
 /img/hda.img
 /img/Dos622-1.img
+img/blank.img
