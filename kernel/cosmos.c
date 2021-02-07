@@ -224,42 +224,7 @@ void mount_initrd() {
 void load_init_binary() {
     uint8_t init_binary_name[] = {"cosmos_init"};
     init_load(INITRD_DISK, init_binary_name);
-    kprintf("Loaded init binary %s from disk %s\n", init_binary_name, INITRD_DISK);
-}
-
-void show_cpu_data() {
-    /*
-	* show CPU features
-	*/
-    // get the CPU
-    struct device* cpu = devicemgr_find_device("cpu0");
-    struct deviceapi_cpu* cpu_api = (struct deviceapi_cpu*)cpu->api;
-
-    /*
-	* show all CPU features
-	*/
-    struct cpu_id id;
-    (*cpu_api->features)(&id);
-    kprintf("CPU Features %#X\n", id.edx);
-
-    /*
-	* enable interrupts
-	*/
-    asm_sti();
-
-    /*
-	* play
-	*/
-    //	playsb16();
-    //	floppyread();
-
-    //	test_vblock();
-    //	test_ata();
-    //	test_ramdisk();
-
-    while (1) {
-        asm_hlt();
-    }
+    kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, INITRD_DISK);
 }
 
 void mount_tick() {
