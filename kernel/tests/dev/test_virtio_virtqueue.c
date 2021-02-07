@@ -44,9 +44,7 @@ void test_virtio_virtqueue() {
     // dequeue and validate we got our descriptor back with same contents
     struct virtq_descriptor* r1 = virtq_dequeue_descriptor(q);
     ASSERT(r1 == desc1);
-    ASSERT(r1->addr == s1);
 
     struct virtq_descriptor* r2 = virtq_dequeue_descriptor(q);
     ASSERT(r2 == desc2);
-    ASSERT(r2->addr == s2);
 }
