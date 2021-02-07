@@ -16,6 +16,7 @@ void isrDE(stack_frame* frame);
 void isrPFE(stack_frame* frame, uint64_t error);
 void isrGeneric(stack_frame* frame);
 void isrGPF(stack_frame* frame);
+void isrInvalidOpcode(stack_frame* frame);
 void isrDebug(stack_frame* frame);
 void isrBreakpoint(stack_frame* frame);
 
