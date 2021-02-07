@@ -7,18 +7,29 @@
 
 #include <types.h>
 
+#define TARGET_PLATFORM_i386
+
 #ifdef TARGET_PLATFORM_i386
 
-void asm_wrmsr(uint64_t msr, uint64_t val) {
+void asm_wrmsr(uint64_t reg, uint64_t val) {
     uint32_t eax, edx;
 
     // val has to be split into edx:eax
     edx = val >> 32;
     eax = val & 0xFFFFFFFF;
 
-    asm volatile("wrmsr" : : "c"(msr), "a"(eax), "d"(edx));
+    asm volatile("wrmsr" : : "c"(reg), "a"(eax), "d"(edx));
 
     return;
+}
+
+uint64_t asm_rdmsr(uint64_t reg) {
+    uint32_t eax, edx;
+
+    asm volatile("rdmsr" : "=a"(eax), "=d"(edx) : "c"(reg));
+
+    // reads into edx:eax, so we have to combine them
+    return (((uint64_t)edx) << 32) | eax;
 }
 
 #endif
