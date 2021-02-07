@@ -5,6 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/abi/posix/posix_abi.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/x86-64/idt/exceptions.h>
@@ -12,5 +13,10 @@
 
 void syscall_posix(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
-    kprintf("Syscall Posix\n");
+    struct abi_syscall syscall;
+    syscall.a = 0;
+    syscall.b = 0;
+    syscall.c = 0;
+    syscall.d = 0;
+    posix_abi_syscall(&syscall);
 }

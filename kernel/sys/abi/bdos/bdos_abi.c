@@ -7,7 +7,9 @@
 // ****************************************************************
 
 #include <sys/abi/bdos/bdos_abi.h>
+#include <sys/kprintf/kprintf.h>
 
 uint64_t bdos_abi_syscall(struct abi_syscall* syscall) {
+    kprintf("bdos syscall\n");
     return 0;
 }
