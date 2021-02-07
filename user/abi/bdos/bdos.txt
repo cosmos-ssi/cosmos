@@ -1,5 +1,0 @@
-
-Just for fun, the CP/M ABI, or something like it.
-
-This will use software interrupt 81
-
