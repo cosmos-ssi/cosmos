@@ -87,7 +87,7 @@ void CosmOS() {
     devicemgr_init();
 
     kprintf("Initializing system call handler...\n");
-    syscall_init();
+    //    syscall_init();
 
     /*
      * Register all devices
