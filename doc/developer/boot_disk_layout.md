@@ -4,7 +4,7 @@
 The cosmos boot has this layout
 
 
-| Sector           | Offset     | File  	   Description
+| Sector           | Offset     | File  	 | Description
 |------------------|------------|------------|---------------------------|
 | 0                |  0         | boot.bin   | Initial boot loader       |
 | 1-2              |  512B      | boot2.bin  | Stage 2 boot loader       |
