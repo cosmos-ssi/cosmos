@@ -17,7 +17,7 @@ bootimage: subsystems
 	$(DD) if=boot/x86-64/boot3.bin of=$(BOOTIMAGE) conv=notrunc bs=512 count=1 seek=3
 	$(DD) if=kernel/cosmos.bin of=$(BOOTIMAGE) conv=notrunc bs=512 count=2048 seek=4
 
-subsystems: lint boot-subsystem kernel-subsystem user-subsystem blank-disk
+subsystems: lint boot-subsystem kernel-subsystem utils user-subsystem blank-disk
 	
 blank-disk:
 	$(DD) if=/dev/zero of=$(BLANK_DISK) bs=1024 count=10240
@@ -30,6 +30,9 @@ kernel-subsystem:
 
 user-subsystem:
 	cd user && $(MAKE) all
+
+utils:
+	cd util/mkinitrd && $(MAKE)
 
 clean: boot-clean kernel-clean
 	$(RM) $(BOOTIMAGE)
