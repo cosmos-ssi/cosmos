@@ -10,30 +10,25 @@
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
-#include <tests/fs/ramdisk_helper.h>
 #include <tests/fs/test_initrd.h>
 
 void test_initrd() {
     kprintf("Testing initrd\n");
 
-    // make rd
-    struct device* rd = ramdisk_helper_create_rd();
-    ASSERT_NOT_NULL(rd);
+    // boot disk.....
+    uint8_t devicename[] = {"disk0"};
 
-    // attach initrd fs
-    struct device* initrd = initrd_attach(rd);
-    ASSERT_NOT_NULL(initrd);
+    struct device* dsk = devicemgr_find_device(devicename);
+    if (0 != dsk) {
+        // attach initrd fs
+        //   struct device* initrd = initrd_attach(dsk, 5);
+        //  ASSERT_NOT_NULL(initrd);
 
-    // get api
-    struct deviceapi_filesystem* fs_api = (struct deviceapi_filesystem*)initrd->api;
-    ASSERT_NOT_NULL(fs_api);
+        //   initrd_dump_dir(initrd);
 
-    // format
-    (*fs_api->format)(initrd);
-
-    // detach
-    initrd_detach(initrd);
-
-    // remove rd
-    ramdisk_helper_remove_rd(rd);
+        // detach
+        //  initrd_detach(initrd);
+    } else {
+        kprintf("Unable to find %s\n", devicename);
+    }
 }
