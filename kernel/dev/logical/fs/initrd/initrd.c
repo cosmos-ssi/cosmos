@@ -174,9 +174,12 @@ void initrd_dump_dir(struct device* initrd_dev) {
 * kernel is at 4th lba.  so figure out the kernel size and add
 */
 uint64_t initrd_lba() {
+    // currently the makefile just puts the initrd fs at offset 10MB in the boot disk
+    return 20480;
+
     //linkage_show_kernel_section_data();
-    uint64_t kernel_sector_count = linkage_get_kernel_sector_count();
+    //  uint64_t kernel_sector_count = linkage_get_kernel_sector_count();
 
     //  kprintf("kernel_sector_count %#llX\n", kernel_sector_count);
-    return 4 + kernel_sector_count;
+    // return 4 + kernel_sector_count;
 }

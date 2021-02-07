@@ -11,12 +11,19 @@ all: subsystems
 .PHONY: clean
 
 bootimage: subsystems
+	# make a file
 	$(DD) if=/dev/zero of=$(BOOTIMAGE) bs=32768 count=129024
+
+	# write boot loader
 	$(DD) if=boot/x86-64/boot.bin of=$(BOOTIMAGE) conv=notrunc bs=512 
 	$(DD) if=boot/x86-64/boot2.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=1
 	$(DD) if=boot/x86-64/boot3.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=3
+
+	# write kernel
 	$(DD) if=kernel/cosmos.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=4
-#	$(DD) if=img/initrd.img of=$(BOOTIMAGE) conv=notrunc bs=512 count=10 seek=4
+
+	# write initrd fs at offset of 10MB
+	$(DD) if=img/initrd.img of=$(BOOTIMAGE) conv=notrunc bs=512 seek=20480
 
 subsystems: lint boot-subsystem kernel-subsystem utils user-subsystem blank-disk initrd
 	

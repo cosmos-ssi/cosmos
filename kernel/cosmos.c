@@ -106,7 +106,7 @@ void CosmOS() {
     mount_tick();
     mount_rand();
     mount_tcpip();
-    //   mount_initrd();
+    mount_initrd();
     /*
      * create consoles
      */
