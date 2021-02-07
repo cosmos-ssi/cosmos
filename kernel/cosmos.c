@@ -203,7 +203,7 @@ void mount_initrd() {
         initrd_dump_dir(initrd);
 
         // detach
-        initrd_detach(initrd);
+        //   initrd_detach(initrd);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }
