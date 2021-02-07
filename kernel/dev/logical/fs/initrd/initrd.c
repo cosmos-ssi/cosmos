@@ -141,7 +141,7 @@ uint8_t initrd_get_file_name(struct device* initrd_dev, uint8_t idx, uint8_t* na
     return 1;
 }
 
-uint8_t initrd_get_file_length(struct device* initrd_dev, uint8_t idx, uint16_t* size) {
+uint32_t initrd_get_file_length(struct device* initrd_dev, uint8_t idx) {
     ASSERT_NOT_NULL(initrd_dev);
     ASSERT_NOT_NULL(initrd_dev->device_data);
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
