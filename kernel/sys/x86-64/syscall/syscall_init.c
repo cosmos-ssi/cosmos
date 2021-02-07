@@ -23,4 +23,6 @@ void syscall_init() {
     reg_star |= ((((uint64_t)GDT_USER_CODE_SELECTOR - 16) | 3) << 48);
 
     asm_wrmsr(MSR_STAR, reg_star);
+
+    asm_wrmsr(MSR_LSTAR, (uint64_t)&syscall_entry);
 }
