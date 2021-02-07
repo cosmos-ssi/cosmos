@@ -48,7 +48,7 @@ CosmOS will be an [SSI](https://en.wikipedia.org/wiki/Single_system_image) opera
 
 - [CosmOS coding standards](doc/contributing/coding_standards.md)
 - [Operating System Development Resources](doc/contributing/osdev_resources.md)
-- [cosmos-dev mailing list](https://www.freelists.org/archive/cosmos-dev/)
+- [cosmos-dev mailing list](https://www.freelists.org/list/cosmos-dev)
 
 ## License
 
