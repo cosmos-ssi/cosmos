@@ -5,13 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-/*
-* posix syscalls
-*/
+#ifndef _INIT_H
+#define _INIT_C
 
-#ifndef _POSIX_ABI_H
-#define _POSIX_ABI_H
+#include <types.h>
 
-#include <../../cosmos_types.h>
+uint8_t init_load(uint8_t* initrd_disk_name, uint8_t* initrd_binary_name);
 
 #endif

@@ -1,4 +1,3 @@
-
 //*****************************************************************
 // This file is part of CosmOS                                    *
 // Copyright (C) 2020-2021 Tom Everett                            *
@@ -6,11 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _POSIX_ABI_H
-#define _POSIX_ABI_H
+#ifndef __TEST_INIT_LOADER_H
+#define __TEST_INIT_LOADER_H
 
-#include <sys/abi/abi.h>
-
-uint64_t posix_abi_syscall(struct abi_syscall* syscall);
+void test_init_loader();
 
 #endif

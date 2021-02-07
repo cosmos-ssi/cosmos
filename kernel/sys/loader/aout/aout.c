@@ -1,4 +1,3 @@
-
 //*****************************************************************
 // This file is part of CosmOS                                    *
 // Copyright (C) 2020-2021 Tom Everett                            *
@@ -6,11 +5,4 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/abi/posix/posix_abi.h>
-#include <sys/kprintf/kprintf.h>
-
-uint64_t posix_abi_syscall(struct abi_syscall* syscall) {
-    kprintf("posix syscall\n");
-
-    return 0;
-}
+#include <sys/loader/aout/aout.h>

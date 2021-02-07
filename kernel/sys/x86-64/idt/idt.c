@@ -48,7 +48,7 @@ void idt_init() {
     idt_add_ISR(isrBreakpoint, BREAKPOINT);
     idt_add_ISR(isrGeneric, OVERFLOW);
     idt_add_ISR(isrGeneric, BOUND_RANGE_EXCEEDED);
-    idt_add_ISR(isrGeneric, INVALID_OPCODE);
+    idt_add_ISR(isrInvalidOpcode, INVALID_OPCODE);
     idt_add_ISR(isrGeneric, DEVICE_NOT_AVAILABLE);
     idt_add_ISR(isrGeneric, DOUBLE_FAULT);
     idt_add_ISR(isrGeneric, COPROCESSOR_SEGMENT_OVERRUN);
@@ -80,11 +80,6 @@ void idt_init() {
     idt_add_ISR(irq13, IRQ13);
     idt_add_ISR(irq14, IRQ14);
     idt_add_ISR(irq15, IRQ15);
-
-    // syscalls
-    idt_add_ISR(isr_syscall_posix, SYSCALL_POSIX);
-    idt_add_ISR(isr_syscall_cosmos, SYSCALL_COSMOS);
-    idt_add_ISR(isr_syscall_bdos, SYSCALL_BDOS);
 
     idtr.limit = (IDT_SIZE * sizeof(idtEntry)) - 1;
     idtr.base = (uint64_t)&idt;

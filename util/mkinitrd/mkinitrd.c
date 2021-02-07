@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     struct initrd_header headers[INITRD_MAX_FILES];
     memset(&headers, 0, sizeof(struct initrd_header) * INITRD_MAX_FILES);
     printf("size of header: %lu\n", sizeof(struct initrd_header));
-    unsigned int off = sizeof(struct initrd_header) * 64 + sizeof(int);
+    unsigned int off = (sizeof(struct initrd_header) * INITRD_MAX_FILES) + sizeof(int);
     int i;
     for (i = 0; i < nheaders; i++) {
         printf("writing file %s->%s at 0x%x\n", argv[i * 2 + 1], argv[i * 2 + 2], off);

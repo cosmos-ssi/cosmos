@@ -27,6 +27,7 @@
 #include <sys/deviceapi/deviceapi_serial.h>
 #include <sys/deviceapi/deviceapi_speaker.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
@@ -35,6 +36,7 @@
 #include <sys/vfs/vfs.h>
 #include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/idt/idt.h>
+#include <sys/x86-64/syscall/syscall.h>
 #include <tests/tests.h>
 #include <types.h>
 
@@ -45,6 +47,7 @@ void mount_tick();
 void mount_rand();
 void mount_tcpip();
 void mount_initrd();
+void load_init_binary();
 
 void create_consoles();
 void video_write(const uint8_t* s);
@@ -82,6 +85,9 @@ void CosmOS() {
      */
     kprintf("Initializing Device Registry...\n");
     devicemgr_init();
+
+    kprintf("Initializing system call handler...\n");
+    //    syscall_init();
 
     /*
      * Register all devices
@@ -148,9 +154,8 @@ void CosmOS() {
     vfs_dump(cosmos_vfs);
     //  devicemgr_dump_devices();
 
-    asm volatile("int $0x80");
-    asm volatile("int $0x81");
-    asm volatile("int $0x82");
+    // load the init binary.  next step here would be to map it into memory and jump to userland
+    load_init_binary();
 
     while (1) {
         asm_hlt();
@@ -209,39 +214,13 @@ void mount_initrd() {
     }
 }
 
-void show_cpu_data() {
-    /*
-	* show CPU features
-	*/
-    // get the CPU
-    struct device* cpu = devicemgr_find_device("cpu0");
-    struct deviceapi_cpu* cpu_api = (struct deviceapi_cpu*)cpu->api;
-
-    /*
-	* show all CPU features
-	*/
-    struct cpu_id id;
-    (*cpu_api->features)(&id);
-    kprintf("CPU Features %#X\n", id.edx);
-
-    /*
-	* enable interrupts
-	*/
-    asm_sti();
-
-    /*
-	* play
-	*/
-    //	playsb16();
-    //	floppyread();
-
-    //	test_vblock();
-    //	test_ata();
-    //	test_ramdisk();
-
-    while (1) {
-        asm_hlt();
-    }
+/*
+* load the init binary from the initrd fs
+*/
+void load_init_binary() {
+    uint8_t init_binary_name[] = {"cosmos_init"};
+    init_load(INITRD_DISK, init_binary_name);
+    kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, INITRD_DISK);
 }
 
 void mount_tick() {

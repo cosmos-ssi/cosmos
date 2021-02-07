@@ -12,6 +12,11 @@
 
 #include <types.h>
 
+#define GDT_KERNEL_CODE_SELECTOR 8
+#define GDT_KERNEL_DATA_SELECTOR 16
+#define GDT_USER_CODE_SELECTOR 24
+#define GDT_USER_DATA_SELECTOR 32
+
 void gdt_install();
 void extern gdt_flush();
 

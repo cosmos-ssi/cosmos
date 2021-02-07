@@ -1,4 +1,3 @@
-
 //*****************************************************************
 // This file is part of CosmOS                                    *
 // Copyright (C) 2020-2021 Tom Everett                            *
@@ -6,10 +5,13 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/abi/bdos/bdos_abi.h>
-#include <sys/kprintf/kprintf.h>
+#include <abi/cosmos_abi.h>
 
-uint64_t bdos_abi_syscall(struct abi_syscall* syscall) {
-    kprintf("bdos syscall\n");
+#define COSMOS_SYSCALL_COM1_WRITE 0x01
+
+extern void cosmos_syscall(uint64_t rax, uint64_t rbx, uint64_t rcx, uint64_t rdx);
+
+uint64_t cosmos_abi_com1_write(uint8_t c) {
+    cosmos_syscall(COSMOS_SYSCALL_COM1_WRITE, c, 0, 0);
     return 0;
 }

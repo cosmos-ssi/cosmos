@@ -2,6 +2,8 @@ include scripts/mk/build.mk
 
 BOOTIMAGE=img/hda.img
 BLANK_DISK=img/blank.img
+INITRD=img/initrd.img
+
 SRC_FILES=$(shell find . -type f \( -name "*.c" -o -name "*.h" \))
 
 CRUFT_FILES=$(shell find . -type f \( -name "dump.dat" -o \
@@ -23,9 +25,9 @@ bootimage: subsystems
 	$(DD) if=kernel/cosmos.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=4
 
 	# write initrd fs at offset of 10MB
-	$(DD) if=img/initrd.img of=$(BOOTIMAGE) conv=notrunc bs=512 seek=20480
+	$(DD) if=$(INITRD) of=$(BOOTIMAGE) conv=notrunc bs=512 seek=20480
 
-subsystems: lint boot-subsystem kernel-subsystem utils user-subsystem blank-disk initrd
+subsystems: lint boot-subsystem kernel-subsystem utils user-subsystem blank-disk
 	
 blank-disk:
 	$(DD) if=/dev/zero of=$(BLANK_DISK) bs=1024 count=10240
@@ -38,11 +40,6 @@ kernel-subsystem:
 
 user-subsystem:
 	cd user && $(MAKE) all
-
-initrd:
-	rm -f initrd.img
-	./util/mkinitrd/mkinitrd user/init.o init.o user/abi/bdos/bdos_abi.a bdos_abi.a user/abi/posix/posix_abi.a posix_abi.a user/abi/cosmos/cosmos_abi.a cosmos_abi.a
-	mv initrd.img img/
 
 utils:
 	cd util/mkinitrd && $(MAKE)
