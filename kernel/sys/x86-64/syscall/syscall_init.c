@@ -11,7 +11,11 @@
 #include <types.h>
 
 void syscall_entry() {
+    asm volatile("push %rcx\n\tpush %r11");
+
     kprintf("System call!\n");
+
+    asm volatile("pop %r11\n\tpop %rcx");
 
     asm volatile("sysret" ::: "rcx", "r11");
 }
