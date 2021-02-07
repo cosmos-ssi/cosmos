@@ -5,4 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-void syscall_init() {}
+#ifndef _SYSCALL_H
+#define _SYSCALL_H
+
+void syscall_init();
+
+#endif
