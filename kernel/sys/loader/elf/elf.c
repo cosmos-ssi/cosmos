@@ -8,8 +8,17 @@
 #include <sys/debug/assert.h>
 #include <sys/loader/elf/elf.h>
 
+uint8_t ELF_MAGIC[] = {0x7F, 'E', 'L', 'F'};
+
 uint8_t elf_is_elf_binary(uint8_t* binary, uint32_t len) {
     ASSERT_NOT_NULL(binary);
     ASSERT(0 != len);
-    return 0;
+
+    struct elf_header* header = (struct elf_header*)binary;
+    for (uint8_t i = 0; i < 4; i++) {
+        if (header->e_ident[i] != ELF_MAGIC[i]) {
+            return 0;
+        }
+    }
+    return 1;
 }

@@ -34,14 +34,16 @@ void test_init_loader() {
             uint32_t len = initrd_get_file_length(initrd, idx);
             uint8_t* buffer = kmalloc(len);
             initrd_get_file_data(initrd, idx, buffer, len);
-            kprintf("Loaded '%s'\n", init_file_name);
             uint8_t is_elf = elf_is_elf_binary(buffer, len);
             if (1 == is_elf) {
-                kprintf("is ELF\n");
+                kprintf("Loaded '%s' ELF binary\n", init_file_name);
             } else {
-                kprintf("not ELF\n");
+                kprintf("'%s' is not an ELF binary\n");
+                panic("oops!");
             }
             kfree(buffer);
+        } else {
+            panic("could not find init binary in initrd file system");
         }
 
         // detach
