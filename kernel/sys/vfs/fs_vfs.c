@@ -43,7 +43,7 @@ struct vfs* vfs_new_filesystem(uint8_t* name) {
     ASSERT_NOT_NULL(name);
     struct vfs* ret = (struct vfs*)kmalloc(sizeof(struct vfs));
     memset((uint8_t*)ret, 0, sizeof(struct vfs));
-    ret->type = folder;
+    ret->type = filesystem;
     ret->close = &filesystem_vfs_close;
     ret->open = &filesystem_vfs_open;
     ret->read = &filesystem_vfs_read;
