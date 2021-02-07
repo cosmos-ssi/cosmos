@@ -25,18 +25,18 @@ struct initrd_file_header {
     uint8_t name[INITRD_NAME_SIZE];
     uint32_t offset;
     uint32_t length;
-} __attribute__((packed));
+};
 
 struct initrd_header {
     uint32_t number_files;
     struct initrd_file_header headers[INITRD_MAX_FILES];
-} __attribute__((packed));
+};
 
 struct initrd_devicedata {
     struct device* partition_device;
     uint32_t lba;
     struct initrd_header header;
-} __attribute__((packed));
+};
 
 /*
  * perform device instance specific init here
@@ -160,10 +160,11 @@ void initrd_dump_dir(struct device* initrd_dev) {
     ASSERT_NOT_NULL(initrd_dev);
     ASSERT_NOT_NULL(initrd_dev->device_data);
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
-    debug_show_memblock((uint8_t*)&(device_data->header), sizeof(struct initrd_header));
     for (uint32_t i = 0; i < device_data->header.number_files; i++) {
-        kprintf("    %s at %#llX length %#llX magic %#X\n", device_data->header.headers[i].name,
-                device_data->header.headers[i].offset, device_data->header.headers[i].length,
-                device_data->header.headers[i].magic);
+        struct initrd_file_header thisheader = device_data->header.headers[i];
+        //     debug_show_memblock((uint8_t*)&thisheader, sizeof(struct initrd_file_header));
+
+        kprintf("    %s at %#llX length %#llX magic %#X\n", thisheader.name, thisheader.offset, thisheader.length,
+                thisheader.magic);
     }
 }

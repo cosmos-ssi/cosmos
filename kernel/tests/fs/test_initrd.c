@@ -16,18 +16,18 @@ void test_initrd() {
     kprintf("Testing initrd\n");
 
     // boot disk.....
-    uint8_t devicename[] = {"disk0"};
+    uint8_t devicename[] = {INITRD_DISK};
 
     struct device* dsk = devicemgr_find_device(devicename);
     if (0 != dsk) {
         // attach initrd fs
-        //   struct device* initrd = initrd_attach(dsk, 5);
-        //  ASSERT_NOT_NULL(initrd);
+        struct device* initrd = initrd_attach(dsk, INITRD_LBA_ADDRESS);
+        ASSERT_NOT_NULL(initrd);
 
-        //   initrd_dump_dir(initrd);
+        initrd_dump_dir(initrd);
 
         // detach
-        //  initrd_detach(initrd);
+        initrd_detach(initrd);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

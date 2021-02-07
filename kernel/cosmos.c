@@ -8,6 +8,7 @@
 #include <dev/logical/console/serial_console.h>
 #include <dev/logical/console/vga_console.h>
 #include <dev/logical/ethernet/ethernet.h>
+#include <dev/logical/fs/initrd/initrd.h>
 #include <dev/logical/null/null.h>
 #include <dev/logical/ramdisk/ramdisk.h>
 #include <dev/logical/rand/rand.h>
@@ -43,6 +44,7 @@ void mount_null();
 void mount_tick();
 void mount_rand();
 void mount_tcpip();
+void mount_initrd();
 
 void create_consoles();
 void video_write(const uint8_t* s);
@@ -104,6 +106,7 @@ void CosmOS() {
     mount_tick();
     mount_rand();
     mount_tcpip();
+    //   mount_initrd();
     /*
      * create consoles
      */
@@ -186,6 +189,24 @@ void mount_null() {
 
 void mount_rand() {
     rand_attach();
+}
+
+// mount the init rd
+void mount_initrd() {
+    uint8_t devicename[] = {INITRD_DISK};
+
+    struct device* dsk = devicemgr_find_device(devicename);
+    if (0 != dsk) {
+        // attach initrd fs
+        struct device* initrd = initrd_attach(dsk, INITRD_LBA_ADDRESS);
+
+        initrd_dump_dir(initrd);
+
+        // detach
+        initrd_detach(initrd);
+    } else {
+        kprintf("Unable to find %s\n", devicename);
+    }
 }
 
 void show_cpu_data() {
