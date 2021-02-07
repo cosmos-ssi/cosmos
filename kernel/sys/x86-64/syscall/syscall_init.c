@@ -12,6 +12,8 @@
 
 void syscall_entry() {
     kprintf("System call!\n");
+
+    asm volatile("sysret" ::: "rcx", "r11");
 }
 
 void syscall_init() {
@@ -25,4 +27,11 @@ void syscall_init() {
     asm_wrmsr(MSR_STAR, reg_star);
 
     asm_wrmsr(MSR_LSTAR, (uint64_t)&syscall_entry);
+
+    // no flags
+    asm_wrmsr(MSR_SFMASK, 0);
+
+    asm volatile("syscall" ::: "rcx", "r11");
+
+    kprintf("Back from syscall\n");
 }
