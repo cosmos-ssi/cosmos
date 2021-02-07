@@ -17,6 +17,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/linkage/linkage.h>
 #include <sys/string/mem.h>
+#include <sys/string/string.h>
 
 #define INITRD_NAME_SIZE 64
 #define INITRD_MAX_FILES 64
@@ -133,28 +134,42 @@ void initrd_detach(struct device* dev) {
 uint8_t initrd_get_file_name(struct device* initrd_dev, uint8_t idx, uint8_t* name, uint16_t size) {
     ASSERT_NOT_NULL(initrd_dev);
     ASSERT_NOT_NULL(initrd_dev->device_data);
-    ASSERT_NOT_NULL(name);
-    // struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
-
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
+    ASSERT(idx < device_data->header.number_files);
+    ASSERT(size >= INITRD_NAME_SIZE);
+    strncpy(name, device_data->header.headers[idx].name, size);
     return 1;
 }
 
-uint8_t initrd_get_file_size(struct device* initrd_dev, uint8_t idx, uint16_t* size) {
+uint8_t initrd_get_file_length(struct device* initrd_dev, uint8_t idx, uint16_t* size) {
     ASSERT_NOT_NULL(initrd_dev);
     ASSERT_NOT_NULL(initrd_dev->device_data);
-    ASSERT_NOT_NULL(size);
-    //    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
-
-    return 1;
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
+    ASSERT(idx < device_data->header.number_files);
+    return device_data->header.headers[idx].length;
 }
 
 uint8_t initrd_get_file_data(struct device* initrd_dev, uint8_t idx, uint8_t* data, uint32_t size) {
     ASSERT_NOT_NULL(initrd_dev);
     ASSERT_NOT_NULL(initrd_dev->device_data);
-    ASSERT_NOT_NULL(data);
-    //  struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
+    ASSERT(idx < device_data->header.number_files);
+
+    uint32_t offset = device_data->header.headers[idx].offset;
+    ASSERT(offset > 0);
+    uint32_t length = device_data->header.headers[idx].length;
+    ASSERT(size >= length);
+
+    blockutil_read(device_data->partition_device, data, length, device_data->lba + offset);
 
     return 1;
+}
+
+uint8_t initrd_get_file_count(struct device* initrd_dev) {
+    ASSERT_NOT_NULL(initrd_dev);
+    ASSERT_NOT_NULL(initrd_dev->device_data);
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
+    return device_data->header.number_files;
 }
 
 void initrd_dump_dir(struct device* initrd_dev) {

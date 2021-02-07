@@ -1,6 +1,7 @@
 include ../scripts/mk/flags.mk
 include ../scripts/mk/build.mk
 
+COSMOS_INITRD_IMAGE=initrd.img
 COSMOS_ABI_ARCHIVE=cosmos_abi.a
 COSMOS_INIT=cosmos_init
 
@@ -8,7 +9,7 @@ EXTRA_CFLAGS= -I.
 
 SRC_DIR=.
 
-all: $(COSMOS_ABI_ARCHIVE) $(COSMOS_INIT)
+all: $(COSMOS_INITRD_IMAGE)
 
 # ABI sources
 SRCS_C=$(shell find $(SRC_DIR)/abi -type f -iname '*.c')
@@ -22,6 +23,11 @@ OBJS=$(OBJS_C) $(OBJS_ASM)
 
 init/init.o: init/init.h init/init.c
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
+
+$(COSMOS_INITRD_IMAGE): $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)
+	rm -f $(COSMOS_INITRD_IMAGE)
+	../util/mkinitrd/mkinitrd cosmos_abi.a cosmos_abi.a cosmos_init cosmos_init welcome.txt welcome.txt testdata.txt testdata.txt
+	mv initrd.img ../img/
 
 $(COSMOS_INIT): $(COSMOS_ABI_ARCHIVE) init/init.o
 	$(LD) -m elf_x86_64 -o $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)
@@ -47,3 +53,6 @@ clean:
 	$(RM) $(OBJS)
 	$(RM) $(COSMOS_ABI_ARCHIVE)
 	$(RM) $(COSMOS_INIT)
+	$(RM) $(COSMOS_INITRD_IMAGE)
+	$(RM) ../img/$(COSMOS_INITRD_IMAGE)
+
