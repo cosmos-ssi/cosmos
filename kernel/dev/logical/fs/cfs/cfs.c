@@ -195,7 +195,7 @@ struct device* cfs_attach(struct device* partition_device) {
      */
     struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)kmalloc(sizeof(struct deviceapi_filesystem));
     memzero((uint8_t*)api, sizeof(struct deviceapi_filesystem));
-    api->format = &cfs_format;
+    //  api->format = &cfs_format;
     deviceinstance->api = api;
     /*
      * device data

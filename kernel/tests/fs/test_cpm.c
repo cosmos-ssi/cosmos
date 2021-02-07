@@ -18,8 +18,8 @@ void test_cpm() {
         struct device* dev = cpm_attach(dsk);
 
         // format to CPM
-        struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)dev->api;
-        (*api->format)(dev);
+        //   struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)dev->api;
+        //  (*api->format)(dev);
 
         // detach
         cpm_detach(dev);

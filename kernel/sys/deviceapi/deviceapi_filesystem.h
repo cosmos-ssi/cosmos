@@ -5,6 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+/*
+    CosmOS models a fs as a recursive tree of fs's.
+*/
 #ifndef _DEVICEAPI_FILESYSTEM_H
 #define _DEVICEAPI_FILESYSTEM_H
 
@@ -12,24 +15,28 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-/*
- * format a file system
- */
-typedef void (*fs_format_function)(struct device* dev);
+struct deviceapi_filesystem;
 
-/*
- * read file
- */
-typedef void (*fs_read_function)(struct device* dev, const uint8_t* name, const uint8_t* data, uint32_t size);
-/*
- * write file
- */
-typedef void (*fs_write_function)(struct device* dev, const uint8_t* name, const uint8_t* data, uint32_t size);
+struct fs_dir_entry {
+    uint8_t name[128];  // filename
+    uint32_t ino;       // inode number
+};
+
+typedef uint32_t (*fs_read_function)(struct deviceapi_filesystem* fs, const uint8_t* data, uint32_t data_size);
+typedef uint32_t (*fs_write_function)(struct deviceapi_filesystem* fs, const uint8_t* data, uint32_t data_size);
+typedef void (*fs_open_function)(struct deviceapi_filesystem* fs);
+typedef void (*fs_close_function)(struct deviceapi_filesystem* fs);
+typedef struct fs_dir_entry* (*fs_readdir_function)(struct deviceapi_filesystem* fs, uint32_t idx);
+typedef struct deviceapi_filesystem* (*fs_finddir_function)(struct deviceapi_filesystem* fs, uint8_t* name);
 
 struct deviceapi_filesystem {
-    fs_format_function format;
     fs_read_function read;
     fs_write_function write;
+    fs_open_function open;
+    fs_close_function close;
+    fs_readdir_function readdir;
+    fs_finddir_function finddir;
+    uint64_t node_id;
 };
 
 #endif
