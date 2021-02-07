@@ -169,7 +169,7 @@ uint8_t initrd_get_file_data(struct device* initrd_dev, uint8_t idx, uint8_t* da
         total_sectors += 1;
     }
     uint32_t buffer_size = total_sectors * sector_size;
-    uint8_t buffer[buffer_size];
+    uint8_t* buffer = kmalloc(buffer_size);
     memzero(buffer, buffer_size);
     uint32_t target_lba = device_data->lba + lba_offset;
     //    kprintf("lba_offset %llu byte_offset %llu sectors %llu target_lba %llu buffer_size %llu\n", lba_offset, byte_offset,
@@ -185,6 +185,10 @@ uint8_t initrd_get_file_data(struct device* initrd_dev, uint8_t idx, uint8_t* da
     */
     memcpy(data, &(buffer[byte_offset]), size);
 
+    /*
+    * release the buffer
+    */
+    kfree(buffer);
     return 1;
 }
 
