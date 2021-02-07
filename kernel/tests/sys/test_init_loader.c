@@ -5,50 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/fs/initrd/initrd.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
-#include <sys/kmalloc/kmalloc.h>
+#include <sys/init/init.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/loader/elf/elf.h>
 #include <tests/sys/test_init_loader.h>
 
 void test_init_loader() {
     kprintf("Testing Init Loader\n");
 
-    kprintf("Testing initrd\n");
-
     // boot disk.....
-    uint8_t devicename[] = {INITRD_DISK};
+    uint8_t devicename[] = {"disk0"};
     uint8_t init_file_name[] = {"cosmos_init"};
 
-    struct device* dsk = devicemgr_find_device(devicename);
-    if (0 != dsk) {
-
-        struct device* initrd = initrd_attach(dsk, initrd_lba());
-        ASSERT_NOT_NULL(initrd);
-
-        uint8_t idx = 0;
-        if (1 == initrd_find_file(initrd, init_file_name, &idx)) {
-            uint32_t len = initrd_get_file_length(initrd, idx);
-            uint8_t* buffer = kmalloc(len);
-            initrd_get_file_data(initrd, idx, buffer, len);
-            uint8_t is_elf = elf_is_elf_binary(buffer, len);
-            if (1 == is_elf) {
-                kprintf("Loaded '%s' ELF binary\n", init_file_name);
-            } else {
-                kprintf("'%s' is not an ELF binary\n");
-                panic("oops!");
-            }
-            kfree(buffer);
-        } else {
-            panic("could not find init binary in initrd file system");
-        }
-
-        // detach
-        initrd_detach(initrd);
-    } else {
-        kprintf("Unable to find %s\n", devicename);
-    }
+    uint8_t ok = init_load(devicename, init_file_name);
+    ASSERT(1 == ok);
+    kprintf("Loaded '%s' ELF binary\n", init_file_name);
 }

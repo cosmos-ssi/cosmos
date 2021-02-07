@@ -27,6 +27,7 @@
 #include <sys/deviceapi/deviceapi_serial.h>
 #include <sys/deviceapi/deviceapi_speaker.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
@@ -46,6 +47,7 @@ void mount_tick();
 void mount_rand();
 void mount_tcpip();
 void mount_initrd();
+void load_init_binary();
 
 void create_consoles();
 void video_write(const uint8_t* s);
@@ -156,6 +158,9 @@ void CosmOS() {
     asm volatile("int $0x81");
     asm volatile("int $0x82");
 
+    // load the init binary.  next step here would be to map it into memory and jump to userland
+    load_init_binary();
+
     while (1) {
         asm_hlt();
     }
@@ -211,6 +216,15 @@ void mount_initrd() {
     } else {
         kprintf("Unable to find %s\n", devicename);
     }
+}
+
+/*
+* load the init binary from the initrd fs
+*/
+void load_init_binary() {
+    uint8_t init_binary_name[] = {"cosmos_init"};
+    init_load(INITRD_DISK, init_binary_name);
+    kprintf("Loaded init binary %s from disk %s\n", init_binary_name, INITRD_DISK);
 }
 
 void show_cpu_data() {
