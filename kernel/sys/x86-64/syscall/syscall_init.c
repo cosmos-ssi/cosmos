@@ -18,6 +18,12 @@ void syscall_entry() {
 
 void syscall_init() {
     uint64_t reg_star;
+    uint64_t reg_efer;
+
+    reg_efer = asm_rdmsr(MSR_EFER);
+
+    reg_efer |= 1;  // set bit 1 to enable SYSCALL/SYSRET
+    asm_wrmsr(MSR_EFER, reg_efer);
 
     reg_star = 0xFFFFFFFF;
 
