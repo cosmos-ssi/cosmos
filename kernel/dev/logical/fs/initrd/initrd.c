@@ -155,12 +155,35 @@ uint8_t initrd_get_file_data(struct device* initrd_dev, uint8_t idx, uint8_t* da
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
     ASSERT(idx < device_data->header.number_files);
 
+    uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
+
     uint32_t offset = device_data->header.headers[idx].offset;
     ASSERT(offset > 0);
     uint32_t length = device_data->header.headers[idx].length;
     ASSERT(size >= length);
 
-    blockutil_read(device_data->partition_device, data, length, device_data->lba + offset);
+    uint32_t lba_offset = offset / sector_size;
+    uint32_t byte_offset = offset % sector_size;
+    uint32_t total_sectors = length / sector_size;
+    if ((length % 512) != 0) {
+        total_sectors += 1;
+    }
+    uint32_t buffer_size = total_sectors * sector_size;
+    uint8_t buffer[buffer_size];
+    memzero(buffer, buffer_size);
+    uint32_t target_lba = device_data->lba + lba_offset;
+    //    kprintf("lba_offset %llu byte_offset %llu sectors %llu target_lba %llu buffer_size %llu\n", lba_offset, byte_offset,
+    //            total_sectors, target_lba, buffer_size);
+
+    /*
+    * read the blocks
+    */
+    blockutil_read(device_data->partition_device, buffer, buffer_size, target_lba);
+
+    /*
+    * copy the data
+    */
+    memcpy(data, &(buffer[byte_offset]), size);
 
     return 1;
 }

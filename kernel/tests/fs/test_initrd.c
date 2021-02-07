@@ -41,10 +41,11 @@ void test_initrd() {
                 uint32_t len = initrd_get_file_length(initrd, idx);
                 ASSERT(len == 66);
 
-                uint8_t data[len];
+                uint8_t data[len + 1];
                 initrd_get_file_data(initrd, idx, data, len);
-                debug_show_memblock(data, len);
-                //     ASSERT(0 == strcmp(data, "Do not modify this file.  It contains test data for test_initrd.c."));
+                data[len] = 0;
+                //                debug_show_memblock(data, len);
+                ASSERT(0 == strcmp(data, "Do not modify this file.  It contains test data for test_initrd.c."));
             }
         }
 
