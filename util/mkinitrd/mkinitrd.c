@@ -16,46 +16,48 @@
 
 #define INITRD_IMAGE_NAME "./initrd.img"
 
-struct initrd_header {
+struct initrd_file_header {
     unsigned char magic;
     char name[INITRD_NAME_SIZE];
     unsigned int offset;
     unsigned int length;
 };
 
-void fn(char* fullname, char* shortname) {}
+struct initrd_fs_header {
+    int nheaders;
+    struct initrd_file_header headers[INITRD_MAX_FILES];
+};
 
-unsigned int addheaders(struct initrd_header* headers, int nheaders, char** argv) {
-    unsigned int off = (sizeof(struct initrd_header) * INITRD_MAX_FILES) + sizeof(int);
-    for (int i = 0; i < nheaders; i++) {
+unsigned int makeheaders(struct initrd_fs_header* fs_header, char** argv) {
+    unsigned int off = sizeof(struct initrd_fs_header);
+    for (int i = 0; i < fs_header->nheaders; i++) {
         printf("writing file %s->%s at 0x%x\n", argv[i * 2 + 1], argv[i * 2 + 2], off);
-        strcpy(headers[i].name, argv[i * 2 + 2]);
-        headers[i].offset = off;
+        strcpy(fs_header->headers[i].name, argv[i * 2 + 2]);
+        fs_header->headers[i].offset = off;
         FILE* stream = fopen(argv[i * 2 + 1], "r");
         if (stream == 0) {
             printf("Error: file not found: %s\n", argv[i * 2 + 1]);
             return 1;
         }
         fseek(stream, 0, SEEK_END);
-        headers[i].length = ftell(stream);
-        off += headers[i].length;
+        fs_header->headers[i].length = ftell(stream);
+        off += fs_header->headers[i].length;
         fclose(stream);
-        headers[i].magic = 0xBF;
+        fs_header->headers[i].magic = 0xBF;
     }
     return off;
 }
 
-void addfiles(struct initrd_header* headers, int nheaders, char** argv, unsigned int off) {
+void addfiles(struct initrd_fs_header* fs_header, char** argv, unsigned int off) {
     FILE* wstream = fopen(INITRD_IMAGE_NAME, "w");
     unsigned char* data = (unsigned char*)malloc(off);
-    fwrite(&nheaders, sizeof(int), 1, wstream);
-    fwrite(headers, sizeof(struct initrd_header), INITRD_MAX_FILES, wstream);
+    fwrite(fs_header, sizeof(struct initrd_fs_header), 1, wstream);
 
-    for (int i = 0; i < nheaders; i++) {
+    for (int i = 0; i < fs_header->nheaders; i++) {
         FILE* stream = fopen(argv[i * 2 + 1], "r");
-        unsigned char* buf = (unsigned char*)malloc(headers[i].length);
-        fread(buf, 1, headers[i].length, stream);
-        fwrite(buf, 1, headers[i].length, wstream);
+        unsigned char* buf = (unsigned char*)malloc(fs_header->headers[i].length);
+        fread(buf, 1, fs_header->headers[i].length, stream);
+        fwrite(buf, 1, fs_header->headers[i].length, wstream);
         fclose(stream);
         free(buf);
     }
@@ -68,19 +70,21 @@ int main(int argc, char** argv) {
     int nheaders = (argc - 1) / 2;
 
     /*
-    * make the headers array of structs
+    * make the fs header
     */
-    struct initrd_header headers[INITRD_MAX_FILES];
-    memset(&headers, 0, sizeof(struct initrd_header) * INITRD_MAX_FILES);
-    printf("Size of initrd header: %lu\n", sizeof(struct initrd_header));
+    struct initrd_fs_header fs_header;
+    memset(&fs_header, 0, sizeof(struct initrd_fs_header));
+    fs_header.nheaders = nheaders;
+    printf("Size of filesystem header: %lu\n", sizeof(struct initrd_fs_header));
+    printf("Size of initrd file header: %lu\n", sizeof(struct initrd_file_header));
 
     /*
     * add the headers, return the current file offset
     */
-    unsigned int off = addheaders(headers, nheaders, argv);
+    unsigned int off = makeheaders(&fs_header, argv);
     /*
     * add files
     */
-    addfiles(headers, nheaders, argv, off);
+    addfiles(&fs_header, argv, off);
     return 0;
 }
