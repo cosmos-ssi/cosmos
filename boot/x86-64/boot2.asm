@@ -19,7 +19,8 @@ mov byte [bootDisk], dl
 ; we add two to it to get the sector number at which the kernel starts
 ; formula = sectors of second-stage bootloader + 1 for first-stage bootloader + 1 for the first sector of the kernel
 ; (sector #s start at 1 rather than 0, for some weird reason)
-add cl, 2
+; tge: we're adding 12 here.  so its 2 (which is what is was) plus 10 more to give 10 sectors for initrd
+add cl, 12
 mov byte [kernelBaseSector], cl
 mov byte [curLoadSector], cl
 
