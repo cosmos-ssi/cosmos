@@ -14,6 +14,8 @@
 #define INITRD_NAME_SIZE 64
 #define INITRD_MAX_FILES 64
 
+#define INITRD_IMAGE_NAME "./initrd.img"
+
 struct initrd_header {
     unsigned char magic;
     char name[INITRD_NAME_SIZE];
@@ -44,7 +46,7 @@ unsigned int addheaders(struct initrd_header* headers, int nheaders, char** argv
 }
 
 void addfiles(struct initrd_header* headers, int nheaders, char** argv, unsigned int off) {
-    FILE* wstream = fopen("./initrd.img", "w");
+    FILE* wstream = fopen(INITRD_IMAGE_NAME, "w");
     unsigned char* data = (unsigned char*)malloc(off);
     fwrite(&nheaders, sizeof(int), 1, wstream);
     fwrite(headers, sizeof(struct initrd_header), INITRD_MAX_FILES, wstream);
@@ -57,13 +59,17 @@ void addfiles(struct initrd_header* headers, int nheaders, char** argv, unsigned
         fclose(stream);
         free(buf);
     }
-
     fclose(wstream);
     free(data);
 }
 
 int main(int argc, char** argv) {
+    printf("CosmOS mkinitrd\n");
     int nheaders = (argc - 1) / 2;
+
+    /*
+    * make the headers array of structs
+    */
     struct initrd_header headers[INITRD_MAX_FILES];
     memset(&headers, 0, sizeof(struct initrd_header) * INITRD_MAX_FILES);
     printf("Size of initrd header: %lu\n", sizeof(struct initrd_header));
