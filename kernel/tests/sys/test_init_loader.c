@@ -8,6 +8,8 @@
 #include <sys/debug/assert.h>
 #include <sys/init/init.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/loader/elf/elf.h>
+#include <sys/string/mem.h>
 #include <tests/sys/test_init_loader.h>
 
 void test_init_loader() {
