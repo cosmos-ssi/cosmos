@@ -58,6 +58,7 @@ global isrPFE;
 global isrGeneric;
 global isrGPF;
 global isrDebug;
+global isrInvalidOpcode;
 global isrBreakpoint;
 
 global isr_syscall_posix;
