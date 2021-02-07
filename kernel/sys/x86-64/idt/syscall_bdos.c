@@ -14,10 +14,13 @@
 void syscall_bdos(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
 
+    // assemble syscall struct
     struct abi_syscall syscall;
     syscall.a = 0;
     syscall.b = 0;
     syscall.c = 0;
     syscall.d = 0;
+
+    // pass to abi to process
     bdos_abi_syscall(&syscall);
 }
