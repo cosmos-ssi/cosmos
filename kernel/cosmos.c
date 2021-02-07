@@ -154,10 +154,6 @@ void CosmOS() {
     vfs_dump(cosmos_vfs);
     //  devicemgr_dump_devices();
 
-    asm volatile("int $0x80");
-    asm volatile("int $0x81");
-    asm volatile("int $0x82");
-
     // load the init binary.  next step here would be to map it into memory and jump to userland
     load_init_binary();
 
