@@ -67,7 +67,7 @@ void cpm_format(struct device* dev) {
     memset(buffer, 0, device_data->byte_size_dir);
     memcpy(buffer, (uint8_t*)&dir, sizeof(struct cpm_dir));
     for (uint8_t i = 0; i < device_data->sectors_needed_for_dir; i++) {
-        blockutil_write_sector(device_data->partition_device, i, &(buffer[i]), device_data->byte_size_dir);
+        blockutil_write(device_data->partition_device, &(buffer[i]), device_data->byte_size_dir, i);
     }
     kfree(buffer);
 }
@@ -80,7 +80,7 @@ void cpm_read_dir(struct device* dev, struct cpm_dir* dir) {
     uint8_t* buffer = kmalloc(device_data->byte_size_dir);
     memset(buffer, 0, device_data->byte_size_dir);
     for (uint8_t i = 0; i < device_data->sectors_needed_for_dir; i++) {
-        blockutil_read_sector(device_data->partition_device, i, &(buffer[i]), device_data->byte_size_dir);
+        blockutil_read(device_data->partition_device, &(buffer[i]), device_data->byte_size_dir, i);
     }
 
     // copy to dest
@@ -116,10 +116,7 @@ uint8_t cpm_uninit(struct device* dev) {
 struct device* cpm_attach(struct device* partition_device) {
     ASSERT(sizeof(struct cpm_file_entry) == CPM_FILE_ENTRY_LEN);
     ASSERT_NOT_NULL(partition_device);
-    // basically the device needs to implement deviceapi_block
-    ASSERT((partition_device->devicetype == PARTITION) || (partition_device->devicetype == VBLOCK) ||
-           (partition_device->devicetype == DISK) || (partition_device->devicetype == RAMDISK));
-
+    ASSERT(1 == blockutil_is_block_device(partition_device));
     /*
      * register device
      */
@@ -156,6 +153,10 @@ struct device* cpm_attach(struct device* partition_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(partition_device);
+        /*
         * return device
         */
         return deviceinstance;
@@ -169,5 +170,14 @@ struct device* cpm_attach(struct device* partition_device) {
 
 void cpm_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct cpm_devicedata* device_data = (struct cpm_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->partition_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

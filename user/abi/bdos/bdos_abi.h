@@ -5,16 +5,13 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-// this code needs to move to userland-once there is a userland
-// since it just makes syscalls
-
-#ifndef _BDOS_H
-#define _BDOS_H
+#ifndef _BDOS_ABI_H
+#define _BDOS_ABI_H
 
 // https://www.seasip.info/Cpm/bdosfunc.html
 // https://www.seasip.info/Cpm/fcb.html
 
-#include <types.h>
+#include <../../cosmos_types.h>
 
 struct bdos_fcb {
     uint8_t drive;

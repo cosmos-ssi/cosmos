@@ -20,15 +20,16 @@ typedef void (*part_table_get_partition_type_function)(struct device* dev, uint8
                                                        uint16_t len);
 typedef uint64_t (*part_table_get_sector_count_function)(struct device* dev, uint8_t partition);
 
-// count is byte count and must be <= sector size
-typedef void (*part_read_sector_function)(struct device* dev, uint8_t partition_index, uint32_t sector, uint8_t* data,
-                                          uint32_t count);
-
-// count is byte count and must be <= sector size
-typedef void (*part_write_sector_function)(struct device* dev, uint8_t partition_index, uint32_t sector, uint8_t* data,
-                                           uint32_t count);
-typedef uint16_t (*part_sector_size_function)(struct device* dev, uint8_t partition_index);
-typedef uint32_t (*part_total_size_function)(struct device* dev, uint8_t partition_index);
+/*
+ * returns total bytes read
+ */
+typedef uint32_t (*part_read_sectors_function)(struct device* dev, uint8_t partition_index, uint8_t* data,
+                                               uint32_t data_size, uint32_t start_lba);
+/*
+ * returns total bytes written
+ */
+typedef uint32_t (*part_write_sectors_function)(struct device* dev, uint8_t partition_index, uint8_t* data,
+                                                uint32_t data_size, uint32_t start_lba);
 
 // return 1 if we are ok to detach this device
 typedef uint8_t (*part_table_detachable_function)(struct device* dev);
@@ -39,10 +40,8 @@ struct deviceapi_part_table {
     part_table_get_partition_type_function type;
     part_table_get_sector_count_function sectors;
     part_table_detachable_function detachable;
-    part_read_sector_function read;
-    part_write_sector_function write;
-    part_sector_size_function sector_size;
-    part_total_size_function total_size;
+    part_read_sectors_function read;
+    part_write_sectors_function write;
 };
 
 #endif

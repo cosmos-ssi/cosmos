@@ -29,8 +29,9 @@ void calculate_ida_lba_register_values(uint32_t lba, uint8_t* registers) {
     registers[5] = 0;
 }
 
-void ata_rw(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count, bool read) {
+uint32_t ata_rw(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba, bool read) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(data);
     struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->device_data;
     struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
@@ -43,12 +44,18 @@ void ata_rw(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_
     // wait
     ata_wait_busy(diskdata->controller, diskdata->channel);
 
+    // calc total sectors
+    uint32_t total_sectors = data_size / sector_size;
+    if (0 != data_size % sector_size) {
+        total_sectors += 1;
+    }
+
     // sector count
     ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_SECTOR_COUNT_1, 0);
 
     // lba
     uint8_t regs[6];
-    calculate_ida_lba_register_values(sector, regs);
+    calculate_ida_lba_register_values(start_lba, regs);
     //	kprintf("sector %llu \n", sector);
     //	kprintf("regs %llu %llu %llu %llu %llu %llu\n", regs[0],regs[1],regs[2],regs[3],regs[4],regs[5]);
     ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_LBA_3, regs[3]);
@@ -56,7 +63,7 @@ void ata_rw(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_
     ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_LBA_5, regs[5]);
 
     // sector count
-    ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_SECTOR_COUNT_0, sector_count);
+    ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_SECTOR_COUNT_0, total_sectors);
     ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_LBA_0, regs[0]);
     ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_LBA_1, regs[1]);
     ata_register_write(diskdata->controller, diskdata->channel, ATA_REGISTER_LBA_2, regs[2]);
@@ -104,7 +111,7 @@ void ata_rw(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_
     uint16_t* buffer = (uint16_t*)data;
 
     uint32_t idx = 0;
-    for (int j = 0; j < sector_count; j++) {
+    for (int j = 0; j < total_sectors; j++) {
         ata_wait_busy(diskdata->controller, diskdata->channel);
         ata_wait_drq(diskdata->controller, diskdata->channel);
         for (int i = 0; i < sector_size / 2; i++) {
@@ -115,14 +122,26 @@ void ata_rw(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_
             }
         }
     }
+
+    //   kprintf("return %llu\n", data_size);
+    return data_size;
 }
 
-void ata_read(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count) {
-    ata_rw(dev, sector, data, sector_count, true);
+uint32_t ata_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+    ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
+    //    kprintf("ata_read %llu\n", data_size);
+    return ata_rw(dev, data, data_size, start_lba, true);
 }
 
-void ata_write(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count) {
-    ata_rw(dev, sector, data, sector_count, false);
+uint32_t ata_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+    ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
+    //    kprintf("ata_write %llu\n", data_size);
+
+    return ata_rw(dev, data, data_size, start_lba, false);
 }
 
 uint16_t ata_sector_size(struct device* dev) {

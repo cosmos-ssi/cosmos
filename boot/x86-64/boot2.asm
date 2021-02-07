@@ -209,13 +209,13 @@ or eax, 1 << 31              ; Set the PG-bit, which is the 32nd bit (bit 31).
 mov cr0, eax                 ; Set control register 0 to the A-register.
 
 lgdt [GDT64.Pointer]         ; Load the 64-bit global descriptor table.
-jmp GDT64.Code:Realm64       ; Set the code segment and enter 64-bit long mode.
+jmp GDT64.KernelCode:Realm64 ; Set the code segment and enter 64-bit long mode.
 
 ; Use 64-bit.
 [BITS 64]
  
 Realm64:
-	mov ax, GDT64.Data
+	mov ax, GDT64.KernelData
 	mov ds, ax
 	mov es, ax
 	mov fs, ax
@@ -362,18 +362,32 @@ GDT64:                           ; Global Descriptor Table (64-bit).
     db 0                         ; Access.
     db 1                         ; Granularity.
     db 0                         ; Base (high).
-    .Code: equ $ - GDT64         ; The code descriptor.
+    .KernelCode: equ $ - GDT64   ; The kernel code descriptor.
     dw 0xFFFF                    ; Limit (low).
     dw 0                         ; Base (low).
     db 0                         ; Base (middle)
-    db 10011010b                 ; Access (exec/read).
+    db 10011010b                 ; Access (exec/read). (0x9A)
     db 10101111b                 ; Granularity, 64 bits flag, limit19:16.
     db 0                         ; Base (high).
-    .Data: equ $ - GDT64         ; The data descriptor.
+    .KernelData: equ $ - GDT64   ; The kernel data descriptor.
     dw 0                         ; Limit (low).
     dw 0                         ; Base (low).
     db 0                         ; Base (middle)
-    db 10010010b                 ; Access (read/write).
+    db 10010010b                 ; Access (read/write). (0x92)
+    db 00000000b                 ; Granularity.
+    db 0                         ; Base (high).
+ 	.UserCode: equ $ - GDT64     ; The user code descriptor.
+    dw 0xFFFF                    ; Limit (low).
+    dw 0                         ; Base (low).
+    db 0                         ; Base (middle)
+    db 11111010b                 ; Access (exec/read). (0xFA)
+    db 10101111b                 ; Granularity, 64 bits flag, limit19:16.
+    db 0                         ; Base (high).
+    .UserData: equ $ - GDT64     ; The user data descriptor.
+    dw 0                         ; Limit (low).
+    dw 0                         ; Base (low).
+    db 0                         ; Base (middle)
+    db 11110010b                 ; Access (read/write). (0xF2)
     db 00000000b                 ; Granularity.
     db 0                         ; Base (high).
     .Pointer:                    ; The GDT-pointer.

@@ -59,7 +59,6 @@ void ethernet_write(struct device* dev, struct eth_hdr* eth, uint16_t size) {
 struct device* ethernet_attach(struct device* nic_device) {
     ASSERT_NOT_NULL(nic_device);
     ASSERT((nic_device->devicetype == NIC) || (nic_device->devicetype == VNIC));
-
     /*
      * register device
      */
@@ -88,6 +87,10 @@ struct device* ethernet_attach(struct device* nic_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(nic_device);
+        /*
         * return device
         */
         return deviceinstance;
@@ -101,6 +104,15 @@ struct device* ethernet_attach(struct device* nic_device) {
 
 void ethernet_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct ethernet_devicedata* device_data = (struct ethernet_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->nic_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }
 

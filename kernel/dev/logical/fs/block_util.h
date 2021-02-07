@@ -16,13 +16,25 @@ uint32_t blockutil_get_sector_count(struct device* dev);
 uint32_t blockutil_get_total_size(struct device* dev);
 
 /*
- * write 1 sector.  data is "size" long and the reset of the sector will be padded to zero
- */
-void blockutil_write_sector(struct device* dev, uint32_t sector, uint8_t* data, uint32_t size);
-
+* read bytes into 'data'.  'data_size' is the number of bytes to read and 'start_lba' is the starting lba. 
+* return total bytes read
+*/
 /*
- * read 1 sector. "data" is at least as big as sector_size, size is the number of bytes to read
- */
-void blockutil_read_sector(struct device* dev, uint32_t sector, uint8_t* data, uint32_t size);
-
+* if data_size smaller than the number of bytes in the sectors written multipled by sector size, the 
+* remaining space is null padded
+*/
+uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba);
+/*
+* write bytes from 'data'.  'data_size' is the number of bytes to write and 'start_lba' is the starting lba.
+* return total bytes written
+*/
+/*
+* the total data read from the block device is sectors * sector size, which may be larger than data_size
+* only data_size bytes will be written to data
+*/
+uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba);
+/*
+* check if a device is a block device (this is, supports deviceapi_block)
+*/
+uint8_t blockutil_is_block_device(struct device* dev);
 #endif

@@ -55,14 +55,14 @@ void swap_read(struct device* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
-    blockutil_read_sector(device_data->block_device, block, data, swap_block_size(dev));
+    blockutil_read(device_data->block_device, data, swap_block_size(dev), block);
 }
 
 void swap_write(struct device* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
-    blockutil_write_sector(device_data->block_device, block, data, swap_block_size(dev));
+    blockutil_write(device_data->block_device, data, swap_block_size(dev), block);
 }
 
 uint16_t swap_block_count(struct device* dev) {
@@ -74,10 +74,7 @@ uint16_t swap_block_count(struct device* dev) {
 
 struct device* swap_attach(struct device* block_device) {
     ASSERT_NOT_NULL(block_device);
-    // basically the device needs to implement deviceapi_block
-    ASSERT((block_device->devicetype == PARTITION) || (block_device->devicetype == VBLOCK) ||
-           (block_device->devicetype == DISK) || (block_device->devicetype == RAMDISK));
-
+    ASSERT(1 == blockutil_is_block_device(block_device));
     /*
      * register device
      */
@@ -109,6 +106,11 @@ struct device* swap_attach(struct device* block_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(block_device);
+
+        /*
         * return device
         */
         return deviceinstance;
@@ -122,5 +124,14 @@ struct device* swap_attach(struct device* block_device) {
 
 void swap_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->block_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

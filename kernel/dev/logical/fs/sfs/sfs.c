@@ -122,7 +122,7 @@ bool sfs_is_valid_superblock(struct sfs_superblock* superblock) {
 
 void sfs_read_superblock(struct device* dev, struct sfs_superblock* superblock) {
     ASSERT_NOT_NULL(dev);
-    blockutil_read_sector(dev, 0, (uint8_t*)superblock, sizeof(struct sfs_superblock));
+    blockutil_read(dev, (uint8_t*)superblock, sizeof(struct sfs_superblock), 0);
 }
 
 void sfs_format(struct device* dev) {
@@ -150,7 +150,7 @@ void sfs_format(struct device* dev) {
     superblock.block_size = (sector_size / 512) + 1;
 
     // write superblock
-    blockutil_write_sector(device_data->partition_device, 0, (uint8_t*)&superblock, sizeof(struct sfs_superblock));
+    blockutil_write(device_data->partition_device, (uint8_t*)&superblock, sizeof(struct sfs_superblock), 0);
 }
 
 /*
@@ -180,10 +180,7 @@ uint8_t sfs_uninit(struct device* dev) {
 
 struct device* sfs_attach(struct device* partition_device) {
     ASSERT_NOT_NULL(partition_device);
-    // basically the device needs to implement deviceapi_block
-    ASSERT((partition_device->devicetype == PARTITION) || (partition_device->devicetype == VBLOCK) ||
-           (partition_device->devicetype == DISK) || (partition_device->devicetype == RAMDISK));
-
+    ASSERT(1 == blockutil_is_block_device(partition_device));
     /*
      * register device
      */
@@ -212,6 +209,11 @@ struct device* sfs_attach(struct device* partition_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(partition_device);
+
+        /*
         * return device
         */
         return deviceinstance;
@@ -225,5 +227,14 @@ struct device* sfs_attach(struct device* partition_device) {
 
 void sfs_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct sfs_devicedata* device_data = (struct sfs_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->partition_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

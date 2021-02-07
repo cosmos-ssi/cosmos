@@ -150,9 +150,10 @@ uint8_t vblock_init(struct device* dev) {
     return 1;
 }
 
-void vblockutil_read_sector(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count) {
+uint32_t vblockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
 
     ASSERT_NOT_NULL(dev->device_data);
     struct vblock_devicedata* device_data = (struct vblock_devicedata*)dev->device_data;
@@ -160,14 +161,16 @@ void vblockutil_read_sector(struct device* dev, uint32_t sector, uint8_t* data, 
     /*
      * drop a message
      */
-    kprintf("read sector %llu, size %llu\n", sector, sector_count);
+    kprintf("read sector %llu, size %llu\n", start_lba);
+
+    panic("this code needs to be rewritten");
 
     /*
      * block request
      */
     struct vblock_block_request* req = vblock_block_request_new();
     req->type = VIRTIO_BLK_T_IN;
-    req->sector = sector;
+    req->sector = start_lba;
     req->data = data;
 
     /*
@@ -186,12 +189,16 @@ void vblockutil_read_sector(struct device* dev, uint32_t sector, uint8_t* data, 
     //    uint16_t avail_idx = virtq_get_available_idx(device_data->vblock_queue);
     //    kprintf("avail_idx %llu\n",avail_idx);
     asm_out_w(device_data->base + VIRTIO_QUEUE_NOTIFY, 0);
+    return 0;
 }
 
-void vblockutil_write_sector(struct device* dev, uint32_t sector, uint8_t* data, uint32_t sector_count) {
+uint32_t vblockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
+
     panic("vblock write not implemented yet");
+    return 0;
 }
 
 uint16_t vblock_sector_size(struct device* dev) {
@@ -228,8 +235,8 @@ void vblock_search_cb(struct pci_device* dev) {
      */
     struct deviceapi_block* api = (struct deviceapi_block*)kmalloc(sizeof(struct deviceapi_block));
     memzero((uint8_t*)api, sizeof(struct deviceapi_block));
-    api->write = &vblockutil_write_sector;
-    api->read = &vblockutil_read_sector;
+    api->write = &vblockutil_write;
+    api->read = &vblockutil_read;
     api->sector_size = &vblock_sector_size;
     api->total_size = &vblock_total_size;
     deviceinstance->api = api;

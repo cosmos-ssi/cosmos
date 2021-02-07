@@ -147,6 +147,7 @@ struct device* devicemgr_new_device() {
     ret->devicetype = 0;
     ret->api = 0;
     ret->pci = 0;
+    ret->reference_count = 0;
     return ret;
 }
 
@@ -241,6 +242,8 @@ void devicemgr_register_devices() {
 
 // attach a device (non-fixed devices... like RAM disks and SWAP)
 uint8_t devicemgr_attach_device(struct device* dev) {
+    ASSERT_NOT_NULL(dev);
+
     /*
      * register
      */
@@ -263,6 +266,7 @@ uint8_t devicemgr_attach_device(struct device* dev) {
 
 // detach a device (non-fixed devices... like RAM disks and SWAP)
 uint8_t devicemgr_detach_device(struct device* dev) {
+    ASSERT_NOT_NULL(dev);
     /*
      * unregister
      */
@@ -283,4 +287,33 @@ uint8_t devicemgr_detach_device(struct device* dev) {
     } else {
         return 1;
     }
+}
+
+/*
+* increment device reference count
+*/
+uint8_t devicemgr_increment_device_refcount(struct device* dev) {
+    ASSERT_NOT_NULL(dev);
+    //    kprintf("Increasing ref count on %s\n", dev->name);
+    dev->reference_count += 1;
+    return dev->reference_count;
+}
+/*
+* decrease device reference count
+*/
+uint8_t devicemgr_decrement_device_refcount(struct device* dev) {
+    ASSERT_NOT_NULL(dev);
+    //   kprintf("Decreasing ref count on %s\n", dev->name);
+    ASSERT(dev->reference_count > 0);
+    dev->reference_count -= 1;
+    return dev->reference_count;
+}
+
+void devicemgr_dump_devices_iterator(struct device* dev) {
+    ASSERT_NOT_NULL(dev);
+    kprintf("Device %s Refcount %llu\n", dev->name, dev->reference_count);
+}
+
+void devicemgr_dump_devices() {
+    deviceregistry_iterate(&devicemgr_dump_devices_iterator);
 }

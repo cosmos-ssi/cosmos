@@ -87,6 +87,10 @@ struct device* arp_attach(struct device* ethernet_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(ethernet_device);
+        /*
         * return device
         */
         return deviceinstance;
@@ -100,6 +104,15 @@ struct device* arp_attach(struct device* ethernet_device) {
 
 void arp_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct arp_devicedata* device_data = (struct arp_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->ethernet_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }
 

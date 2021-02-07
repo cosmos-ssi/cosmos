@@ -69,3 +69,6 @@ dkms.conf
 /img/hda.img
 /img/Dos622-1.img
 /img/blank.img
+/user/cosmos.ar
+mkinitrd
+/img/initrd.img

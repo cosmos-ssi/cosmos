@@ -92,7 +92,7 @@ uint32_t cfs_total_sectormap_sectors(struct device* dev) {
 void cfs_read_superblock(struct device* dev, struct cfs_superblock* superblock) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(superblock);
-    blockutil_read_sector(dev, 0, (uint8_t*)superblock, sizeof(struct cfs_superblock));
+    blockutil_read(dev, (uint8_t*)superblock, sizeof(struct cfs_superblock), 0);
 }
 
 /*
@@ -101,7 +101,7 @@ void cfs_read_superblock(struct device* dev, struct cfs_superblock* superblock) 
 void cfs_write_superblock(struct device* dev, struct cfs_superblock* superblock) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(superblock);
-    blockutil_write_sector(dev, 0, (uint8_t*)superblock, sizeof(struct cfs_superblock));
+    blockutil_write(dev, (uint8_t*)superblock, sizeof(struct cfs_superblock), 0);
 }
 
 /*
@@ -110,7 +110,7 @@ void cfs_write_superblock(struct device* dev, struct cfs_superblock* superblock)
 void cfs_write_blockmap(struct device* dev, struct cfs_blockmap* blockmap, uint32_t sector) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(blockmap);
-    blockutil_write_sector(dev, sector, (uint8_t*)blockmap, sizeof(struct cfs_blockmap));
+    blockutil_write(dev, (uint8_t*)blockmap, sizeof(struct cfs_blockmap), sector);
 }
 
 /*
@@ -119,7 +119,7 @@ void cfs_write_blockmap(struct device* dev, struct cfs_blockmap* blockmap, uint3
 void cfs_read_blockmap(struct device* dev, struct cfs_blockmap* blockmap, uint32_t sector) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(blockmap);
-    blockutil_read_sector(dev, sector, (uint8_t*)blockmap, sizeof(struct cfs_blockmap));
+    blockutil_read(dev, (uint8_t*)blockmap, sizeof(struct cfs_blockmap), sector);
 }
 
 /*
@@ -179,9 +179,7 @@ uint8_t cfs_uninit(struct device* dev) {
 
 struct device* cfs_attach(struct device* partition_device) {
     ASSERT_NOT_NULL(partition_device);
-    // basically the device needs to implement deviceapi_block
-    ASSERT((partition_device->devicetype == PARTITION) || (partition_device->devicetype == VBLOCK) ||
-           (partition_device->devicetype == DISK) || (partition_device->devicetype == RAMDISK));
+    ASSERT(1 == blockutil_is_block_device(partition_device));
 
     /*
      * register device
@@ -210,6 +208,10 @@ struct device* cfs_attach(struct device* partition_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(partition_device);
+        /*
         * return device
         */
         return deviceinstance;
@@ -223,5 +225,14 @@ struct device* cfs_attach(struct device* partition_device) {
 
 void cfs_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct cfs_devicedata* device_data = (struct cfs_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->partition_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

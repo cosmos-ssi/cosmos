@@ -146,7 +146,7 @@ void fat_read_fs_parameters(struct device* dev, struct fat_fs_parameters* param)
     uint8_t* buffer = kmalloc(param->sector_size);
     memset(buffer, 0, param->sector_size);
 
-    blockutil_read_sector(dev, 0, buffer, param->sector_size);
+    blockutil_read(dev, buffer, param->sector_size, 0);
 
     struct fat_BS* fat_boot = (struct fat_BS*)buffer;
     //   struct fat_extBS_16* fat_boot_ext_16 = (struct fat_extBS_16*)&(fat_boot->extended_section);
@@ -204,7 +204,7 @@ uint32_t fat_fat12_next_cluster(struct device* dev, uint32_t current_cluster, st
     uint32_t ent_offset = fat_offset % fs_parameters->sector_size;
 
     memset((uint8_t*)&FAT_table, 0, fs_parameters->sector_size);
-    blockutil_read_sector(dev, fat_sector, (uint8_t*)&FAT_table, fs_parameters->sector_size);
+    blockutil_read(dev, (uint8_t*)&FAT_table, fs_parameters->sector_size, fat_sector);
 
     unsigned short table_value = *(unsigned short*)&FAT_table[ent_offset];
 
@@ -223,7 +223,7 @@ uint32_t fat_fat16_next_cluster(struct device* dev, uint32_t current_cluster, st
     uint32_t ent_offset = fat_offset % fs_parameters->sector_size;
 
     memset((uint8_t*)&FAT_table, 0, fs_parameters->sector_size);
-    blockutil_read_sector(dev, fat_sector, (uint8_t*)&FAT_table, fs_parameters->sector_size);
+    blockutil_read(dev, (uint8_t*)&FAT_table, fs_parameters->sector_size, fat_sector);
 
     return *(unsigned short*)&FAT_table[ent_offset];
 }
@@ -325,8 +325,7 @@ uint8_t fat_uninit(struct device* dev) {
 struct device* fat_attach(struct device* partition_device) {
     ASSERT_NOT_NULL(partition_device);
     // basically the device needs to implement deviceapi_block
-    ASSERT((partition_device->devicetype == PARTITION) || (partition_device->devicetype == VBLOCK) ||
-           (partition_device->devicetype == DISK) || (partition_device->devicetype == RAMDISK));
+    ASSERT(1 == blockutil_is_block_device(partition_device));
 
     /*
      * register device
@@ -356,6 +355,10 @@ struct device* fat_attach(struct device* partition_device) {
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
         /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(partition_device);
+        /*
         * return device
         */
         return deviceinstance;
@@ -369,5 +372,14 @@ struct device* fat_attach(struct device* partition_device) {
 
 void fat_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct fat_devicedata* device_data = (struct fat_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->partition_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }

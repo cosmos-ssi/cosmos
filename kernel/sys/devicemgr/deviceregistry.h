@@ -18,10 +18,10 @@ uint16_t deviceregistry_devicecount();
 uint16_t deviceregistry_devicecount_type(device_type dt);
 struct device* deviceregistry_get_device(device_type dt, uint16_t idx);
 
-typedef void (*DeviceIterator)(struct device* dev);
+typedef void (*device_iterator)(struct device* dev);
 
-void deviceregistry_iterate(DeviceIterator deviceIterator);
-void deviceregistry_iterate_type(device_type dt, DeviceIterator deviceIterator);
+void deviceregistry_iterate(device_iterator deviceIterator);
+void deviceregistry_iterate_type(device_type dt, device_iterator deviceIterator);
 
 // find a device by name ie "rtc0"
 struct device* deviceregistry_findDevice(const int8_t* name);

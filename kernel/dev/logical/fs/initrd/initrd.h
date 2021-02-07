@@ -10,16 +10,17 @@
 #ifndef _INITRD_H
 #define _INITRD_H
 
+#define INITRD_DISK "disk0"
+
 #include <types.h>
 
-struct device* initrd_attach(struct device* partition_device);
+struct device* initrd_attach(struct device* partition_device, uint32_t lba);
 void initrd_detach(struct device* dev);
-/*
-* once the api for fs is right, this needs to be moved to api code
-*/
-uint8_t initrd_add_file(struct device* initrd_dev, uint8_t* data, uint32_t size);
+
 uint8_t initrd_get_file_name(struct device* initrd_dev, uint8_t idx, uint8_t* name, uint16_t size);
 uint8_t initrd_get_file_size(struct device* initrd_dev, uint8_t idx, uint16_t* size);
 uint8_t initrd_get_file_data(struct device* initrd_dev, uint8_t idx, uint8_t* data, uint32_t size);
+void initrd_dump_dir(struct device* initrd_dev);
+uint64_t initrd_lba();
 
 #endif

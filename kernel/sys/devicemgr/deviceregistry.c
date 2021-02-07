@@ -12,6 +12,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>
 #include <sys/vfs/dev_vfs.h>
+#include <sys/vfs/fs_vfs.h>
 #include <sys/vfs/vfs.h>
 
 void deviceregistry_init() {
@@ -26,12 +27,13 @@ void deviceregistry_init() {
 */
 void deviceregistry_add_to_vfs(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    struct vfs* this_dev_vfs = vfs_new_dev(dev->name);
     if (dev->devicetype == FILESYSTEM) {
+        struct vfs* this_dev_vfs = vfs_new_filesystem(dev->name);
         struct vfs* fs_vfs = vfs_find(cosmos_vfs, VFS_FS_TREE);
         ASSERT_NOT_NULL(fs_vfs);
         vfs_add_child(fs_vfs, this_dev_vfs);
     } else {
+        struct vfs* this_dev_vfs = vfs_new_dev(dev->name);
         struct vfs* dev_vfs = vfs_find(cosmos_vfs, VFS_DEV_TREE);
         ASSERT_NOT_NULL(dev_vfs);
         vfs_add_child(dev_vfs, this_dev_vfs);
@@ -148,7 +150,7 @@ struct device* deviceregistry_get_device(device_type dt, uint16_t idx) {
     return 0;
 }
 
-void deviceregistry_iterate(DeviceIterator deviceIterator) {
+void deviceregistry_iterate(device_iterator deviceIterator) {
     if (0 != deviceIterator) {
         for (uint32_t i = 0; i < MAX_DEVICE_TYPES; i++) {
             struct arraylist* lst = devicetypes_get_devicelist(i);
@@ -168,7 +170,7 @@ void deviceregistry_iterate(DeviceIterator deviceIterator) {
     }
 }
 
-void deviceregistry_iterate_type(device_type dt, DeviceIterator deviceIterator) {
+void deviceregistry_iterate_type(device_type dt, device_iterator deviceIterator) {
     ASSERT_NOT_NULL(deviceIterator);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = devicetypes_get_devicelist(dt);

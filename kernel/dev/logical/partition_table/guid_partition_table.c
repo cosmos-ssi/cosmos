@@ -33,7 +33,7 @@ struct guid_pt_devicedata {
 void guid_pt_read_guid_pt_header(struct device* dev, struct guid_pt_header* header) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(header);
-    blockutil_read_sector(dev, GUID_PT_HEADER_LBA, (uint8_t*)header, sizeof(struct guid_pt_header));
+    blockutil_read(dev, (uint8_t*)header, sizeof(struct guid_pt_header), GUID_PT_HEADER_LBA);
 }
 
 /*
@@ -126,12 +126,9 @@ void guid_pt_read_guid_pt_entry(struct device* dev, struct guid_pt_entry* entry,
     * read the sector
     */
     uint8_t data[sector_size];
-    blockutil_read_sector(device_data->block_device, header.gpt_array_lba + sector, data, sector_size);
-    //   debug_show_memblock(data, sector_size);
-    /*
-    * copy data
-    */
+    blockutil_read(device_data->block_device, data, sector_size, header.gpt_array_lba + sector);
     memcpy((uint8_t*)entry, &(data[remainder]), sizeof(struct guid_pt_entry));
+
     //   debug_show_memblock(entry, sizeof(struct guid_pt_entry));
 }
 
@@ -217,45 +214,29 @@ uint8_t guid_part_table_detachable(struct device* dev) {
     return 1;
 }
 
-void guid_part_read_sector(struct device* dev, uint8_t partition_index, uint32_t sector, uint8_t* data,
-                           uint32_t count) {
+uint32_t guid_part_read_sectors(struct device* dev, uint8_t partition_index, uint8_t* data, uint32_t data_size,
+                                uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct guid_pt_devicedata* device_data = (struct guid_pt_devicedata*)dev->device_data;
     uint64_t lba = guid_pt_part_table_get_partition_lba(dev, partition_index);
-    blockutil_read_sector(device_data->block_device, lba + sector, data, count);
+    return blockutil_read(device_data->block_device, data, data_size, lba + start_lba);
 }
 
-void guid_part_write_sector(struct device* dev, uint8_t partition_index, uint32_t sector, uint8_t* data,
-                            uint32_t count) {
+uint32_t guid_part_write_sectors(struct device* dev, uint8_t partition_index, uint8_t* data, uint32_t data_size,
+                                 uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct guid_pt_devicedata* device_data = (struct guid_pt_devicedata*)dev->device_data;
     uint64_t lba = guid_pt_part_table_get_partition_lba(dev, partition_index);
-    blockutil_write_sector(device_data->block_device, lba + sector, data, count);
-}
-
-uint16_t guid_part_sector_size(struct device* dev, uint8_t partition_index) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    //  struct guid_pt_devicedata* device_data = (struct guid_pt_devicedata*)dev->device_data;
-    panic("not implemented");
-    return 0;
-}
-
-uint32_t guid_part_total_size(struct device* dev, uint8_t partition_index) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    //    struct guid_pt_devicedata* device_data = (struct guid_pt_devicedata*)dev->device_data;
-    panic("not implemented");
-    return 0;
+    return blockutil_write(device_data->block_device, data, data_size, lba + start_lba);
 }
 
 struct device* guid_pt_attach(struct device* block_device) {
     ASSERT_NOT_NULL(block_device);
-    ASSERT((block_device->devicetype == DISK) || (block_device->devicetype == RAMDISK) ||
-           (block_device->devicetype == VBLOCK));
+    ASSERT(1 == blockutil_is_block_device(block_device));
     ASSERT(sizeof(struct guid_pt_entry) == 128);
+
     /*
      * register device
      */
@@ -275,10 +256,8 @@ struct device* guid_pt_attach(struct device* block_device) {
     api->type = &guid_pt_part_table_get_partition_type;
     api->sectors = &guid_part_table_get_sector_count_function;
     api->detachable = &guid_part_table_detachable;
-    api->read = &guid_part_read_sector;
-    api->write = &guid_part_write_sector;
-    api->sector_size = &guid_part_sector_size;
-    api->total_size = &guid_part_total_size;
+    api->read = &guid_part_read_sectors;
+    api->write = &guid_part_write_sectors;
     deviceinstance->api = api;
     /*
      * device data
@@ -290,6 +269,10 @@ struct device* guid_pt_attach(struct device* block_device) {
      * register
      */
     if (0 != devicemgr_attach_device(deviceinstance)) {
+        /*
+        * increase ref count of underlying device
+        */
+        devicemgr_increment_device_refcount(block_device);
         /*
         * return device
         */
@@ -304,6 +287,15 @@ struct device* guid_pt_attach(struct device* block_device) {
 
 void guid_pt_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct guid_pt_devicedata* device_data = (struct guid_pt_devicedata*)dev->device_data;
+    /*
+    * decrease ref count of underlying device
+    */
+    devicemgr_decrement_device_refcount(device_data->block_device);
+    /*
+    * detach
+    */
     devicemgr_detach_device(dev);
 }
 
