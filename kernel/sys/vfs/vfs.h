@@ -42,8 +42,10 @@ struct vfs {
     vfs_close_readdir_function readdir;
 };
 
+/*
+* interface functions for all VFS nodes 
+*/
 void vfs_init();
-
 void vfs_delete(struct vfs* v);
 void vfs_set_name(struct vfs* v, uint8_t* name);
 void vfs_add_child(struct vfs* v, struct vfs* child);
@@ -52,6 +54,8 @@ uint32_t vfs_count(struct vfs* v);
 struct vfs* vfs_find(struct vfs* v, uint8_t* name);
 void vfs_traverse(struct vfs* v, vfs_traverse_function f);
 void vfs_dump(struct vfs* v);
+
+// the VFS for this host
 extern struct vfs* cosmos_vfs;
 
 #endif
