@@ -34,7 +34,7 @@ user-subsystem:
 utils:
 	cd util/mkinitrd && $(MAKE)
 
-clean: boot-clean kernel-clean
+clean: boot-clean kernel-clean user-clean util-clean
 	$(RM) $(BOOTIMAGE)
 	$(RM) $(CRUFT_FILES)
 
@@ -43,6 +43,12 @@ kernel-clean:
 
 boot-clean:
 	cd boot/x86-64 && $(MAKE) clean
+
+user-clean:
+	cd user && $(MAKE) clean
+
+util-clean:
+	cd util/mkinitrd && $(MAKE) clean
 
 qemu: bootimage
 	$(QEMU) $(QEMUARGS)

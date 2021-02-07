@@ -7,3 +7,8 @@ DEPS = hellomake.h
 
 mkinitrd: mkinitrd.o 
 	$(CC) -o mkinitrd mkinitrd.o
+
+clean:
+	rm -f *.o
+	rm -f mkinitrd
+	rm -f *.img
