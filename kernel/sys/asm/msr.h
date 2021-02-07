@@ -8,6 +8,11 @@
 #ifndef _MSR_H
 #define _MSR_H
 
+#define MSR_STAR 0xC0000081    // Segment selectors for SYSCALL/SYSRET
+#define MSR_LSTAR 0xC0000082   // 64 bit RIP for kernel entry
+#define MSR_CSTAR 0xC0000083   // Compatibility-mode RIP
+#define MSR_SFMASK 0xC0000084  // RFLAGS mask for SYSCALL (this is a mask, so corresponding bits are cleared)
+
 uint64_t asm_rdmsr(uint64_t reg);
 void asm_wrmsr(uint64_t reg, uint64_t val);
 
