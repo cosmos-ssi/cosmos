@@ -48,6 +48,17 @@ void ata_dma_add_job(device_t* dev, uint64_t start, uint64_t count, BYTE* buf, a
         linkedlist_add(dma_jobs, (void*)cur_job);
     }
     spinlock_release(&dma_list_lock);
+
+    return;
+}
+
+void ata_dma_execute_job() {
+    ata_dma_job* cur_job;
+
+    cur_job = dma_jobs;
+
+    spinlock_acquire(&dma_buf_lock);
+    spinlock_release(&dma_buf_lock);
 }
 
 void ata_dma_init() {
@@ -87,6 +98,5 @@ void ata_dma_read(device_t* dev, uint64_t start, uint64_t count, BYTE* buf) {
 
     ata_dma_add_job(dev, start, count, buf, ATA_DMA_DIR_READ);
 
-    spinlock_acquire(&dma_buf_lock);
-    spinlock_release(&dma_buf_lock);
+    return;
 }
