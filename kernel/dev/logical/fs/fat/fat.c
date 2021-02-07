@@ -146,7 +146,7 @@ void fat_read_fs_parameters(struct device* dev, struct fat_fs_parameters* param)
     uint8_t* buffer = kmalloc(param->sector_size);
     memset(buffer, 0, param->sector_size);
 
-    blockutil_read_sectors(dev, buffer, param->sector_size, 0);
+    blockutil_read(dev, buffer, param->sector_size, 0);
 
     struct fat_BS* fat_boot = (struct fat_BS*)buffer;
     //   struct fat_extBS_16* fat_boot_ext_16 = (struct fat_extBS_16*)&(fat_boot->extended_section);
@@ -204,7 +204,7 @@ uint32_t fat_fat12_next_cluster(struct device* dev, uint32_t current_cluster, st
     uint32_t ent_offset = fat_offset % fs_parameters->sector_size;
 
     memset((uint8_t*)&FAT_table, 0, fs_parameters->sector_size);
-    blockutil_read_sectors(dev, (uint8_t*)&FAT_table, fs_parameters->sector_size, fat_sector);
+    blockutil_read(dev, (uint8_t*)&FAT_table, fs_parameters->sector_size, fat_sector);
 
     unsigned short table_value = *(unsigned short*)&FAT_table[ent_offset];
 
@@ -223,7 +223,7 @@ uint32_t fat_fat16_next_cluster(struct device* dev, uint32_t current_cluster, st
     uint32_t ent_offset = fat_offset % fs_parameters->sector_size;
 
     memset((uint8_t*)&FAT_table, 0, fs_parameters->sector_size);
-    blockutil_read_sectors(dev, (uint8_t*)&FAT_table, fs_parameters->sector_size, fat_sector);
+    blockutil_read(dev, (uint8_t*)&FAT_table, fs_parameters->sector_size, fat_sector);
 
     return *(unsigned short*)&FAT_table[ent_offset];
 }

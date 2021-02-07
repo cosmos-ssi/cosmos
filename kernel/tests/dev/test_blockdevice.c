@@ -38,10 +38,10 @@ void test_block_device_base_api(struct device* dev) {
 
 void test_blockutil(struct device* dev) {
     uint32_t s = strlen(testdata);
-    uint32_t written = blockutil_write_sectors(dev, testdata, s + 1, 0);
+    uint32_t written = blockutil_write(dev, testdata, s + 1, 0);
     ASSERT(written == s + 1);
     uint8_t buffer[s + 1];
-    uint32_t read = blockutil_read_sectors(dev, (uint8_t*)buffer, s + 1, 0);
+    uint32_t read = blockutil_read(dev, (uint8_t*)buffer, s + 1, 0);
     ASSERT(read == s + 1);
     ASSERT(s == strlen(buffer));
     ASSERT(0 == strcmp(buffer, testdata));

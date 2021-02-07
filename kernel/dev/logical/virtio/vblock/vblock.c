@@ -150,7 +150,7 @@ uint8_t vblock_init(struct device* dev) {
     return 1;
 }
 
-uint32_t vblockutil_read_sectors(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t vblockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -192,7 +192,7 @@ uint32_t vblockutil_read_sectors(struct device* dev, uint8_t* data, uint32_t dat
     return 0;
 }
 
-uint32_t vblockutil_write_sectors(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t vblockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -235,8 +235,8 @@ void vblock_search_cb(struct pci_device* dev) {
      */
     struct deviceapi_block* api = (struct deviceapi_block*)kmalloc(sizeof(struct deviceapi_block));
     memzero((uint8_t*)api, sizeof(struct deviceapi_block));
-    api->write = &vblockutil_write_sectors;
-    api->read = &vblockutil_read_sectors;
+    api->write = &vblockutil_write;
+    api->read = &vblockutil_read;
     api->sector_size = &vblock_sector_size;
     api->total_size = &vblock_total_size;
     deviceinstance->api = api;

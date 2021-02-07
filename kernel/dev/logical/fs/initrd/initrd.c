@@ -49,8 +49,8 @@ uint8_t initrd_init(struct device* dev) {
     /*
     * read the header
     */
-    blockutil_read_sectors(device_data->partition_device, (uint8_t*)&(device_data->header),
-                           sizeof(struct initrd_header), device_data->lba);
+    blockutil_read(device_data->partition_device, (uint8_t*)&(device_data->header), sizeof(struct initrd_header),
+                   device_data->lba);
 
     kprintf("Init %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
     return 1;
