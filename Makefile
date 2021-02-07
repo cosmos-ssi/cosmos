@@ -12,11 +12,11 @@ all: subsystems
 
 bootimage: subsystems
 	$(DD) if=/dev/zero of=$(BOOTIMAGE) bs=32768 count=129024
-	$(DD) if=boot/x86-64/boot.bin of=$(BOOTIMAGE) conv=notrunc bs=512 count=1
-	$(DD) if=boot/x86-64/boot2.bin of=$(BOOTIMAGE) conv=notrunc bs=512 count=2 seek=1
-	$(DD) if=boot/x86-64/boot3.bin of=$(BOOTIMAGE) conv=notrunc bs=512 count=1 seek=3
+	$(DD) if=boot/x86-64/boot.bin of=$(BOOTIMAGE) conv=notrunc bs=512 
+	$(DD) if=boot/x86-64/boot2.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=1
+	$(DD) if=boot/x86-64/boot3.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=3
+	$(DD) if=kernel/cosmos.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=4
 #	$(DD) if=img/initrd.img of=$(BOOTIMAGE) conv=notrunc bs=512 count=10 seek=4
-	$(DD) if=kernel/cosmos.bin of=$(BOOTIMAGE) conv=notrunc bs=512 count=2048 seek=4
 
 subsystems: lint boot-subsystem kernel-subsystem utils user-subsystem blank-disk initrd
 	
