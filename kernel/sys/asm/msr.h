@@ -8,4 +8,7 @@
 #ifndef _MSR_H
 #define _MSR_H
 
+uint64_t asm_rdmsr(uint64_t reg);
+void asm_wrmsr(uint64_t reg, uint64_t val);
+
 #endif
