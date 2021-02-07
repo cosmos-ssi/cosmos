@@ -35,6 +35,7 @@
 #include <sys/vfs/vfs.h>
 #include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/idt/idt.h>
+#include <sys/x86-64/syscall/syscall.h>
 #include <tests/tests.h>
 #include <types.h>
 
@@ -82,6 +83,9 @@ void CosmOS() {
      */
     kprintf("Initializing Device Registry...\n");
     devicemgr_init();
+
+    kprintf("Initializing system call handler...\n");
+    syscall_init();
 
     /*
      * Register all devices
