@@ -20,7 +20,7 @@ OBJS_C=$(subst $(SRC_DIR)/, , $(SRCS_C:.c=.o))
 OBJS_ASM=$(subst $(SRC_DIR)/, , $(SRCS_ASM:.asm=.o))
 OBJS=$(OBJS_C) $(OBJS_ASM)
 
-init/init.o: init/init.h init/init.C 
+init/init.o: init/init.h init/init.c
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
 
 $(COSMOS_INIT): $(COSMOS_ABI_ARCHIVE) init/init.o
