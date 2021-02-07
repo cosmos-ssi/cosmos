@@ -81,11 +81,6 @@ void idt_init() {
     idt_add_ISR(irq14, IRQ14);
     idt_add_ISR(irq15, IRQ15);
 
-    // syscalls
-    idt_add_ISR(isr_syscall_posix, SYSCALL_POSIX);
-    idt_add_ISR(isr_syscall_cosmos, SYSCALL_COSMOS);
-    idt_add_ISR(isr_syscall_bdos, SYSCALL_BDOS);
-
     idtr.limit = (IDT_SIZE * sizeof(idtEntry)) - 1;
     idtr.base = (uint64_t)&idt;
 

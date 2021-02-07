@@ -61,10 +61,6 @@ global isrDebug;
 global isrInvalidOpcode;
 global isrBreakpoint;
 
-global isr_syscall_posix;
-global isr_syscall_cosmos;
-global isr_syscall_bdos;
-
 extern irq0_handler
 extern irq1_handler
 extern irq2_handler
@@ -89,10 +85,6 @@ extern isrDebug_handler;
 extern isrGPF_handler;
 extern isrInvalidOpcode_handler
 extern isrBreakpoint_handler;
-
-extern syscall_posix;
-extern syscall_cosmos;
-extern syscall_bdos;
 
 irq0:
     cli
@@ -390,44 +382,5 @@ isrGeneric:
     xor rax, rax
     mov rdi, rsp
     call isrGeneric_handler
-    popaq
-    iretq
-
-isr_syscall_posix:
-    cli
-    pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
-    cld
-    xor rax, rax
-    mov rdi, rsp
-    call syscall_posix
-    popaq
-    iretq
-
-isr_syscall_cosmos:
-    cli
-    pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
-    cld
-    xor rax, rax
-    mov rdi, rsp
-    call syscall_cosmos
-    popaq
-    iretq
-
-isr_syscall_bdos:
-    cli
-    pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
-    cld
-    xor rax, rax
-    mov rdi, rsp
-    call syscall_bdos
     popaq
     iretq
