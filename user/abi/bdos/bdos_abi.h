@@ -11,7 +11,7 @@
 // https://www.seasip.info/Cpm/bdosfunc.html
 // https://www.seasip.info/Cpm/fcb.html
 
-#include <cosmos_types.h>
+#include <../../cosmos_types.h>
 
 struct bdos_fcb {
     uint8_t drive;

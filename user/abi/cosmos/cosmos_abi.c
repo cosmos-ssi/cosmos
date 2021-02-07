@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <abi/cosmos/cosmos_abi.h>
+#include <cosmos_abi.h>
 
 #define COSMOS_SYSCALL_COM1_WRITE 0x01
 

@@ -1,43 +1,24 @@
 include ../scripts/mk/flags.mk
 include ../scripts/mk/build.mk
 
-COSMOS_ABI_ARCHIVE=cosmos.ar
-
 EXTRA_CFLAGS= -I.
 
 SRC_DIR=.
 
-all: $(COSMOS_ABI_ARCHIVE)
+all: abis init.a
 
-# sources
-SRCS_C=$(shell find $(SRC_DIR) -type f -iname '*.c')
-HEADERS_C=$(shell find $(SRC_DIR) -type f -iname '*.h')
-SRCS_ASM=$(shell find $(SRC_DIR) -type f -iname '*.asm')
+abis:
+	cd abi/posix && $(MAKE) all
+	cd abi/bdos && $(MAKE) all
+	cd abi/cosmos && $(MAKE) all
 
-# object files
-OBJS_C=$(subst $(SRC_DIR)/, , $(SRCS_C:.c=.o))
-OBJS_ASM=$(subst $(SRC_DIR)/, , $(SRCS_ASM:.asm=.o))
-OBJS=$(OBJS_C) $(OBJS_ASM)
-
-# set search paths
-vpath %.c .
-vpath %.h .
-vpath %.asm .
-
-$(COSMOS_ABI_ARCHIVE): $(OBJS)
-	$(AR) $(ARFLAGS) $@ $^
-
-# C files	
-%.o: %.c $(HEADERS_C)
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
-
-# asm files	
-%.o: %.asm
-	$(NASM) $(NASMARGS) $< -o $@ 
+init.a: 
+	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c init.c
 	
-clean:
-	$(RM) $(OBJS)
-	$(RM) $(ARCHIVE_FILE)
-	$(RM) $(KERNEL_ELF)
-	$(RM) $(KERNEL_BIN)
-	$(RM) $(KERNEL_MAP)
+clean_abis:
+	cd abi/posix && $(MAKE) clean
+	cd abi/bdos && $(MAKE) clean
+	cd abi/cosmos && $(MAKE) clean
+
+clean: clean_abis
+	$(RM) *.o
