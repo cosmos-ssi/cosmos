@@ -58,6 +58,7 @@ global isrPFE;
 global isrGeneric;
 global isrGPF;
 global isrDebug;
+global isrInvalidOpcode;
 global isrBreakpoint;
 
 global isr_syscall_posix;
@@ -86,6 +87,7 @@ extern isrPFE_handler
 extern isrGeneric_handler
 extern isrDebug_handler;
 extern isrGPF_handler;
+extern isrInvalidOpcode_handler
 extern isrBreakpoint_handler;
 
 extern syscall_posix;
@@ -349,6 +351,19 @@ isrGPF:
     xor rax, rax
     mov rdi, rsp
     call isrGPF_handler
+    popaq
+    iretq
+
+isrInvalidOpcode:
+    cli
+    pushaq
+    xor ax, ax
+    mov es, ax
+    mov ds, ax
+    cld
+    xor rax, rax
+    mov rdi, rsp
+    call isrInvalidOpcode_handler
     popaq
     iretq
 

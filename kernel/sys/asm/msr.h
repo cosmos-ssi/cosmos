@@ -8,6 +8,7 @@
 #ifndef _MSR_H
 #define _MSR_H
 
+#define MSR_EFER 0xC0000080    // EFER register
 #define MSR_STAR 0xC0000081    // Segment selectors for SYSCALL/SYSRET
 #define MSR_LSTAR 0xC0000082   // 64 bit RIP for kernel entry
 #define MSR_CSTAR 0xC0000083   // Compatibility-mode RIP

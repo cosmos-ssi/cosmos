@@ -48,7 +48,7 @@ void idt_init() {
     idt_add_ISR(isrBreakpoint, BREAKPOINT);
     idt_add_ISR(isrGeneric, OVERFLOW);
     idt_add_ISR(isrGeneric, BOUND_RANGE_EXCEEDED);
-    idt_add_ISR(isrGeneric, INVALID_OPCODE);
+    idt_add_ISR(isrInvalidOpcode, INVALID_OPCODE);
     idt_add_ISR(isrGeneric, DEVICE_NOT_AVAILABLE);
     idt_add_ISR(isrGeneric, DOUBLE_FAULT);
     idt_add_ISR(isrGeneric, COPROCESSOR_SEGMENT_OVERRUN);
