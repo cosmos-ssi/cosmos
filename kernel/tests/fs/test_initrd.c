@@ -20,16 +20,15 @@ void test_initrd() {
 
     struct device* dsk = devicemgr_find_device(devicename);
     if (0 != dsk) {
-        kprintf("lba %llu\n", initrd_lba());
+        //    kprintf("lba %llu\n", initrd_lba());
 
-        // attach initrd fs
-        //    struct device* initrd = initrd_attach(dsk, INITRD_LBA_ADDRESS);
-        //    ASSERT_NOT_NULL(initrd);
+        //  struct device* initrd = initrd_attach(dsk, initrd_lba());
+        //  ASSERT_NOT_NULL(initrd);
 
-        //     initrd_dump_dir(initrd);
+        // initrd_dump_dir(initrd);
 
         // detach
-        //   initrd_detach(initrd);
+        // initrd_detach(initrd);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

@@ -10,7 +10,6 @@
 #ifndef _INITRD_H
 #define _INITRD_H
 
-#define INITRD_LBA_ADDRESS 4
 #define INITRD_DISK "disk0"
 
 #include <types.h>

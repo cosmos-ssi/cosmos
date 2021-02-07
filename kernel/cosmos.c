@@ -198,7 +198,7 @@ void mount_initrd() {
     struct device* dsk = devicemgr_find_device(devicename);
     if (0 != dsk) {
         // attach initrd fs
-        struct device* initrd = initrd_attach(dsk, INITRD_LBA_ADDRESS);
+        struct device* initrd = initrd_attach(dsk, initrd_lba());
 
         initrd_dump_dir(initrd);
 
