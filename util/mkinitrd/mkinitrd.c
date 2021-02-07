@@ -11,16 +11,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define INITRD_NAME_SIZE 64
+#define INITRD_MAX_FILES 64
+
 struct initrd_header {
-    unsigned char magic;  // The magic number is there to check for consistency.
-    char name[64];
-    unsigned int offset;  // Offset in the initrd the file starts.
-    unsigned int length;  // Length of the file.
+    unsigned char magic;
+    char name[INITRD_NAME_SIZE];
+    unsigned int offset;
+    unsigned int length;
 };
 
 int main(int argc, char** argv) {
     int nheaders = (argc - 1) / 2;
-    struct initrd_header headers[64];
+    struct initrd_header headers[INITRD_MAX_FILES];
+    memset(&headers, 0, sizeof(struct initrd_header) * INITRD_MAX_FILES);
     printf("size of header: %lu\n", sizeof(struct initrd_header));
     unsigned int off = sizeof(struct initrd_header) * 64 + sizeof(int);
     int i;
@@ -43,7 +47,7 @@ int main(int argc, char** argv) {
     FILE* wstream = fopen("./initrd.img", "w");
     unsigned char* data = (unsigned char*)malloc(off);
     fwrite(&nheaders, sizeof(int), 1, wstream);
-    fwrite(headers, sizeof(struct initrd_header), 64, wstream);
+    fwrite(headers, sizeof(struct initrd_header), INITRD_MAX_FILES, wstream);
 
     for (i = 0; i < nheaders; i++) {
         FILE* stream = fopen(argv[i * 2 + 1], "r");

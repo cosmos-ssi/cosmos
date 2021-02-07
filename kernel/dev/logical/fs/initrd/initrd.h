@@ -10,6 +10,9 @@
 #ifndef _INITRD_H
 #define _INITRD_H
 
+#define INITRD_LBA_ADDRESS 4
+#define INITRD_DISK "disk0"
+
 #include <types.h>
 
 struct device* initrd_attach(struct device* partition_device, uint32_t lba);

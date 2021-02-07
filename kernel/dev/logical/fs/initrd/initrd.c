@@ -17,18 +17,19 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 
-const uint8_t INITRD_MAGIC[] = {'t', 'g', 'e', '7'};
+#define INITRD_NAME_SIZE 64
+#define INITRD_MAX_FILES 64
 
 struct initrd_file_header {
     uint8_t magic;
-    uint8_t name[64];
+    uint8_t name[INITRD_NAME_SIZE];
     uint32_t offset;
     uint32_t length;
 } __attribute__((packed));
 
 struct initrd_header {
     uint32_t number_files;
-    struct initrd_file_header headers[32];
+    struct initrd_file_header headers[INITRD_MAX_FILES];
 } __attribute__((packed));
 
 struct initrd_devicedata {
@@ -161,6 +162,8 @@ void initrd_dump_dir(struct device* initrd_dev) {
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
     debug_show_memblock((uint8_t*)&(device_data->header), sizeof(struct initrd_header));
     for (uint32_t i = 0; i < device_data->header.number_files; i++) {
-        kprintf("    %s\n", device_data->header.headers[i].name);
+        kprintf("    %s at %#llX length %#llX magic %#X\n", device_data->header.headers[i].name,
+                device_data->header.headers[i].offset, device_data->header.headers[i].length,
+                device_data->header.headers[i].magic);
     }
 }
