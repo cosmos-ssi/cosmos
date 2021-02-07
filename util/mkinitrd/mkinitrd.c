@@ -21,14 +21,11 @@ struct initrd_header {
     unsigned int length;
 };
 
-int main(int argc, char** argv) {
-    int nheaders = (argc - 1) / 2;
-    struct initrd_header headers[INITRD_MAX_FILES];
-    memset(&headers, 0, sizeof(struct initrd_header) * INITRD_MAX_FILES);
-    printf("size of header: %lu\n", sizeof(struct initrd_header));
+void fn(char* fullname, char* shortname) {}
+
+unsigned int addheaders(struct initrd_header* headers, int nheaders, char** argv) {
     unsigned int off = (sizeof(struct initrd_header) * INITRD_MAX_FILES) + sizeof(int);
-    int i;
-    for (i = 0; i < nheaders; i++) {
+    for (int i = 0; i < nheaders; i++) {
         printf("writing file %s->%s at 0x%x\n", argv[i * 2 + 1], argv[i * 2 + 2], off);
         strcpy(headers[i].name, argv[i * 2 + 2]);
         headers[i].offset = off;
@@ -43,13 +40,16 @@ int main(int argc, char** argv) {
         fclose(stream);
         headers[i].magic = 0xBF;
     }
+    return off;
+}
 
+void addfiles(struct initrd_header* headers, int nheaders, char** argv, unsigned int off) {
     FILE* wstream = fopen("./initrd.img", "w");
     unsigned char* data = (unsigned char*)malloc(off);
     fwrite(&nheaders, sizeof(int), 1, wstream);
     fwrite(headers, sizeof(struct initrd_header), INITRD_MAX_FILES, wstream);
 
-    for (i = 0; i < nheaders; i++) {
+    for (int i = 0; i < nheaders; i++) {
         FILE* stream = fopen(argv[i * 2 + 1], "r");
         unsigned char* buf = (unsigned char*)malloc(headers[i].length);
         fread(buf, 1, headers[i].length, stream);
@@ -60,6 +60,21 @@ int main(int argc, char** argv) {
 
     fclose(wstream);
     free(data);
+}
 
+int main(int argc, char** argv) {
+    int nheaders = (argc - 1) / 2;
+    struct initrd_header headers[INITRD_MAX_FILES];
+    memset(&headers, 0, sizeof(struct initrd_header) * INITRD_MAX_FILES);
+    printf("Size of initrd header: %lu\n", sizeof(struct initrd_header));
+
+    /*
+    * add the headers, return the current file offset
+    */
+    unsigned int off = addheaders(headers, nheaders, argv);
+    /*
+    * add files
+    */
+    addfiles(headers, nheaders, argv, off);
     return 0;
 }
