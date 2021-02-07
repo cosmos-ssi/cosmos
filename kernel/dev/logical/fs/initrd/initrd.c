@@ -225,3 +225,21 @@ uint64_t initrd_lba() {
     //  kprintf("kernel_sector_count %#llX\n", kernel_sector_count);
     // return 4 + kernel_sector_count;
 }
+
+uint8_t initrd_find_file(struct device* initrd_dev, uint8_t* name, uint8_t* idx) {
+    ASSERT_NOT_NULL(initrd_dev);
+    ASSERT_NOT_NULL(name);
+    ASSERT_NOT_NULL(idx);
+    ASSERT(strlen(name) < INITRD_NAME_SIZE);  // less than b/c of null termination
+    uint8_t file_count = initrd_get_file_count(initrd_dev);
+    for (uint8_t i = 0; i < file_count; i++) {
+        uint8_t thisname[INITRD_NAME_SIZE];
+        memzero(thisname, INITRD_NAME_SIZE);
+        initrd_get_file_name(initrd_dev, i, thisname, INITRD_NAME_SIZE);
+        if (0 == strcmp(thisname, name)) {
+            *idx = i;
+            return 1;
+        }
+    }
+    return 0;
+}
