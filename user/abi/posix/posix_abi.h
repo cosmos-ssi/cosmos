@@ -12,6 +12,6 @@
 #ifndef _POSIX_ABI_H
 #define _POSIX_ABI_H
 
-#include <../../cosmos_types.h>
+#include <cosmos_types.h>
 
 #endif

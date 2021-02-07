@@ -41,7 +41,7 @@ user-subsystem:
 
 initrd:
 	rm -f initrd.img
-	./util/mkinitrd/mkinitrd user/init.o init.o user/abi/bdos/bdos_abi.a bdos_abi.a user/abi/posix/posix_abi.a posix_abi.a user/abi/cosmos/cosmos_abi.a cosmos_abi.a
+	./util/mkinitrd/mkinitrd user/init.o init.o user/cosmos_abi.a cosmos_abi.a
 	mv initrd.img img/
 
 utils:

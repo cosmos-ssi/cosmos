@@ -12,7 +12,7 @@
 #ifndef _COSMOS_ABI_H
 #define _COSMOS_ABI_H
 
-#include <../../cosmos_types.h>
+#include <cosmos_types.h>
 
 uint64_t cosmos_abi_com1_write(uint8_t c);
 
