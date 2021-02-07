@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IMAGE=ghcr.io/jschnurr/cosmos-buildenv:v1
+IMAGE=ghcr.io/cosmos-ssi/cosmos-buildenv:v1
 
 export UID=$(id -u)
 export GID=$(id -g)
