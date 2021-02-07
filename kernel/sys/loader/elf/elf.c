@@ -60,6 +60,17 @@ uint8_t elf_parse(uint8_t* binary, uint32_t len, struct elf_file* elf) {
         // not elf
         return 0;
     }
-    elf_dump(binary, len);
+    /*
+    * set section count
+    */
+    struct elf_header* header = (struct elf_header*)binary;
+    elf->section_count = header->e_shnum;
+    /*
+    * iterate sections
+    */
+    for (uint8_t i = 0; i < elf->section_count; i++) {
+    }
+
+    //  elf_dump(binary, len);
     return 1;
 }
