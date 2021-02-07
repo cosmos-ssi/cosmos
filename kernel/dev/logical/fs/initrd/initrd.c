@@ -15,6 +15,7 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/linkage/linkage.h>
 #include <sys/string/mem.h>
 
 #define INITRD_NAME_SIZE 64
@@ -167,4 +168,15 @@ void initrd_dump_dir(struct device* initrd_dev) {
         kprintf("    %s at %#llX length %#llX magic %#X\n", thisheader.name, thisheader.offset, thisheader.length,
                 thisheader.magic);
     }
+}
+
+/*
+* kernel is at 4th lba.  so figure out the kernel size and add
+*/
+uint64_t initrd_lba() {
+    //linkage_show_kernel_section_data();
+    uint64_t kernel_sector_count = linkage_get_kernel_sector_count();
+
+    //  kprintf("kernel_sector_count %#llX\n", kernel_sector_count);
+    return 4 + kernel_sector_count;
 }
