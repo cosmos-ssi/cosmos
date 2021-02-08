@@ -8,6 +8,7 @@
 #include <dev/logical/console/serial_console.h>
 #include <dev/logical/console/vga_console.h>
 #include <dev/logical/ethernet/ethernet.h>
+#include <dev/logical/fs/devfs/devfs.h>
 #include <dev/logical/fs/initrd/initrd.h>
 #include <dev/logical/null/null.h>
 #include <dev/logical/ramdisk/ramdisk.h>
@@ -41,12 +42,13 @@
 #include <types.h>
 
 void dev_tests();
-void mount_ramdisks();
-void mount_null();
-void mount_tick();
-void mount_rand();
-void mount_tcpip();
-void mount_initrd();
+void attach_ramdisks();
+void attach_null();
+void attach_tick();
+void attach_rand();
+void attach_tcpip();
+void attach_initrd();
+void attach_devfs();
 void load_init_binary();
 
 void create_consoles();
@@ -107,12 +109,13 @@ void CosmOS() {
     /*
      * mount two ram disks.  b/c we can.
      */
-    mount_ramdisks();
-    mount_null();
-    mount_tick();
-    mount_rand();
-    mount_tcpip();
-    mount_initrd();
+    attach_ramdisks();
+    attach_null();
+    attach_tick();
+    attach_rand();
+    attach_tcpip();
+    attach_initrd();
+    attach_devfs();
     /*
      * create consoles
      */
@@ -185,7 +188,7 @@ void create_consoles() {
     }
 }
 
-void mount_ramdisks() {
+void attach_ramdisks() {
     const uint16_t sector_size = 512;
     const uint16_t sector_count1 = 1000;
     ramdisk_attach(sector_size, sector_count1);
@@ -193,16 +196,20 @@ void mount_ramdisks() {
     ramdisk_attach(sector_size, sector_count2);
 }
 
-void mount_null() {
+void attach_devfs() {
+    devfs_attach();
+}
+
+void attach_null() {
     null_attach();
 }
 
-void mount_rand() {
+void attach_rand() {
     rand_attach();
 }
 
 // mount the init rd
-void mount_initrd() {
+void attach_initrd() {
     uint8_t devicename[] = {INITRD_DISK};
 
     struct device* dsk = devicemgr_find_device(devicename);
@@ -229,7 +236,7 @@ void load_init_binary() {
     kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, INITRD_DISK);
 }
 
-void mount_tick() {
+void attach_tick() {
     struct device* pit = devicemgr_find_device("pit0");
     if (0 != pit) {
         tick_attach(pit);
@@ -239,7 +246,7 @@ void mount_tick() {
 /*
 * if vnic0 is there, mount IP on it
 */
-void mount_tcpip() {
+void attach_tcpip() {
     struct device* vnic = devicemgr_find_device("vnic0");
     if (0 != vnic) {
         struct device* eth = ethernet_attach(vnic);

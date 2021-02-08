@@ -61,7 +61,8 @@ typedef enum device_type {
     ICMP = 0x25,             // icmp0, deviceapi_icmp
     ETHERNET = 0x26,         // eth0, deviceapi_ethernet
     SDHCI = 0x27,            // sdhci0
-    SMBIOS = 0x28            // smbios0
+    SMBIOS = 0x28,           // smbios0
+    DEVFS = 0x29             // devfs0, deviceapi_filesytem
 } device_type;
 
 /*
