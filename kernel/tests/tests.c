@@ -28,4 +28,5 @@ void tests_run() {
     test_null();
     test_initrd();
     test_ata();
+    test_init_loader();
 }

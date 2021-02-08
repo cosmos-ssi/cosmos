@@ -1,0 +1,1 @@
+Do not modify this file.  It contains test data for test_initrd.c.

@@ -8,7 +8,9 @@
 #include <dev/logical/console/serial_console.h>
 #include <dev/logical/console/vga_console.h>
 #include <dev/logical/ethernet/ethernet.h>
+#include <dev/logical/fs/devfs/devfs.h>
 #include <dev/logical/fs/initrd/initrd.h>
+#include <dev/logical/fs/rootfs/rootfs.h>
 #include <dev/logical/null/null.h>
 #include <dev/logical/ramdisk/ramdisk.h>
 #include <dev/logical/rand/rand.h>
@@ -27,24 +29,30 @@
 #include <sys/deviceapi/deviceapi_serial.h>
 #include <sys/deviceapi/deviceapi_speaker.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/proc/proc.h>
 #include <sys/sync/sync.h>
 #include <sys/vfs/vfs.h>
 #include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/idt/idt.h>
+#include <sys/x86-64/syscall/syscall.h>
 #include <tests/tests.h>
 #include <types.h>
 
 void dev_tests();
-void mount_ramdisks();
-void mount_null();
-void mount_tick();
-void mount_rand();
-void mount_tcpip();
-void mount_initrd();
+void attach_ramdisks();
+void attach_null();
+void attach_tick();
+void attach_rand();
+void attach_tcpip();
+void attach_initrd();
+void attach_devfs();
+void attach_rootfs();
+void load_init_binary();
 
 void create_consoles();
 void video_write(const uint8_t* s);
@@ -83,6 +91,12 @@ void CosmOS() {
     kprintf("Initializing Device Registry...\n");
     devicemgr_init();
 
+    kprintf("Initializing system call handler...\n");
+    syscall_init();
+
+    kprintf("Initializing process loader and manager...\n");
+    proc_init();
+
     /*
      * Register all devices
      */
@@ -101,12 +115,14 @@ void CosmOS() {
     /*
      * mount two ram disks.  b/c we can.
      */
-    mount_ramdisks();
-    mount_null();
-    mount_tick();
-    mount_rand();
-    mount_tcpip();
-    mount_initrd();
+    attach_ramdisks();
+    attach_null();
+    attach_tick();
+    attach_rand();
+    attach_tcpip();
+    attach_initrd();
+    attach_rootfs();
+    attach_devfs();
     /*
      * create consoles
      */
@@ -145,12 +161,16 @@ void CosmOS() {
 
     // show the vfs
     kprintf("***** VFS *****\n");
+
     vfs_dump(cosmos_vfs);
     //  devicemgr_dump_devices();
 
-    asm volatile("int $0x80");
-    asm volatile("int $0x81");
-    asm volatile("int $0x82");
+    // load the init binary.  next step here would be to map it into memory and jump to userland
+    kprintf("\n");
+    kprintf("***** Loading Userland init from %s *****\n", "disk0");
+    kprintf("\n");
+
+    load_init_binary();
 
     while (1) {
         asm_hlt();
@@ -175,7 +195,7 @@ void create_consoles() {
     }
 }
 
-void mount_ramdisks() {
+void attach_ramdisks() {
     const uint16_t sector_size = 512;
     const uint16_t sector_count1 = 1000;
     ramdisk_attach(sector_size, sector_count1);
@@ -183,24 +203,33 @@ void mount_ramdisks() {
     ramdisk_attach(sector_size, sector_count2);
 }
 
-void mount_null() {
+void attach_rootfs() {
+    rootfs_attach();
+}
+
+void attach_devfs() {
+    devfs_attach();
+}
+
+void attach_null() {
     null_attach();
 }
 
-void mount_rand() {
+void attach_rand() {
     rand_attach();
 }
 
 // mount the init rd
-void mount_initrd() {
+void attach_initrd() {
     uint8_t devicename[] = {INITRD_DISK};
 
     struct device* dsk = devicemgr_find_device(devicename);
     if (0 != dsk) {
         // attach initrd fs
-        struct device* initrd = initrd_attach(dsk, initrd_lba());
+        //struct device* initrd =
+        initrd_attach(dsk, initrd_lba());
 
-        initrd_dump_dir(initrd);
+        //  initrd_dump_dir(initrd);
 
         // detach
         //   initrd_detach(initrd);
@@ -209,42 +238,16 @@ void mount_initrd() {
     }
 }
 
-void show_cpu_data() {
-    /*
-	* show CPU features
-	*/
-    // get the CPU
-    struct device* cpu = devicemgr_find_device("cpu0");
-    struct deviceapi_cpu* cpu_api = (struct deviceapi_cpu*)cpu->api;
-
-    /*
-	* show all CPU features
-	*/
-    struct cpu_id id;
-    (*cpu_api->features)(&id);
-    kprintf("CPU Features %#X\n", id.edx);
-
-    /*
-	* enable interrupts
-	*/
-    asm_sti();
-
-    /*
-	* play
-	*/
-    //	playsb16();
-    //	floppyread();
-
-    //	test_vblock();
-    //	test_ata();
-    //	test_ramdisk();
-
-    while (1) {
-        asm_hlt();
-    }
+/*
+* load the init binary from the initrd fs
+*/
+void load_init_binary() {
+    uint8_t init_binary_name[] = {"cosmos_init"};
+    init_load(INITRD_DISK, init_binary_name);
+    kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, INITRD_DISK);
 }
 
-void mount_tick() {
+void attach_tick() {
     struct device* pit = devicemgr_find_device("pit0");
     if (0 != pit) {
         tick_attach(pit);
@@ -254,7 +257,7 @@ void mount_tick() {
 /*
 * if vnic0 is there, mount IP on it
 */
-void mount_tcpip() {
+void attach_tcpip() {
     struct device* vnic = devicemgr_find_device("vnic0");
     if (0 != vnic) {
         struct device* eth = ethernet_attach(vnic);

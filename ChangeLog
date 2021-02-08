@@ -1,3 +1,6 @@
+2021-02-07
+	* basic, non-useful but working system call interface (kmw)
+
 2021-01-04
 	* set up direct map and page directory (kmw)
 

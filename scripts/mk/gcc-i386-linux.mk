@@ -21,6 +21,11 @@ LDFLAGS=-m elf_x86_64 -T $(LINKER_SCRIPT) -Map $(MAPFILE) -nostdlib --no-relax
 OBJCOPY=objcopy
 OBJCOPYFLAGS=-O binary
 
+# strip
+STRIP=strip
+STRIPFLAGS=
+
+
 # ar
 AR=ar
 ARFLAGS=-crs

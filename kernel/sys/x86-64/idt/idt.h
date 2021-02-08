@@ -49,11 +49,7 @@ typedef enum intVectors {
     IRQ12,
     IRQ13,
     IRQ14,
-    IRQ15,
-    SYSCALL_POSIX = 0x80,
-    SYSCALL_COSMOS = 0x81,
-    SYSCALL_BDOS = 0x82
-
+    IRQ15
 } intVectors;
 
 typedef struct idtEntry {

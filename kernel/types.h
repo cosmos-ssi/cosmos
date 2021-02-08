@@ -30,6 +30,7 @@ typedef unsigned long int uint64_t;
 #define UINT64_T_MAX 0xFFFFFFFFFFFFFFFF
 typedef uint64_t QWORD;
 typedef long int int64_t;
+typedef uint64_t proc_register;
 
 typedef uint64_t size_t;
 

@@ -13,50 +13,37 @@
 #include <sys/vfs/folder_vfs.h>
 #include <sys/vfs/vfs.h>
 
-struct vfs* cosmos_vfs = 0;
-
-void vfs_open(struct vfs* v) {
-    ASSERT_NOT_NULL(v);
-}
-void vfs_read(struct vfs* v) {
-    ASSERT_NOT_NULL(v);
-}
-void vfs_write(struct vfs* v) {
-    ASSERT_NOT_NULL(v);
-}
-void vfs_close(struct vfs* v) {
-    ASSERT_NOT_NULL(v);
-}
+struct vfs_node* cosmos_vfs = 0;
 
 void vfs_init() {
     cosmos_vfs = vfs_new_folder("/");
 
     // local subtree
-    struct vfs* local_folder = vfs_new_folder("localhost");
+    struct vfs_node* local_folder = vfs_new_folder("localhost");
     vfs_add_child(cosmos_vfs, local_folder);
 
     // dev subtree
-    struct vfs* dev_folder = vfs_new_folder("dev");
+    struct vfs_node* dev_folder = vfs_new_folder("dev");
     vfs_add_child(local_folder, dev_folder);
 
     // fs subtree
-    struct vfs* fs_folder = vfs_new_folder("fs");
+    struct vfs_node* fs_folder = vfs_new_folder("fs");
     vfs_add_child(local_folder, fs_folder);
 }
 
-void vfs_delete(struct vfs* v) {
+void vfs_delete(struct vfs_node* v) {
     ASSERT_NOT_NULL(v);
     if (0 != v->children) {
         uint32_t count = arraylist_count(v->children);
         for (uint32_t i = 0; i < count; i++) {
-            struct vfs* child = (struct vfs*)arraylist_get(v->children, i);
+            struct vfs_node* child = (struct vfs_node*)arraylist_get(v->children, i);
             vfs_delete(child);
         }
     }
     kfree(v->name);
 }
 
-void vfs_set_name(struct vfs* v, uint8_t* name) {
+void vfs_set_name(struct vfs_node* v, uint8_t* name) {
     ASSERT_NOT_NULL(v);
     ASSERT_NOT_NULL(name);
     if (0 != v->name) {
@@ -74,8 +61,8 @@ void vfs_set_name(struct vfs* v, uint8_t* name) {
 uint8_t vfs_comparator(void* e1, void* e2) {
     ASSERT_NOT_NULL(e1);
     ASSERT_NOT_NULL(e2);
-    struct vfs* v1 = (struct vfs*)e1;
-    struct vfs* v2 = (struct vfs*)e2;
+    struct vfs_node* v1 = (struct vfs_node*)e1;
+    struct vfs_node* v2 = (struct vfs_node*)e2;
 
     if (strcmp(v1->name, v2->name) == 1) {
         return 1;
@@ -83,7 +70,7 @@ uint8_t vfs_comparator(void* e1, void* e2) {
     return 0;
 }
 
-void vfs_add_child(struct vfs* v, struct vfs* child) {
+void vfs_add_child(struct vfs_node* v, struct vfs_node* child) {
     ASSERT_NOT_NULL(v);
     ASSERT_NOT_NULL(child);
     ASSERT_NOT_NULL(child->name);
@@ -97,13 +84,13 @@ void vfs_add_child(struct vfs* v, struct vfs* child) {
     arraylist_sort(v->children, &vfs_comparator);
 }
 
-void vfs_remove_child(struct vfs* v, uint8_t* name) {
+void vfs_remove_child(struct vfs_node* v, uint8_t* name) {
     ASSERT_NOT_NULL(v);
     ASSERT_NOT_NULL(v->children);
     ASSERT_NOT_NULL(name);
     uint32_t idx = -1;
     for (uint32_t i = 0; i < arraylist_count(v->children); i++) {
-        struct vfs* vv = (struct vfs*)arraylist_get(v->children, i);
+        struct vfs_node* vv = (struct vfs_node*)arraylist_get(v->children, i);
         if (0 == strcmp(vv->name, name)) {
             idx = i;
             break;
@@ -119,7 +106,7 @@ void vfs_remove_child(struct vfs* v, uint8_t* name) {
 /*
 * internal find function
 */
-struct vfs* vfs_find_internal(struct vfs* v, struct arraylist* al, uint32_t depth) {
+struct vfs_node* vfs_find_internal(struct vfs_node* v, struct arraylist* al, uint32_t depth) {
     ASSERT_NOT_NULL(v);
     ASSERT_NOT_NULL(al);
     if (arraylist_count(al) == depth) {
@@ -134,7 +121,7 @@ struct vfs* vfs_find_internal(struct vfs* v, struct arraylist* al, uint32_t dept
             */
             for (uint32_t i = 0; i < arraylist_count(v->children); i++) {
                 uint8_t* t = arraylist_get(al, depth);
-                uint8_t* child = ((struct vfs*)arraylist_get(v->children, i))->name;
+                uint8_t* child = ((struct vfs_node*)arraylist_get(v->children, i))->name;
                 if (0 == strcmp(t, child)) {
                     return vfs_find_internal(arraylist_get(v->children, i), al, depth + 1);
                 }
@@ -144,17 +131,17 @@ struct vfs* vfs_find_internal(struct vfs* v, struct arraylist* al, uint32_t dept
     }
 }
 
-struct vfs* vfs_find(struct vfs* v, uint8_t* name) {
+struct vfs_node* vfs_find(struct vfs_node* v, uint8_t* name) {
     ASSERT_NOT_NULL(v);
     ASSERT_NOT_NULL(name);
     struct arraylist* al = arraylist_new();
     split_string(name, "/", al);
-    struct vfs* ret = vfs_find_internal(v, al, 0);
+    struct vfs_node* ret = vfs_find_internal(v, al, 0);
     delete_string_list(al);
     return ret;
 }
 
-void vfs_traverse_internal(struct vfs* v, vfs_traverse_function f, uint32_t depth) {
+void vfs_traverse_internal(struct vfs_node* v, vfs_traverse_function f, uint32_t depth) {
     ASSERT_NOT_NULL(v);
     ASSERT_NOT_NULL(f);
     // call the callback
@@ -163,7 +150,7 @@ void vfs_traverse_internal(struct vfs* v, vfs_traverse_function f, uint32_t dept
     // children
     if (0 != v->children) {
         for (uint32_t i = 0; i < arraylist_count(v->children); i++) {
-            struct vfs* c = (struct vfs*)arraylist_get(v->children, i);
+            struct vfs_node* c = (struct vfs_node*)arraylist_get(v->children, i);
             vfs_traverse_internal(c, f, depth + 1);
         }
     }
@@ -172,13 +159,13 @@ void vfs_traverse_internal(struct vfs* v, vfs_traverse_function f, uint32_t dept
 /*
 * traverse
 */
-void vfs_traverse(struct vfs* v, vfs_traverse_function f) {
+void vfs_traverse(struct vfs_node* v, vfs_traverse_function f) {
     ASSERT_NOT_NULL(v);
     ASSERT_NOT_NULL(f);
     vfs_traverse_internal(v, f, 0);
 }
 
-void vfs_dump_traverse_function(struct vfs* v, uint32_t depth) {
+void vfs_dump_traverse_function(struct vfs_node* v, uint32_t depth) {
     ASSERT_NOT_NULL(v);
     for (int32_t i = 0; i < depth; i++) {
         kprintf(" ");
@@ -186,12 +173,12 @@ void vfs_dump_traverse_function(struct vfs* v, uint32_t depth) {
     kprintf("%s\n", v->name);
 }
 
-void vfs_dump(struct vfs* v) {
+void vfs_dump(struct vfs_node* v) {
     ASSERT_NOT_NULL(v);
     vfs_traverse(v, &vfs_dump_traverse_function);
 }
 
-uint32_t vfs_count(struct vfs* v) {
+uint32_t vfs_count(struct vfs_node* v) {
     ASSERT_NOT_NULL(v);
     if (0 == v->children) {
         return 0;

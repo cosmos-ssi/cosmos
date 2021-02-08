@@ -72,3 +72,4 @@ dkms.conf
 /user/cosmos.ar
 mkinitrd
 /img/initrd.img
+user/cosmos_init

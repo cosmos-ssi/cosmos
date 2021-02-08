@@ -164,7 +164,7 @@ struct device* tfs_attach(struct device* partition_device) {
      */
     struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)kmalloc(sizeof(struct deviceapi_filesystem));
     memzero((uint8_t*)api, sizeof(struct deviceapi_filesystem));
-    api->format = &tfs_format;
+    //   api->format = &tfs_format;
     deviceinstance->api = api;
     /*
      * device data

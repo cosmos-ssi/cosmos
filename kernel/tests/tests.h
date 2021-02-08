@@ -42,6 +42,7 @@
 #include <tests/sys/test_arraylist.h>
 #include <tests/sys/test_bitmap.h>
 #include <tests/sys/test_debug.h>
+#include <tests/sys/test_init_loader.h>
 #include <tests/sys/test_iobuffers.h>
 #include <tests/sys/test_linkedlist.h>
 #include <tests/sys/test_malloc.h>

@@ -14,52 +14,119 @@
 #define INITRD_NAME_SIZE 64
 #define INITRD_MAX_FILES 64
 
-struct initrd_header {
+#define INITRD_IMAGE_NAME "./initrd.img"
+
+struct initrd_file_header {
     unsigned char magic;
     char name[INITRD_NAME_SIZE];
     unsigned int offset;
     unsigned int length;
 };
 
-int main(int argc, char** argv) {
-    int nheaders = (argc - 1) / 2;
-    struct initrd_header headers[INITRD_MAX_FILES];
-    memset(&headers, 0, sizeof(struct initrd_header) * INITRD_MAX_FILES);
-    printf("size of header: %lu\n", sizeof(struct initrd_header));
-    unsigned int off = sizeof(struct initrd_header) * 64 + sizeof(int);
-    int i;
-    for (i = 0; i < nheaders; i++) {
-        printf("writing file %s->%s at 0x%x\n", argv[i * 2 + 1], argv[i * 2 + 2], off);
-        strcpy(headers[i].name, argv[i * 2 + 2]);
-        headers[i].offset = off;
-        FILE* stream = fopen(argv[i * 2 + 1], "r");
+struct initrd_fs_header {
+    int nheaders;
+    struct initrd_file_header headers[INITRD_MAX_FILES];
+};
+
+struct f {
+    char longname[INITRD_NAME_SIZE];
+    char shortname[INITRD_NAME_SIZE];
+};
+
+struct filenames {
+    int count;
+    struct f names[INITRD_MAX_FILES];
+};
+
+/*
+* fill the structure fs_header
+*/
+unsigned int makeheaders(struct initrd_fs_header* fs_header, struct filenames* fns) {
+    unsigned int off = sizeof(struct initrd_fs_header);
+    for (int i = 0; i < fs_header->nheaders; i++) {
+        char* shortname = fns->names[i].shortname;
+        char* longname = fns->names[i].longname;
+        printf("writing file '%s' -> '%s' at 0x%x\n", longname, shortname, off);
+        strcpy(fs_header->headers[i].name, shortname);
+        fs_header->headers[i].offset = off;
+        FILE* stream = fopen(longname, "r");
         if (stream == 0) {
-            printf("Error: file not found: %s\n", argv[i * 2 + 1]);
+            printf("Error: file not found: %s\n", longname);
             return 1;
         }
         fseek(stream, 0, SEEK_END);
-        headers[i].length = ftell(stream);
-        off += headers[i].length;
+        fs_header->headers[i].length = ftell(stream);
+        off += fs_header->headers[i].length;
         fclose(stream);
-        headers[i].magic = 0xBF;
+        fs_header->headers[i].magic = 0xBF;
     }
+    return off;
+}
 
-    FILE* wstream = fopen("./initrd.img", "w");
+/*
+* write the header and files
+*/
+void addfiles(struct initrd_fs_header* fs_header, struct filenames* fns, unsigned int off) {
+    FILE* wstream = fopen(INITRD_IMAGE_NAME, "w");
+    /*
+    * write the headers
+    */
+    fwrite(fs_header, sizeof(struct initrd_fs_header), 1, wstream);
+
+    /*
+    * write the files
+    */
     unsigned char* data = (unsigned char*)malloc(off);
-    fwrite(&nheaders, sizeof(int), 1, wstream);
-    fwrite(headers, sizeof(struct initrd_header), INITRD_MAX_FILES, wstream);
-
-    for (i = 0; i < nheaders; i++) {
-        FILE* stream = fopen(argv[i * 2 + 1], "r");
-        unsigned char* buf = (unsigned char*)malloc(headers[i].length);
-        fread(buf, 1, headers[i].length, stream);
-        fwrite(buf, 1, headers[i].length, wstream);
+    for (int i = 0; i < fs_header->nheaders; i++) {
+        char* longname = fns->names[i].longname;
+        FILE* stream = fopen(longname, "r");
+        unsigned char* buf = (unsigned char*)malloc(fs_header->headers[i].length);
+        fread(buf, 1, fs_header->headers[i].length, stream);
+        fwrite(buf, 1, fs_header->headers[i].length, wstream);
         fclose(stream);
         free(buf);
     }
-
     fclose(wstream);
     free(data);
+}
 
+void fillnames(int count, char** argv, struct filenames* fns) {
+    for (int i = 0; i < count; i++) {
+        char* n = argv[i + 1];
+        strcpy((fns->names[i].longname), n);
+        char* c = strrchr(n, '/');
+        if (0 == c) {
+            strcpy((fns->names[i].shortname), n);
+        } else {
+            strcpy((fns->names[i].shortname), c + 1);
+        }
+    }
+}
+
+int main(int argc, char** argv) {
+    printf("CosmOS mkinitrd\n");
+    int nheaders = (argc - 1);
+    /*
+    * figure out the names
+    */
+    struct filenames fns;
+    fillnames(nheaders, argv, &fns);
+    /*
+    * make the fs header
+    */
+    struct initrd_fs_header fs_header;
+    memset(&fs_header, 0, sizeof(struct initrd_fs_header));
+    fs_header.nheaders = nheaders;
+    printf("Size of filesystem header: %lu\n", sizeof(struct initrd_fs_header));
+    printf("Size of initrd file header: %lu\n", sizeof(struct initrd_file_header));
+
+    /*
+    * add the headers, return the current file offset
+    */
+    unsigned int off = makeheaders(&fs_header, &fns);
+    /*
+    * add files
+    */
+    addfiles(&fs_header, &fns, off);
     return 0;
 }

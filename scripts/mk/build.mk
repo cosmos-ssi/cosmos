@@ -7,6 +7,7 @@
 
 NASM=nasm
 NASMARGS=-O0 -f elf64
+NASMARGSFLAT= -O0 -f bin
 
 RM=rm -f
 MAKE=make
