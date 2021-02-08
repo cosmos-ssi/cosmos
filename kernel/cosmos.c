@@ -10,6 +10,7 @@
 #include <dev/logical/ethernet/ethernet.h>
 #include <dev/logical/fs/devfs/devfs.h>
 #include <dev/logical/fs/initrd/initrd.h>
+#include <dev/logical/fs/rootfs/rootfs.h>
 #include <dev/logical/null/null.h>
 #include <dev/logical/ramdisk/ramdisk.h>
 #include <dev/logical/rand/rand.h>
@@ -49,6 +50,7 @@ void attach_rand();
 void attach_tcpip();
 void attach_initrd();
 void attach_devfs();
+void attach_rootfs();
 void load_init_binary();
 
 void create_consoles();
@@ -115,6 +117,7 @@ void CosmOS() {
     attach_rand();
     attach_tcpip();
     attach_initrd();
+    attach_rootfs();
     attach_devfs();
     /*
      * create consoles
@@ -194,6 +197,10 @@ void attach_ramdisks() {
     ramdisk_attach(sector_size, sector_count1);
     const uint16_t sector_count2 = 100;
     ramdisk_attach(sector_size, sector_count2);
+}
+
+void attach_rootfs() {
+    rootfs_attach();
 }
 
 void attach_devfs() {
