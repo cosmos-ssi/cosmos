@@ -14,7 +14,7 @@ all: $(COSMOS_INITRD_IMAGE)
 # ABI sources
 SRCS_C=$(shell find $(SRC_DIR)/abi -type f -iname '*.c')
 HEADERS_C=$(shell find $(SRC_DIR)/abi -type f -iname '*.h')
-SRCS_ASM=$(shell find $(SRC_DIR)/abi -type f -iname '*.asm')
+SRCS_ASM=$(shell find $(SRC_DIR)/abi -type f -iname '*.asm' ! -name 'test.asm')
 
 # ABI object files
 OBJS_C=$(subst $(SRC_DIR)/, , $(SRCS_C:.c=.o))
@@ -23,6 +23,9 @@ OBJS=$(OBJS_C) $(OBJS_ASM)
 
 init/init.o: init/init.h init/init.c
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o init/init.o init/init.c
+
+initfs/test-bin: initfs/test.asm
+	$(NASM) $(NASMFLATARGS) -o initfs/test-bin initfs/test.asm
 
 $(COSMOS_INITRD_IMAGE): $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)
 	rm -f $(COSMOS_INITRD_IMAGE)
