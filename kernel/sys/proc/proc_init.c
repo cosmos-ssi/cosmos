@@ -12,5 +12,5 @@
 void proc_init() {
     ptable = 0;
 
-    //kprintf("proc_table: %llX\n", (uint64_t)get_proc_info(0));
+    return;
 }

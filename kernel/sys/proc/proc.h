@@ -19,8 +19,10 @@
 #define PTABLE_LEVEL_7(pid) ((pid & 0x000000000000FF00) >> 8)
 #define PTABLE_LEVEL_8(pid) (pid & 0x00000000000000FF)
 
+typedef uint64_t pid_t;
+
 typedef struct proc_info {
-    uint64_t id;
+    pid_t pid;
     pttentry cr3;
     proc_register rsp;
     proc_register rbp;
@@ -29,14 +31,13 @@ typedef struct proc_info {
 
 typedef proc_info_t********* ptable_t;
 
-typedef uint64_t pid_t;
-
 extern ptable_t ptable;
 
 // proc_init.c
 void proc_init();
 
 // proc_table.c
+bool add_proc_entry(proc_info_t* proc);
 proc_info_t* get_proc_info(pid_t pid);
 
 #endif
