@@ -34,6 +34,7 @@
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/proc/proc.h>
 #include <sys/sync/sync.h>
 #include <sys/vfs/vfs.h>
 #include <sys/x86-64/gdt/gdt.h>
@@ -92,6 +93,9 @@ void CosmOS() {
 
     kprintf("Initializing system call handler...\n");
     syscall_init();
+
+    kprintf("Initializing process loader and manager...\n");
+    proc_init();
 
     /*
      * Register all devices

@@ -5,6 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#ifndef _SYS_PROC_H
+#define _SYS_PROC_H
+
 #include <sys/asm/asm.h>
 
 typedef struct proc_info {
@@ -13,8 +16,18 @@ typedef struct proc_info {
     proc_register rsp;
     proc_register rbp;
     proc_register rip;
-} proc_info;
+} proc_info_t;
 
-typedef proc_info******** ptable;
+typedef proc_info_t********* ptable_t;
 
-ptable proc_table;
+typedef uint64_t pid_t;
+
+extern ptable_t ptable;
+
+// proc_init.c
+void proc_init();
+
+// proc_table.c
+proc_info_t* get_proc_info(pid_t pid);
+
+#endif
