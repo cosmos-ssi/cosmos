@@ -35,6 +35,23 @@ uint8_t rootfs_uninit(struct device* dev) {
     return 1;
 }
 
+void rootfs_filesystem_open(struct device* filesystem_device) {
+    ASSERT_NOT_NULL(filesystem_device);
+}
+void rootfs_filesystem_close(struct device* filesystem_device) {
+    ASSERT_NOT_NULL(filesystem_device);
+}
+
+struct filesystem_node* rootfs_filesystem_find_node_by_id(struct device* filesystem_device, uint32_t idx) {
+    ASSERT_NOT_NULL(filesystem_device);
+    return 0;
+}
+
+struct filesystem_node* rootfs_filesystem_find_node_by_name(struct device* filesystem_device, uint8_t* name) {
+    ASSERT_NOT_NULL(filesystem_device);
+    return 0;
+}
+
 struct device* rootfs_attach() {
     /*
      * register device
@@ -51,6 +68,12 @@ struct device* rootfs_attach() {
      */
     struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)kmalloc(sizeof(struct deviceapi_filesystem));
     memzero((uint8_t*)api, sizeof(struct deviceapi_filesystem));
+    api->close = &rootfs_filesystem_close;
+    api->find_id = &rootfs_filesystem_find_node_by_id;
+    api->find_name = &rootfs_filesystem_find_node_by_name;
+    api->open = &rootfs_filesystem_open;
+    api->read = 0;
+    api->write = 0;
     deviceinstance->api = api;
     /*
      * register
