@@ -7,6 +7,7 @@
 
 #include <dev/logical/fs/cpm/cpm.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/fs/test_cfs.h>
 
