@@ -307,4 +307,5 @@ void dev_tests() {
     // test_gpt();
     // test_initrd();
     //  test_acpi();
+    // test_virtio_virtqueue();
 }
