@@ -28,18 +28,30 @@ struct initrd_fs_header {
     struct initrd_file_header headers[INITRD_MAX_FILES];
 };
 
+struct f {
+    char longname[INITRD_NAME_SIZE];
+    char shortname[INITRD_NAME_SIZE];
+};
+
+struct filenames {
+    int count;
+    struct f names[INITRD_MAX_FILES];
+};
+
 /*
 * fill the structure fs_header
 */
-unsigned int makeheaders(struct initrd_fs_header* fs_header, char** argv) {
+unsigned int makeheaders(struct initrd_fs_header* fs_header, struct filenames* fns) {
     unsigned int off = sizeof(struct initrd_fs_header);
     for (int i = 0; i < fs_header->nheaders; i++) {
-        printf("writing file %s->%s at 0x%x\n", argv[i * 2 + 1], argv[i * 2 + 2], off);
-        strcpy(fs_header->headers[i].name, argv[i * 2 + 2]);
+        char* shortname = fns->names[i].shortname;
+        char* longname = fns->names[i].longname;
+        printf("writing file '%s' -> '%s' at 0x%x\n", longname, shortname, off);
+        strcpy(fs_header->headers[i].name, shortname);
         fs_header->headers[i].offset = off;
-        FILE* stream = fopen(argv[i * 2 + 1], "r");
+        FILE* stream = fopen(longname, "r");
         if (stream == 0) {
-            printf("Error: file not found: %s\n", argv[i * 2 + 1]);
+            printf("Error: file not found: %s\n", longname);
             return 1;
         }
         fseek(stream, 0, SEEK_END);
@@ -54,7 +66,7 @@ unsigned int makeheaders(struct initrd_fs_header* fs_header, char** argv) {
 /*
 * write the header and files
 */
-void addfiles(struct initrd_fs_header* fs_header, char** argv, unsigned int off) {
+void addfiles(struct initrd_fs_header* fs_header, struct filenames* fns, unsigned int off) {
     FILE* wstream = fopen(INITRD_IMAGE_NAME, "w");
     /*
     * write the headers
@@ -66,7 +78,8 @@ void addfiles(struct initrd_fs_header* fs_header, char** argv, unsigned int off)
     */
     unsigned char* data = (unsigned char*)malloc(off);
     for (int i = 0; i < fs_header->nheaders; i++) {
-        FILE* stream = fopen(argv[i * 2 + 1], "r");
+        char* longname = fns->names[i].longname;
+        FILE* stream = fopen(longname, "r");
         unsigned char* buf = (unsigned char*)malloc(fs_header->headers[i].length);
         fread(buf, 1, fs_header->headers[i].length, stream);
         fwrite(buf, 1, fs_header->headers[i].length, wstream);
@@ -77,10 +90,27 @@ void addfiles(struct initrd_fs_header* fs_header, char** argv, unsigned int off)
     free(data);
 }
 
+void fillnames(int count, char** argv, struct filenames* fns) {
+    for (int i = 0; i < count; i++) {
+        char* n = argv[i + 1];
+        strcpy((fns->names[i].longname), n);
+        char* c = strrchr(n, '/');
+        if (0 == c) {
+            strcpy((fns->names[i].shortname), n);
+        } else {
+            strcpy((fns->names[i].shortname), c + 1);
+        }
+    }
+}
+
 int main(int argc, char** argv) {
     printf("CosmOS mkinitrd\n");
-    int nheaders = (argc - 1) / 2;
-
+    int nheaders = (argc - 1);
+    /*
+    * figure out the names
+    */
+    struct filenames fns;
+    fillnames(nheaders, argv, &fns);
     /*
     * make the fs header
     */
@@ -93,10 +123,10 @@ int main(int argc, char** argv) {
     /*
     * add the headers, return the current file offset
     */
-    unsigned int off = makeheaders(&fs_header, argv);
+    unsigned int off = makeheaders(&fs_header, &fns);
     /*
     * add files
     */
-    addfiles(&fs_header, argv, off);
+    addfiles(&fs_header, &fns, off);
     return 0;
 }
