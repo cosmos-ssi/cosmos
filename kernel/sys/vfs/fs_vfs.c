@@ -64,8 +64,8 @@ struct vfs_node* vfs_new_filesystem(uint8_t* name) {
     ret->type = folder;
     ret->close = &filesystem_vfs_close;
     ret->open = &filesystem_vfs_open;
-    ret->read = 0;
-    ret->write = 0;
+    ret->read = 0;   // there is no way to read and write from a fs node
+    ret->write = 0;  // there is no way to read and write from a fs node
     ret->find_id = &filesystem_vfs_find_node_by_id;
     ret->find_name = &filesystem_vfs_find_node_by_name;
     vfs_set_name(ret, name);

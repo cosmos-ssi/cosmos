@@ -35,18 +35,6 @@ void dev_vfs_close(struct vfs_node* vfs) {
     ASSERT_NOT_NULL(vfs->name);
 }
 
-struct vfs_node* dev_vfs_find_node_by_id(struct vfs_node* vfs, uint32_t idx) {
-    ASSERT_NOT_NULL(vfs);
-    ASSERT_NOT_NULL(vfs->name);
-    return 0;
-}
-
-struct vfs_node* dev_vfs_find_node_by_name(struct vfs_node* vfs, uint8_t* name) {
-    ASSERT_NOT_NULL(vfs);
-    ASSERT_NOT_NULL(vfs->name);
-    return 0;
-}
-
 struct vfs_node* vfs_new_dev(uint8_t* devicename) {
     ASSERT_NOT_NULL(devicename);
     struct vfs_node* ret = (struct vfs_node*)kmalloc(sizeof(struct vfs_node));
@@ -57,8 +45,8 @@ struct vfs_node* vfs_new_dev(uint8_t* devicename) {
     ret->open = &dev_vfs_open;
     ret->read = &dev_vfs_read;
     ret->write = &dev_vfs_write;
-    ret->find_id = &dev_vfs_find_node_by_id;
-    ret->find_name = &dev_vfs_find_node_by_name;
+    ret->find_id = 0;    // devices are terminal nodes
+    ret->find_name = 0;  // devices are terminal nodes
 
     vfs_set_name(ret, devicename);
     return ret;
