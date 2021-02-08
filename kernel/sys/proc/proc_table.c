@@ -36,6 +36,10 @@ bool add_proc_entry(proc_info_t* proc) {
 
         ptable[PTABLE_LEVEL_1(pid)] = (proc_info_t********)kmalloc(sizeof(proc_info_t********) * 256);
 
+        if (!ptable[PTABLE_LEVEL_1(pid)]) {
+            return false;
+        }
+
         memset((uint8_t*)ptable[PTABLE_LEVEL_1(pid)], 0, sizeof(proc_info_t********) * 256);
     }
 
@@ -44,6 +48,10 @@ bool add_proc_entry(proc_info_t* proc) {
         ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)] =
             (proc_info_t*******)kmalloc(sizeof(proc_info_t*******) * 256);
 
+        if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)]) {
+            return false;
+        }
+
         memset((uint8_t*)ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)], 0, sizeof(proc_info_t*******) * 256);
     }
 
@@ -51,6 +59,10 @@ bool add_proc_entry(proc_info_t* proc) {
 
         ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)] =
             (proc_info_t******)kmalloc(sizeof(proc_info_t******) * 256);
+
+        if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)]) {
+            return false;
+        }
 
         memset((uint8_t*)ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)], 0,
                sizeof(proc_info_t******) * 256);
@@ -61,6 +73,10 @@ bool add_proc_entry(proc_info_t* proc) {
         ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)] =
             (proc_info_t*****)kmalloc(sizeof(proc_info_t*****) * 256);
 
+        if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)]) {
+            return false;
+        }
+
         memset((uint8_t*)ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)], 0,
                sizeof(proc_info_t*****) * 256);
     }
@@ -70,6 +86,11 @@ bool add_proc_entry(proc_info_t* proc) {
 
         ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)]
               [PTABLE_LEVEL_5(pid)] = (proc_info_t****)kmalloc(sizeof(proc_info_t****) * 256);
+
+        if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)]
+                   [PTABLE_LEVEL_5(pid)]) {
+            return false;
+        }
 
         memset((uint8_t*)ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)]
                                [PTABLE_LEVEL_5(pid)],
@@ -82,6 +103,11 @@ bool add_proc_entry(proc_info_t* proc) {
         ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)][PTABLE_LEVEL_5(pid)]
               [PTABLE_LEVEL_6(pid)] = (proc_info_t***)kmalloc(sizeof(proc_info_t***) * 256);
 
+        if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)]
+                   [PTABLE_LEVEL_5(pid)][PTABLE_LEVEL_6(pid)]) {
+            return false;
+        }
+
         memset((uint8_t*)ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)]
                                [PTABLE_LEVEL_5(pid)][PTABLE_LEVEL_6(pid)],
                0, sizeof(proc_info_t***) * 256);
@@ -92,6 +118,11 @@ bool add_proc_entry(proc_info_t* proc) {
 
         ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)][PTABLE_LEVEL_5(pid)]
               [PTABLE_LEVEL_6(pid)][PTABLE_LEVEL_7(pid)] = (proc_info_t**)kmalloc(sizeof(proc_info_t**) * 256);
+
+        if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)]
+                   [PTABLE_LEVEL_5(pid)][PTABLE_LEVEL_6(pid)][PTABLE_LEVEL_7(pid)]) {
+            return false;
+        }
 
         memset((uint8_t*)ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)]
                                [PTABLE_LEVEL_5(pid)][PTABLE_LEVEL_6(pid)][PTABLE_LEVEL_7(pid)],
