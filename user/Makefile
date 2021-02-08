@@ -26,7 +26,7 @@ init/init.o: init/init.h init/init.c
 
 $(COSMOS_INITRD_IMAGE): $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)
 	rm -f $(COSMOS_INITRD_IMAGE)
-	../util/mkinitrd/mkinitrd cosmos_abi.a cosmos_abi.a cosmos_init cosmos_init welcome.txt welcome.txt testdata.txt testdata.txt
+	../util/mkinitrd/mkinitrd cosmos_abi.a cosmos_abi.a cosmos_init cosmos_init welcome.txt welcome.txt testdata.txt testdata.txt banner.txt banner.txt
 	mv initrd.img ../img/
 
 $(COSMOS_INIT): $(COSMOS_ABI_ARCHIVE) init/init.o
