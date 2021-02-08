@@ -5,6 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/asm/asm.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/proc/proc.h>
