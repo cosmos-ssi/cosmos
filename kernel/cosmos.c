@@ -150,11 +150,13 @@ void CosmOS() {
     dev_tests();
 
     // show the vfs
-    //  kprintf("***** VFS *****\n");
-    //  vfs_dump(cosmos_vfs);
+    kprintf("***** VFS *****\n");
+
+    vfs_dump(cosmos_vfs);
     //  devicemgr_dump_devices();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
+    kprintf("\n");
     kprintf("***** Loading Userland init from %s *****\n", "disk0");
     kprintf("\n");
 

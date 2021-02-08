@@ -11,32 +11,18 @@
 #ifndef _DEVICEAPI_FILESYSTEM_H
 #define _DEVICEAPI_FILESYSTEM_H
 
-#include <sys/collection/arraylist/arraylist.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/vfs/vfs_node.h>
 #include <types.h>
 
 struct deviceapi_filesystem;
 
-struct fs_dir_entry {
-    uint8_t name[128];  // filename
-    uint32_t ino;       // inode number
-};
+typedef struct vfs_node* (*fs_get_vfs_root_node)(struct deviceapi_filesystem* fs);
 
-typedef uint32_t (*fs_read_function)(struct deviceapi_filesystem* fs, const uint8_t* data, uint32_t data_size);
-typedef uint32_t (*fs_write_function)(struct deviceapi_filesystem* fs, const uint8_t* data, uint32_t data_size);
-typedef void (*fs_open_function)(struct deviceapi_filesystem* fs);
-typedef void (*fs_close_function)(struct deviceapi_filesystem* fs);
-typedef struct fs_dir_entry* (*fs_readdir_function)(struct deviceapi_filesystem* fs, uint32_t idx);
-typedef struct deviceapi_filesystem* (*fs_finddir_function)(struct deviceapi_filesystem* fs, uint8_t* name);
-
+/*
+* a fs has only one api current: an API to create a vfs node
+*/
 struct deviceapi_filesystem {
-    fs_read_function read;
-    fs_write_function write;
-    fs_open_function open;
-    fs_close_function close;
-    fs_readdir_function readdir;
-    fs_finddir_function finddir;
-    uint64_t node_id;
+    fs_get_vfs_root_node vfs;
 };
 
 #endif

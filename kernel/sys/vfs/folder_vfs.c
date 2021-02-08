@@ -12,43 +12,51 @@
 #include <sys/string/string.h>
 #include <sys/vfs/dev_vfs.h>
 
-void folder_vfs_open(struct vfs* v, uint8_t read, uint8_t write) {
-    ASSERT_NOT_NULL(v);
-    ASSERT_NOT_NULL(v->name);
-}
-
-uint32_t folder_vfs_read(struct vfs* v, uint32_t offset, uint32_t size, uint8_t* buffer) {
-    ASSERT_NOT_NULL(v);
-    ASSERT_NOT_NULL(v->name);
+uint32_t folder_vfs_read(struct vfs_node* vfs, const uint8_t* data, uint32_t data_size) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
     return 0;
 }
 
-uint32_t folder_vfs_write(struct vfs* v, uint32_t offset, uint32_t size, uint8_t* buffer) {
-    ASSERT_NOT_NULL(v);
-    ASSERT_NOT_NULL(v->name);
+uint32_t folder_vfs_write(struct vfs_node* vfs, const uint8_t* data, uint32_t data_size) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
     return 0;
 }
 
-void folder_vfs_close(struct vfs* v) {
-    ASSERT_NOT_NULL(v);
-    ASSERT_NOT_NULL(v->name);
+void folder_vfs_open(struct vfs_node* vfs) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
 }
 
-void folder_vfs_readdir(struct vfs* v, uint32_t index) {
-    ASSERT_NOT_NULL(v);
-    ASSERT_NOT_NULL(v->name);
+void folder_vfs_close(struct vfs_node* vfs) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
 }
 
-struct vfs* vfs_new_folder(uint8_t* name) {
+struct vfs_node* folder_vfs_find_node_by_id(struct vfs_node* vfs, uint32_t idx) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
+    return 0;
+}
+
+struct vfs_node* folder_vfs_find_node_by_name(struct vfs_node* vfs, uint8_t* name) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
+    return 0;
+}
+
+struct vfs_node* vfs_new_folder(uint8_t* name) {
     ASSERT_NOT_NULL(name);
-    struct vfs* ret = (struct vfs*)kmalloc(sizeof(struct vfs));
-    memset((uint8_t*)ret, 0, sizeof(struct vfs));
+    struct vfs_node* ret = (struct vfs_node*)kmalloc(sizeof(struct vfs_node));
+    memset((uint8_t*)ret, 0, sizeof(struct vfs_node));
     ret->type = folder;
     ret->close = &folder_vfs_close;
     ret->open = &folder_vfs_open;
     ret->read = &folder_vfs_read;
     ret->write = &folder_vfs_write;
-    ret->readdir = &folder_vfs_readdir;
+    ret->find_id = &folder_vfs_find_node_by_id;
+    ret->find_name = &folder_vfs_find_node_by_name;
     vfs_set_name(ret, name);
     return ret;
 }

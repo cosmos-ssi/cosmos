@@ -13,6 +13,6 @@
 
 #include <sys/vfs/vfs.h>
 
-struct vfs* vfs_new_filesystem(uint8_t* devicename);
+struct vfs_node* vfs_new_filesystem(uint8_t* devicename);
 
 #endif

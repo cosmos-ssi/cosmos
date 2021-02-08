@@ -15,7 +15,7 @@
 void test_vfs() {
     kprintf("Testing vfs\n");
 
-    struct vfs* v = vfs_new_folder((uint8_t*)"/");
+    struct vfs_node* v = vfs_new_folder((uint8_t*)"/");
     ASSERT(v == vfs_find(v, "/"));
     ASSERT(0 == strcmp(v->name, "/"));
 
@@ -23,7 +23,7 @@ void test_vfs() {
     ASSERT_NOT_NULL(v);
     ASSERT(0 == strcmp(v->name, "/"));
 
-    struct vfs* devv = vfs_find(cosmos_vfs, "/localhost/dev");
+    struct vfs_node* devv = vfs_find(cosmos_vfs, "/localhost/dev");
     ASSERT_NOT_NULL(devv);
     ASSERT(0 == strcmp(devv->name, "dev"));
 
