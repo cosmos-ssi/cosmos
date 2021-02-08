@@ -15,21 +15,22 @@ struct device;
 /*
 * read bytes
 */
-typedef uint32_t (*filesystem_read_function)(struct device filesystem_device, const uint8_t* data, uint32_t data_size);
+typedef uint32_t (*filesystem_read_function)(struct device* filesystem_device, const uint8_t* data, uint32_t data_size);
 /*
 * write bytes
 */
-typedef uint32_t (*filesystem_write_function)(struct device filesystem_device, const uint8_t* data, uint32_t data_size);
-typedef void (*filesystem_open_function)(struct device filesystem_device);
-typedef void (*filesystem_close_function)(struct device filesystem_device);
+typedef uint32_t (*filesystem_write_function)(struct device* filesystem_device, const uint8_t* data,
+                                              uint32_t data_size);
+typedef void (*filesystem_open_function)(struct device* filesystem_device);
+typedef void (*filesystem_close_function)(struct device* filesystem_device);
 /*
 * find a node by id
 */
-typedef struct filesystem_node* (*filesystem_find_node_by_id_function)(struct device filesystem_device, uint32_t idx);
+typedef struct filesystem_node* (*filesystem_find_node_by_id_function)(struct device* filesystem_device, uint32_t idx);
 /*
 * find a node by name
 */
-typedef struct filesystem_node* (*filesystem_find_node_by_name_function)(struct device filesystem_device,
+typedef struct filesystem_node* (*filesystem_find_node_by_name_function)(struct device* filesystem_device,
                                                                          uint8_t* name);
 
 struct deviceapi_filesystem {
