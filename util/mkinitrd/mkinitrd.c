@@ -28,6 +28,9 @@ struct initrd_fs_header {
     struct initrd_file_header headers[INITRD_MAX_FILES];
 };
 
+/*
+* fill the structure fs_header
+*/
 unsigned int makeheaders(struct initrd_fs_header* fs_header, char** argv) {
     unsigned int off = sizeof(struct initrd_fs_header);
     for (int i = 0; i < fs_header->nheaders; i++) {
@@ -48,11 +51,20 @@ unsigned int makeheaders(struct initrd_fs_header* fs_header, char** argv) {
     return off;
 }
 
+/*
+* write the header and files
+*/
 void addfiles(struct initrd_fs_header* fs_header, char** argv, unsigned int off) {
     FILE* wstream = fopen(INITRD_IMAGE_NAME, "w");
-    unsigned char* data = (unsigned char*)malloc(off);
+    /*
+    * write the headers
+    */
     fwrite(fs_header, sizeof(struct initrd_fs_header), 1, wstream);
 
+    /*
+    * write the files
+    */
+    unsigned char* data = (unsigned char*)malloc(off);
     for (int i = 0; i < fs_header->nheaders; i++) {
         FILE* stream = fopen(argv[i * 2 + 1], "r");
         unsigned char* buf = (unsigned char*)malloc(fs_header->headers[i].length);

@@ -55,4 +55,3 @@ clean:
 	$(RM) $(COSMOS_INIT)
 	$(RM) $(COSMOS_INITRD_IMAGE)
 	$(RM) ../img/$(COSMOS_INITRD_IMAGE)
-
