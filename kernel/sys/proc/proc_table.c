@@ -59,5 +59,7 @@ proc_info_t* get_proc_info(pid_t pid) {
         return NULL;
     }
 
-    return NULL;
+    return ptable[pid >> 56][(pid & 0x00FF000000000000) >> 48][(pid & 0x0000FF0000000000) >> 40]
+                 [(pid & 0x000000FF00000000) >> 32][(pid & 0x00000000FF000000) >> 24][(pid & 0x0000000000FF0000) >> 16]
+                 [(pid & 0x000000000000FF00) >> 8][pid & 0x00000000000000FF];
 }
