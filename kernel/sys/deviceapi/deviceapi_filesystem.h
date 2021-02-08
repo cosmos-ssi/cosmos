@@ -14,10 +14,11 @@
 #include <sys/vfs/vfs_node.h>
 #include <types.h>
 
-struct deviceapi_filesystem;
+struct device;
 
-typedef struct vfs_node* (*fs_get_vfs_root_node)(struct deviceapi_filesystem* fs);
+typedef struct vfs_node* (*fs_get_vfs_root_node)(struct device* dev);
 
+/// TODO REMOVE THIS.  WE NEVER USE IT.
 /*
 * a fs has only one api current: an API to create a vfs node
 */
