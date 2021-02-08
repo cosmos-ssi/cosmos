@@ -8,6 +8,7 @@
 #ifndef _DEV_H
 #define _DEV_H
 
+#include <dev/logical/fs/devfs/devfs.h>
 #include <dev/logical/fs/swap/swap.h>
 #include <dev/logical/ramdisk/ramdisk.h>
 #include <dev/logical/virtio/virtio.h>
@@ -38,7 +39,6 @@
 #include <dev/x86-64/speaker/speaker.h>
 #include <dev/x86-64/usb_ehci/usb_ehci.h>
 #include <dev/x86-64/vga/vga.h>
-
 #else
 
 #include <dev/arm/pl101/pl101.h>

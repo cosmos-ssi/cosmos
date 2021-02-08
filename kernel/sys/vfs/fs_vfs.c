@@ -6,49 +6,123 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
+#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <sys/vfs/fs_vfs.h>
 
-void filesystem_vfs_open(struct vfs* v, uint8_t read, uint8_t write) {
-    ASSERT_NOT_NULL(v);
-    ASSERT_NOT_NULL(v->name);
-}
-
-uint32_t filesystem_vfs_read(struct vfs* v, uint32_t offset, uint32_t size, uint8_t* buffer) {
-    ASSERT_NOT_NULL(v);
-    ASSERT_NOT_NULL(v->name);
+uint32_t filesystem_vfs_read(struct vfs_node* vfs, const uint8_t* data, uint32_t data_size) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
+    /*
+    * make sure the device still exists
+    */
+    struct device* fs_device = (struct device*)devicemgr_find_device(vfs->name);
+    if (0 != fs_device) {
+        struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)fs_device->api;
+        ASSERT_NOT_NULL(api);
+        return (*api->read)(fs_device, data, data_size);
+    }
     return 0;
 }
 
-uint32_t filesystem_vfs_write(struct vfs* v, uint32_t offset, uint32_t size, uint8_t* buffer) {
-    ASSERT_NOT_NULL(v);
-    ASSERT_NOT_NULL(v->name);
+uint32_t filesystem_vfs_write(struct vfs_node* vfs, const uint8_t* data, uint32_t data_size) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
+    /*
+    * make sure the device still exists
+    */
+    struct device* fs_device = (struct device*)devicemgr_find_device(vfs->name);
+    if (0 != fs_device) {
+        struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)fs_device->api;
+        ASSERT_NOT_NULL(api);
+        if (0 != api->write) {
+            return (*api->write)(fs_device, data, data_size);
+        }
+    }
     return 0;
 }
 
-void filesystem_vfs_close(struct vfs* v) {
-    ASSERT_NOT_NULL(v);
-    ASSERT_NOT_NULL(v->name);
+void filesystem_vfs_open(struct vfs_node* vfs) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
+    /*
+    * make sure the device still exists
+    */
+    struct device* fs_device = (struct device*)devicemgr_find_device(vfs->name);
+    if (0 != fs_device) {
+        struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)fs_device->api;
+        ASSERT_NOT_NULL(api);
+        (*api->open)(fs_device);
+    }
 }
 
-void filesystem_vfs_readdir(struct vfs* v, uint32_t index) {
-    ASSERT_NOT_NULL(v);
-    ASSERT_NOT_NULL(v->name);
+void filesystem_vfs_close(struct vfs_node* vfs) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
+    /*
+    * make sure the device still exists
+    */
+    struct device* fs_device = (struct device*)devicemgr_find_device(vfs->name);
+    if (0 != fs_device) {
+        struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)fs_device->api;
+        ASSERT_NOT_NULL(api);
+        (*api->close)(fs_device);
+    }
 }
 
-struct vfs* vfs_new_filesystem(uint8_t* name) {
+struct vfs_node* filesystem_vfs_find_node_by_id(struct vfs_node* vfs, uint32_t idx) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
+    /*
+    * make sure the device still exists
+    */
+    struct device* fs_device = (struct device*)devicemgr_find_device(vfs->name);
+    if (0 != fs_device) {
+        //    struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)fs_device->api;
+    }
+    return 0;
+}
+
+struct vfs_node* filesystem_vfs_find_node_by_name(struct vfs_node* vfs, uint8_t* name) {
+    ASSERT_NOT_NULL(vfs);
+    ASSERT_NOT_NULL(vfs->name);
+    /*
+    * make sure the device still exists
+    */
+    struct device* fs_device = (struct device*)devicemgr_find_device(vfs->name);
+    if (0 != fs_device) {
+        struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)fs_device->api;
+        ASSERT_NOT_NULL(api);
+        if (api->find_name != 0) {
+            //
+        }
+    }
+    return 0;
+}
+
+struct vfs_node* vfs_new_filesystem(uint8_t* name) {
     ASSERT_NOT_NULL(name);
-    struct vfs* ret = (struct vfs*)kmalloc(sizeof(struct vfs));
-    memset((uint8_t*)ret, 0, sizeof(struct vfs));
-    ret->type = filesystem;
+    /*
+    * device exists and is of right type
+    */
+    struct device* fs_device = (struct device*)devicemgr_find_device(name);
+    ASSERT_NOT_NULL(fs_device)
+    //  ASSERT(fs_device->devicetype == FILESYSTEM);
+    /*
+    * make the node
+    */
+    struct vfs_node* ret = (struct vfs_node*)kmalloc(sizeof(struct vfs_node));
+    memset((uint8_t*)ret, 0, sizeof(struct vfs_node));
+    ret->type = folder;
     ret->close = &filesystem_vfs_close;
     ret->open = &filesystem_vfs_open;
     ret->read = &filesystem_vfs_read;
     ret->write = &filesystem_vfs_write;
-    ret->readdir = &filesystem_vfs_readdir;
+    ret->find_id = &filesystem_vfs_find_node_by_id;
+    ret->find_name = &filesystem_vfs_find_node_by_name;
     vfs_set_name(ret, name);
     return ret;
 }

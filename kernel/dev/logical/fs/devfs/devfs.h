@@ -5,14 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-/*
-* vfs nodes for folder 
-*/
-#ifndef _FOLDERVFS_H
-#define _FOLDERVFS_H
+#ifndef _DEVFS_H
+#define _DEVFS_H
 
-#include <sys/vfs/vfs.h>
+#include <types.h>
 
-struct vfs_node* vfs_new_folder(uint8_t* devicename);
+struct device* devfs_attach();
+void devfs_detach(struct device* dev);
 
 #endif
