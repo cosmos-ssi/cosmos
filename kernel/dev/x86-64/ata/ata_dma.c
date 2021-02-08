@@ -53,9 +53,7 @@ void ata_dma_add_job(device_t* dev, uint64_t start, uint64_t count, BYTE* buf, a
 }
 
 void ata_dma_execute_job() {
-    ata_dma_job* cur_job;
-
-    cur_job = dma_jobs;
+    //cur_job = dma_jobs;
 
     spinlock_acquire(&dma_buf_lock);
     spinlock_release(&dma_buf_lock);
