@@ -9,6 +9,14 @@
 
 ptable_t ptable;
 
+bool add_proc_entry(proc_info_t proc) {
+    if (!ptable) {
+        ptable = (ptable_t)kmalloc(sizeof(proc_info_t********) * 256);
+    }
+
+    return true;
+}
+
 proc_info_t* get_proc_info(pid_t pid) {
     /*
      * Walk the levels of ptable, if null at any level then the process doesn't
@@ -20,46 +28,37 @@ proc_info_t* get_proc_info(pid_t pid) {
         return NULL;
     }
 
-    if (!ptable[pid >> 56]) {
+    if (!ptable[PTABLE_LEVEL_1(pid)]) {
         return NULL;
     }
 
-    if (!ptable[pid >> 56][(pid & 0x00FF000000000000) >> 48]) {
+    if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)]) {
         return NULL;
     }
 
-    if (!ptable[pid >> 56][(pid & 0x00FF000000000000) >> 48][(pid & 0x0000FF0000000000) >> 40]) {
+    if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)]) {
         return NULL;
     }
 
-    if (!ptable[pid >> 56][(pid & 0x00FF000000000000) >> 48][(pid & 0x0000FF0000000000) >> 40]
-               [(pid & 0x000000FF00000000) >> 32]) {
+    if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)]) {
         return NULL;
     }
 
-    if (!ptable[pid >> 56][(pid & 0x00FF000000000000) >> 48][(pid & 0x0000FF0000000000) >> 40]
-               [(pid & 0x000000FF00000000) >> 32][(pid & 0x00000000FF000000) >> 24]) {
+    if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)]
+               [PTABLE_LEVEL_5(pid)]) {
         return NULL;
     }
 
-    if (!ptable[pid >> 56][(pid & 0x00FF000000000000) >> 48][(pid & 0x0000FF0000000000) >> 40]
-               [(pid & 0x000000FF00000000) >> 32][(pid & 0x00000000FF000000) >> 24][(pid & 0x0000000000FF0000) >> 16]) {
+    if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)][PTABLE_LEVEL_5(pid)]
+               [PTABLE_LEVEL_6(pid)]) {
         return NULL;
     }
 
-    if (!ptable[pid >> 56][(pid & 0x00FF000000000000) >> 48][(pid & 0x0000FF0000000000) >> 40]
-               [(pid & 0x000000FF00000000) >> 32][(pid & 0x00000000FF000000) >> 24][(pid & 0x0000000000FF0000) >> 16]
-               [(pid & 0x000000000000FF00) >> 8]) {
+    if (!ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)][PTABLE_LEVEL_5(pid)]
+               [PTABLE_LEVEL_6(pid)][PTABLE_LEVEL_7(pid)]) {
         return NULL;
     }
 
-    if (!ptable[pid >> 56][(pid & 0x00FF000000000000) >> 48][(pid & 0x0000FF0000000000) >> 40]
-               [(pid & 0x000000FF00000000) >> 32][(pid & 0x00000000FF000000) >> 24][(pid & 0x0000000000FF0000) >> 16]
-               [(pid & 0x000000000000FF00) >> 8][pid & 0x00000000000000FF]) {
-        return NULL;
-    }
-
-    return ptable[pid >> 56][(pid & 0x00FF000000000000) >> 48][(pid & 0x0000FF0000000000) >> 40]
-                 [(pid & 0x000000FF00000000) >> 32][(pid & 0x00000000FF000000) >> 24][(pid & 0x0000000000FF0000) >> 16]
-                 [(pid & 0x000000000000FF00) >> 8][pid & 0x00000000000000FF];
+    return ptable[PTABLE_LEVEL_1(pid)][PTABLE_LEVEL_2(pid)][PTABLE_LEVEL_3(pid)][PTABLE_LEVEL_4(pid)]
+                 [PTABLE_LEVEL_5(pid)][PTABLE_LEVEL_6(pid)][PTABLE_LEVEL_7(pid)][PTABLE_LEVEL_8(pid)];
 }

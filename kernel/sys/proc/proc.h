@@ -10,6 +10,15 @@
 
 #include <sys/asm/asm.h>
 
+#define PTABLE_LEVEL_1(pid) (pid >> 56)
+#define PTABLE_LEVEL_2(pid) ((pid & 0x00FF000000000000) >> 48)
+#define PTABLE_LEVEL_3(pid) ((pid & 0x0000FF0000000000) >> 40)
+#define PTABLE_LEVEL_4(pid) ((pid & 0x000000FF00000000) >> 32)
+#define PTABLE_LEVEL_5(pid) ((pid & 0x00000000FF000000) >> 24)
+#define PTABLE_LEVEL_6(pid) ((pid & 0x0000000000FF0000) >> 16)
+#define PTABLE_LEVEL_7(pid) ((pid & 0x000000000000FF00) >> 8)
+#define PTABLE_LEVEL_8(pid) (pid & 0x00000000000000FF)
+
 typedef struct proc_info {
     uint64_t id;
     pttentry cr3;
