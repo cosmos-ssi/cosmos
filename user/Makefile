@@ -4,7 +4,7 @@ include ../scripts/mk/build.mk
 COSMOS_INITRD_IMAGE=initrd.img
 COSMOS_ABI_ARCHIVE=cosmos_abi.a
 COSMOS_INIT=cosmos_init
-COSMOS_TEST_BINARY=initfs/test-bin
+COSMOS_TEST_BINARY=initfs/test.bin
 
 EXTRA_CFLAGS= -I.
 
@@ -25,8 +25,8 @@ OBJS=$(OBJS_C) $(OBJS_ASM)
 init/init.o: init/init.h init/init.c
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o init/init.o init/init.c
 
-initfs/test-bin: initfs/test.asm
-	$(NASM) $(NASMFLATARGS) -o initfs/test-bin initfs/test.asm
+initfs/test.bin: initfs/test.asm
+	$(NASM) $(NASMFLATARGS) -o initfs/test.bin initfs/test.asm
 
 $(COSMOS_INITRD_IMAGE): $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)  $(COSMOS_TEST_BINARY)
 	rm -f $(COSMOS_INITRD_IMAGE)
