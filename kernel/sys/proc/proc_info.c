@@ -5,16 +5,14 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/asm/asm.h>
-#include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
+#include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
 
-void proc_init() {
-    ptable = 0;
-    proc_info_t* kernelproc;
+proc_info_t* new_proc_info(pid_t pid, pttentry cr3) {
+    proc_info_t* proc_info = 0;
 
-    kernelproc = new_proc_info(0, asm_cr3_read());
-
-    return;
+    proc_info = (proc_info_t*)kmalloc(sizeof(proc_info_t));
+    if (!proc_info) {
+        //panic("Unable to allocate space for proc_info struct at " #__FILE__ ", " #__LINE__);
+    }
 }
