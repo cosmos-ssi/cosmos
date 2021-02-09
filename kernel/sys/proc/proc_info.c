@@ -13,6 +13,11 @@ proc_info_t* new_proc_info(pid_t pid, pttentry cr3) {
 
     proc_info = (proc_info_t*)kmalloc(sizeof(proc_info_t));
     if (!proc_info) {
-        //panic("Unable to allocate space for proc_info struct at " #__FILE__ ", " #__LINE__);
+        panic("Unable to allocate space for proc_info struct!");
     }
+
+    proc_info->pid = pid;
+    proc_info->cr3 = cr3;
+
+    return proc_info;
 }

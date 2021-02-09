@@ -8,6 +8,7 @@
 #include <sys/asm/asm.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
 
 void proc_init() {
@@ -15,6 +16,9 @@ void proc_init() {
     proc_info_t* kernelproc;
 
     kernelproc = new_proc_info(0, asm_cr3_read());
+    if (!add_proc_entry(kernelproc)) {
+        panic("Unable to add kernel process to table!");
+    }
 
     return;
 }
