@@ -157,7 +157,7 @@ struct filesystem_node* initrd_find_node_by_idx(struct device* filesystem_device
 /*
 * count
 */
-struct filesystem_node* initrd_count(struct device* filesystem_device, struct filesystem_node* fs_node) {
+uint32_t initrd_count(struct device* filesystem_device, struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(filesystem_device->device_data);
     ASSERT_NOT_NULL(fs_node);

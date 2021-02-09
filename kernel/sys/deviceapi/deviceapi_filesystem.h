@@ -69,8 +69,7 @@ typedef struct filesystem_node* (*filesystem_find_node_by_name_function)(struct 
 /*
 * count
 */
-typedef struct filesystem_node* (*filesystem_count_function)(struct device* filesystem_device,
-                                                             struct filesystem_node* fs_node);
+typedef uint32_t (*filesystem_count_function)(struct device* filesystem_device, struct filesystem_node* fs_node);
 
 struct deviceapi_filesystem {
     filesystem_get_root_node_function root;

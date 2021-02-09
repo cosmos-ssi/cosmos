@@ -124,12 +124,24 @@ struct filesystem_node* vfs_find_node_by_idx(struct device* filesystem_device, s
 /*
 * count
 */
-struct filesystem_node* vfs_count(struct device* filesystem_device, struct filesystem_node* fs_node) {
+uint32_t vfs_count(struct device* filesystem_device, struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(filesystem_device->device_data);
     ASSERT_NOT_NULL(fs_node);
-    panic("not implemented");
-    return 0;
+    struct vfs_devicedata* device_data = (struct vfs_devicedata*)filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * root node
+        */
+        if (0 == device_data->children) {
+            return 0;
+        } else {
+            return arraylist_count(device_data->children);
+        }
+    } else {
+        panic("not implemented");
+        return 0;
+    }
 }
 
 struct device* vfs_attach() {

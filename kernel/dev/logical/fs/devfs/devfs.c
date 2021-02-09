@@ -125,13 +125,20 @@ struct filesystem_node* devfs_find_node_by_idx(struct device* filesystem_device,
 /*
 * count
 */
-struct filesystem_node* devfs_count(struct device* filesystem_device, struct filesystem_node* fs_node) {
+uint32_t devfs_count(struct device* filesystem_device, struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(filesystem_device->device_data);
     ASSERT_NOT_NULL(fs_node);
-    panic("not implemented");
-
-    return 0;
+    struct devfs_devicedata* device_data = (struct devfs_devicedata*)filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * root node
+        */
+        return devicemgr_device_count();
+    } else {
+        // devices are leaf nodes they have no children
+        return 0;
+    }
 }
 
 struct device* devfs_attach() {
