@@ -18,6 +18,6 @@ void test_devfs() {
     struct device* devfs_device = devicemgr_find_device("devfs0");
     ASSERT_NOT_NULL(devfs_device);
 
-    struct filesystem_node* fsnode = fshelper_get_fs_node(devfs_device);
+    struct filesystem_node* fsnode = fshelper_get_fs_rootnode(devfs_device);
     ASSERT_NOT_NULL(fsnode);
 }

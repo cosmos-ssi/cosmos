@@ -13,13 +13,14 @@
 struct filesystem_node;
 struct device;
 
-struct filesystem_node* fshelper_get_fs_node(struct device* filesystem_device);
+struct filesystem_node* fshelper_get_fs_rootnode(struct device* filesystem_device);
 
 typedef void (*fshelper_traverse_function)(struct filesystem_node* fs_node, uint32_t depth);
 
 void fshelper_traverse(struct filesystem_node* fs_node, fshelper_traverse_function f);
 void fshelper_dump(struct filesystem_node* fs_node);
 
-void fshelper_count(struct filesystem_node* fs_node);
+uint32_t fshelper_count(struct filesystem_node* fs_node);
 
+struct filesystem_node* fshelper_find_node_by_idx(struct filesystem_node* fs_node, uint32_t idx);
 #endif

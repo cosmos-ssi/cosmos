@@ -21,6 +21,7 @@
 #include <dev/logical/tcpip/udp/udpdev.h>
 #include <dev/logical/tick/tick.h>
 #include <sys/asm/asm.h>
+#include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_console.h>
 #include <sys/deviceapi/deviceapi_cpu.h>
 #include <sys/deviceapi/deviceapi_dsp.h>
@@ -51,6 +52,7 @@ void attach_rand();
 void attach_tcpip();
 void attach_vfs();
 void load_init_binary();
+void dump_vfs();
 
 void create_consoles();
 void video_write(const uint8_t* s);
@@ -154,8 +156,7 @@ void CosmOS() {
 
     // show the vfs
     kprintf("***** VFS *****\n");
-
-    //  vfs_dump(cosmos_vfs);
+    //dump_vfs();
     //  devicemgr_dump_devices();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
@@ -168,6 +169,15 @@ void CosmOS() {
     while (1) {
         asm_hlt();
     }
+}
+
+void dump_vfs() {
+    struct device* vfs_dev = devicemgr_find_device("vfs0");
+    ASSERT_NOT_NULL(vfs_dev);
+    struct filesystem_node* fs_node = fshelper_get_fs_rootnode(vfs_dev);
+    ASSERT_NOT_NULL(fs_node);
+
+    fshelper_dump(fs_node);
 }
 
 /*
@@ -218,8 +228,8 @@ void attach_vfs() {
     struct device* rootfs_dev = vfs_attach();
     struct device* devfs_dev = devfs_attach();
     struct device* initrd_dev = attach_initrd();
-    struct filesystem_node* fsnode_devfs = fshelper_get_fs_node(devfs_dev);
-    struct filesystem_node* fsnode_initrd = fshelper_get_fs_node(initrd_dev);
+    struct filesystem_node* fsnode_devfs = fshelper_get_fs_rootnode(devfs_dev);
+    struct filesystem_node* fsnode_initrd = fshelper_get_fs_rootnode(initrd_dev);
     vfs_add_child(rootfs_dev, fsnode_devfs);
     vfs_add_child(rootfs_dev, fsnode_initrd);
 }

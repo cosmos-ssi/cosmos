@@ -173,6 +173,10 @@ struct device* devfs_attach() {
     struct devfs_devicedata* device_data = (struct devfs_devicedata*)kmalloc(sizeof(struct devfs_devicedata));
     struct filesystem_node* r = (struct filesystem_node*)kmalloc(sizeof(struct filesystem_node));
     memzero((uint8_t*)r, sizeof(struct filesystem_node));
+    r->filesystem_device = deviceinstance;
+    r->id = 0;
+    strncpy(r->name, "devfs", FILESYSTEM_MAX_NAME);
+
     device_data->root_node = r;
     deviceinstance->device_data = device_data;
     /*

@@ -179,6 +179,9 @@ struct device* vfs_attach() {
     device_data->children = 0;
     struct filesystem_node* r = (struct filesystem_node*)kmalloc(sizeof(struct filesystem_node));
     memzero((uint8_t*)r, sizeof(struct filesystem_node));
+    r->filesystem_device = deviceinstance;
+    r->id = 0;
+    strncpy(r->name, "vfs", FILESYSTEM_MAX_NAME);
     device_data->root_node = r;
     deviceinstance->device_data = device_data;
     /*

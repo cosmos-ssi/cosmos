@@ -18,6 +18,6 @@ void test_vfs() {
     struct device* vfsdev_device = devicemgr_find_device("vfs0");
     ASSERT_NOT_NULL(vfsdev_device);
 
-    struct filesystem_node* fsnode = fshelper_get_fs_node(vfsdev_device);
+    struct filesystem_node* fsnode = fshelper_get_fs_rootnode(vfsdev_device);
     ASSERT_NOT_NULL(fsnode);
 }
