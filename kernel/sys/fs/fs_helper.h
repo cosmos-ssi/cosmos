@@ -13,18 +13,13 @@
 struct filesystem_node;
 struct device;
 
-//void fshelper_remove_device_from_vfs(struct device* vfs_device, struct device* dev);
-//void fshelper_add_device_to_vfs(struct device* vfs_device, struct device* dev);
-
 struct filesystem_node* fshelper_get_fs_node(struct device* filesystem_device);
 
-//typedef void (*vfshelper_traverse_function)(struct vfs_node* v, uint32_t depth);
+typedef void (*fshelper_traverse_function)(struct filesystem_node* fs_node, uint32_t depth);
 
-//uint32_t vfs_count(struct vfs_node* v);
-//void vfs_traverse(struct vfs_node* v, vfs_traverse_function f);
-//void vfs_dump(struct vfs_node* v);
+void fshelper_traverse(struct filesystem_node* fs_node, fshelper_traverse_function f);
+void fshelper_dump(struct filesystem_node* fs_node);
 
-// the VFS for this host
-//extern struct vfs_node* cosmos_vfs;
+void fshelper_count(struct filesystem_node* fs_node);
 
 #endif
