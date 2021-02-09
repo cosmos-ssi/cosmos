@@ -36,8 +36,11 @@ uint8_t vfs_init(struct device* dev) {
 uint8_t vfs_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s  (%s)\n", dev->description, dev->name);
+    struct vfs_devicedata* device_data = (struct vfs_devicedata*)dev->device_data;
+
     kfree(dev->api);
-    kfree(dev->device_data);
+    kfree(device_data->root_node);
+    kfree(device_data);
     return 1;
 }
 
@@ -193,6 +196,8 @@ struct device* vfs_attach() {
         */
         return deviceinstance;
     } else {
+        kfree(device_data->root_node);
+        kfree(device_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;

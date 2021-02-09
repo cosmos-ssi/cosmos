@@ -34,8 +34,11 @@ uint8_t devfs_init(struct device* dev) {
 uint8_t devfs_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s  (%s)\n", dev->description, dev->name);
+    struct devfs_devicedata* device_data = (struct devfs_devicedata*)dev->device_data;
     kfree(dev->api);
-    kfree(dev->device_data);
+    kfree(device_data->root_node);
+    kfree(device_data);
+
     return 1;
 }
 
@@ -188,6 +191,8 @@ struct device* devfs_attach() {
         */
         return deviceinstance;
     } else {
+        kfree(device_data->root_node);
+        kfree(device_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;

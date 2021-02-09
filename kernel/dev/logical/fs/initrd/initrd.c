@@ -67,7 +67,8 @@ uint8_t initrd_uninit(struct device* dev) {
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
     kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
     kfree(dev->api);
-    kfree(dev->device_data);
+    kfree(device_data->root_node);
+    kfree(device_data);
     return 1;
 }
 
@@ -223,6 +224,7 @@ struct device* initrd_attach(struct device* partition_device, uint32_t lba) {
         */
         return deviceinstance;
     } else {
+        kfree(device_data->root_node);
         kfree(device_data);
         kfree(api);
         kfree(deviceinstance);
