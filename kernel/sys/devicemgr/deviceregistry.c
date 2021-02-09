@@ -7,53 +7,18 @@
 
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
+#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/deviceregistry.h>
 #include <sys/devicemgr/devicetypes.h>
+#include <sys/fs/fs_helper.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>
-#include <sys/vfs/dev_vfs.h>
-#include <sys/vfs/fs_vfs.h>
-#include <sys/vfs/vfs.h>
 
 void deviceregistry_init() {
     /*
     * init the types
     */
     devicetypes_init();
-}
-
-/*
-* add device to VFS
-*/
-void deviceregistry_add_to_vfs(struct device* dev) {
-    ASSERT_NOT_NULL(dev);
-    if (dev->devicetype == FILESYSTEM) {
-        struct vfs_node* this_dev_vfs = vfs_new_filesystem(dev->name);
-        struct vfs_node* fs_vfs = vfs_find(cosmos_vfs, VFS_FS_TREE);
-        ASSERT_NOT_NULL(fs_vfs);
-        vfs_add_child(fs_vfs, this_dev_vfs);
-    } else {
-        struct vfs_node* this_dev_vfs = vfs_new_dev(dev->name);
-        struct vfs_node* dev_vfs = vfs_find(cosmos_vfs, VFS_DEV_TREE);
-        ASSERT_NOT_NULL(dev_vfs);
-        vfs_add_child(dev_vfs, this_dev_vfs);
-    }
-}
-
-/*
-* remove device from VFS
-*/
-void deviceregistry_remove_from_vfs(struct device* dev) {
-    ASSERT_NOT_NULL(dev);
-    if (dev->devicetype == FILESYSTEM) {
-        struct vfs_node* fs_vfs = vfs_find(cosmos_vfs, VFS_FS_TREE);
-        ASSERT_NOT_NULL(fs_vfs);
-        vfs_remove_child(fs_vfs, dev->name);
-    } else {
-        struct vfs_node* dev_vfs = vfs_find(cosmos_vfs, VFS_DEV_TREE);
-        ASSERT_NOT_NULL(dev_vfs);
-        vfs_remove_child(dev_vfs, dev->name);
-    }
 }
 
 /*
@@ -75,10 +40,6 @@ void deviceregistry_registerdevice(struct device* dev) {
     * add to the list
     */
     arraylist_add(lst, dev);
-    /*
-    * add to VFS
-    */
-    deviceregistry_add_to_vfs(dev);
 }
 
 /*
@@ -99,10 +60,6 @@ void deviceregistry_unregisterdevice(struct device* dev) {
         struct device* d = (struct device*)arraylist_get(lst, i);
         ASSERT_NOT_NULL(d);
         if (0 == strcmp(d->name, dev->name)) {
-            /*
-            * remove from vfs
-            */
-            deviceregistry_remove_from_vfs(dev);
             /*
             * remove the device
             */

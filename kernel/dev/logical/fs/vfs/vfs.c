@@ -5,7 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/fs/devfs/devfs.h>
+#include <dev/logical/fs/vfs/vfs.h>
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
@@ -15,14 +16,15 @@
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
-struct devfs_devicedata {
+struct vfs_devicedata {
+    struct arraylist* children;
     struct filesystem_node* root_node;
 };
 
 /*
  * perform device instance specific init here
  */
-uint8_t devfs_init(struct device* dev) {
+uint8_t vfs_init(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
@@ -31,7 +33,7 @@ uint8_t devfs_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t devfs_uninit(struct device* dev) {
+uint8_t vfs_uninit(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s  (%s)\n", dev->description, dev->name);
     kfree(dev->api);
@@ -39,110 +41,107 @@ uint8_t devfs_uninit(struct device* dev) {
     return 1;
 }
 
-struct filesystem_node* devfs_get_root_node(struct device* filesystem_device) {
+struct filesystem_node* vfs_get_root_node(struct device* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(filesystem_device->device_data);
-    struct devfs_devicedata* device_data = (struct devfs_devicedata*)filesystem_device->device_data;
+    struct vfs_devicedata* device_data = (struct vfs_devicedata*)filesystem_device->device_data;
     return device_data->root_node;
 }
 
-uint32_t devfs_read(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
+uint32_t vfs_read(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     // read from node. we cant read from the root node, but we can find underlying file and folder nodes
     panic("not implemented");
-
     return 0;
 }
 
-uint32_t devfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
+uint32_t vfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     // write to node. we cant write to the root node, but we can find underlying file and folder nodes
-    panic("not implemented");
 
+    panic("not implemented");
     return 0;
 }
 
-void devfs_open(struct filesystem_node* fs_node) {
+void vfs_open(struct filesystem_node* fs_node) {
+
     ASSERT_NOT_NULL(fs_node);
     panic("not implemented");
 }
 
-void devfs_close(struct filesystem_node* fs_node) {
+void vfs_close(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     panic("not implemented");
 }
 
-struct filesystem_node* devfs_find_node_by_id(struct filesystem_node* fs_node, uint32_t id) {
+struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uint32_t id) {
     ASSERT_NOT_NULL(fs_node);
-    // find subnode.  we can do this for the root node, but not contained nodes b/c devices are leaf nodes
+    // find subnode.  we can do this for the root node, and for subnodes that are folders
     panic("not implemented");
-
     return 0;
 }
 
-struct filesystem_node* devfs_find_node_by_name(struct filesystem_node* fs_node, uint8_t* name) {
+struct filesystem_node* vfs_find_node_by_name(struct filesystem_node* fs_node, uint8_t* name) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(name);
-    // find subnode.  we can do this for the root node, but not contained nodes b/c devices are leaf nodes
+    // find subnode.  we can do this for the root node, and for subnodes that are folders
     panic("not implemented");
-
     return 0;
 }
 
 /*
 * find a node by name
 */
-struct filesystem_node* devfs_find_node_by_idx(struct filesystem_node* fs_node, uint32_t idx) {
+struct filesystem_node* vfs_find_node_by_idx(struct filesystem_node* fs_node, uint32_t idx) {
     ASSERT_NOT_NULL(fs_node);
     // find subnode.  we can do this for the root node, and for subnodes that are folders
     panic("not implemented");
-
     return 0;
 }
 /*
 * count
 */
-struct filesystem_node* devfs_count(struct filesystem_node* fs_node) {
+struct filesystem_node* vfs_count(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     panic("not implemented");
-
     return 0;
 }
 
-struct device* devfs_attach() {
+struct device* vfs_attach() {
     /*
      * register device
      */
     struct device* deviceinstance = devicemgr_new_device();
-    deviceinstance->init = &devfs_init;
-    deviceinstance->uninit = &devfs_uninit;
+    deviceinstance->init = &vfs_init;
+    deviceinstance->uninit = &vfs_uninit;
     deviceinstance->pci = 0;
-    deviceinstance->devicetype = DEVFS;
+    deviceinstance->devicetype = VFS;
     deviceinstance->device_data = 0;
-    devicemgr_set_device_description(deviceinstance, "Device File System");
+    devicemgr_set_device_description(deviceinstance, "VFS File System");
     /*
      * the device api
      */
     struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)kmalloc(sizeof(struct deviceapi_filesystem));
     memzero((uint8_t*)api, sizeof(struct deviceapi_filesystem));
-    api->close = &devfs_close;
-    api->find_id = &devfs_find_node_by_id;
-    api->find_name = &devfs_find_node_by_name;
-    api->open = &devfs_open;
-    api->root = &devfs_get_root_node;
-    api->write = &devfs_write;
-    api->read = &devfs_read;
-    api->find_idx = &devfs_find_node_by_idx;
-    api->count = &devfs_count;
+    api->close = &vfs_close;
+    api->find_id = &vfs_find_node_by_id;
+    api->find_name = &vfs_find_node_by_name;
+    api->open = &vfs_open;
+    api->root = &vfs_get_root_node;
+    api->write = &vfs_write;
+    api->read = &vfs_read;
+    api->find_idx = &vfs_find_node_by_idx;
+    api->count = &vfs_count;
     deviceinstance->api = api;
     /*
      * device data
      */
-    struct devfs_devicedata* device_data = (struct devfs_devicedata*)kmalloc(sizeof(struct devfs_devicedata));
+    struct vfs_devicedata* device_data = (struct vfs_devicedata*)kmalloc(sizeof(struct vfs_devicedata));
+    device_data->children = 0;
     struct filesystem_node* r = (struct filesystem_node*)kmalloc(sizeof(struct filesystem_node));
     memzero((uint8_t*)r, sizeof(struct filesystem_node));
     device_data->root_node = r;
@@ -162,10 +161,28 @@ struct device* devfs_attach() {
     }
 }
 
-void devfs_detach(struct device* dev) {
+void vfs_detach(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     /*
     * detach
     */
     devicemgr_detach_device(dev);
+}
+
+void vfs_add_child(struct device* vfs_device, struct filesystem_node* child_node) {
+    ASSERT_NOT_NULL(vfs_device);
+    ASSERT_NOT_NULL(vfs_device->device_data);
+    ASSERT_NOT_NULL(child_node);
+    struct vfs_devicedata* device_data = (struct vfs_devicedata*)vfs_device->device_data;
+    ASSERT_NOT_NULL(device_data);
+    if (0 == device_data->children) {
+        device_data->children = arraylist_new();
+    }
+    arraylist_add(device_data->children, child_node);
+}
+
+void vfs_remove_child(struct device* vfs_device, uint64_t id) {
+    ASSERT_NOT_NULL(vfs_device);
+    ASSERT_NOT_NULL(vfs_device->device_data);
+    panic("not implemented");
 }

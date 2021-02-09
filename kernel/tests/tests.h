@@ -32,6 +32,7 @@
 #include <tests/dev/test_virtio_virtqueue.h>
 #include <tests/fs/test_cfs.h>
 #include <tests/fs/test_cpm.h>
+#include <tests/fs/test_devfs.h>
 #include <tests/fs/test_fat.h>
 #include <tests/fs/test_gpt.h>
 #include <tests/fs/test_initrd.h>
@@ -39,6 +40,7 @@
 #include <tests/fs/test_sfs.h>
 #include <tests/fs/test_swap.h>
 #include <tests/fs/test_tfs.h>
+#include <tests/fs/test_vfs.h>
 #include <tests/sys/test_array.h>
 #include <tests/sys/test_arraylist.h>
 #include <tests/sys/test_bitmap.h>
@@ -53,7 +55,6 @@
 #include <tests/sys/test_string.h>
 #include <tests/sys/test_trap.h>
 #include <tests/sys/test_tree.h>
-#include <tests/sys/test_vfs.h>
 
 #include <types.h>
 

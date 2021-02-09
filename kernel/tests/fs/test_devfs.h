@@ -5,14 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-/*
-* vfs nodes for filesystem 
-*/
-#ifndef _FILESYSTEMVFS_H
-#define _FILESYSTEMVFS_H
+#ifndef __TEST_DEVFS_H
+#define __TEST_DEVFS_H
 
-#include <sys/vfs/vfs.h>
-
-struct vfs_node* vfs_new_filesystem(uint8_t* devicename);
+void test_devfs();
 
 #endif

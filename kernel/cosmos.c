@@ -10,7 +10,7 @@
 #include <dev/logical/ethernet/ethernet.h>
 #include <dev/logical/fs/devfs/devfs.h>
 #include <dev/logical/fs/initrd/initrd.h>
-#include <dev/logical/fs/rootfs/rootfs.h>
+#include <dev/logical/fs/vfs/vfs.h>
 #include <dev/logical/null/null.h>
 #include <dev/logical/ramdisk/ramdisk.h>
 #include <dev/logical/rand/rand.h>
@@ -29,6 +29,7 @@
 #include <sys/deviceapi/deviceapi_serial.h>
 #include <sys/deviceapi/deviceapi_speaker.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/fs/fs_helper.h>
 #include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
@@ -36,7 +37,6 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/proc/proc.h>
 #include <sys/sync/sync.h>
-#include <sys/vfs/vfs.h>
 #include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/idt/idt.h>
 #include <sys/x86-64/syscall/syscall.h>
@@ -49,9 +49,7 @@ void attach_null();
 void attach_tick();
 void attach_rand();
 void attach_tcpip();
-void attach_initrd();
-void attach_devfs();
-void attach_rootfs();
+void attach_vfs();
 void load_init_binary();
 
 void create_consoles();
@@ -79,9 +77,6 @@ void CosmOS() {
 
     kprintf("Initializing Interrupt Routing...\n");
     interrupt_router_init();
-
-    kprintf("Initializing VFS\n");
-    vfs_init();
 
     kprintf("Initializing IO buffers...\n");
     iobuffers_init();
@@ -120,9 +115,7 @@ void CosmOS() {
     attach_tick();
     attach_rand();
     attach_tcpip();
-    attach_initrd();
-    attach_rootfs();
-    attach_devfs();
+    attach_vfs();
     /*
      * create consoles
      */
@@ -162,7 +155,7 @@ void CosmOS() {
     // show the vfs
     kprintf("***** VFS *****\n");
 
-    vfs_dump(cosmos_vfs);
+    //  vfs_dump(cosmos_vfs);
     //  devicemgr_dump_devices();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
@@ -203,12 +196,32 @@ void attach_ramdisks() {
     ramdisk_attach(sector_size, sector_count2);
 }
 
-void attach_rootfs() {
-    rootfs_attach();
+// mount the init rd
+struct device* attach_initrd() {
+    uint8_t devicename[] = {INITRD_DISK};
+
+    struct device* dsk = devicemgr_find_device(devicename);
+    if (0 != dsk) {
+        // attach initrd fs
+        //struct device* initrd =
+        return initrd_attach(dsk, initrd_lba());
+
+        //  initrd_dump_dir(initrd);
+
+    } else {
+        kprintf("Unable to find %s\n", devicename);
+        return 0;
+    }
 }
 
-void attach_devfs() {
-    devfs_attach();
+void attach_vfs() {
+    struct device* rootfs_dev = vfs_attach();
+    struct device* devfs_dev = devfs_attach();
+    struct device* initrd_dev = attach_initrd();
+    struct filesystem_node* fsnode_devfs = fshelper_get_fs_node(devfs_dev);
+    struct filesystem_node* fsnode_initrd = fshelper_get_fs_node(initrd_dev);
+    vfs_add_child(rootfs_dev, fsnode_devfs);
+    vfs_add_child(rootfs_dev, fsnode_initrd);
 }
 
 void attach_null() {
@@ -217,25 +230,6 @@ void attach_null() {
 
 void attach_rand() {
     rand_attach();
-}
-
-// mount the init rd
-void attach_initrd() {
-    uint8_t devicename[] = {INITRD_DISK};
-
-    struct device* dsk = devicemgr_find_device(devicename);
-    if (0 != dsk) {
-        // attach initrd fs
-        //struct device* initrd =
-        initrd_attach(dsk, initrd_lba());
-
-        //  initrd_dump_dir(initrd);
-
-        // detach
-        //   initrd_detach(initrd);
-    } else {
-        kprintf("Unable to find %s\n", devicename);
-    }
 }
 
 /*

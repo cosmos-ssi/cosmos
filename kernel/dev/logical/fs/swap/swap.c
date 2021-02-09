@@ -18,7 +18,7 @@
 struct swap_devicedata {
     struct device* block_device;
     uint16_t block_size;  // block size of the underlying physical device
-} __attribute__((packed));
+};
 
 /*
  * perform device instance specific init here

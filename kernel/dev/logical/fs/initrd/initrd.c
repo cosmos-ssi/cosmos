@@ -38,6 +38,7 @@ struct initrd_devicedata {
     struct device* partition_device;
     uint32_t lba;
     struct initrd_header header;
+    struct filesystem_node* root_node;
 };
 
 /*
@@ -70,6 +71,80 @@ uint8_t initrd_uninit(struct device* dev) {
     return 1;
 }
 
+struct filesystem_node* initrd_get_root_node(struct device* filesystem_device) {
+    ASSERT_NOT_NULL(filesystem_device);
+    ASSERT_NOT_NULL(filesystem_device->device_data);
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)filesystem_device->device_data;
+    return device_data->root_node;
+}
+
+uint32_t initrd_read(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
+    // read from node. we cant read from the root node, but we can find underlying file and folder nodes
+    panic("not implemented");
+
+    return 0;
+}
+
+uint32_t initrd_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
+    // write to node. we cant write to the root node, but we can find underlying file and folder nodes
+    panic("not implemented");
+
+    return 0;
+}
+
+void initrd_open(struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(fs_node);
+    panic("not implemented");
+}
+
+void initrd_close(struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(fs_node);
+    panic("not implemented");
+}
+
+struct filesystem_node* initrd_find_node_by_id(struct filesystem_node* fs_node, uint32_t id) {
+    ASSERT_NOT_NULL(fs_node);
+    // find subnode.  we can do this for the root node, but not contained nodes b/c initrd doesn't support folders
+    panic("not implemented");
+
+    return 0;
+}
+
+struct filesystem_node* initrd_find_node_by_name(struct filesystem_node* fs_node, uint8_t* name) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(name);
+    // find subnode.  we can do this for the root node, but not contained nodes b/c initrd doesn't support folders
+    panic("not implemented");
+
+    return 0;
+}
+
+/*
+* find a node by name
+*/
+struct filesystem_node* initrd_find_node_by_idx(struct filesystem_node* fs_node, uint32_t idx) {
+    ASSERT_NOT_NULL(fs_node);
+    // find subnode.  we can do this for the root node, and for subnodes that are folders
+    panic("not implemented");
+
+    return 0;
+}
+/*
+* count
+*/
+struct filesystem_node* initrd_count(struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(fs_node);
+    panic("not implemented");
+
+    return 0;
+}
+
 struct device* initrd_attach(struct device* partition_device, uint32_t lba) {
     ASSERT_NOT_NULL(partition_device);
     ASSERT(1 == blockutil_is_block_device(partition_device));
@@ -88,15 +163,26 @@ struct device* initrd_attach(struct device* partition_device, uint32_t lba) {
      */
     struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)kmalloc(sizeof(struct deviceapi_filesystem));
     memzero((uint8_t*)api, sizeof(struct deviceapi_filesystem));
+    api->close = &initrd_close;
+    api->find_id = &initrd_find_node_by_id;
+    api->find_name = &initrd_find_node_by_name;
+    api->open = &initrd_open;
+    api->root = &initrd_get_root_node;
+    api->write = &initrd_write;
+    api->read = &initrd_read;
+    api->find_idx = initrd_find_node_by_idx;
+    api->count = initrd_count;
     deviceinstance->api = api;
     /*
      * device data
      */
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)kmalloc(sizeof(struct initrd_devicedata));
-    device_data->partition_device = partition_device;
+    struct filesystem_node* r = (struct filesystem_node*)kmalloc(sizeof(struct filesystem_node));
+    memzero((uint8_t*)r, sizeof(struct filesystem_node));
+    device_data->root_node = r;
     device_data->lba = lba;
+    device_data->partition_device = partition_device;
     deviceinstance->device_data = device_data;
-
     /*
      * register
      */

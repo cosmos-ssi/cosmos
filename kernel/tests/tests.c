@@ -19,6 +19,7 @@ void tests_run() {
     test_bitmap();
     test_iobuffers();
     test_vfs();
+    test_devfs();
     test_gpt();
     test_bda();
     test_smbios();
