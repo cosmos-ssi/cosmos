@@ -48,7 +48,9 @@ struct filesystem_node* vfs_get_root_node(struct device* filesystem_device) {
     return device_data->root_node;
 }
 
-uint32_t vfs_read(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
+uint32_t vfs_read(struct device* filesystem_device, struct filesystem_node* fs_node, const uint8_t* data,
+                  uint32_t data_size) {
+    ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -57,7 +59,10 @@ uint32_t vfs_read(struct filesystem_node* fs_node, const uint8_t* data, uint32_t
     return 0;
 }
 
-uint32_t vfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
+uint32_t vfs_write(struct device* filesystem_device, struct filesystem_node* fs_node, const uint8_t* data,
+                   uint32_t data_size) {
+    ASSERT_NOT_NULL(filesystem_device);
+
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -67,25 +72,32 @@ uint32_t vfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_
     return 0;
 }
 
-void vfs_open(struct filesystem_node* fs_node) {
+void vfs_open(struct device* filesystem_device, struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(filesystem_device);
 
     ASSERT_NOT_NULL(fs_node);
     panic("not implemented");
 }
 
-void vfs_close(struct filesystem_node* fs_node) {
+void vfs_close(struct device* filesystem_device, struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(fs_node);
+
     panic("not implemented");
 }
 
-struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uint32_t id) {
+struct filesystem_node* vfs_find_node_by_id(struct device* filesystem_device, struct filesystem_node* fs_node,
+                                            uint32_t id) {
+    ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(fs_node);
     // find subnode.  we can do this for the root node, and for subnodes that are folders
     panic("not implemented");
     return 0;
 }
 
-struct filesystem_node* vfs_find_node_by_name(struct filesystem_node* fs_node, uint8_t* name) {
+struct filesystem_node* vfs_find_node_by_name(struct device* filesystem_device, struct filesystem_node* fs_node,
+                                              uint8_t* name) {
+    ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(name);
     // find subnode.  we can do this for the root node, and for subnodes that are folders
@@ -96,7 +108,9 @@ struct filesystem_node* vfs_find_node_by_name(struct filesystem_node* fs_node, u
 /*
 * find a node by name
 */
-struct filesystem_node* vfs_find_node_by_idx(struct filesystem_node* fs_node, uint32_t idx) {
+struct filesystem_node* vfs_find_node_by_idx(struct device* filesystem_device, struct filesystem_node* fs_node,
+                                             uint32_t idx) {
+    ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(fs_node);
     // find subnode.  we can do this for the root node, and for subnodes that are folders
     panic("not implemented");
@@ -105,7 +119,8 @@ struct filesystem_node* vfs_find_node_by_idx(struct filesystem_node* fs_node, ui
 /*
 * count
 */
-struct filesystem_node* vfs_count(struct filesystem_node* fs_node) {
+struct filesystem_node* vfs_count(struct device* filesystem_device, struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(fs_node);
     panic("not implemented");
     return 0;

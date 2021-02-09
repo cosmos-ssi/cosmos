@@ -41,30 +41,36 @@ typedef struct filesystem_node* (*filesystem_get_root_node_function)(struct devi
 /*
 * read bytes from node
 */
-typedef uint32_t (*filesystem_read_function)(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size);
+typedef uint32_t (*filesystem_read_function)(struct device* filesystem_device, struct filesystem_node* fs_node,
+                                             const uint8_t* data, uint32_t data_size);
 /*
 * write bytes to node
 */
-typedef uint32_t (*filesystem_write_function)(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size);
-typedef void (*filesystem_open_function)(struct filesystem_node* fs_node);
-typedef void (*filesystem_close_function)(struct filesystem_node* fs_node);
+typedef uint32_t (*filesystem_write_function)(struct device* filesystem_device, struct filesystem_node* fs_node,
+                                              const uint8_t* data, uint32_t data_size);
+typedef void (*filesystem_open_function)(struct device* filesystem_device, struct filesystem_node* fs_node);
+typedef void (*filesystem_close_function)(struct device* filesystem_device, struct filesystem_node* fs_node);
 /*
 * find a node by id
 */
-typedef struct filesystem_node* (*filesystem_find_node_by_id_function)(struct filesystem_node* fs_node, uint32_t id);
+typedef struct filesystem_node* (*filesystem_find_node_by_id_function)(struct device* filesystem_device,
+                                                                       struct filesystem_node* fs_node, uint32_t id);
 /*
 * find a node by idx
 */
-typedef struct filesystem_node* (*filesystem_find_node_by_idx_function)(struct filesystem_node* fs_node, uint32_t idx);
+typedef struct filesystem_node* (*filesystem_find_node_by_idx_function)(struct device* filesystem_device,
+                                                                        struct filesystem_node* fs_node, uint32_t idx);
 /*
 * find a node by name
 */
-typedef struct filesystem_node* (*filesystem_find_node_by_name_function)(struct filesystem_node* fs_node,
+typedef struct filesystem_node* (*filesystem_find_node_by_name_function)(struct device* filesystem_device,
+                                                                         struct filesystem_node* fs_node,
                                                                          uint8_t* name);
 /*
 * count
 */
-typedef struct filesystem_node* (*filesystem_count_function)(struct filesystem_node* fs_node);
+typedef struct filesystem_node* (*filesystem_count_function)(struct device* filesystem_device,
+                                                             struct filesystem_node* fs_node);
 
 struct deviceapi_filesystem {
     filesystem_get_root_node_function root;
