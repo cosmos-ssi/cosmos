@@ -7,6 +7,7 @@
 
 #include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
+#include <sys/string/mem.h>
 
 proc_info_t* new_proc_info(pid_t pid, pttentry cr3) {
     proc_info_t* proc_info = 0;
@@ -15,6 +16,9 @@ proc_info_t* new_proc_info(pid_t pid, pttentry cr3) {
     if (!proc_info) {
         panic("Unable to allocate space for proc_info struct!");
     }
+
+    // clear struct
+    memset((uint8_t*)proc_info, 0, sizeof(proc_info_t));
 
     proc_info->pid = pid;
     proc_info->cr3 = cr3;
