@@ -40,9 +40,7 @@ uint8_t vfs_uninit(struct device* dev) {
 
     kfree(dev->api);
     kfree(device_data->root_node);
-    if (0 != device_data->children) {
-        kfree(device_data->children);
-    }
+    kfree(device_data->children);
     kfree(device_data);
     return 1;
 }
@@ -124,9 +122,21 @@ struct filesystem_node* vfs_find_node_by_idx(struct filesystem_node* fs_node, ui
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
-    // find subnode.  we can do this for the root node, and for subnodes that are folders
-    panic("not implemented");
-    return 0;
+    struct vfs_devicedata* device_data = (struct vfs_devicedata*)fs_node->filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * root node
+        */
+        ASSERT(idx >= 0);
+        ASSERT(idx < arraylist_count(device_data->children));
+        return arraylist_get(device_data->children, idx);
+    } else {
+        /* 
+        * return zero here.  vfsdev has no concept of folders, therefore every node
+        * is at the top level; a child of the root
+        */
+        return 0;
+    }
 }
 /*
 * count
@@ -147,7 +157,10 @@ uint32_t vfs_count(struct filesystem_node* fs_node) {
             return arraylist_count(device_data->children);
         }
     } else {
-        panic("not implemented");
+        /* 
+        * return zero here.  vfsdev has no concept of folders, therefore every node
+        * is at the top level; a child of the root
+        */
         return 0;
     }
 }
@@ -189,6 +202,7 @@ struct device* vfs_attach() {
     r->id = 0;
     strncpy(r->name, "vfs", FILESYSTEM_MAX_NAME);
     device_data->root_node = r;
+    device_data->children = arraylist_new();
     deviceinstance->device_data = device_data;
     /*
      * register
@@ -199,9 +213,7 @@ struct device* vfs_attach() {
         */
         return deviceinstance;
     } else {
-        if (0 != device_data->children) {
-            kfree(device_data->children);
-        }
+        kfree(device_data->children);
         kfree(device_data->root_node);
         kfree(device_data);
         kfree(api);
@@ -224,9 +236,7 @@ void vfs_add_child(struct device* vfs_device, struct filesystem_node* child_node
     ASSERT_NOT_NULL(child_node);
     struct vfs_devicedata* device_data = (struct vfs_devicedata*)vfs_device->device_data;
     ASSERT_NOT_NULL(device_data);
-    if (0 == device_data->children) {
-        device_data->children = arraylist_new();
-    }
+    device_data->children = arraylist_new();
     arraylist_add(device_data->children, child_node);
 }
 
