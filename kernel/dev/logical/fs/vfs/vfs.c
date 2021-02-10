@@ -40,6 +40,9 @@ uint8_t vfs_uninit(struct device* dev) {
 
     kfree(dev->api);
     kfree(device_data->root_node);
+    if (0 != device_data->children) {
+        kfree(device_data->children);
+    }
     kfree(device_data);
     return 1;
 }
@@ -196,6 +199,9 @@ struct device* vfs_attach() {
         */
         return deviceinstance;
     } else {
+        if (0 != device_data->children) {
+            kfree(device_data->children);
+        }
         kfree(device_data->root_node);
         kfree(device_data);
         kfree(api);
