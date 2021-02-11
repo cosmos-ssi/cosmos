@@ -15,8 +15,13 @@
 
 #include <types.h>
 
+typedef enum object_types_t { OBJECT_EXECUTABLE } object_types_t;
+
 typedef uint64_t object_handle_t;
 
 typedef object_handle_t obj_executable_t;
+
+// object_create.c
+object_handle_t object_create(object_types_t type, void* object_data);
 
 #endif
