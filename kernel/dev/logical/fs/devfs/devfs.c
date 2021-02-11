@@ -120,10 +120,23 @@ struct filesystem_node* devfs_find_node_by_idx(struct filesystem_node* fs_node, 
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
-    // find subnode.  we can do this for the root node, and for subnodes that are folders
-    panic("not implemented");
-
-    return 0;
+    struct devfs_devicedata* device_data = (struct devfs_devicedata*)fs_node->filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * root node
+        */
+        ASSERT(idx >= 0);
+        //    ASSERT(idx < device_data->header.number_files);
+        //        return arraylist_get(device_data->children, idx);
+        panic("not implemented");
+        return 0;
+    } else {
+        /* 
+        * return zero here.  vfsdev has no concept of folders, therefore every node
+        * is at the top level; a child of the root
+        */
+        return 0;
+    }
 }
 /*
 * count
