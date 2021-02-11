@@ -5,9 +5,18 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/objects/objects.h>
-#include <sys/proc/proc.h>
+/*
+ * Definition of object types, which are system objects (data spaces, non-system
+ * network connections, processes, other users, etc) that the user sees.
+ */
 
-void proc_load(obj_executable_t executable) {
-    return;
-}
+#ifndef _OBJECTS_H
+#define _OBJECTS_H
+
+#include <types.h>
+
+typedef uint64_t object_handle_t;
+
+typedef object_handle_t obj_executable_t;
+
+#endif

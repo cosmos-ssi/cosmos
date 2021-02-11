@@ -77,8 +77,10 @@ typedef proc_info_t********* ptable_t;
 
 extern ptable_t ptable;
 
-// proc_init.c
+// proc_info.c
 proc_info_t* new_proc_info(pid_t pid, pttentry cr3);
+
+// proc_init.c
 void proc_init();
 
 // proc_table.c
