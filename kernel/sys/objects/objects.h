@@ -16,7 +16,7 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-typedef enum object_types_t { OBJECT_EXECUTABLE } object_types_t;
+typedef enum object_types_t { OBJECT_EXECUTABLE, OBJECT_PRESENTATION } object_types_t;
 
 typedef uint64_t object_handle_t;
 
@@ -27,14 +27,14 @@ typedef struct object_t {
     void* data;
 } object_t;
 
-typedef struct object_dataspace_t {
+typedef struct object_presentation_t {
     /*
      * For now just encapsulate enough to use the initrd driver directly, once
      * vfs develops switch to that
      */
     device_t* dev;
     uint8_t idx;
-} object_dataspace_t;
+} object_presentation_t;
 
 extern object_t** object_table;
 extern uint64_t object_table_last_idx, object_table_dim;

@@ -11,10 +11,10 @@
 #include <sys/panic/panic.h>
 #include <types.h>
 
-object_handle_t object_create_dataspace(device_t* dev, uint8_t idx) {
-    object_dataspace_t* obj_data;
+object_handle_t object_create_presentation(device_t* dev, uint8_t idx) {
+    object_presentation_t* obj_data;
 
-    obj_data = (object_dataspace_t*)kmalloc(sizeof(object_dataspace_t));
+    obj_data = (object_presentation_t*)kmalloc(sizeof(object_presentation_t));
     if (!obj_data) {
         panic("kmalloc failed!");
     }
