@@ -13,6 +13,7 @@
 #ifndef _OBJECTS_H
 #define _OBJECTS_H
 
+#include <sys/collection/dtable/dtable.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
@@ -36,7 +37,7 @@ typedef struct object_presentation_t {
     uint8_t idx;
 } object_presentation_t;
 
-extern object_t** object_table;
+extern dtable object_table;
 extern uint64_t object_table_last_idx, object_table_dim;
 
 // object_create.c
