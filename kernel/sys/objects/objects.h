@@ -13,6 +13,7 @@
 #ifndef _OBJECTS_H
 #define _OBJECTS_H
 
+#include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
 typedef enum object_types_t { OBJECT_EXECUTABLE } object_types_t;
@@ -25,6 +26,15 @@ typedef struct object_t {
     object_types_t type;
     void* data;
 } object_t;
+
+typedef struct object_dataspace_t {
+    /*
+     * For now just encapsulate enough to use the initrd drive directly, once
+     * vfs develops switch to that
+     */
+    device_t* dev;
+    uint8_t idx;
+} object_dataspace_t;
 
 extern object_t** object_table;
 extern uint64_t object_table_last_idx, object_table_dim;
