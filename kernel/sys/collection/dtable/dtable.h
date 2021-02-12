@@ -22,5 +22,6 @@
 typedef void********* dtable;
 
 //void* dtable_get(dtable table, uint64_t idx);
+dtable dtable_init();
 
 #endif

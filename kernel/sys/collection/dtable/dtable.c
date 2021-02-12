@@ -4,3 +4,9 @@
  * Released under the stated terms in the file LICENSE           *
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
+
+#include <sys/collection/dtable/dtable.h>
+
+dtable dtable_init() {
+    return (dtable)0;
+}
