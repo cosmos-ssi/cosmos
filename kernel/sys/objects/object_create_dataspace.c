@@ -5,19 +5,22 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
 #include <sys/panic/panic.h>
+#include <types.h>
 
-object_handle_t object_create(object_types_t type, void* object_data) {
-    object_t* obj;
+object_handle_t object_create_dataspace(device_t* dev, uint8_t idx) {
+    object_dataspace_t* obj_data;
 
-    obj = (object_t*)kmalloc(sizeof(object_t));
-
-    if (!obj) {
+    obj_data = (object_dataspace_t*)kmalloc(sizeof(object_dataspace_t));
+    if (!obj_data) {
         panic("kmalloc failed!");
     }
 
-    obj->data = object_data;
-    return 1;
+    obj_data->dev = dev;
+    obj_data->idx = idx;
+
+    return 0;
 }

@@ -29,7 +29,7 @@ typedef struct object_t {
 
 typedef struct object_dataspace_t {
     /*
-     * For now just encapsulate enough to use the initrd drive directly, once
+     * For now just encapsulate enough to use the initrd driver directly, once
      * vfs develops switch to that
      */
     device_t* dev;
@@ -41,5 +41,8 @@ extern uint64_t object_table_last_idx, object_table_dim;
 
 // object_create.c
 object_handle_t object_create(object_types_t type, void* object_data);
+
+// object_create_dataspace.c
+object_handle_t object_create_dataspace(device_t* dev, uint8_t idx);
 
 #endif
