@@ -13,6 +13,7 @@
 
 object_handle_t object_create_presentation(device_t* dev, uint8_t idx) {
     object_presentation_t* obj_data;
+    object_handle_t handle;
 
     obj_data = (object_presentation_t*)kmalloc(sizeof(object_presentation_t));
     if (!obj_data) {
@@ -22,5 +23,7 @@ object_handle_t object_create_presentation(device_t* dev, uint8_t idx) {
     obj_data->dev = dev;
     obj_data->idx = idx;
 
-    return 0;
+    handle = object_create(OBJECT_PRESENTATION, (void*)obj_data);
+
+    return handle;
 }
