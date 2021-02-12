@@ -9,10 +9,12 @@
 #include <sys/objects/objects.h>
 
 dtable object_table;
-uint64_t object_table_last_idx, object_table_dim;
+uint64_t object_table_next_idx;
 
 void object_init() {
     object_table = dtable_init();
+
+    object_table_next_idx = 0;
 
     return;
 }

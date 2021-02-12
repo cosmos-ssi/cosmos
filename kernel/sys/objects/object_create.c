@@ -5,6 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/collection/dtable/dtable.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
 #include <sys/panic/panic.h>
@@ -19,5 +20,9 @@ object_handle_t object_create(object_types_t type, void* object_data) {
     }
 
     obj->data = object_data;
-    return 1;
+
+    dtable_set(object_table, object_table_next_idx, obj);
+
+    // return value BEFORE increment
+    return object_table_next_idx++;
 }

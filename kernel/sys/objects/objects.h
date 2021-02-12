@@ -38,7 +38,7 @@ typedef struct object_presentation_t {
 } object_presentation_t;
 
 extern dtable object_table;
-extern uint64_t object_table_last_idx, object_table_dim;
+extern uint64_t object_table_next_idx;
 
 // object_create.c
 object_handle_t object_create(object_types_t type, void* object_data);
