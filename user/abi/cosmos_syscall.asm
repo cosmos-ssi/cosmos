@@ -10,7 +10,7 @@ cosmos_syscall:
     push rcx;
     push rdx;
 
-    int 0x81;
+    sysenter
 
     pop rdx;
     pop rcx;
