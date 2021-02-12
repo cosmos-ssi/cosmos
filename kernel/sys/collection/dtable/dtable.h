@@ -22,6 +22,7 @@
 typedef void********* dtable;
 
 //void* dtable_get(dtable table, uint64_t idx);
+bool dtable_set(dtable table, uint64_t idx, void* data);
 dtable dtable_init();
 
 #endif
