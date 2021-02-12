@@ -167,5 +167,10 @@ bool dtable_set(dtable table, uint64_t idx, void* data) {
 }
 
 dtable dtable_init() {
-    return (dtable)kmalloc(sizeof(dtable) * 256);
+    dtable tmp;
+    tmp = (dtable)kmalloc(sizeof(dtable) * 256);
+
+    memset((uint8_t*)tmp, 0, 256 * sizeof(dtable));
+
+    return tmp;
 }
