@@ -25,6 +25,7 @@ kernel/cosmos
 # Libraries
 *.lib
 *.a
+*.ar
 *.la
 *.lo
 
@@ -61,10 +62,18 @@ dkms.conf
 *.un*
 *.~
 
-.vscode
-**/*.DS_Store
-**/dump.dat
-**/qemu.log
+# image files we dont need
 **/hda.img
 **/blank.img
 **/initrd.img
+
+# generated binaries
+/src/user/cosmos_init
+/src/util/mkinitrd/mkinitrd
+
+# OS x resources
+**/*.DS_Store
+
+.vscode
+**/dump.dat
+**/qemu.log
