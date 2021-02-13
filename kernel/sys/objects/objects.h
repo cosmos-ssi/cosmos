@@ -25,6 +25,13 @@ typedef object_handle_t obj_executable_t;
 
 typedef struct object_t {
     object_types_t type;
+
+    /* 
+     * This is an optional user-supplied name, independent of any name that may
+     * be attached to the object's underlying representation
+     */
+    char* name;
+
     void* data;
 } object_t;
 
@@ -33,7 +40,7 @@ typedef struct object_executable_t {
     uint64_t page_count;
     bool from_presentation;  // if false, the value in presentation is not valid
     object_handle_t presentation;
-    char* name;
+    char* exe_name;
 } object_executable_t;
 
 typedef struct object_presentation_t {
@@ -43,6 +50,7 @@ typedef struct object_presentation_t {
      */
     device_t* dev;
     uint8_t idx;
+    char* vfs_name;
 } object_presentation_t;
 
 extern dtable object_table;
