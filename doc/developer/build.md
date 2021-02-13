@@ -1,15 +1,14 @@
-
 # Building and Running CosmOS
 
 ## Prerequisites
 
 CosmOS requires:
 
-* [GCC](https://gcc.gnu.org/)
-* [NASM](http://nasm.us/)
-* [binutils](https://www.gnu.org/software/binutils/)
-* [QEMU](https://www.qemu.org/) 
-* [clang-format](https://clang.llvm.org/docs/ClangFormat.html) 
+- [GCC](https://gcc.gnu.org/)
+- [NASM](http://nasm.us/)
+- [binutils](https://www.gnu.org/software/binutils/)
+- [QEMU](https://www.qemu.org/)
+- [clang-format](https://clang.llvm.org/docs/ClangFormat.html)
 
 ## OS X installation
 
@@ -24,6 +23,8 @@ CosmOS requires:
 `brew install qemu`
 
 `brew install clang-format`
+
+`brew install iwyu`
 
 OS X includes Clang.
 
@@ -43,6 +44,8 @@ On Ubuntu apt can be used on Linux to install the prerequisites
 
 `sudo apt install clang-format`
 
+`sudo apt install iwyu`
+
 # Building
 
 CosmOS builds with [GNU Make](https://www.gnu.org/software/make/)
@@ -53,13 +56,11 @@ From the root directory:
 
 # Running
 
-The command `make qemu` will start QEMU and boot the image.  The QEMU monitor is exposed on port 45454 and can be connected to with `telnet localhost:45454`
+The command `make qemu` will start QEMU and boot the image. The QEMU monitor is exposed on port 45454 and can be connected to with `telnet localhost:45454`
 
 # Optional - Building with Docker (ktool)
 
 As an alternative to installing the build tools (gcc, binutils, nasm) on your local machine, you can use Docker. Simply prefix any build-related command with `./ktool` to run the command inside the docker context. Scripts run in the working directory on the host, and the container is immediately destroyed after use.
 
-For example: 
+For example:
 `$ ./ktool make clean;make`
-
-

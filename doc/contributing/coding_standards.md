@@ -25,3 +25,13 @@ In `settings.json`:
   'editor.formatOnSave': true,
 }
 ```
+
+# include-what-you-use
+
+As discussed in [IWYU](https://include-what-you-use.org/), the main goal of include-what-you-use is to remove superfluous #includes. It does this both by figuring out what #includes are not actually needed for this file (for both .c and .h files), and replacing #includes with forward-declares when possible.
+
+To scan for problems:
+`make header-check`
+
+To automatically fix problems:
+`make header-fix`

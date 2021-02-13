@@ -70,5 +70,10 @@ qemu-debug: bootimage
 lint:
 	clang-format -n --Werror -style=file $(SRC_FILES)
 
+header-fix:
+	cd kernel && $(MAKE) -k CC=iwyu all 2>&1 > /dev/null | fix_include --nosafe_headers && \
+	cd ../user && $(MAKE) -k CC=iwyu all 2>&1 > /dev/null | fix_include --nosafe_headers
+
 header-check:
-	$(MAKE) -k CC=iwyu subsystems
+	cd kernel && $(MAKE) -k CC=iwyu all && \
+	cd ../user && $(MAKE) -k CC=iwyu all
