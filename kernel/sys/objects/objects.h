@@ -63,7 +63,7 @@ object_handle_t object_create(object_types_t type, void* object_data);
 object_handle_t object_create_executable_from_presentation(object_handle_t pres);
 
 // object_presentation.c
-object_handle_t object_create_presentation(device_t* dev, uint8_t idx);
+object_handle_t object_create_presentation(device_t* dev, uint8_t idx, char* name);
 
 // object_init.c
 void object_init();

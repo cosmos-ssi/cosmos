@@ -12,7 +12,7 @@
 #include <sys/panic/panic.h>
 #include <types.h>
 
-object_handle_t object_create_presentation(device_t* dev, uint8_t idx) {
+object_handle_t object_create_presentation(device_t* dev, uint8_t idx, char* name) {
     object_presentation_t* obj_data;
     object_handle_t handle;
 
@@ -28,8 +28,7 @@ object_handle_t object_create_presentation(device_t* dev, uint8_t idx) {
 
     obj_data->dev = dev;
     obj_data->idx = idx;
-    obj_data->vfs_name = kmalloc(INITRD_NAME_SIZE * sizeof(char));
-    initrd_get_file_name(dev, idx, (uint8_t*)obj_data->vfs_name, INITRD_NAME_SIZE);
+    obj_data->vfs_name = name;
 
     handle = object_create(OBJECT_PRESENTATION, (void*)obj_data);
 
