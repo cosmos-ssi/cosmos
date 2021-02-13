@@ -42,7 +42,6 @@ object_handle_t object_create_executable_from_presentation(object_handle_t pres_
     exe_obj->page_base = slab_allocate(exe_obj->page_count, PDT_INUSE);
 
     exe_buf = (BYTE*)CONV_PHYS_ADDR((exe_obj->page_base * PAGE_SIZE));
-    kprintf("exe_buf: %llX\n", (uint64_t)exe_buf);
     initrd_get_file_data(initrd, pres_obj->idx, (uint8_t*)exe_buf, PAGE_SIZE * exe_obj->page_count);
 
     exe_obj->from_presentation = true;
