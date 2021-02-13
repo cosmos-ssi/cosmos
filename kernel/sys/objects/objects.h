@@ -58,12 +58,13 @@ extern uint64_t object_table_next_idx;
 
 // object.c
 object_handle_t object_create(object_types_t type, void* object_data);
+void* object_get_data(object_handle_t handle);
 
 // object_executable.c
 object_handle_t object_create_executable_from_presentation(object_handle_t pres);
 
 // object_presentation.c
-object_handle_t object_create_presentation(device_t* dev, uint8_t idx, char* name);
+object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const char* name);
 
 // object_init.c
 void object_init();

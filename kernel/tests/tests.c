@@ -30,4 +30,5 @@ void tests_run() {
     test_initrd();
     test_ata();
     test_init_loader();
+    test_objects();
 }
