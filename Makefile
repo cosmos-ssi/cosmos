@@ -12,7 +12,7 @@ CRUFT_FILES=$(shell find . -type f \( -name "dump.dat" -o \
 all: subsystems
 .PHONY: clean
 
-bootimage: subsystems
+bootimage: lint subsystems blank-disk
 	# make a file
 	$(DD) if=/dev/zero of=$(BOOTIMAGE) bs=32768 count=129024
 
@@ -27,7 +27,7 @@ bootimage: subsystems
 	# write initrd fs at offset of 10MB
 	$(DD) if=$(INITRD) of=$(BOOTIMAGE) conv=notrunc bs=512 seek=20480
 
-subsystems: lint boot-subsystem kernel-subsystem utils user-subsystem blank-disk
+subsystems: boot-subsystem kernel-subsystem utils user-subsystem
 	
 blank-disk:
 	$(DD) if=/dev/zero of=$(BLANK_DISK) bs=1024 count=10240
@@ -69,3 +69,6 @@ qemu-debug: bootimage
 
 lint:
 	clang-format -n --Werror -style=file $(SRC_FILES)
+
+header-check:
+	$(MAKE) -k CC=iwyu subsystems
