@@ -6,17 +6,18 @@
  *****************************************************************/
 
 #include <sys/asm/asm.h>
+#include <sys/collection/dtable/dtable.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
 
 void proc_init() {
-    ptable = 0;
     proc_info_t* kernelproc;
 
+    proc_table = dtable_init();
+
     kernelproc = new_proc_info(0, asm_cr3_read());
-    if (!add_proc_entry(kernelproc)) {
+    if (!dtable_set(proc_table, 0, (void*)kernelproc)) {
         panic("Unable to add kernel process to table!");
     }
 
