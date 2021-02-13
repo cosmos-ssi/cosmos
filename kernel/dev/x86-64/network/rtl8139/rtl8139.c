@@ -181,7 +181,7 @@ uint8_t rtl8139_init(struct device* dev) {
     return 1;
 }
 
-void rtl8139_ethernet_read(struct device* dev, uint8_t* data, uint16_t size) {
+void rtl8139_ethernet_read(struct device* dev, uint64_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(dev->device_data);
@@ -191,7 +191,7 @@ void rtl8139_ethernet_read(struct device* dev, uint8_t* data, uint16_t size) {
     panic("Ethernet read not implemented yet");
 }
 
-void rtl8139_ethernet_write(struct device* dev, uint8_t* data, uint16_t size) {
+void rtl8139_ethernet_write(struct device* dev, uint64_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(dev->device_data);

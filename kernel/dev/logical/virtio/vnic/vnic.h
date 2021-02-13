@@ -8,6 +8,7 @@
 #ifndef _VNIC_H
 #define _VNIC_H
 
+#include <sys/interrupt_router/interrupt_router.h>
 #include <types.h>
 
 // Network-device-specific registers:
@@ -85,6 +86,8 @@ uint32_t vnic_read_register(uint16_t reg);
 
 void vnic_write_register(uint16_t reg, uint32_t data);
 
-void vnic_setup_receive_buffers(struct virtq* receiveQueue);
+void vnic_setup_receive_buffers(struct virtq* receiveQueue, uint8_t count);
+
+void vnic_irq_handler(stack_frame* frame);
 
 #endif
