@@ -21,6 +21,7 @@ object_handle_t object_create_executable_from_presentation(object_handle_t pres_
     uint64_t name_len;
     uint32_t pres_len;
     object_handle_t exe_handle;
+    BYTE* exe_buf;
 
     device_t* initrd;
 
@@ -39,6 +40,10 @@ object_handle_t object_create_executable_from_presentation(object_handle_t pres_
     exe_obj->page_count = (pres_len / PAGE_SIZE) + ((pres_len % PAGE_SIZE) ? 1 : 0);
 
     exe_obj->page_base = slab_allocate(exe_obj->page_count, PDT_INUSE);
+
+    exe_buf = (BYTE*)CONV_PHYS_ADDR((exe_obj->page_base * PAGE_SIZE));
+    kprintf("exe_buf: %llX\n", (uint64_t)exe_buf);
+    initrd_get_file_data(initrd, pres_obj->idx, (uint8_t*)exe_buf, PAGE_SIZE * exe_obj->page_count);
 
     exe_obj->from_presentation = true;
     exe_obj->presentation = pres_handle;
