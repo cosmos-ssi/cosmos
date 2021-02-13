@@ -39,7 +39,8 @@ void test_initrd() {
             uint8_t data[len + 1];
             initrd_get_file_data(initrd, idx, data, len);
             data[len] = 0;
-            //                debug_show_memblock(data, len);
+            //debug_show_memblock(data, len);
+            //kprintf("data '%s'\n", data);
             ASSERT(0 == strcmp(data, "Do not modify this file.  It contains test data for test_initrd.c."));
         }
 

@@ -13,9 +13,9 @@ SRC_DIR=.
 all: $(COSMOS_INITRD_IMAGE)
 
 # ABI sources
-SRCS_C=$(shell find $(SRC_DIR)/abi -type f -iname '*.c')
-HEADERS_C=$(shell find $(SRC_DIR)/abi -type f -iname '*.h')
-SRCS_ASM=$(shell find $(SRC_DIR)/abi -type f -iname '*.asm' ! -name 'test.asm')
+SRCS_C=$(shell find $(SRC_DIR)/ -type f -iname '*.c')
+HEADERS_C=$(shell find $(SRC_DIR)/ -type f -iname '*.h')
+SRCS_ASM=$(shell find $(SRC_DIR)/ -type f -iname '*.asm' ! -name 'test.asm')
 
 # ABI object files
 OBJS_C=$(subst $(SRC_DIR)/, , $(SRCS_C:.c=.o))
@@ -36,8 +36,8 @@ $(COSMOS_INITRD_IMAGE): $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)  $(COSMOS_TEST_BINA
 $(COSMOS_INIT): $(COSMOS_ABI_ARCHIVE) init/init.o
 	$(LD) -m elf_x86_64 -o $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)
 
-$(COSMOS_ABI_ARCHIVE): $(OBJS)
-	$(AR) $(ARFLAGS) $(COSMOS_ABI_ARCHIVE) $(OBJS)
+$(COSMOS_ABI_ARCHIVE): rootfs/abi/cosmos_abi.o rootfs/abi/cosmos_syscall.o
+	$(AR) $(ARFLAGS) $(COSMOS_ABI_ARCHIVE) rootfs/abi/cosmos_abi.o rootfs/abi/cosmos_syscall.o
 
 # set search paths
 vpath %.c .
@@ -54,7 +54,7 @@ vpath %.asm .
 	
 clean:
 	$(RM) init/init.o
-	$(RM) $(OBJS)
+	$(RM) -r $(OBJS)
 	$(RM) $(COSMOS_ABI_ARCHIVE)
 	$(RM) $(COSMOS_INIT)
 	$(RM) $(COSMOS_INITRD_IMAGE)
