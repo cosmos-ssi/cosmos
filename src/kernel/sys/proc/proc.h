@@ -66,6 +66,7 @@ typedef struct proc_info {
 } proc_info_t;
 
 extern dtable proc_table;
+extern uint64_t next_pid;
 
 // proc_info.c
 proc_info_t* new_proc_info(pid_t pid, pttentry cr3);

@@ -11,6 +11,8 @@
 #include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
 
+uint64_t next_pid;
+
 void proc_init() {
     proc_info_t* kernelproc;
 
@@ -20,6 +22,8 @@ void proc_init() {
     if (!dtable_set(proc_table, 0, (void*)kernelproc)) {
         panic("Unable to add kernel process to table!");
     }
+
+    next_pid = 1;
 
     return;
 }
