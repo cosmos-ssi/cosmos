@@ -56,7 +56,7 @@ typedef struct object_presentation_t {
 extern dtable object_table;
 extern uint64_t object_table_next_idx;
 
-// object_create.c
+// object.c
 object_handle_t object_create(object_types_t type, void* object_data);
 
 // object_executable.c
