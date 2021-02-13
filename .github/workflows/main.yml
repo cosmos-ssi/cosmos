@@ -29,7 +29,7 @@ jobs:
         run: sudo apt install nasm
 
       - name: build
-        run: make
+        run: cd src;make
 
   build-osx:
     runs-on: macos-10.15
@@ -52,4 +52,4 @@ jobs:
         run: brew install clang-format
 
       - name: build
-        run: make
+        run: cd src;make

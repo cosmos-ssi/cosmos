@@ -1,92 +1,53 @@
 
 # CosmOS Virtual File System
 
-CosmOS has a hierarchical file system, similar to POSIX. A VFS node is defined as:
+CosmOS has a hierarchical file system, similar to POSIX. 
 
 ```java
-struct vfs {
-    enum vfs_type type;
-    struct arraylist* children;
-
-    /*
-    This is a filename or a folder name
-    For a device, or a fs, it's the dev name, since a fs is a dev
-    */
-    uint8_t* name;
-
-    vfs_open_function open;
-    vfs_read_function read;
-    vfs_write_function write;
-    vfs_close_function close;
-    vfs_close_readdir_function readdir;
+struct deviceapi_filesystem {
+    filesystem_get_root_node_function root;
+    filesystem_read_function read;
+    filesystem_write_function write;
+    filesystem_open_function open;
+    filesystem_close_function close;
+    filesystem_find_node_by_id_function find_id;
+    filesystem_find_node_by_name_function find_name;
+    filesystem_find_node_by_idx_function find_idx;
+    filesystem_count_function count;
 };
 ```
 
-CosmoS VFS nodes can be files, folders, or devices.  CosmOS OS uses devices for file systems, and therefore does not need mount points represented in vfs's.
+The API `filesystem_get_root_node_function` gets the root filesystem node of the filesystem device and every other API exposed by `deviceapi_filesystem` takes a `filesystem_node*` as a parameter.  The API for a `filesystem_node` is:
 
-## Design
-
-
-# CosmOS VFS (Virtual File System)
-
-A core design goal of CosmOS is that it exposes a single root file system that includes all devices and filesystems on all nodes
-
-## VFS Hierarchy
-
-The basic hierarchy seen by every node is
-
-```
-	<node_name>/<filesystem_name>
-```
-
-and
-
-```
-	<node_name>/dev/<device_name>
-```
-
-For example presuming we have two nodes "bart" and "lisa"
-
-```
-/
-/bart/fat0
-/bart/dev/serial0
-/lisa/fat0
-/lisa/fat1
-/lisa/dev/serial0
-/lisa/dev/serial1
+```java
+struct filesystem_node {
+    /* 
+    * owning device
+    */
+    struct device* filesystem_device;
+    /*
+    * id
+    */
+    uint64_t id;
+    /*
+    * name
+    */
+    uint8_t name[FILESYSTEM_MAX_NAME];
+    /*
+    * node_specific data
+    */
+    void* node_data;
+};
 ```
 
-## Sync
+Each node has:
 
-The CosmOS cluster will sync the VFS implementations on each node as nodes come online and go offline, and as devices are attached and detached
+* A pointer to the device that it is part of
+* A 64-bit id that identifies it on the device
+* A name
+* A pointer to device-specific data
 
-## Nodes
 
-CosmOS will expose a `node` filesystem which contains information for each node in the system such as 
+Nodes can be folders, files, devices, etc.
 
-* Uptime
-* Total RAM in the system
-* Total RAM in use
-* Total Processors in the system
-* Processor Usage
-* Network throughput
 
-This information will be useful for process migrations.
-
-For example
-
-```
-/node/bart
-/node/lisa
-
-```
-
-## Processes
-
-In theory, CosmOS can also expose a `process` filesystem, similar to the `dev` filesystem which contains every process on every node.  For example
-
-```
-/bart/process/process_abc
-/bart/process/process_def
-```

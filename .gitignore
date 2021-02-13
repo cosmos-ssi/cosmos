@@ -12,7 +12,6 @@ cosmos.elf
 cosmos.bin
 cosmos.map
 kernel/cosmos
-*.img
 
 # Linker output
 *.ilk
@@ -26,6 +25,7 @@ kernel/cosmos
 # Libraries
 *.lib
 *.a
+*.ar
 *.la
 *.lo
 
@@ -62,14 +62,20 @@ dkms.conf
 *.un*
 *.~
 
-.vscode
+# image files we dont need
+**/hda.img
+**/blank.img
+**/initrd.img
+
+# generated binaries
+/src/user/cosmos_init
+/src/util/mkinitrd/mkinitrd
+
+# OS x resources
 **/*.DS_Store
-/dump.dat
-/qemu.log
-/img/hda.img
-/img/Dos622-1.img
-/img/blank.img
-/user/cosmos.ar
-mkinitrd
-/img/initrd.img
+
+.vscode
+**/dump.dat
+**/qemu.log
 user/cosmos_init
+util/mkinitrd/mkinitrd

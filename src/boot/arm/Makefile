@@ -1,5 +1,5 @@
 
-include ../../scripts/mk/build.mk
+include ../../mk/build.mk
 
 SRC_DIR=.
 

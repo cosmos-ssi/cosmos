@@ -5,13 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <abi/cosmos_abi.h>
+#ifndef ASSERT_H
+#define ASSERT_H
 
-#define COSMOS_SYSCALL_COM1_WRITE 0x01
+#define ASSERT(x)
 
-extern void cosmos_syscall(uint64_t rax, uint64_t rbx, uint64_t rcx, uint64_t rdx);
-
-uint64_t cosmos_abi_com1_write(uint8_t c) {
-    cosmos_syscall(COSMOS_SYSCALL_COM1_WRITE, c, 0, 0);
-    return 0;
-}
+#endif

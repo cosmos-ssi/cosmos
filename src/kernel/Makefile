@@ -1,6 +1,6 @@
 
-include ../scripts/mk/flags.mk
-include ../scripts/mk/build.mk
+include ../mk/flags.mk
+include ../mk/build.mk
 
 ARCHIVE_FILE=kernel.a
 KERNEL_ELF=cosmos.elf
