@@ -27,10 +27,12 @@ void test_objects() {
     ASSERT_NOT_NULL(initrd_find_file(initrd, "test.bin", &idx));
     kprintf("Index: %hu\n", idx);
 
-    object_handle_t pres_handle = object_create_presentation(initrd, idx, "test.bin");
-    object_handle_t exe_handle = object_create_executable_from_presentation(pres_handle);
+    object_handle_t pres_handle;
 
-    kprintf("pres_handle, exe_handle: %llu, %llu\n", pres_handle, exe_handle);
+    pres_handle = object_create_presentation(initrd, idx, "test.bin");
+    /*object_handle_t exe_handle = object_create_executable_from_presentation(pres_handle);
+
+    kprintf("pres_handle, exe_handle: %llu, %llu\n", pres_handle, exe_handle);*/
 
     return;
 }
