@@ -6,6 +6,7 @@
  *****************************************************************/
 
 #include <sys/collection/dtable/dtable.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
 
 dtable object_table;

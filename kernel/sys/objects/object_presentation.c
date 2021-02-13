@@ -8,11 +8,13 @@
 #include <dev/logical/fs/initrd/initrd.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
 #include <sys/panic/panic.h>
+#include <sys/string/string.h>
 #include <types.h>
 
-object_handle_t object_create_presentation(device_t* dev, uint8_t idx, char* name) {
+object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const char* name) {
     object_presentation_t* obj_data;
     object_handle_t handle;
 
@@ -28,7 +30,9 @@ object_handle_t object_create_presentation(device_t* dev, uint8_t idx, char* nam
 
     obj_data->dev = dev;
     obj_data->idx = idx;
-    obj_data->vfs_name = name;
+    uint64_t len = sizeof(char) * (strlen(name) + 1);
+    obj_data->vfs_name = (char*)kmalloc(len);
+    strncpy(obj_data->vfs_name, name, len);
 
     handle = object_create(OBJECT_PRESENTATION, (void*)obj_data);
 
