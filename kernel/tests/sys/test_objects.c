@@ -5,16 +5,16 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/collection/dtable/dtable.h>
+#include <sys/devicemgr/devicemgr.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
 
-dtable object_table;
-uint64_t object_table_next_idx;
+void test_objects() {
+    device_t* disk;
 
-void object_init() {
-    object_table = dtable_init();
-
-    object_table_next_idx = 1;
-
+    disk = devicemgr_find_device("disk0");
+    if (disk) {
+        kprintf("disk0 found\n");
+    }
     return;
 }

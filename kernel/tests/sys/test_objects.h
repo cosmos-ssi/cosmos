@@ -5,16 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/collection/dtable/dtable.h>
-#include <sys/objects/objects.h>
+#ifndef _TEST_OBJECTS_H
+#define _TEST_OBJECTS_H
 
-dtable object_table;
-uint64_t object_table_next_idx;
+void test_objects();
 
-void object_init() {
-    object_table = dtable_init();
-
-    object_table_next_idx = 1;
-
-    return;
-}
+#endif
