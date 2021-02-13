@@ -5,6 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <dev/logical/fs/initrd/initrd.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
@@ -20,11 +21,17 @@ object_handle_t object_create_presentation(device_t* dev, uint8_t idx) {
         panic("kmalloc failed!");
     }
 
+    /* 
+     * No attempt to validate any of this for now, once vfs is stabilized that
+     * will be added
+     */
+
     obj_data->dev = dev;
     obj_data->idx = idx;
-    obj_data->vfs_name =
+    obj_data->vfs_name = kmalloc(INITRD_NAME_SIZE * sizeof(char));
+    initrd_get_file_name(dev, idx, (uint8_t*)obj_data->vfs_name, INITRD_NAME_SIZE);
 
-        handle = object_create(OBJECT_PRESENTATION, (void*)obj_data);
+    handle = object_create(OBJECT_PRESENTATION, (void*)obj_data);
 
     return handle;
 }
