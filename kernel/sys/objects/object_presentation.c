@@ -22,8 +22,9 @@ object_handle_t object_create_presentation(device_t* dev, uint8_t idx) {
 
     obj_data->dev = dev;
     obj_data->idx = idx;
+    obj_data->vfs_name =
 
-    handle = object_create(OBJECT_PRESENTATION, (void*)obj_data);
+        handle = object_create(OBJECT_PRESENTATION, (void*)obj_data);
 
     return handle;
 }
