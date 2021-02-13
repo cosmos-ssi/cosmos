@@ -14,6 +14,9 @@
 
 #include <types.h>
 
+#define INITRD_NAME_SIZE 64
+#define INITRD_MAX_FILES 64
+
 struct device* initrd_attach(struct device* partition_device, uint32_t lba);
 void initrd_detach(struct device* dev);
 

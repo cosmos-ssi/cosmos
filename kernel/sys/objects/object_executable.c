@@ -5,19 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
-#include <sys/panic/panic.h>
 
-object_handle_t object_create(object_types_t type, void* object_data) {
-    object_t* obj;
-
-    obj = (object_t*)kmalloc(sizeof(object_t));
-
-    if (!obj) {
-        panic("kmalloc failed!");
-    }
-
-    obj->data = object_data;
-    return 1;
+object_handle_t object_create_executable_from_presentation(object_handle_t pres) {
+    return 0;
 }

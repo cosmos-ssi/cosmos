@@ -19,9 +19,6 @@
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
-#define INITRD_NAME_SIZE 64
-#define INITRD_MAX_FILES 64
-
 struct initrd_file_header {
     uint8_t magic;
     uint8_t name[INITRD_NAME_SIZE];
