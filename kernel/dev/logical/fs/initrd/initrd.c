@@ -22,8 +22,8 @@
 struct initrd_file_header {
     uint8_t magic;
     uint8_t name[INITRD_NAME_SIZE];
-    uint32_t offset;
-    uint32_t length;
+    uint32_t offset;  // byte count from start of initrd
+    uint32_t length;  // byte length
 };
 
 struct initrd_header {
@@ -292,6 +292,7 @@ uint8_t initrd_get_file_data(struct device* initrd_dev, uint8_t idx, uint8_t* da
     ASSERT(offset > 0);
     uint32_t length = device_data->header.headers[idx].length;
     ASSERT(size >= length);
+    //  kprintf("offset %llu length %llu\n", offset, length);
 
     uint32_t lba_offset = offset / sector_size;
     uint32_t byte_offset = offset % sector_size;
@@ -299,12 +300,16 @@ uint8_t initrd_get_file_data(struct device* initrd_dev, uint8_t idx, uint8_t* da
     if ((length % 512) != 0) {
         total_sectors += 1;
     }
+    // if it spans sectors
+    if (byte_offset + length > 512) {
+        total_sectors += 1;
+    }
     uint32_t buffer_size = total_sectors * sector_size;
     uint8_t* buffer = kmalloc(buffer_size);
     memzero(buffer, buffer_size);
     uint32_t target_lba = device_data->lba + lba_offset;
-    //    kprintf("lba_offset %llu byte_offset %llu sectors %llu target_lba %llu buffer_size %llu\n", lba_offset, byte_offset,
-    //            total_sectors, target_lba, buffer_size);
+    //  kprintf("lba_offset %llu byte_offset %llu total_sectors %llu target_lba %llu buffer_size %llu\n", lba_offset,
+    //       byte_offset, total_sectors, target_lba, buffer_size);
 
     /*
     * read the blocks
