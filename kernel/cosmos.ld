@@ -12,9 +12,7 @@ SECTIONS
 	.data :
 	{
 		_data_start = .;
-		_tone_s = .;
 		KEEP(*(.rawdata*))
-		_tone_e = .;
 		_data_end = .;
 		. = ALIGN(4096);
 	}
