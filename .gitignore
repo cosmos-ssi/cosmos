@@ -77,3 +77,5 @@ dkms.conf
 .vscode
 **/dump.dat
 **/qemu.log
+user/cosmos_init
+util/mkinitrd/mkinitrd
