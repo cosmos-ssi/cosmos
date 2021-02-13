@@ -14,7 +14,7 @@ uint64_t object_table_next_idx;
 void object_init() {
     object_table = dtable_init();
 
-    object_table_next_idx = 0;
+    object_table_next_idx = 1;
 
     return;
 }
