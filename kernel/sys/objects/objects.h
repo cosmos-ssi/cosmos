@@ -28,6 +28,14 @@ typedef struct object_t {
     void* data;
 } object_t;
 
+typedef struct object_executable_t {
+    uint64_t page_base;
+    uint64_t page_count;
+    bool from_presentation;  // if false, the value in presentation is not valid
+    object_handle_t presentation;
+    char* name;
+} object_executable_t;
+
 typedef struct object_presentation_t {
     /*
      * For now just encapsulate enough to use the initrd driver directly, once
@@ -43,7 +51,10 @@ extern uint64_t object_table_next_idx;
 // object_create.c
 object_handle_t object_create(object_types_t type, void* object_data);
 
-// object_create_presentation.c
+// object_executable.c
+object_handle_t object_create_executable_from_presentation(object_handle_t pres);
+
+// object_presentation.c
 object_handle_t object_create_presentation(device_t* dev, uint8_t idx);
 
 // object_init.c
