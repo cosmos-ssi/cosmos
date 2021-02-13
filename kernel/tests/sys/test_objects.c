@@ -29,10 +29,10 @@ void test_objects() {
 
     object_handle_t pres_handle;
 
-    pres_handle = object_create_presentation(initrd, idx, "test.bin");
-    /*object_handle_t exe_handle = object_create_executable_from_presentation(pres_handle);
+    pres_handle = object_create_presentation(disk, idx, "test.bin");
+    object_handle_t exe_handle = object_create_executable_from_presentation(pres_handle);
 
-    kprintf("pres_handle, exe_handle: %llu, %llu\n", pres_handle, exe_handle);*/
+    kprintf("pres_handle, exe_handle: %llu, %llu\n", pres_handle, exe_handle);
 
     return;
 }
