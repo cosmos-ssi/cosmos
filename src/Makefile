@@ -1,4 +1,4 @@
-include scripts/mk/build.mk
+include mk/build.mk
 
 BOOTIMAGE=img/hda.img
 BLANK_DISK=img/blank.img

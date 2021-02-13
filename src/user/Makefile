@@ -1,5 +1,5 @@
-include ../scripts/mk/flags.mk
-include ../scripts/mk/build.mk
+include ../mk/flags.mk
+include ../mk/build.mk
 
 COSMOS_INITRD_IMAGE=initrd.img
 COSMOS_ABI_ARCHIVE=cosmos_abi.a
