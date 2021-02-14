@@ -10,6 +10,7 @@
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/device.h>
 #include <sys/fs/fs_helper.h>
+#include <sys/string/mem.h>
 
 struct filesystem_node* fshelper_get_fs_rootnode(struct device* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
@@ -26,10 +27,13 @@ void fshelper_traverse_internal(struct filesystem_node* fs_node, fshelper_traver
     // call the callback
     (*f)(fs_node, depth);
 
-    uint32_t count = fshelper_count(fs_node);
-    if (count > 0) {
-        for (uint32_t i = 0; i < count; i++) {
-            struct filesystem_node* child = fshelper_find_node_by_idx(fs_node, i);
+    struct filesystem_directory dir;
+    memzero((uint8_t*)&dir, sizeof(struct filesystem_directory));
+    fshelper_list_directory(fs_node, &dir);
+
+    if (dir.count > 0) {
+        for (uint32_t i = 0; i < dir.count; i++) {
+            struct filesystem_node* child = fshelper_find_node_by_id(fs_node, dir.ids[i]);
             fshelper_traverse_internal(child, f, depth + 1);
         }
     }
@@ -57,24 +61,24 @@ void fshelper_dump(struct filesystem_node* fs_node) {
     fshelper_traverse(fs_node, &vfs_dump_traverse_function);
 }
 
-uint32_t fshelper_count(struct filesystem_node* fs_node) {
+void fshelper_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+    ASSERT_NOT_NULL(dir);
     struct deviceapi_filesystem* fs_api = (struct deviceapi_filesystem*)fs_node->filesystem_device->api;
-    if (0 != fs_api->count) {
-        return (*fs_api->count)(fs_node);
+    if (0 != fs_api->list) {
+        (*fs_api->list)(fs_node, dir);
     }
-    return 0;
 }
 
-struct filesystem_node* fshelper_find_node_by_idx(struct filesystem_node* fs_node, uint32_t idx) {
+struct filesystem_node* fshelper_find_node_by_id(struct filesystem_node* fs_node, uint32_t id) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->api);
     struct deviceapi_filesystem* fs_api = (struct deviceapi_filesystem*)fs_node->filesystem_device->api;
-    if (0 != fs_api->find_idx) {
-        return (*fs_api->find_idx)(fs_node, idx);
+    if (0 != fs_api->find_id) {
+        return (*fs_api->find_id)(fs_node, id);
     }
     return 0;
 }

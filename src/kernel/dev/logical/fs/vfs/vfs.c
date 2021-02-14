@@ -104,66 +104,39 @@ struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uin
     return 0;
 }
 
-struct filesystem_node* vfs_find_node_by_name(struct filesystem_node* fs_node, uint8_t* name) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-
-    ASSERT_NOT_NULL(name);
-    // find subnode.  we can do this for the root node, and for subnodes that are folders
-    PANIC("not implemented");
-    return 0;
-}
-
-/*
-* find a node by name
-*/
-struct filesystem_node* vfs_find_node_by_idx(struct filesystem_node* fs_node, uint32_t idx) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-
-    struct vfs_devicedata* device_data = (struct vfs_devicedata*)fs_node->filesystem_device->device_data;
-    if (fs_node == device_data->root_node) {
-        /*
-        * root node
-        */
-        ASSERT(idx >= 0);
-        ASSERT(idx < arraylist_count(device_data->children));
-        return arraylist_get(device_data->children, idx);
-    } else {
-        /* 
-        * return zero here.  vfsdev has no concept of folders, therefore every node
-        * is at the top level; a child of the root
-        */
-        return 0;
-    }
-}
 /*
 * count
 */
-uint32_t vfs_count(struct filesystem_node* fs_node) {
+// uint32_t vfs_count(struct filesystem_node* fs_node) {
+//     ASSERT_NOT_NULL(fs_node);
+//     ASSERT_NOT_NULL(fs_node->filesystem_device);
+//     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+
+//     struct vfs_devicedata* device_data = (struct vfs_devicedata*)fs_node->filesystem_device->device_data;
+//     if (fs_node == device_data->root_node) {
+//         /*
+//         * root node
+//         */
+//         if (0 == device_data->children) {
+//             return 0;
+//         } else {
+//             return arraylist_count(device_data->children);
+//         }
+//     } else {
+//         /*
+//         * return zero here.  vfsdev has no concept of folders, therefore every node
+//         * is at the top level; a child of the root
+//         */
+//         return 0;
+//     }
+// }
+
+void vfs_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-
-    struct vfs_devicedata* device_data = (struct vfs_devicedata*)fs_node->filesystem_device->device_data;
-    if (fs_node == device_data->root_node) {
-        /*
-        * root node
-        */
-        if (0 == device_data->children) {
-            return 0;
-        } else {
-            return arraylist_count(device_data->children);
-        }
-    } else {
-        /* 
-        * return zero here.  vfsdev has no concept of folders, therefore every node
-        * is at the top level; a child of the root
-        */
-        return 0;
-    }
+    ASSERT_NOT_NULL(dir);
+    PANIC("not implemented");
 }
 
 struct device* vfs_attach() {
@@ -184,13 +157,11 @@ struct device* vfs_attach() {
     memzero((uint8_t*)api, sizeof(struct deviceapi_filesystem));
     api->close = &vfs_close;
     api->find_id = &vfs_find_node_by_id;
-    api->find_name = &vfs_find_node_by_name;
     api->open = &vfs_open;
     api->root = &vfs_get_root_node;
     api->write = &vfs_write;
     api->read = &vfs_read;
-    api->find_idx = &vfs_find_node_by_idx;
-    api->count = &vfs_count;
+    api->list = &vfs_list_directory;
     deviceinstance->api = api;
     /*
      * device data

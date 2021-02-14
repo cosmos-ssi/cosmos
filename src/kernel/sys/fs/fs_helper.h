@@ -11,6 +11,7 @@
 #include <types.h>
 
 struct filesystem_node;
+struct filesystem_directory;
 struct device;
 
 struct filesystem_node* fshelper_get_fs_rootnode(struct device* filesystem_device);
@@ -20,7 +21,7 @@ typedef void (*fshelper_traverse_function)(struct filesystem_node* fs_node, uint
 void fshelper_traverse(struct filesystem_node* fs_node, fshelper_traverse_function f);
 void fshelper_dump(struct filesystem_node* fs_node);
 
-uint32_t fshelper_count(struct filesystem_node* fs_node);
+void fshelper_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir);
 
-struct filesystem_node* fshelper_find_node_by_idx(struct filesystem_node* fs_node, uint32_t idx);
+struct filesystem_node* fshelper_find_node_by_id(struct filesystem_node* fs_node, uint32_t id);
 #endif
