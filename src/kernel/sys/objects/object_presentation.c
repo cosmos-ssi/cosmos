@@ -6,11 +6,11 @@
  *****************************************************************/
 
 #include <dev/logical/fs/initrd/initrd.h>
-#include <sys/PANIC/PANIC.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
+#include <sys/panic/panic.h>
 #include <sys/string/string.h>
 #include <types.h>
 

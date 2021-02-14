@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/PANIC/PANIC.h>
 #include <sys/debug/debug.h>
+#include <sys/panic/panic.h>
 #include <sys/string/string.h>
 
 // normally this including from /dev is not encouraged and instead the devivemgr should be used

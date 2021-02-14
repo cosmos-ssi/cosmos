@@ -8,8 +8,8 @@
 #ifndef _ASSERT_H
 #define _ASSERT_H
 
-#include <sys/PANIC/PANIC.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/panic/panic.h>
 
 // assertion macros to make life easier
 // in a RELEASE build these can just expand to nothing

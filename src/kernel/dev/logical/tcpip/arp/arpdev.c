@@ -5,11 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/PANIC/PANIC.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_arp.h>
 #include <sys/deviceapi/deviceapi_ethernet.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 
 struct arp_devicedata {

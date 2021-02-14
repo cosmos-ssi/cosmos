@@ -5,7 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/PANIC/PANIC.h>
+#include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
 #include <sys/string/mem.h>
 

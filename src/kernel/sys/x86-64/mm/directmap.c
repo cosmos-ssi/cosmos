@@ -5,9 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/PANIC/PANIC.h>
 #include <sys/asm/asm.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
