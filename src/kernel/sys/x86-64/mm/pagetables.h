@@ -9,6 +9,7 @@
 #define _PAGETABLES_H
 
 #include <types.h>
+#include <sys/x86-64/mm/mm.h>
 
 typedef uint64_t ptt_t;  // page translation table
 
