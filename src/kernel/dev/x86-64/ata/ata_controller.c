@@ -63,7 +63,7 @@ void ata_detect_addresses(struct device* dev) {
             controller->channels[ATA_SECONDARY].dma_address.addr_type = ATA_DMA_ADDR_PIO;
             break;
         default:
-            panic("Invalid BAR type!");
+            PANIC("Invalid BAR type!");
             break;
     }
 

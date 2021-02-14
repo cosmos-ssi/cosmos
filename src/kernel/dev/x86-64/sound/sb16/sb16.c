@@ -290,7 +290,7 @@ void sb16_play(struct device* dev, uint8_t* buffer, uint16_t rate, uint8_t depth
     } else if (depth == 16) {
         isadma_init_dma_read(SB16_DMA_16BIT, ISA_DMA_BUFFER_SIZE);
     } else {
-        panic("SB16 unknown bit depth");
+        PANIC("SB16 unknown bit depth");
     }
     // v4 code, for QEMU
     if (sb16_data->dsp_version == 4) {
@@ -316,7 +316,7 @@ void sb16_play(struct device* dev, uint8_t* buffer, uint16_t rate, uint8_t depth
             sb16_start_transfer_size(dev, ISA_DMA_BUFFER_SIZE - 1, 0xB6, 0x30);
         }
     } else {
-        panic("Unknown SB DSP");
+        PANIC("Unknown SB DSP");
     }
 
     // set time constant

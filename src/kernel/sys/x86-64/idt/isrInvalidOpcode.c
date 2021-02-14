@@ -11,5 +11,5 @@
 
 void isrInvalidOpcode_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
-    panic("Invalid Opcode\n");
+    PANIC("Invalid Opcode\n");
 }

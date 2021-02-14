@@ -9,26 +9,36 @@
 #include <sys/collection/tree/tree.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/panic/panic.h>
 
-struct tree* node_cache_tree;
+struct node_cache* node_cache_new() {
+    struct node_cache* ret = kmalloc(sizeof(struct node_cache));
+    ret->node_tree = tree_new();
+    return ret;
+}
 
-void node_cache_add(struct filesystem_node* fs_node) {
+void node_cache_delete(struct node_cache* nc) {
+    ASSERT_NOT_NULL(nc);
+    kfree(nc);
+}
+
+void node_cache_add(struct node_cache* nc, struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(nc);
+    ASSERT_NOT_NULL(nc->node_tree);
     ASSERT_NOT_NULL(fs_node);
-    if (0 == node_cache_tree) {
-        node_cache_tree = tree_new();
-    }
-    tree_insert(node_cache_tree, fs_node->id, fs_node);
+    tree_insert(nc->node_tree, fs_node->id, fs_node);
 }
 
-struct filesystem_node* node_cache_find(uint32_t id) {
-    if (0 == node_cache_tree) {
-        return 0;
-    } else {
-        return tree_search(node_cache_tree, id);
-    }
+struct filesystem_node* node_cache_find(struct node_cache* nc, uint32_t id) {
+    ASSERT_NOT_NULL(nc);
+    ASSERT_NOT_NULL(nc->node_tree);
+    return tree_search(nc->node_tree, id);
 }
 
-void node_cache_remove(uint32_t id) {
-    panic("Not Implemented");
+void node_cache_remove(struct node_cache* nc, uint32_t id) {
+    ASSERT_NOT_NULL(nc);
+    ASSERT_NOT_NULL(nc->node_tree);
+
+    PANIC("Not Implemented");
 }

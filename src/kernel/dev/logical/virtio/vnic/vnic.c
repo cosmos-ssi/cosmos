@@ -65,7 +65,7 @@ void vnic_init_virtqueue(struct virtq** virtqueue, uint16_t queueIndex) {
     queue_size = (uint16_t)vnic_read_register(VIRTIO_QUEUE_SIZE);
 
     if (!queue_size)
-        panic("Can't get Virtio network queue size");
+        PANIC("Can't get Virtio network queue size");
 
     kprintf("   vnet queue %u has %u elements", queueIndex, queue_size);
 
@@ -189,14 +189,14 @@ void vnic_setup_receive_buffers(struct virtq* receiveQueue) {
 void vnic_ethernet_read(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
-    panic("vnic read not implemented yet");
+    PANIC("vnic read not implemented yet");
 }
 
 void vnic_ethernet_write(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
-    panic("vnic write not implemented yet");
+    PANIC("vnic write not implemented yet");
 }
 
 // As part of PCI discovery, devicemgr calls this to register us as an instance of type VNIC.

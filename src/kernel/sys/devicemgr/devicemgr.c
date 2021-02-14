@@ -69,7 +69,7 @@ void device_initIterator(struct device* dev) {
             kprintf("Failed to Initialize %s\n", dev->name);
         }
     } else {
-        panic("um. why is there a null device?");
+        PANIC("um. why is there a null device?");
     }
 }
 
@@ -311,7 +311,7 @@ uint8_t devicemgr_decrement_device_refcount(struct device* dev) {
 
 void devicemgr_dump_devices_iterator(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    kprintf("Device %s Refcount %llu\n", dev->name, dev->reference_count);
+    kprintf("%s Refcount %llu\n", dev->name, dev->reference_count);
 }
 
 void devicemgr_dump_devices() {

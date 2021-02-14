@@ -32,7 +32,7 @@ uint8_t init_load(uint8_t* initrd_disk_name, uint8_t* initrd_binary_name) {
             uint8_t is_elf = elf_is_elf_binary(buffer, len);
             if (1 != is_elf) {
                 kprintf("'%s' is not an ELF binary\n");
-                panic("oops!");
+                PANIC("oops!");
             }
 
             /*
@@ -48,14 +48,14 @@ uint8_t init_load(uint8_t* initrd_disk_name, uint8_t* initrd_binary_name) {
             kfree(buffer);
             ret = 1;
         } else {
-            panic("could not find init binary in initrd file system");
+            PANIC("could not find init binary in initrd file system");
         }
 
         // detach
         initrd_detach(initrd);
     } else {
         kprintf("Unable to find %s\n", initrd_disk_name);
-        panic("could not find disk for initrd file system");
+        PANIC("could not find disk for initrd file system");
     }
     return ret;
 }

@@ -11,5 +11,5 @@
 
 void isrDE_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
-    panic("Division by zero!");
+    PANIC("Division by zero!");
 }

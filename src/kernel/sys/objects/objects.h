@@ -15,9 +15,10 @@
 
 #include <sys/collection/dtable/dtable.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/proc/proc.h>
 #include <types.h>
 
-typedef enum object_types_t { OBJECT_EXECUTABLE, OBJECT_PRESENTATION } object_types_t;
+typedef enum object_types_t { OBJECT_EXECUTABLE, OBJECT_PRESENTATION, OBJECT_PROCESS } object_types_t;
 
 typedef uint64_t object_handle_t;
 
@@ -53,6 +54,11 @@ typedef struct object_presentation_t {
     char* vfs_name;
 } object_presentation_t;
 
+typedef struct object_process_t {
+    pid_t pid;
+    object_handle_t executable;
+} object_process_t;
+
 extern dtable object_table;
 extern uint64_t object_table_next_idx;
 
@@ -65,6 +71,9 @@ object_handle_t object_create_executable_from_presentation(object_handle_t pres)
 
 // object_presentation.c
 object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const char* name);
+
+// object_process.c
+object_handle_t object_create_process(object_handle_t exe, pid_t pid);
 
 // object_init.c
 void object_init();

@@ -188,7 +188,7 @@ void rtl8139_ethernet_read(struct device* dev, uint8_t* data, uint16_t size) {
 
     //   struct rtl8139_devicedata* devicedata = (struct rtl8139_devicedata*)dev->device_data;
 
-    panic("Ethernet read not implemented yet");
+    PANIC("Ethernet read not implemented yet");
 }
 
 void rtl8139_ethernet_write(struct device* dev, uint8_t* data, uint16_t size) {

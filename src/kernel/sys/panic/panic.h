@@ -8,6 +8,10 @@
 #ifndef _PANIC_H
 #define _PANIC_H
 
-void panic(const char* s);
+#include <types.h>
+
+void panic(const char* s, const char* fn, uint32_t line);
+
+#define PANIC(message) panic(#message, __FILE__, __LINE__);
 
 #endif

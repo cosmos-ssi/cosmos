@@ -20,7 +20,7 @@ object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const cha
 
     obj_data = (object_presentation_t*)kmalloc(sizeof(object_presentation_t));
     if (!obj_data) {
-        panic("kmalloc failed!");
+        PANIC("kmalloc failed!");
     }
 
     /* 

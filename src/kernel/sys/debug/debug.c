@@ -82,7 +82,7 @@ void debug_show_memblock(uint8_t* block, uint16_t size) {
              * make sure we didnt index over
              */
             if (line_count > LINE_WIDTH) {
-                panic("over-write in debug_show_memblock");
+                PANIC("over-write in debug_show_memblock");
             }
             /*
              * EOL

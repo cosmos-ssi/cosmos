@@ -40,7 +40,7 @@ void array_set(struct array* arr, uint32_t position, void* value) {
         arr->data[position] = value;
     } else {
         kprintf("Index %llu", position);
-        panic("invalid array index passed to array_set\n");
+        PANIC("invalid array index passed to array_set\n");
     }
 }
 
@@ -50,7 +50,7 @@ void* array_get(struct array* arr, uint32_t position) {
         return arr->data[position];
     } else {
         kprintf("Index %llu", position);
-        panic("invalid array index passed to array_get\n");
+        PANIC("invalid array index passed to array_get\n");
         return 0;
     }
 }
@@ -72,7 +72,7 @@ void array_resize(struct array* arr, uint32_t size) {
         arr->data = newdata;
         arr->size = size;
     } else {
-        panic("arrays cannot be shrunk\n");
+        PANIC("arrays cannot be shrunk\n");
     }
 }
 

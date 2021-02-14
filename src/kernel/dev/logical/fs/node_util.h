@@ -5,17 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _DEVICETYPES_H
-#define _DEVICETYPES_H
+#ifndef _NODE_UTIL_H
+#define _NODE_UTIL_H
 
-#include <sys/collection/array/array.h>
-#include <sys/collection/arraylist/arraylist.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/deviceapi/deviceapi_filesystem.h>
 
-#define MAX_DEVICE_TYPES 256
+struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, struct device*, const uint8_t* name,
+                                            uint64_t id, void* node_data);
 
-void devicetypes_init();
-struct arraylist* devicetypes_get_devicelist(device_type dt);
-void devicetypes_set_devicelist(device_type dt, struct arraylist* lst);
-uint32_t devicetypes_count();
 #endif

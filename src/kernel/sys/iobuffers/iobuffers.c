@@ -167,7 +167,7 @@ void iobuffers_release_buffer(void* buffer) {
             return;
         }
     }
-    panic("unable to find record of io buffer");
+    PANIC("unable to find record of io buffer");
 }
 
 uint32_t iobuffers_total_pages() {
