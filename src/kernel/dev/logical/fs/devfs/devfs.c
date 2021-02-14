@@ -58,7 +58,7 @@ uint32_t devfs_read(struct filesystem_node* fs_node, const uint8_t* data, uint32
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     // read from node. we cant read from the root node, but we can find underlying file and folder nodes
-    panic("not implemented");
+    PANIC("not implemented");
 
     return 0;
 }
@@ -71,7 +71,7 @@ uint32_t devfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint3
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     // write to node. we cant write to the root node, but we can find underlying file and folder nodes
-    panic("not implemented");
+    PANIC("not implemented");
 
     return 0;
 }
@@ -81,7 +81,7 @@ void devfs_open(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
-    panic("not implemented");
+    PANIC("not implemented");
 }
 
 void devfs_close(struct filesystem_node* fs_node) {
@@ -89,7 +89,7 @@ void devfs_close(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
-    panic("not implemented");
+    PANIC("not implemented");
 }
 
 struct filesystem_node* devfs_find_node_by_id(struct filesystem_node* fs_node, uint32_t id) {
@@ -98,7 +98,7 @@ struct filesystem_node* devfs_find_node_by_id(struct filesystem_node* fs_node, u
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
     // find subnode.  we can do this for the root node, but not contained nodes b/c devices are leaf nodes
-    panic("not implemented");
+    PANIC("not implemented");
 
     return 0;
 }
@@ -109,7 +109,7 @@ struct filesystem_node* devfs_find_node_by_name(struct filesystem_node* fs_node,
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
     ASSERT_NOT_NULL(name);
     // find subnode.  we can do this for the root node, but not contained nodes b/c devices are leaf nodes
-    panic("not implemented");
+    PANIC("not implemented");
 
     return 0;
 }
@@ -130,7 +130,7 @@ struct filesystem_node* devfs_find_node_by_idx(struct filesystem_node* fs_node, 
         ASSERT(idx >= 0);
         //    ASSERT(idx < device_data->header.number_files);
         //        return arraylist_get(device_data->children, idx);
-        panic("not implemented");
+        PANIC("not implemented");
         return 0;
     } else {
         /* 

@@ -6,11 +6,11 @@
  *****************************************************************/
 
 #include <dev/logical/fs/initrd/initrd.h>
+#include <sys/PANIC/PANIC.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
-#include <sys/panic/panic.h>
 #include <sys/string/string.h>
 #include <types.h>
 
@@ -20,7 +20,7 @@ object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const cha
 
     obj_data = (object_presentation_t*)kmalloc(sizeof(object_presentation_t));
     if (!obj_data) {
-        panic("kmalloc failed!");
+        PANIC("kmalloc failed!");
     }
 
     /* 

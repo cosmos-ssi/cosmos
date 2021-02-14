@@ -103,7 +103,7 @@ kmalloc_block* find_avail_kmalloc_block_list(uint64_t size) {
 
     // this shouldn't happen, because kmalloc() should initialize the list the first time it is called
     if (!kmalloc_block_list) {
-        panic("Uninitialized kmalloc block list!");
+        PANIC("Uninitialized kmalloc block list!");
     }
 
     cur_block = kmalloc_block_list;
@@ -197,7 +197,7 @@ void* kmalloc(uint64_t size) {
     }
 
     if (!cur_block) {
-        panic("Unable to return block from kmalloc");
+        PANIC("Unable to return block from kmalloc");
         return 0;
     } else {
         ASSERT(kmalloc_block_valid(cur_block));

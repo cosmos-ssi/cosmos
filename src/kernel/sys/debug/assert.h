@@ -8,20 +8,20 @@
 #ifndef _ASSERT_H
 #define _ASSERT_H
 
+#include <sys/PANIC/PANIC.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/panic/panic.h>
 
 // assertion macros to make life easier
 // in a RELEASE build these can just expand to nothing
 #define ASSERT(condition)                                                                                              \
     if (false == (condition)) {                                                                                        \
         kprintf("assertion '%s' failed in file %s at line %llu\n", #condition, __FILE__, __LINE__);                    \
-        panic("assertion failure");                                                                                    \
+        PANIC("assertion failure");                                                                                    \
     }
 #define ASSERT_NOT_NULL(term)                                                                                          \
     if (0 == (term)) {                                                                                                 \
         kprintf("'%s' cannot be null in file %s at line %llu\n", #term, __FILE__, __LINE__);                           \
-        panic("assert not null failure");                                                                              \
+        PANIC("assert not null failure");                                                                              \
     }
 
 #endif

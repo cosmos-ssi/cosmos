@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/PANIC/PANIC.h>
 #include <sys/debug/debug.h>
-#include <sys/panic/panic.h>
 #include <sys/string/string.h>
 
 // normally this including from /dev is not encouraged and instead the devivemgr should be used
@@ -82,7 +82,7 @@ void debug_show_memblock(uint8_t* block, uint16_t size) {
              * make sure we didnt index over
              */
             if (line_count > LINE_WIDTH) {
-                panic("over-write in debug_show_memblock");
+                PANIC("over-write in debug_show_memblock");
             }
             /*
              * EOL

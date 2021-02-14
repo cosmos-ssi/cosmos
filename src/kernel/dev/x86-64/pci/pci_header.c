@@ -29,7 +29,7 @@ uint32_t pci_get_bar_base(uint32_t bar) {
                     return 0;
             }
         default:
-            panic("Invalid BAR type!");
+            PANIC("Invalid BAR type!");
             __builtin_unreachable();
     }
 }

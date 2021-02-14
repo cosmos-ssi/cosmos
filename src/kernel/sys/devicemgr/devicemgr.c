@@ -69,7 +69,7 @@ void device_initIterator(struct device* dev) {
             kprintf("Failed to Initialize %s\n", dev->name);
         }
     } else {
-        panic("um. why is there a null device?");
+        PANIC("um. why is there a null device?");
     }
 }
 

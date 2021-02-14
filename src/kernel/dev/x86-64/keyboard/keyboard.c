@@ -180,7 +180,7 @@ uint8_t keyboard_device_init(struct device* dev) {
 
 key_action_t* keyboard_read(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    panic("Keyboard read not implemented yet");
+    PANIC("Keyboard read not implemented yet");
     return 0;
 }
 

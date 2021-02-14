@@ -73,6 +73,6 @@ void rtl8139_get_registers(uint64_t write_count, uint8_t* txstart, uint8_t* txst
             *txstatus = RTL8139_REGISTER_TX_STATUS_3;
             return;
         default:
-            panic("Illegal offset\n");
+            PANIC("Illegal offset\n");
     }
 }

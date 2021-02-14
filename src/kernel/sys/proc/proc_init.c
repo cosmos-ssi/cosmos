@@ -5,10 +5,10 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/PANIC/PANIC.h>
 #include <sys/asm/asm.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
 
 void proc_init() {
@@ -17,7 +17,7 @@ void proc_init() {
 
     kernelproc = new_proc_info(0, asm_cr3_read());
     if (!add_proc_entry(kernelproc)) {
-        panic("Unable to add kernel process to table!");
+        PANIC("Unable to add kernel process to table!");
     }
 
     return;

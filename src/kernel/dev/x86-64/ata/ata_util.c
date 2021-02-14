@@ -7,9 +7,9 @@
 
 #include <dev/x86-64/ata/ata_controller.h>
 #include <dev/x86-64/ata/ata_util.h>
+#include <sys/PANIC/PANIC.h>
 #include <sys/asm/asm.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/panic/panic.h>
 #include <sys/sleep/sleep.h>
 
 //#define ATA_UTIL_DEBUG
@@ -94,7 +94,7 @@ uint16_t ata_register_port_number(struct ata_controller* controller, uint8_t cha
             out_port_base = port_ctrl;
             break;
         default:
-            panic("Invalid or unsupported ATA register selected!");
+            PANIC("Invalid or unsupported ATA register selected!");
             break;
     }
 
@@ -138,7 +138,7 @@ uint16_t ata_register_port_number(struct ata_controller* controller, uint8_t cha
             out_offset = 1;
             break;
         default:
-            panic("Invalid or unsupported ATA register selected!");
+            PANIC("Invalid or unsupported ATA register selected!");
             break;
     }
     return out_offset + out_port_base;

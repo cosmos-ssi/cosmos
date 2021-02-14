@@ -5,12 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/PANIC/PANIC.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/collection/bitmap/bitmap.h>
 #include <sys/debug/assert.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/panic/panic.h>
 
 #define SIXTY_FOUR_MEGA_BYTES 0x4000000
 
@@ -167,7 +167,7 @@ void iobuffers_release_buffer(void* buffer) {
             return;
         }
     }
-    panic("unable to find record of io buffer");
+    PANIC("unable to find record of io buffer");
 }
 
 uint32_t iobuffers_total_pages() {

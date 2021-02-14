@@ -5,8 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/PANIC/PANIC.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/panic/panic.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
@@ -108,7 +108,7 @@ void init_page_directory(int_15_map* phys_map, uint8_t num_blocks) {
                 page_directory[i].type = PDT_HOLE;
                 break;
             default:
-                panic("Invalid BIOS block type!");
+                PANIC("Invalid BIOS block type!");
         }
     }
 

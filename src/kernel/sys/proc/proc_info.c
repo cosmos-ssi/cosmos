@@ -5,7 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/panic/panic.h>
+#include <sys/PANIC/PANIC.h>
 #include <sys/proc/proc.h>
 #include <sys/string/mem.h>
 
@@ -14,7 +14,7 @@ proc_info_t* new_proc_info(pid_t pid, pttentry cr3) {
 
     proc_info = (proc_info_t*)kmalloc(sizeof(proc_info_t));
     if (!proc_info) {
-        panic("Unable to allocate space for proc_info struct!");
+        PANIC("Unable to allocate space for proc_info struct!");
     }
 
     // clear struct

@@ -37,11 +37,11 @@ void interrupt_router_register_interrupt_handler(int interruptNumber, interrupt_
     if ((interruptNumber >= 0) && (interruptNumber < NUMBER_INTERRUPTS)) {
         struct arraylist* lst = array_get(interrupt_handlers, interruptNumber);
         if (0 == lst) {
-            panic("List should not be null");
+            PANIC("List should not be null");
         }
         arraylist_add(lst, func);
     } else {
-        panic("Invalid interrupt number");
+        PANIC("Invalid interrupt number");
     }
 }
 
@@ -55,17 +55,17 @@ void interrupt_router_route_interrupt(int interruptNumber, stack_frame* frame) {
     if ((interruptNumber >= 0) && (interruptNumber < NUMBER_INTERRUPTS)) {
         struct arraylist* lst = array_get(interrupt_handlers, interruptNumber);
         if (0 == lst) {
-            panic("List should not be null");
+            PANIC("List should not be null");
         }
         for (uint16_t i = 0; i < arraylist_count(lst); i++) {
             interrupt_handler handler = (interrupt_handler)arraylist_get(lst, i);
             if (0 != handler) {
                 (*handler)(frame);
             } else {
-                panic("Interrupt handler should not be null");
+                PANIC("Interrupt handler should not be null");
             }
         }
     } else {
-        panic("Invalid interrupt number");
+        PANIC("Invalid interrupt number");
     }
 }

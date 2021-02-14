@@ -113,7 +113,7 @@ uint8_t vblock_init(struct device* dev) {
     // read features ok.  we good?
     uint32_t status = asm_in_b(device_data->base + VIRTIO_DEVICE_STATUS);
     if (VIRTIO_STATUS_FEATURES_OK != status) {
-        panic("virtio feature negotiation failed");
+        PANIC("virtio feature negotiation failed");
     }
 
     // cool
@@ -163,7 +163,7 @@ uint32_t vblockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, 
      */
     kprintf("read sector %llu, size %llu\n", start_lba);
 
-    panic("this code needs to be rewritten");
+    PANIC("this code needs to be rewritten");
 
     /*
      * block request
@@ -197,7 +197,7 @@ uint32_t vblockutil_write(struct device* dev, uint8_t* data, uint32_t data_size,
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
 
-    panic("vblock write not implemented yet");
+    PANIC("vblock write not implemented yet");
     return 0;
 }
 

@@ -24,7 +24,7 @@ struct arraylist* devicetypes_get_devicelist(device_type dt) {
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         return (struct arraylist*)array_get(types, dt);
     } else {
-        panic("Invalid device type passed to devicetypes_get_devicelist");
+        PANIC("Invalid device type passed to devicetypes_get_devicelist");
     }
     return 0;
 }
@@ -34,6 +34,6 @@ void devicetypes_set_devicelist(device_type dt, struct arraylist* lst) {
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         array_set(types, dt, lst);
     } else {
-        panic("Invalid device type passed to devicetypes_set_devicelist");
+        PANIC("Invalid device type passed to devicetypes_set_devicelist");
     }
 }

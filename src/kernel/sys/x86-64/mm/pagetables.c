@@ -5,10 +5,10 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/PANIC/PANIC.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <sys/sync/sync.h>
@@ -200,7 +200,7 @@ uint16_t vaddr_ptt_index(void* address, ptt_levels level) {
             shift = PT_INDEX_SHIFT;
             break;
         default:
-            panic("Invalid PTT level provided!");
+            PANIC("Invalid PTT level provided!");
     }
 
     return ((uint64_t)address & mask) >> shift;

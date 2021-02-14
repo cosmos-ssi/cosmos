@@ -204,20 +204,20 @@ void floppy_read(struct device* dev, uint32_t lba, uint8_t* data, uint16_t size)
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
-    //	panic("Floppy read not implemented yet");
+    //	PANIC("Floppy read not implemented yet");
 }
 
 // api
 void floppy_write(struct device* dev, uint32_t lba, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
-    //	panic("Floppy write not implemented yet");
+    //	PANIC("Floppy write not implemented yet");
 }
 
 // api
 void floppy_reset(struct device* dev) {
     ASSERT_NOT_NULL(dev);
-    panic("Floppy reset not implemented yet");
+    PANIC("Floppy reset not implemented yet");
 }
 
 void floppy_register_device(uint64_t port, uint8_t type, bool master) {

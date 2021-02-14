@@ -6,11 +6,11 @@
 // ****************************************************************
 
 #include <dev/logical/fs/node_cache.h>
+#include <sys/PANIC/PANIC.h>
 #include <sys/collection/tree/tree.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/panic/panic.h>
 
 struct node_cache* node_cache_new() {
     struct node_cache* ret = kmalloc(sizeof(struct node_cache));
@@ -40,5 +40,5 @@ void node_cache_remove(struct node_cache* nc, uint32_t id) {
     ASSERT_NOT_NULL(nc);
     ASSERT_NOT_NULL(nc->node_tree);
 
-    panic("Not Implemented");
+    PANIC("Not Implemented");
 }

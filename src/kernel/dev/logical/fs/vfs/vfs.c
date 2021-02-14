@@ -60,7 +60,7 @@ uint32_t vfs_read(struct filesystem_node* fs_node, const uint8_t* data, uint32_t
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     // read from node. we cant read from the root node, but we can find underlying file and folder nodes
-    panic("not implemented");
+    PANIC("not implemented");
     return 0;
 }
 
@@ -73,7 +73,7 @@ uint32_t vfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_
     ASSERT_NOT_NULL(data_size);
     // write to node. we cant write to the root node, but we can find underlying file and folder nodes
 
-    panic("not implemented");
+    PANIC("not implemented");
     return 0;
 }
 
@@ -82,7 +82,7 @@ void vfs_open(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
-    panic("not implemented");
+    PANIC("not implemented");
 }
 
 void vfs_close(struct filesystem_node* fs_node) {
@@ -90,7 +90,7 @@ void vfs_close(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
-    panic("not implemented");
+    PANIC("not implemented");
 }
 
 struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uint32_t id) {
@@ -99,7 +99,7 @@ struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uin
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
     // find subnode.  we can do this for the root node, and for subnodes that are folders
-    panic("not implemented");
+    PANIC("not implemented");
     return 0;
 }
 
@@ -110,7 +110,7 @@ struct filesystem_node* vfs_find_node_by_name(struct filesystem_node* fs_node, u
 
     ASSERT_NOT_NULL(name);
     // find subnode.  we can do this for the root node, and for subnodes that are folders
-    panic("not implemented");
+    PANIC("not implemented");
     return 0;
 }
 
@@ -243,5 +243,5 @@ void vfs_add_child(struct device* vfs_device, struct filesystem_node* child_node
 void vfs_remove_child(struct device* vfs_device, uint64_t id) {
     ASSERT_NOT_NULL(vfs_device);
     ASSERT_NOT_NULL(vfs_device->device_data);
-    panic("not implemented");
+    PANIC("not implemented");
 }

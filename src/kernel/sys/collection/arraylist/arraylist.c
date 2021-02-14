@@ -23,7 +23,7 @@ struct arraylist* arraylist_new() {
 void arraylist_delete(struct arraylist* lst) {
     ASSERT_NOT_NULL(lst);
     if (0 == lst->arr) {
-        panic("why is the underlying array null?!");
+        PANIC("why is the underlying array null?!");
     }
     array_delete(lst->arr);
     kfree(lst);
@@ -37,7 +37,7 @@ uint32_t arraylist_count(struct arraylist* lst) {
 uint32_t arraylist_size(struct arraylist* lst) {
     ASSERT_NOT_NULL(lst);
     if (0 == lst->arr) {
-        panic("why is the underlying array null?!");
+        PANIC("why is the underlying array null?!");
     }
     return lst->arr->size;
 }
@@ -46,10 +46,10 @@ uint32_t arraylist_add(struct arraylist* lst, void* value) {
     ASSERT_NOT_NULL(lst);
     // sanity check
     if (0 == lst->arr) {
-        panic("why is the underlying array null?!");
+        PANIC("why is the underlying array null?!");
     }
     if (lst->count > array_size(lst->arr)) {
-        panic("oh no! what happened?!");
+        PANIC("oh no! what happened?!");
     }
 
     // expand the underlying array?
@@ -70,24 +70,24 @@ uint32_t arraylist_add(struct arraylist* lst, void* value) {
 void arraylist_set(struct arraylist* lst, uint32_t position, void* value) {
     ASSERT_NOT_NULL(lst);
     if (0 == lst->arr) {
-        panic("why is the underlying array null?!");
+        PANIC("why is the underlying array null?!");
     }
     if ((position >= 0) && (position < lst->count)) {
         lst->arr->data[position] = value;
     } else {
-        panic("invalid list index passed to arraylist_set\n");
+        PANIC("invalid list index passed to arraylist_set\n");
     }
 }
 
 void* arraylist_get(struct arraylist* lst, uint32_t position) {
     ASSERT_NOT_NULL(lst);
     if (0 == lst->arr) {
-        panic("why is the underlying array null?!");
+        PANIC("why is the underlying array null?!");
     }
     if ((position >= 0) && (position < lst->count)) {
         return lst->arr->data[position];
     } else {
-        panic("invalid list index passed to arraylist_get\n");
+        PANIC("invalid list index passed to arraylist_get\n");
     }
     return 0;
 }
@@ -96,7 +96,7 @@ void arraylist_iterate(struct arraylist* lst, list_iterator iter) {
     ASSERT_NOT_NULL(lst);
     ASSERT_NOT_NULL(iter);
     if (0 == lst->arr) {
-        panic("why is the underlying array null?!");
+        PANIC("why is the underlying array null?!");
     }
     for (uint16_t i = 0; i < lst->count; i++) {
         (*iter)(lst->arr->data[i]);
@@ -109,7 +109,7 @@ void arraylist_iterate(struct arraylist* lst, list_iterator iter) {
 void arraylist_remove(struct arraylist* lst, uint32_t position) {
     ASSERT_NOT_NULL(lst);
     if (0 == lst->arr) {
-        panic("why is the underlying array null?!");
+        PANIC("why is the underlying array null?!");
     }
     if ((position >= 0) && (position < lst->count)) {
         if (position != lst->count - 1) {
@@ -119,7 +119,7 @@ void arraylist_remove(struct arraylist* lst, uint32_t position) {
         }
         lst->count = lst->count - 1;
     } else {
-        panic("invalid list index passed to arraylist_remove\n");
+        PANIC("invalid list index passed to arraylist_remove\n");
     }
 }
 

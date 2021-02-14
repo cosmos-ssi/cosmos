@@ -35,7 +35,7 @@ void fsutil_detach_partition_tables(struct device* block_dev) {
     ASSERT_NOT_NULL(block_dev);
     ASSERT_NOT_NULL(block_dev->api);
     ASSERT(1 == blockutil_is_block_device(block_dev));
-    panic("not implemented");
+    PANIC("not implemented");
 }
 
 void fsutil_attach_partitions(struct device* partition_table_dev) {
