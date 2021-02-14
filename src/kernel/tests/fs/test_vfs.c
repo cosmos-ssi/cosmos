@@ -6,6 +6,7 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
+#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
@@ -20,4 +21,5 @@ void test_vfs() {
 
     struct filesystem_node* fsnode = fsfacade_get_fs_rootnode(vfsdev_device);
     ASSERT_NOT_NULL(fsnode);
+    ASSERT(fsnode->type == folder);
 }

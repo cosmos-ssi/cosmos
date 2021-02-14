@@ -31,8 +31,11 @@ void test_initrd() {
 
         struct filesystem_node* fs_root_node = fsfacade_get_fs_rootnode(initrd);
         ASSERT_NOT_NULL(fs_root_node);
+        ASSERT(fs_root_node->type == folder);
+
         struct filesystem_node* fs_file_node = fsfacade_find_node_by_name(fs_root_node, "testdata.txt");
         ASSERT_NOT_NULL(fs_file_node);
+        ASSERT(fs_file_node->type == file);
 
         uint32_t len = fsfacade_size(fs_file_node);
         ASSERT(len == 66);
