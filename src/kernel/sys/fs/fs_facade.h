@@ -4,7 +4,9 @@
 // Released under the stated terms in the file LICENSE            *
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
-
+/*
+* fsfacade wraps a device that implements deviceapi_filesystem
+*/
 #ifndef _FS_FACADE_H
 #define _FS_FACADE_H
 
