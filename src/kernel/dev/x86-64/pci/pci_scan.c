@@ -5,12 +5,13 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <dev/x86-64/pci/devicetree.h>
 #include <dev/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <types.h>
+#include <dev/x86-64/pci/pci_device.h>
+#include <sys/collection/arraylist/arraylist.h>
+#include <sys/kmalloc/kmalloc.h>
 
 #define PCI_MAX_BUSSES 256
 #define PCI_MAX_DEVICES_PER_BUS 32

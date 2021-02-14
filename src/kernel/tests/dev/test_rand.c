@@ -6,10 +6,12 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_rand.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/dev/test_rand.h>
+#include <types.h>
 
 void test_rand() {
     kprintf("Testing rand\n");

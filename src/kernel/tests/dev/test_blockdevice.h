@@ -10,7 +10,7 @@
 #ifndef __TEST_BLOCKDEVICE_H
 #define __TEST_BLOCKDEVICE_H
 
-#include <sys/devicemgr/device.h>
+struct device;
 
 void test_block_device(struct device* dev);
 

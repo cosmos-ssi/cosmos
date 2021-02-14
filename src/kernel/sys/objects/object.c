@@ -8,7 +8,6 @@
 #include <sys/collection/dtable/dtable.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
-#include <sys/panic/panic.h>
 
 object_handle_t object_create(object_types_t type, void* object_data) {
     object_t* obj;

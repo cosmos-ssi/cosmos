@@ -6,7 +6,6 @@
  *****************************************************************/
 
 #include <dev/logical/console/serial_console.h>
-#include <dev/logical/console/vga_console.h>
 #include <dev/logical/ethernet/ethernet.h>
 #include <dev/logical/fs/devfs/devfs.h>
 #include <dev/logical/fs/initrd/initrd.h>
@@ -20,30 +19,24 @@
 #include <dev/logical/tcpip/tcp/tcpdev.h>
 #include <dev/logical/tcpip/udp/udpdev.h>
 #include <dev/logical/tick/tick.h>
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_console.h>
-#include <sys/deviceapi/deviceapi_cpu.h>
-#include <sys/deviceapi/deviceapi_dsp.h>
-#include <sys/deviceapi/deviceapi_pit.h>
-#include <sys/deviceapi/deviceapi_rtc.h>
-#include <sys/deviceapi/deviceapi_serial.h>
-#include <sys/deviceapi/deviceapi_speaker.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/fs/fs_helper.h>
 #include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
-#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sync/sync.h>
-#include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/idt/idt.h>
 #include <sys/x86-64/syscall/syscall.h>
 #include <tests/tests.h>
 #include <types.h>
+#include <sys/asm/misc.h>
+#include <sys/devicemgr/device.h>
+#include <sys/x86-64/mm/mm.h>
 
 void dev_tests();
 void attach_ramdisks();

@@ -6,8 +6,5 @@
  *****************************************************************/
 
 #include <sys/collection/dtable/dtable.h>
-#include <sys/kmalloc/kmalloc.h>
-#include <sys/proc/proc.h>
-#include <sys/string/mem.h>
 
 dtable proc_table;

@@ -5,10 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_rtc.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/dev/test_rtc.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 
 void test_rtc() {
     // get the time, b/c we can

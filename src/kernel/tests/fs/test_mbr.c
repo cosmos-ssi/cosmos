@@ -7,9 +7,11 @@
 
 #include <dev/logical/partition_table/mbr_partition_table.h>
 #include <sys/deviceapi/deviceapi_part_table.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/fs/test_mbr.h>
+#include <types.h>
 
 void test_mbr() {
     uint8_t devicename[] = {"disk1"};

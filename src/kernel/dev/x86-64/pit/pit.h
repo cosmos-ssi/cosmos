@@ -8,8 +8,6 @@
 #ifndef _PIT_H
 #define _PIT_H
 
-#include <types.h>
-
 void pit_devicemgr_register_devices();
 
 #endif

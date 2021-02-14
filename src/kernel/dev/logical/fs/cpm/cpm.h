@@ -8,7 +8,7 @@
 #ifndef _CPM_H
 #define _CPM_H
 
-#include <types.h>
+struct device;
 
 struct device* cpm_attach(struct device* partition_device);
 void cpm_detach(struct device* dev);

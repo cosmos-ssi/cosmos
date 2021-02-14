@@ -10,6 +10,8 @@
 
 #include <types.h>
 
+struct virtq;
+
 // Network-device-specific registers:
 #define REG_MAC_1 0x14
 #define REG_MAC_2 0x15

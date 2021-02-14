@@ -10,8 +10,6 @@
 #include <dev/logical/virtio/vblock/vblock.h>
 #include <dev/logical/virtio/virtio.h>
 #include <dev/logical/virtio/virtqueue.h>
-#include <dev/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_block.h>
@@ -19,9 +17,13 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 #include <types.h>
+#include <dev/x86-64/pci/devicetree.h>
+#include <dev/x86-64/pci/pci_device.h>
+#include <sys/devicemgr/device.h>
+#include <sys/panic/panic.h>
+#include <sys/x86-64/idt/irq.h>
 
 // registers
 #define VIRTIO_BLOCK_TOTAL_SECTORS 0x14

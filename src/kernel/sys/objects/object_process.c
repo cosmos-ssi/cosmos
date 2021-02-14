@@ -8,6 +8,8 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
 #include <sys/panic/panic.h>
+#include <sys/proc/proc.h>
+#include <types.h>
 
 object_handle_t object_create_process(object_handle_t exe, pid_t pid) {
     object_process_t* obj;

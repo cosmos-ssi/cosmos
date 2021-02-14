@@ -8,8 +8,6 @@
 #ifndef _INTEL82441_H
 #define _INTEL82441_H
 
-#include <types.h>
-
 void i440fx_bridge_register();
 
 #endif

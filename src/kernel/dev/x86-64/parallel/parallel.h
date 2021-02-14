@@ -8,8 +8,6 @@
 #ifndef _PARALLEL_H
 #define _PARALLEL_H
 
-#include <types.h>
-
 void parallel_devicemgr_register_devices();
 
 #endif

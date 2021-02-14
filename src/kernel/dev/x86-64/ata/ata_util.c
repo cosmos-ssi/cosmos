@@ -7,10 +7,9 @@
 
 #include <dev/x86-64/ata/ata_controller.h>
 #include <dev/x86-64/ata/ata_util.h>
-#include <sys/asm/asm.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/sleep/sleep.h>
+#include <sys/asm/io.h>
 
 //#define ATA_UTIL_DEBUG
 

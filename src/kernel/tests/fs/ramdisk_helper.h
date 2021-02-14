@@ -8,10 +8,10 @@
 #ifndef __RAMDISK_HELPER_H
 #define __RAMDISK_HELPER_H
 
+struct device;
+
 #define RAMDISK_SECTOR_SIZE 512
 #define RAMDISK_TOTAL_SECTORS 1000
-
-#include <sys/devicemgr/devicemgr.h>
 
 void ramdisk_helper_remove_rd(struct device* rd);
 struct device* ramdisk_helper_create_rd();

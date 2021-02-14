@@ -6,9 +6,10 @@
 // ****************************************************************
 
 #include <dev/logical/fs/cfs/cfs.h>
-#include <sys/deviceapi/deviceapi_block.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/fs/test_cfs.h>
+#include <types.h>
 
 void test_cfs() {
     uint8_t devicename[] = {"disk1"};

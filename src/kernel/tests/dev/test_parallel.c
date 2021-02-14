@@ -6,8 +6,11 @@
 // ****************************************************************
 
 #include <sys/deviceapi/deviceapi_parallel.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/dev/test_parallel.h>
+#include <types.h>
 
 void test_parallel() {
     uint8_t devicename[] = {"par0"};

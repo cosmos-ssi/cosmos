@@ -6,11 +6,10 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/string/string.h>
 #include <tests/sys/test_iobuffers.h>
+#include <types.h>
 
 void test_iobuffers() {
     kprintf("Testing iobuffers\n");

@@ -8,8 +8,6 @@
 #ifndef _SPEAKER_H
 #define _SPEAKER_H
 
-#include <types.h>
-
 void speaker_devicemgr_register_devices();
 
 #endif

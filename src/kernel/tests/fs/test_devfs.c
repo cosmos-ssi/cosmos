@@ -9,7 +9,6 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/fs/fs_helper.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/string/string.h>
 #include <tests/fs/test_devfs.h>
 
 void test_devfs() {

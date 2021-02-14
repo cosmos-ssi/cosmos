@@ -11,14 +11,15 @@
 
 #include <dev/logical/fs/block_util.h>
 #include <dev/logical/fs/fs_util.h>
-#include <dev/logical/partition/partition.h>
 #include <dev/logical/partition_table/mbr_partition_table.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_part_table.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
+#include <sys/kprintf/kprintf.h>
 
 #define MBR_HEADER_LBA 0
 

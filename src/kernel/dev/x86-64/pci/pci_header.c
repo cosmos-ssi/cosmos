@@ -6,9 +6,12 @@
  *****************************************************************/
 
 #include <dev/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <types.h>
+#include <dev/x86-64/pci/devicetree.h>
+#include <dev/x86-64/pci/pci_device.h>
+#include <sys/asm/io.h>
+#include <sys/panic/panic.h>
 
 uint32_t pci_get_bar_base(uint32_t bar) {
     /*

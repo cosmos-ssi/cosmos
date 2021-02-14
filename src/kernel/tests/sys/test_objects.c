@@ -7,9 +7,11 @@
 
 #include <dev/logical/fs/initrd/initrd.h>
 #include <sys/debug/assert.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
+#include <types.h>
 
 void test_objects() {
     device_t* disk;

@@ -8,8 +8,6 @@
 #ifndef _USB_EHCI_H
 #define _USB_EHCI_H
 
-#include <types.h>
-
 void usb_ehci_devicemgr_register_devices();
 
 #endif

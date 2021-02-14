@@ -11,6 +11,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>
 #include <tests/fs/test_gpt.h>
+#include <types.h>
 
 void test_gpt_attach() {
     uint8_t devicename[] = {"disk1"};

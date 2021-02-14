@@ -8,8 +8,9 @@
 #ifndef _RTL8139_IO_H
 #define _RTL8139_IO_H
 
-#include <sys/devicemgr/devicemgr.h>
 #include <types.h>
+
+struct device;
 
 struct rtl8139_devicedata {
     uint8_t mac[6];

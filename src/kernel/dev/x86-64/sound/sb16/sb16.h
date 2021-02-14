@@ -8,8 +8,6 @@
 #ifndef _SB16_H
 #define _SB16_H
 
-#include <types.h>
-
 void sb16_devicemgr_register_devices();
 
 #endif

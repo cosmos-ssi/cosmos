@@ -7,7 +7,6 @@
 
 #include <dev/x86-64/keyboard/abstract_keyboard.h>
 #include <dev/x86-64/keyboard/keyboard.h>
-#include <sys/asm/asm.h>
 #include <sys/collection/ringbuffer/ringbuffer.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_keyboard.h>
@@ -15,6 +14,11 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <types.h>
+#include <sys/asm/io.h>
+#include <sys/devicemgr/device.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/panic/panic.h>
+#include <sys/x86-64/idt/irq.h>
 
 #define KB_IRQ_NUMBER 1
 

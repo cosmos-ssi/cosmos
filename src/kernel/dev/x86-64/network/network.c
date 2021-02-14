@@ -5,6 +5,7 @@
 // ****************************************************************
 
 #include <dev/x86-64/network/network.h>
+#include <dev/x86-64/network/rtl8139/rtl8139.h>
 
 void network_devicemgr_register_devices() {
     rtl8139_devicemgr_register_devices();

@@ -7,7 +7,10 @@
 
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/devicetypes.h>
-#include <sys/kprintf/kprintf.h>
+#include <sys/collection/array/array.h>
+#include <sys/panic/panic.h>
+
+struct arraylist;
 
 struct array* types;
 

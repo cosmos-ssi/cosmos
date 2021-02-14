@@ -12,14 +12,16 @@
 #include <dev/x86-64/ata/ata_identity.h>
 #include <dev/x86-64/ata/ata_util.h>
 #include <dev/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/sleep/sleep.h>
-#include <sys/string/string.h>
 #include <types.h>
+#include <dev/x86-64/pci/devicetree.h>
+#include <dev/x86-64/pci/pci_device.h>
+#include <sys/devicemgr/device.h>
+#include <sys/panic/panic.h>
 
 void ata_detect_devices(struct device* device, struct ata_controller* controller);
 #define IDE_SERIAL_IRQ 14

@@ -6,11 +6,13 @@
 // ****************************************************************
 
 #include <dev/x86-64/cpu/cpu.h>
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_cpu.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/devicemgr/device.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <types.h>
 
 void cpu_manufacturer_id(uint8_t* cpuid);
 

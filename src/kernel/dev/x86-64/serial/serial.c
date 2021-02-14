@@ -8,13 +8,16 @@
 #include <dev/x86-64/bda/bda.h>
 #include <dev/x86-64/serial/ns16550.h>
 #include <dev/x86-64/serial/serial.h>
-#include <sys/asm/asm.h>
 #include <sys/collection/ringbuffer/ringbuffer.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_serial.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/asm/io.h>
+#include <sys/devicemgr/device.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/x86-64/idt/irq.h>
 
 #define SERIAL_RINGBUFFER_SIZE 255
 

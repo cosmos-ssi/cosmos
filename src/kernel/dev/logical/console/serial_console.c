@@ -6,12 +6,15 @@
 // ****************************************************************
 
 #include <dev/logical/console/serial_console.h>
-#include <dev/x86-64/serial/serial.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_console.h>
 #include <sys/deviceapi/deviceapi_serial.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
+#include <types.h>
 
 struct serial_console_devicedata {
     struct device* serial_device;

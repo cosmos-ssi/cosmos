@@ -8,7 +8,6 @@
 #ifndef _PAGETABLES_H
 #define _PAGETABLES_H
 
-#include <sys/x86-64/mm/mm.h>
 #include <types.h>
 
 typedef uint64_t ptt_t;  // page translation table
@@ -61,8 +60,6 @@ typedef enum page_directory_types {
     PDT_MAX_PD_TYPE = 0xFFFFFFFFFFFFFFFF  // to force enum to 64 bits
 } page_directory_types;
 
-// forward type declarations to avoid compilation errors
-struct int_15_map;
 typedef struct int_15_map int_15_map;
 
 enum ptt_levels;

@@ -14,7 +14,9 @@
 #include <dev/logical/partition_table/mbr_partition_table.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_part_table.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/devicemgr/device.h>
+#include <sys/panic/panic.h>
+#include <types.h>
 
 void fsutil_attach_partition_tables(struct device* block_dev) {
     ASSERT_NOT_NULL(block_dev);

@@ -13,7 +13,6 @@
  * an n-ary tree
  */
 
-#include <sys/collection/arraylist/arraylist.h>
 #include <types.h>
 
 struct ntree {

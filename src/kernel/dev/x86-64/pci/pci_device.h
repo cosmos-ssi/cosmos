@@ -9,7 +9,6 @@
 #define _PCI_DEVICE_H
 
 #include <dev/x86-64/pci/devicetree.h>
-#include <sys/collection/arraylist/arraylist.h>
 #include <types.h>
 
 struct pci_device {

@@ -5,16 +5,18 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <dev/x86-64/pci/pci.h>
 #include <dev/x86-64/sdhci/sdhci.h>
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_block.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/sleep/sleep.h>
-#include <sys/string/mem.h>
+#include <dev/x86-64/pci/devicetree.h>
+#include <dev/x86-64/pci/pci_device.h>
+#include <sys/devicemgr/device.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/x86-64/idt/irq.h>
+#include <sys/x86-64/mm/pagetables.h>
+#include <types.h>
 
 #define SDHCI_COMMAND 0x00
 #define SDHCI_RESPONSE 0x10

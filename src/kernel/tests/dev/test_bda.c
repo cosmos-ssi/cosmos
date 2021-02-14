@@ -6,11 +6,11 @@
 // ****************************************************************
 
 #include <dev/x86-64/acpi/ebda.h>
-#include <dev/x86-64/bda/bda.h>
+#include <dev/x86-64/acpi/rsdp.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/dev/test_bda.h>
+#include <types.h>
 
 void test_bda() {
     kprintf("Testing BDA\n");

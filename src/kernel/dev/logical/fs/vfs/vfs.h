@@ -11,6 +11,7 @@
 #include <types.h>
 
 struct filesystem_node;
+struct device;
 
 struct device* vfs_attach();
 void vfs_detach(struct device* dev);

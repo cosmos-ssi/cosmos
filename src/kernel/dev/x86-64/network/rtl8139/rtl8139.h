@@ -8,8 +8,6 @@
 #ifndef _RTL8139_H
 #define _RTL8139_H
 
-#include <types.h>
-
 void rtl8139_devicemgr_register_devices();
 
 #endif

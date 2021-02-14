@@ -7,6 +7,7 @@
 
 #include <sys/collection/dtable/dtable.h>
 #include <sys/objects/objects.h>
+#include <types.h>
 
 dtable object_table;
 uint64_t object_table_next_idx;

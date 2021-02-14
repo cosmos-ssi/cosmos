@@ -7,8 +7,11 @@
 
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_floppy.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/dev/test_floppy.h>
+#include <types.h>
 
 void floppyread() {
     // get the floppy

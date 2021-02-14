@@ -11,13 +11,14 @@
 #include <dev/logical/fs/tfs/tfs_dir.h>
 #include <dev/logical/fs/tfs/tfs_map.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_block.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
+#include <types.h>
 
 struct tfs_devicedata {
     struct device* partition_device;

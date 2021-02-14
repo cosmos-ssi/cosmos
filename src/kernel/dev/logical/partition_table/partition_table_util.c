@@ -8,6 +8,8 @@
 #include <dev/logical/partition_table/partition_table_util.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_part_table.h>
+#include <sys/devicemgr/device.h>
+#include <sys/panic/panic.h>
 
 uint32_t partition_table_util_write_sectors(struct device* partition_table_device, uint8_t partition_index,
                                             uint8_t* data, uint32_t data_size, uint32_t start_lba) {

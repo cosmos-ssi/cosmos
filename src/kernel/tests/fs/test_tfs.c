@@ -6,10 +6,10 @@
 // ****************************************************************
 
 #include <dev/logical/fs/tfs/tfs.h>
-#include <sys/deviceapi/deviceapi_block.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/string/string.h>
 #include <tests/fs/test_tfs.h>
+#include <types.h>
 
 uint8_t FILE1_CONTENT[] = {"This is the file i am i am, this is the file i am"};
 uint8_t FILE1_NAME[] = {"Dave"};

@@ -8,8 +8,6 @@
 #ifndef _VGA_H
 #define _VGA_H
 
-#include <types.h>
-
 void vga_devicemgr_register_devices();
 
 #endif

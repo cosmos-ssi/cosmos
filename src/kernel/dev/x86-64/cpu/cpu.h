@@ -8,8 +8,6 @@
 #ifndef _CPU_H
 #define _CPU_H
 
-#include <types.h>
-
 void cpu_devicemgr_register_devices();
 
 #endif

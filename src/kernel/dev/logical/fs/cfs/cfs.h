@@ -8,8 +8,6 @@
 #ifndef _CFS_H
 #define _CFS_H
 
-#include <types.h>
-
 struct device;
 
 struct device* cfs_attach(struct device* partition_device);

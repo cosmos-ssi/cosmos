@@ -5,12 +5,13 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/fs/block_util.h>
 #include <dev/logical/fs/tfs/tfs_block.h>
 #include <dev/logical/fs/tfs/tfs_dir.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>
+
+struct device;
 
 /*
  * returns file block, or zero

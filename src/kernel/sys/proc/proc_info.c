@@ -5,9 +5,12 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
 #include <sys/string/mem.h>
+#include <sys/x86-64/mm/pagetables.h>
+#include <types.h>
 
 proc_info_t* new_proc_info(pid_t pid, pttentry cr3) {
     proc_info_t* proc_info = 0;

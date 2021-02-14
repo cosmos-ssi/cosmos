@@ -5,10 +5,10 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/asm/asm.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/x86-64/gdt/gdt.h>
 #include <types.h>
+#include <sys/asm/msr.h>
 
 void syscall_entry() {
     /*

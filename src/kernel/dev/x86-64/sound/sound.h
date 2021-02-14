@@ -8,10 +8,6 @@
 #ifndef _SOUND_H
 #define _SOUND_H
 
-#include <dev/x86-64/sound/ac97/ac97.h>
-#include <dev/x86-64/sound/adlib/adlib.h>
-#include <dev/x86-64/sound/sb16/sb16.h>
-
 void sound_devicemgr_register_devices();
 
 #endif

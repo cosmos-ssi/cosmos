@@ -5,16 +5,14 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/string/mem.h>
-#include <sys/string/string.h>
 #include <sys/sync/sync.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
+#include <sys/asm/misc.h>
 
 #ifdef COMPILE_PLATFORM_LINUX
 pttentry* extract_cr3_base_address(pttentry cr3) __attribute__((alias("extract_pttentry_base_address")));

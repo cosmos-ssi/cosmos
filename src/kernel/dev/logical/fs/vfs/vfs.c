@@ -5,18 +5,17 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/fs/node_cache.h>
 #include <dev/logical/fs/node_util.h>
 #include <dev/logical/fs/vfs/vfs.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
-#include <sys/string/string.h>
+#include <sys/devicemgr/device.h>
+#include <sys/panic/panic.h>
 
 struct vfs_devicedata {
     struct arraylist* children;

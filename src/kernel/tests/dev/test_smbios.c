@@ -7,10 +7,11 @@
 
 #include <dev/x86-64/smbios/smbios.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/dev/test_smbios.h>
+#include <sys/devicemgr/device.h>
+#include <types.h>
 
 void test_smbios() {
     kprintf("Testing SMBIOS\n");

@@ -10,8 +10,6 @@
 
 #include <types.h>
 
-struct fadt;
-
 // https://wiki.osdev.org/RSDT
 
 struct acpi_sdt_header {

@@ -5,14 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_block.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/string/mem.h>
-#include <sys/string/string.h>
 #include <tests/dev/test_blockdevice.h>
 #include <tests/dev/test_vblock.h>
+#include <types.h>
 
 void test_vblock() {
     // get virtual block device

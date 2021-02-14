@@ -8,8 +8,6 @@
 #ifndef _KEYBOARD_H
 #define _KEYBOARD_H
 
-#include <dev/x86-64/keyboard/abstract_keyboard.h>
-
 void keyboard_devicemgr_register_devices();
 
 void keyboard_remove_command_queue();

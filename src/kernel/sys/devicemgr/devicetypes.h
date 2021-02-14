@@ -8,9 +8,10 @@
 #ifndef _DEVICETYPES_H
 #define _DEVICETYPES_H
 
-#include <sys/collection/array/array.h>
-#include <sys/collection/arraylist/arraylist.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/devicemgr/device.h>
+#include <types.h>
+
+struct arraylist;
 
 #define MAX_DEVICE_TYPES 256
 

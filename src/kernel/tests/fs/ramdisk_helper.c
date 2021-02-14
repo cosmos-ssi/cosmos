@@ -9,6 +9,7 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/fs/ramdisk_helper.h>
+#include <sys/devicemgr/device.h>
 
 /*
 * make a ram disk

@@ -14,6 +14,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 #include <types.h>
+#include <sys/devicemgr/device.h>
 
 struct swap_devicedata {
     struct device* block_device;

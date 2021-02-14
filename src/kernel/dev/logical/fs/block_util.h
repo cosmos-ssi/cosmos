@@ -8,8 +8,9 @@
 #ifndef _BLOCK_UTIL_H
 #define _BLOCK_UTIL_H
 
-#include <sys/deviceapi/deviceapi_block.h>
 #include <types.h>
+
+struct device;
 
 uint32_t blockutil_get_sector_size(struct device* dev);
 uint32_t blockutil_get_sector_count(struct device* dev);

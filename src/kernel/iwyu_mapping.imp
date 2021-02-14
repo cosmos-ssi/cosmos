@@ -26,4 +26,6 @@
     { symbol: ["size_t", "private", "<types.h>", "public"] },
 #
     { symbol: ["bool", "private", "<types.h>", "public"] }
+#
+    { symbol: ["pid_t", "private", "<sys/proc/proc.h>", "public"] }
 ]

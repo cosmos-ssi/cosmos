@@ -6,8 +6,11 @@
 // ****************************************************************
 
 #include <sys/deviceapi/deviceapi_vga.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/dev/test_display.h>
+#include <types.h>
 
 void test_display() {
     // get the display

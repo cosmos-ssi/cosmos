@@ -5,14 +5,15 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/ehci/ehci.h>
-#include <dev/x86-64/pci/pci.h>
 #include <dev/x86-64/usb_ehci/usb_ehci.h>
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/devicemgr.h>
-#include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <dev/x86-64/pci/devicetree.h>
+#include <dev/x86-64/pci/pci_device.h>
+#include <sys/devicemgr/device.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <types.h>
 
 struct usbcontroller_devicedata {
     uint64_t base;

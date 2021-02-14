@@ -7,8 +7,11 @@
 
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_null.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/dev/test_null.h>
+#include <types.h>
 
 void test_null() {
     kprintf("Testing null\n");

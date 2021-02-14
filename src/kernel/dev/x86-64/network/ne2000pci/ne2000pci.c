@@ -9,8 +9,6 @@
  */
 
 #include <dev/x86-64/network/ne2000pci/ne2000pci.h>
-#include <dev/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_nic.h>
@@ -19,6 +17,12 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/sleep/sleep.h>
 #include <types.h>
+#include <dev/x86-64/pci/devicetree.h>
+#include <dev/x86-64/pci/pci_device.h>
+#include <sys/devicemgr/device.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/panic/panic.h>
+#include <sys/x86-64/idt/irq.h>
 
 // REGISTERS
 #define CR 0x00       // Command Register

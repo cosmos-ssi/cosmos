@@ -8,8 +8,6 @@
 #ifndef _MOUSE_H
 #define _MOUSE_H
 
-#include <types.h>
-
 void mouse_devicemgr_register_devices();
 
 #endif

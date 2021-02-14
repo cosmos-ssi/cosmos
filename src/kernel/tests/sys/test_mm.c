@@ -5,11 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/x86-64/mm/pagetables.h>
+#include <sys/x86-64/mm/mm.h>
 #include <tests/sys/test_mm.h>
+#include <types.h>
 
 void test_mm() {
     mem_block* tmp;

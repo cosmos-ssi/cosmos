@@ -8,12 +8,11 @@
 // https://wiki.osdev.org/System_Management_BIOS
 
 #include <dev/x86-64/smbios/smbios.h>
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_bda.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/devicemgr/device.h>
+#include <sys/kmalloc/kmalloc.h>
 
 struct smbios_devicedata {
     uint64_t base;

@@ -7,7 +7,6 @@
 
 #include <dev/x86-64/cmos/cmos.h>
 #include <dev/x86-64/rtc/rtc.h>
-#include <sys/asm/asm.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_rtc.h>
@@ -16,6 +15,11 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/sleep/sleep.h>
 #include <types.h>
+#include <sys/asm/io.h>
+#include <sys/asm/misc.h>
+#include <sys/devicemgr/device.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/x86-64/idt/irq.h>
 
 #define RTC_IRQ_NUMBER 8
 

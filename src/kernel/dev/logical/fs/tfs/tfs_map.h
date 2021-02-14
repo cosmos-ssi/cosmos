@@ -8,9 +8,10 @@
 #ifndef _TFS_MAP_H
 #define _TFS_MAP_H
 
-#include <dev/logical/fs/tfs/tfs_block.h>
-#include <sys/devicemgr/devicemgr.h>
 #include <types.h>
+
+struct device;
+struct tfs_superblock_block;
 
 #define TFS_MAP_BLOCK_FREE 0
 #define TFS_MAP_BLOCK_USED 1

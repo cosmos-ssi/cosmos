@@ -11,8 +11,6 @@
 
 #define DEVICE_MAX_DESCRIPTION 64
 
-// forward declare these
-struct pci_device;
 struct device;
 
 // return 1 if successful, 0 if failed to unit

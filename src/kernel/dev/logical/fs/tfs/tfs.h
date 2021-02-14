@@ -8,7 +8,7 @@
 #ifndef _TFS_H
 #define _TFS_H
 
-#include <types.h>
+struct device;
 
 struct device* tfs_attach(struct device* partition_device);
 void tfs_detach(struct device* dev);

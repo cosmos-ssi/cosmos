@@ -6,12 +6,7 @@
 // ****************************************************************
 
 #include <dev/x86-64/bda/bda.h>
-#include <sys/asm/asm.h>
-#include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_bda.h>
-#include <sys/devicemgr/devicemgr.h>
-#include <sys/kprintf/kprintf.h>
+#include <types.h>
 
 const uint8_t EBDA_RSD_PTR[] = {"RSD PTR "};
 const uint8_t EBDA_RSD_PTR_SIZE = 8;

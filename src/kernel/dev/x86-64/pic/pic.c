@@ -6,10 +6,11 @@
  *****************************************************************/
 
 #include <dev/x86-64/pic/pic.h>
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/asm/io.h>
+#include <sys/devicemgr/device.h>
 
 // I/O ports
 #define PIC_PRIMARY_COMMAND 0x20

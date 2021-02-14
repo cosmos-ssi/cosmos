@@ -5,15 +5,16 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <dev/logical/ehci/ehci.h>
-#include <dev/x86-64/pci/pci.h>
 #include <dev/x86-64/pci_ehci/pci_ehci.h>
-#include <sys/asm/asm.h>
-#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <dev/x86-64/pci/devicetree.h>
+#include <dev/x86-64/pci/pci_device.h>
+#include <sys/devicemgr/device.h>
+#include <sys/x86-64/idt/irq.h>
+#include <types.h>
 
 // https://wiki.osdev.org/Enhanced_Host_Controller_Interface
 

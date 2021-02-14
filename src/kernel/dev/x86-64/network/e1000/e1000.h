@@ -8,8 +8,6 @@
 #ifndef _E1000_H
 #define _E1000_H
 
-#include <types.h>
-
 void e1000_devicemgr_register_devices();
 
 #endif

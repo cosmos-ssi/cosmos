@@ -10,6 +10,8 @@
 #include <sys/sleep/sleep.h>
 #include <sys/sound/notes.h>
 #include <tests/dev/test_speaker.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 
 void BeethovensFifth() {
     // get the speaker

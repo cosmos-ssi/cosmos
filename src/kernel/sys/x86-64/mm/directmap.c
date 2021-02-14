@@ -5,12 +5,13 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/asm/asm.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
+#include <sys/asm/misc.h>
+#include <sys/x86-64/mm/mm.h>
 
 int_15_map find_suitable_block(int_15_map* phys_map, uint8_t num_blocks, void* min, uint64_t space);
 uint64_t size_pd(uint64_t space);

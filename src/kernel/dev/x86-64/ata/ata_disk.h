@@ -11,9 +11,9 @@
 #ifndef _ATA_DISK_H
 #define _ATA_DISK_H
 
-#include <dev/x86-64/ata/ata_controller.h>
-#include <sys/devicemgr/devicemgr.h>
 #include <types.h>
+
+struct device;
 
 typedef struct ata_disk_devicedata {
     struct device* device;

@@ -13,6 +13,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/loader/elf/elf.h>
 #include <sys/string/mem.h>
+#include <sys/panic/panic.h>
 
 uint8_t init_load(uint8_t* initrd_disk_name, uint8_t* initrd_binary_name) {
     uint8_t ret = 0;

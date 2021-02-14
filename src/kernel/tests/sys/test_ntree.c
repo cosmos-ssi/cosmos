@@ -6,9 +6,7 @@
 // ****************************************************************
 
 #include <sys/collection/ntree/ntree.h>
-#include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/string/string.h>
 #include <tests/sys/test_ntree.h>
 
 void test_ntree() {

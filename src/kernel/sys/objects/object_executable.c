@@ -8,7 +8,6 @@
 #include <dev/logical/fs/initrd/initrd.h>
 #include <sys/devicemgr/device.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
 #include <sys/string/string.h>
 #include <sys/x86-64/mm/mm.h>

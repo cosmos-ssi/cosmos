@@ -6,11 +6,10 @@
  *****************************************************************/
 
 #include <sys/asm/misc.h>
-#include <sys/iobuffers/iobuffers.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
+#include <sys/kmalloc/kmalloc.h>
 
 uint64_t future_pt_expansion[3];
 

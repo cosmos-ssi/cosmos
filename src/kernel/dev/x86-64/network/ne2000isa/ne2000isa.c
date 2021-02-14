@@ -9,7 +9,6 @@
  */
 
 #include <dev/x86-64/network/ne2000isa/ne2000isa.h>
-#include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_nic.h>
@@ -18,6 +17,10 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/sleep/sleep.h>
 #include <types.h>
+#include <sys/devicemgr/device.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/panic/panic.h>
+#include <sys/x86-64/idt/irq.h>
 
 #define NE2000ISA_BASE_ADDRESS 0x300
 #define NE2000ISA_IRQ 9

@@ -8,7 +8,6 @@
 #include <dev/x86-64/ata/ata_disk.h>
 #include <dev/x86-64/ata/ata_dma.h>
 #include <sys/collection/linkedlist/linkedlist.h>
-#include <sys/deviceapi/deviceapi_block.h>
 #include <sys/devicemgr/device.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>

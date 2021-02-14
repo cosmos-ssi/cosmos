@@ -8,7 +8,9 @@
 #ifndef _DEVICEREGISTRY_H
 #define _DEVICEREGISTRY_H
 
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <types.h>
 
 void deviceregistry_init();
 void deviceregistry_registerdevice(struct device* dev);

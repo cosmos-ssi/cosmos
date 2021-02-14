@@ -5,11 +5,13 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_pit.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/sleep/sleep.h>
 #include <tests/dev/test_pit.h>
+#include <types.h>
 
 void test_pit() {
     // get the PIT

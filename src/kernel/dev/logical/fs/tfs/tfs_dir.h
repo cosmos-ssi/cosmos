@@ -8,9 +8,10 @@
 #ifndef _TFS_DIR_H
 #define _TFS_DIR_H
 
-#include <dev/logical/fs/tfs/tfs_block.h>
-#include <sys/devicemgr/devicemgr.h>
 #include <types.h>
+
+struct device;
+struct tfs_file_block;
 
 typedef bool (*tfs_file_iterator)(struct tfs_file_block* file_block);
 
