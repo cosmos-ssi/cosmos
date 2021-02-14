@@ -2,8 +2,8 @@
 
 ## ABI
 
-*`rax` - system call # (see table below)
-*`rbx` - address of first argument
+* `rax` - system call # (see table below)
+* `rbx` - address of first argument
 
 then execute the `syscall` instruction.
 
