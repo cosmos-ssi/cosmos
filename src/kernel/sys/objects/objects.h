@@ -15,6 +15,7 @@
 
 #include <sys/collection/dtable/dtable.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/proc/proc.h>
 #include <types.h>
 
 typedef enum object_types_t { OBJECT_EXECUTABLE, OBJECT_PRESENTATION, OBJECT_PROCESS } object_types_t;
@@ -52,6 +53,12 @@ typedef struct object_presentation_t {
     uint8_t idx;
     char* vfs_name;
 } object_presentation_t;
+
+typedef struct object_process_t {
+    pid_t pid;
+    object_handle_t executable;
+    char* proc_name;
+} object_process_t;
 
 extern dtable object_table;
 extern uint64_t object_table_next_idx;
