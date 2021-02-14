@@ -7,6 +7,7 @@
 
 #include <dev/logical/fs/devfs/devfs.h>
 #include <dev/logical/fs/node_cache.h>
+#include <dev/logical/fs/node_util.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
@@ -103,60 +104,31 @@ struct filesystem_node* devfs_find_node_by_id(struct filesystem_node* fs_node, u
     return 0;
 }
 
-struct filesystem_node* devfs_find_node_by_name(struct filesystem_node* fs_node, uint8_t* name) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-    ASSERT_NOT_NULL(name);
-    // find subnode.  we can do this for the root node, but not contained nodes b/c devices are leaf nodes
-    PANIC("not implemented");
-
-    return 0;
-}
-
-/*
-* find a node by name
-*/
-struct filesystem_node* devfs_find_node_by_idx(struct filesystem_node* fs_node, uint32_t idx) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-
-    struct devfs_devicedata* device_data = (struct devfs_devicedata*)fs_node->filesystem_device->device_data;
-    if (fs_node == device_data->root_node) {
-        /*
-        * root node
-        */
-        ASSERT(idx >= 0);
-        //    ASSERT(idx < device_data->header.number_files);
-        //        return arraylist_get(device_data->children, idx);
-        PANIC("not implemented");
-        return 0;
-    } else {
-        /* 
-        * return zero here.  vfsdev has no concept of folders, therefore every node
-        * is at the top level; a child of the root
-        */
-        return 0;
-    }
-}
 /*
 * count
 */
-uint32_t devfs_count(struct filesystem_node* fs_node) {
+// uint32_t devfs_count(struct filesystem_node* fs_node) {
+//     ASSERT_NOT_NULL(fs_node);
+//     ASSERT_NOT_NULL(fs_node->filesystem_device);
+//     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+//     struct devfs_devicedata* device_data = (struct devfs_devicedata*)fs_node->filesystem_device->device_data;
+//     if (fs_node == device_data->root_node) {
+//         /*
+//         * root node
+//         */
+//         return devicemgr_device_count();
+//     } else {
+//         // devices are leaf nodes they have no children
+//         return 0;
+//     }
+// }
+
+void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-    struct devfs_devicedata* device_data = (struct devfs_devicedata*)fs_node->filesystem_device->device_data;
-    if (fs_node == device_data->root_node) {
-        /*
-        * root node
-        */
-        return devicemgr_device_count();
-    } else {
-        // devices are leaf nodes they have no children
-        return 0;
-    }
+    ASSERT_NOT_NULL(dir);
+    PANIC("not implemented");
 }
 
 struct device* devfs_attach() {
@@ -177,25 +149,17 @@ struct device* devfs_attach() {
     memzero((uint8_t*)api, sizeof(struct deviceapi_filesystem));
     api->close = &devfs_close;
     api->find_id = &devfs_find_node_by_id;
-    api->find_name = &devfs_find_node_by_name;
     api->open = &devfs_open;
     api->root = &devfs_get_root_node;
     api->write = &devfs_write;
     api->read = &devfs_read;
-    api->find_idx = &devfs_find_node_by_idx;
-    api->count = &devfs_count;
+    api->list = &devfs_list_directory;
     deviceinstance->api = api;
     /*
      * device data
      */
     struct devfs_devicedata* device_data = (struct devfs_devicedata*)kmalloc(sizeof(struct devfs_devicedata));
-    struct filesystem_node* r = (struct filesystem_node*)kmalloc(sizeof(struct filesystem_node));
-    memzero((uint8_t*)r, sizeof(struct filesystem_node));
-    r->filesystem_device = deviceinstance;
-    r->id = 0;
-    strncpy(r->name, "devfs", FILESYSTEM_MAX_NAME);
-
-    device_data->root_node = r;
+    device_data->root_node = filesystem_node_new(folder, deviceinstance, "devfs", 0, 0);
     device_data->nc = node_cache_new();
     deviceinstance->device_data = device_data;
     /*
