@@ -2,19 +2,11 @@
 BITS 64
 DEFAULT REL
 
-global cosmos_syscall
+global syscall
 
-cosmos_syscall:
-    push rax;
-    push rbx;
-    push rcx;
-    push rdx;
+syscall:
+    pop rax;        // the syscall #
 
     sysenter
 
-    pop rdx;
-    pop rcx;
-    pop rbx;
-    pop rax;
-
-    retf    
+    retf
