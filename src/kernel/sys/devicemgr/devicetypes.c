@@ -37,3 +37,13 @@ void devicetypes_set_devicelist(device_type dt, struct arraylist* lst) {
         PANIC("Invalid device type passed to devicetypes_set_devicelist");
     }
 }
+
+uint32_t devicetypes_count() {
+    uint32_t ret = 0;
+    for (uint32_t i = 0; i < MAX_DEVICE_TYPES; i++) {
+        if (0 != array_get(types, i)) {
+            ret += 1;
+        }
+    }
+    return ret;
+}

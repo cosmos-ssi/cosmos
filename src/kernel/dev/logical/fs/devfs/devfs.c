@@ -12,6 +12,7 @@
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/devicemgr/devicetypes.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
@@ -104,31 +105,29 @@ struct filesystem_node* devfs_find_node_by_id(struct filesystem_node* fs_node, u
     return 0;
 }
 
-/*
-* count
-*/
-// uint32_t devfs_count(struct filesystem_node* fs_node) {
-//     ASSERT_NOT_NULL(fs_node);
-//     ASSERT_NOT_NULL(fs_node->filesystem_device);
-//     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-//     struct devfs_devicedata* device_data = (struct devfs_devicedata*)fs_node->filesystem_device->device_data;
-//     if (fs_node == device_data->root_node) {
-//         /*
-//         * root node
-//         */
-//         return devicemgr_device_count();
-//     } else {
-//         // devices are leaf nodes they have no children
-//         return 0;
-//     }
-// }
-
 void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
     ASSERT_NOT_NULL(dir);
-    PANIC("not implemented");
+    struct devfs_devicedata* device_data = (struct devfs_devicedata*)fs_node->filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * root node
+        */
+
+        //dir->count = devicetypes_count();
+
+    } else {
+        /*
+        * folders are device types
+        */
+        if (fs_node->type == folder) {
+
+        } else {
+            // its a leaf node which is a device. it has no children
+        }
+    }
 }
 
 struct device* devfs_attach() {

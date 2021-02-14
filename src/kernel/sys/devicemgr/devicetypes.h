@@ -17,5 +17,5 @@
 void devicetypes_init();
 struct arraylist* devicetypes_get_devicelist(device_type dt);
 void devicetypes_set_devicelist(device_type dt, struct arraylist* lst);
-
+uint32_t devicetypes_count();
 #endif
