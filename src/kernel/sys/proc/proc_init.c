@@ -19,13 +19,8 @@ void proc_init() {
     proc_table = dtable_init();
 
     kernelproc = new_proc_info(0, asm_cr3_read());
-<<<<<<< HEAD
     if (!add_proc_entry(kernelproc)) {
         PANIC("Unable to add kernel process to table!");
-=======
-    if (!dtable_set(proc_table, 0, (void*)kernelproc)) {
-        panic("Unable to add kernel process to table!");
->>>>>>> proc
     }
 
     next_pid = 1;
