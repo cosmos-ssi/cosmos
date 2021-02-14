@@ -147,9 +147,10 @@ uint32_t initrd_write(struct filesystem_node* fs_node, const uint8_t* data, uint
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
-    // write to node. we cant write to the root node, but we can find underlying file and folder nodes
-    PANIC("not implemented");
 
+    /*
+    * cant write to initrd fs
+    */
     return 0;
 }
 
