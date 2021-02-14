@@ -57,7 +57,6 @@ typedef struct object_presentation_t {
 typedef struct object_process_t {
     pid_t pid;
     object_handle_t executable;
-    char* proc_name;
 } object_process_t;
 
 extern dtable object_table;
