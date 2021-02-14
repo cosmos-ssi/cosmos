@@ -6,12 +6,8 @@
 // ****************************************************************
 
 #include <rootfs/abi/cosmos_abi.h>
+#include <rootfs/abi/cosmos_syscall.h>
 
-#define COSMOS_SYSCALL_COM1_WRITE 0x01
-
-extern void cosmos_syscall(uint64_t rax, uint64_t rbx, uint64_t rcx, uint64_t rdx);
-
-uint64_t cosmos_abi_com1_write(uint8_t c) {
-    cosmos_syscall(COSMOS_SYSCALL_COM1_WRITE, c, 0, 0);
-    return 0;
+uint64_t syscall_print_console() {
+    return syscall(1);
 }
