@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <dev/logical/fs/node_cache.h>
 #include <dev/logical/fs/node_util.h>
 #include <dev/logical/fs/vfs/vfs.h>
 #include <sys/collection/arraylist/arraylist.h>
@@ -98,45 +99,55 @@ struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uin
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-
-    // find subnode.  we can do this for the root node, and for subnodes that are folders
-    PANIC("not implemented");
-    return 0;
+    struct vfs_devicedata* device_data = (struct vfs_devicedata*)fs_node->filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * root node
+        */
+        if (0 == device_data->children) {
+            return 0;
+        } else {
+            ASSERT(id < arraylist_count(device_data->children));
+            for (uint32_t i = 0; i < arraylist_count(device_data->children); i++) {
+                struct filesystem_node* n = (struct filesystem_node*)arraylist_get(device_data->children, i);
+                if (n->id == id) {
+                    return n;
+                }
+            }
+            return 0;
+        }
+    } else {
+        // devices are leaf nodes they have no children
+        return 0;
+    }
 }
-
-/*
-* count
-*/
-// uint32_t vfs_count(struct filesystem_node* fs_node) {
-//     ASSERT_NOT_NULL(fs_node);
-//     ASSERT_NOT_NULL(fs_node->filesystem_device);
-//     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-
-//     struct vfs_devicedata* device_data = (struct vfs_devicedata*)fs_node->filesystem_device->device_data;
-//     if (fs_node == device_data->root_node) {
-//         /*
-//         * root node
-//         */
-//         if (0 == device_data->children) {
-//             return 0;
-//         } else {
-//             return arraylist_count(device_data->children);
-//         }
-//     } else {
-//         /*
-//         * return zero here.  vfsdev has no concept of folders, therefore every node
-//         * is at the top level; a child of the root
-//         */
-//         return 0;
-//     }
-// }
 
 void vfs_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
     ASSERT_NOT_NULL(dir);
-    PANIC("not implemented");
+    struct vfs_devicedata* device_data = (struct vfs_devicedata*)fs_node->filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * root node
+        */
+        if (0 == device_data->children) {
+            dir->count = 0;
+        } else {
+            dir->count = arraylist_count(device_data->children);
+            for (uint32_t i = 0; i < dir->count; i++) {
+                // node id is the index into the array list
+                dir->ids[i] = i;
+            }
+        }
+    } else {
+        dir->count = 0;
+        /*
+        * return  here.  vfsdev has no concept of folders, therefore every node
+        * is at the top level; a child of the root
+        */
+    }
 }
 
 struct device* vfs_attach() {

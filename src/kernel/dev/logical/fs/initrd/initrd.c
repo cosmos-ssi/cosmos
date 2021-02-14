@@ -126,38 +126,45 @@ struct filesystem_node* initrd_find_node_by_id(struct filesystem_node* fs_node, 
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-
-    // find subnode.  we can do this for the root node, but not contained nodes b/c initrd doesn't support folders
-    PANIC("not implemented");
-
-    return 0;
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * root node
+        */
+        struct filesystem_node* ret = node_cache_find(device_data->nc, id);
+        if (0 == ret) {
+            ASSERT(id < device_data->header.number_files);
+            // the node id is the index into the headers
+            char* name = device_data->header.headers[id].name;
+            ret = filesystem_node_new(file, fs_node->filesystem_device, name, id, 0);
+            node_cache_add(device_data->nc, ret);
+        }
+        return ret;
+    } else {
+        // devices are leaf nodes they have no children
+        return 0;
+    }
 }
-
-/*
-* count
-*/
-// uint32_t initrd_count(struct filesystem_node* fs_node) {
-//     ASSERT_NOT_NULL(fs_node);
-//     ASSERT_NOT_NULL(fs_node->filesystem_device);
-//     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-//     struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
-//     if (fs_node == device_data->root_node) {
-//         /*
-//         * root node
-//         */
-//         return devicemgr_device_count();
-//     } else {
-//         // devices are leaf nodes they have no children
-//         return 0;
-//     }
-// }
 
 void initrd_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
     ASSERT_NOT_NULL(dir);
-    PANIC("not implemented");
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * root node
+        */
+        dir->count = device_data->header.number_files;
+        for (uint32_t i = 0; i < device_data->header.number_files; i++) {
+            // node id is the index into the header table
+            dir->ids[i] = i;
+        }
+    } else {
+        dir->count = 0;
+        // devices are leaf nodes they have no children
+    }
 }
 
 struct device* initrd_attach(struct device* partition_device, uint32_t lba) {

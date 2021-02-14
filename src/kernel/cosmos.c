@@ -165,7 +165,7 @@ void CosmOS() {
     kprintf("\n");
     kprintf("***** VFS *****\n");
     kprintf("\n");
-    // dump_vfs();
+    dump_vfs();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
     kprintf("\n");
