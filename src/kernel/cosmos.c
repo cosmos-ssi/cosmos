@@ -19,8 +19,10 @@
 #include <dev/logical/tcpip/tcp/tcpdev.h>
 #include <dev/logical/tcpip/udp/udpdev.h>
 #include <dev/logical/tick/tick.h>
+#include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_console.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/fs/fs_helper.h>
 #include <sys/init/init.h>
@@ -31,12 +33,10 @@
 #include <sys/proc/proc.h>
 #include <sys/sync/sync.h>
 #include <sys/x86-64/idt/idt.h>
+#include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/syscall/syscall.h>
 #include <tests/tests.h>
 #include <types.h>
-#include <sys/asm/misc.h>
-#include <sys/devicemgr/device.h>
-#include <sys/x86-64/mm/mm.h>
 
 void dev_tests();
 void attach_ramdisks();

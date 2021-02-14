@@ -6,12 +6,12 @@
  *****************************************************************/
 
 #include <dev/x86-64/pci/pci.h>
-#include <sys/debug/assert.h>
-#include <sys/kprintf/kprintf.h>
-#include <types.h>
 #include <dev/x86-64/pci/pci_device.h>
 #include <sys/collection/arraylist/arraylist.h>
+#include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
+#include <types.h>
 
 #define PCI_MAX_BUSSES 256
 #define PCI_MAX_DEVICES_PER_BUS 32

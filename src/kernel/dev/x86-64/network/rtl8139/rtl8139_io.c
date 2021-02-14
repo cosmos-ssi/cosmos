@@ -6,8 +6,8 @@
 // ****************************************************************
 
 #include <dev/x86-64/network/rtl8139/rtl8139_io.h>
-#include <sys/debug/assert.h>
 #include <sys/asm/io.h>
+#include <sys/debug/assert.h>
 #include <sys/devicemgr/device.h>
 #include <sys/panic/panic.h>
 

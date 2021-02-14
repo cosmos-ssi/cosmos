@@ -5,11 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/string/split_string.h>
 #include <sys/string/string.h>
-#include <sys/collection/arraylist/arraylist.h>
 
 void split_string(uint8_t* str, uint8_t* delim, struct arraylist* al) {
     ASSERT_NOT_NULL(str);

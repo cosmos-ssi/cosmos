@@ -12,15 +12,15 @@
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_nic.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/sleep/sleep.h>
-#include <types.h>
-#include <sys/devicemgr/device.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
+#include <sys/sleep/sleep.h>
 #include <sys/x86-64/idt/irq.h>
+#include <types.h>
 
 #define NE2000ISA_BASE_ADDRESS 0x300
 #define NE2000ISA_IRQ 9

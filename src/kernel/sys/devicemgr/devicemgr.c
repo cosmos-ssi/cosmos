@@ -5,12 +5,6 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
-#include <sys/devicemgr/deviceregistry.h>
-#include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/string/string.h>
 #include <dev/logical/virtio/virtio.h>
 #include <dev/x86-64/acpi/acpi.h>
 #include <dev/x86-64/ata/ata_controller.h>
@@ -35,7 +29,13 @@
 #include <dev/x86-64/speaker/speaker.h>
 #include <dev/x86-64/usb_ehci/usb_ehci.h>
 #include <dev/x86-64/vga/vga.h>
+#include <sys/debug/assert.h>
+#include <sys/devicemgr/devicemgr.h>
+#include <sys/devicemgr/deviceregistry.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
+#include <sys/string/string.h>
 
 #define MAX_DEVICE_NAME_LENGTH 128
 

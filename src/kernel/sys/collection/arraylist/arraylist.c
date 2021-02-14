@@ -5,12 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/collection/array/array.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/string/string.h>
-#include <sys/collection/array/array.h>
 #include <sys/panic/panic.h>
+#include <sys/string/string.h>
 
 #define EXPAND_SIZE 64
 #define START_SIZE 16

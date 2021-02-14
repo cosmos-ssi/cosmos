@@ -5,10 +5,10 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <dev/x86-64/ata/ata_controller.h>
 #include <dev/x86-64/ata/ata_identity.h>
 #include <dev/x86-64/ata/ata_util.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <dev/x86-64/ata/ata_controller.h>
 
 uint32_t ata_detect_extract_dword(const char* identify_buf, ata_identify_offsets offset) {
     return *((uint32_t*)(&identify_buf[offset]));

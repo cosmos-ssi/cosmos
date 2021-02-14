@@ -6,15 +6,15 @@
 // ****************************************************************
 
 #include <dev/x86-64/network/e1000/e1000.h>
-#include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_nic.h>
-#include <sys/devicemgr/devicemgr.h>
-#include <sys/interrupt_router/interrupt_router.h>
-#include <sys/kprintf/kprintf.h>
 #include <dev/x86-64/pci/devicetree.h>
 #include <dev/x86-64/pci/pci_device.h>
+#include <sys/debug/assert.h>
+#include <sys/deviceapi/deviceapi_nic.h>
 #include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
+#include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>

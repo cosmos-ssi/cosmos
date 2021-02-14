@@ -7,19 +7,19 @@
 
 #include <dev/x86-64/isadma/isadma.h>
 #include <dev/x86-64/sound/sb16/sb16.h>
+#include <sys/asm/byte.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_dsp.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/panic/panic.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
-#include <sys/asm/byte.h>
-#include <sys/asm/io.h>
-#include <sys/devicemgr/device.h>
-#include <sys/kmalloc/kmalloc.h>
-#include <sys/panic/panic.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 

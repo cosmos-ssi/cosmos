@@ -6,10 +6,10 @@
 // ****************************************************************
 
 #include <sys/deviceapi/deviceapi_cpu.h>
-#include <sys/kprintf/kprintf.h>
-#include <tests/dev/test_cpu.h>
 #include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/kprintf/kprintf.h>
+#include <tests/dev/test_cpu.h>
 #include <types.h>
 
 void show_cpu_data() {

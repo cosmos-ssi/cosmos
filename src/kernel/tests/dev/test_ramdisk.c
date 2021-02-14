@@ -6,11 +6,11 @@
 // ****************************************************************
 
 #include <dev/logical/ramdisk/ramdisk.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/dev/test_blockdevice.h>
 #include <tests/dev/test_ramdisk.h>
-#include <sys/devicemgr/device.h>
 
 #define RAMDISK_SECTOR_SIZE 512
 #define RAMDISK_TOTAL_SECTORS 1000

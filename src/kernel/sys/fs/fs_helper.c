@@ -9,8 +9,8 @@
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/device.h>
 #include <sys/fs/fs_helper.h>
-#include <sys/string/mem.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/string/mem.h>
 
 struct filesystem_node* fshelper_get_fs_rootnode(struct device* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);

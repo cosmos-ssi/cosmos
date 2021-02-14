@@ -6,13 +6,13 @@
  *****************************************************************/
 
 #include <dev/x86-64/sound/adlib/adlib.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_dsp.h>
-#include <sys/devicemgr/devicemgr.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/asm/io.h>
 #include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 

@@ -6,10 +6,10 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/collection/ntree/ntree.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/collection/arraylist/arraylist.h>
 
 struct ntree* ntree_new() {
     struct ntree* ret = (struct ntree*)kmalloc(sizeof(struct ntree));

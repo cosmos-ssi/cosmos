@@ -9,13 +9,13 @@
 
 #include <dev/x86-64/isadma/isadma.h>
 #include <dev/x86-64/isadma/isadma_page.h>
+#include <sys/asm/byte.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/asm/byte.h>
-#include <sys/asm/io.h>
-#include <sys/devicemgr/device.h>
 #include <sys/panic/panic.h>
 
 // https://wiki.osdev.org/DMA

@@ -9,11 +9,11 @@
 #include <dev/logical/fs/cfs/cfs.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
+#include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
-#include <sys/devicemgr/device.h>
-#include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
 /*

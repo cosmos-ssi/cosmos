@@ -5,7 +5,6 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <tests/tests.h>
 #include <tests/dev/test_ata.h>
 #include <tests/dev/test_bda.h>
 #include <tests/dev/test_null.h>
@@ -29,6 +28,7 @@
 #include <tests/sys/test_ringbuffer.h>
 #include <tests/sys/test_string.h>
 #include <tests/sys/test_tree.h>
+#include <tests/tests.h>
 
 void tests_run() {
     test_malloc();

@@ -5,9 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/collection/array/array.h>
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/devicetypes.h>
-#include <sys/collection/array/array.h>
 #include <sys/panic/panic.h>
 
 struct arraylist;

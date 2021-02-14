@@ -9,10 +9,10 @@
 #include <dev/x86-64/acpi/rsdp.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>
-#include <sys/devicemgr/device.h>
 #include <sys/x86-64/mm/pagetables.h>
 
 uint32_t rsdt_other_sdt_entries(struct acpi_sdt_header* h) {

@@ -5,16 +5,16 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/x86-64/vga/vga.h>
-#include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_vga.h>
-#include <sys/devicemgr/devicemgr.h>
-#include <sys/kprintf/kprintf.h>
 #include <dev/x86-64/pci/devicetree.h>
 #include <dev/x86-64/pci/pci_device.h>
+#include <dev/x86-64/vga/vga.h>
 #include <sys/asm/io.h>
+#include <sys/debug/assert.h>
+#include <sys/deviceapi/deviceapi_vga.h>
 #include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <types.h>
 
 // CRT control I/O ports

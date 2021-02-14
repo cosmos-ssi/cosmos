@@ -6,9 +6,9 @@
  *****************************************************************/
 
 #include <dev/x86-64/serial/serial.h>
+#include <sys/asm/misc.h>
 #include <sys/panic/panic.h>
 #include <sys/string/string.h>
-#include <sys/asm/misc.h>
 
 void panic(const char* s, const char* fn, uint32_t line) {
     uint8_t ll[255];

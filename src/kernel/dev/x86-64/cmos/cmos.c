@@ -6,12 +6,12 @@
 // ****************************************************************
 
 #include <dev/x86-64/cmos/cmos.h>
-#include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/asm/io.h>
 #include <sys/asm/misc.h>
+#include <sys/debug/assert.h>
 #include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
+#include <sys/kprintf/kprintf.h>
 
 void cmos_write_register(uint8_t reg, uint8_t val) {
     uint8_t pv;

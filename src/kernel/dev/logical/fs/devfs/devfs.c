@@ -10,12 +10,12 @@
 #include <dev/logical/fs/node_util.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/string/mem.h>
-#include <sys/devicemgr/device.h>
 #include <sys/panic/panic.h>
+#include <sys/string/mem.h>
 #include <types.h>
 
 struct devfs_devicedata {

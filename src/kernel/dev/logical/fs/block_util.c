@@ -8,8 +8,8 @@
 #include <dev/logical/fs/block_util.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_block.h>
-#include <sys/string/mem.h>
 #include <sys/devicemgr/device.h>
+#include <sys/string/mem.h>
 
 uint32_t blockutil_get_sector_count(struct device* dev) {
     ASSERT_NOT_NULL(dev);

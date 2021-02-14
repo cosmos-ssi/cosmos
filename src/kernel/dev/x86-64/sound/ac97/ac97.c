@@ -5,16 +5,16 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <dev/x86-64/pci/devicetree.h>
+#include <dev/x86-64/pci/pci_device.h>
 #include <dev/x86-64/sound/ac97/ac97.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_dsp.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
-#include <sys/kprintf/kprintf.h>
-#include <dev/x86-64/pci/devicetree.h>
-#include <dev/x86-64/pci/pci_device.h>
-#include <sys/devicemgr/device.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 

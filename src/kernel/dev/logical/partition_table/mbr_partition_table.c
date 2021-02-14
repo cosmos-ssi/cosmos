@@ -14,12 +14,12 @@
 #include <dev/logical/partition_table/mbr_partition_table.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_part_table.h>
-#include <sys/kmalloc/kmalloc.h>
-#include <sys/string/mem.h>
-#include <sys/string/string.h>
 #include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/string/mem.h>
+#include <sys/string/string.h>
 
 #define MBR_HEADER_LBA 0
 

@@ -6,9 +6,9 @@
  *****************************************************************/
 
 #include <dev/x86-64/pci/pci.h>
-#include <sys/kprintf/kprintf.h>
 #include <dev/x86-64/pci/pci_device.h>
 #include <sys/collection/arraylist/arraylist.h>
+#include <sys/kprintf/kprintf.h>
 
 void pci_init() {
     kprintf("Initializing PCI bus...\n");

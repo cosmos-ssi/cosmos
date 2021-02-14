@@ -7,9 +7,9 @@
 
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
-#include <types.h>
 #include <sys/x86-64/idt/irq.h>
 #include <sys/x86-64/mm/mm.h>
+#include <types.h>
 
 void isrPFE_handler(stack_frame* frame, uint64_t error) {
     ASSERT_NOT_NULL(frame);

@@ -6,10 +6,10 @@
 // ****************************************************************
 
 #include <sys/deviceapi/deviceapi_rtc.h>
-#include <sys/kprintf/kprintf.h>
-#include <tests/dev/test_rtc.h>
 #include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/kprintf/kprintf.h>
+#include <tests/dev/test_rtc.h>
 
 void test_rtc() {
     // get the time, b/c we can

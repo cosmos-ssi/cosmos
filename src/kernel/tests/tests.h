@@ -8,8 +8,6 @@
 #ifndef __TESTS_H
 #define __TESTS_H
 
-
-
 /*
  * some tests we always run on startup, just to be sure
  */

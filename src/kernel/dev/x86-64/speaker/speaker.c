@@ -6,14 +6,14 @@
  *****************************************************************/
 
 #include <dev/x86-64/speaker/speaker.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_speaker.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/sleep/sleep.h>
-#include <sys/asm/io.h>
-#include <sys/devicemgr/device.h>
-#include <sys/kmalloc/kmalloc.h>
 #include <types.h>
 
 // https://wiki.osdev.org/PC_Speaker

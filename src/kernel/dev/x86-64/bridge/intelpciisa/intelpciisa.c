@@ -6,13 +6,13 @@
 // ****************************************************************
 
 #include <dev/x86-64/bridge/intelpciisa/intelpciisa.h>
-#include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
-#include <sys/kprintf/kprintf.h>
 #include <dev/x86-64/pci/devicetree.h>
 #include <dev/x86-64/pci/pci_device.h>
+#include <sys/debug/assert.h>
 #include <sys/devicemgr/device.h>
+#include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <types.h>
 
 struct intelisapca_deviceddata {

@@ -7,16 +7,16 @@
 
 #include <dev/x86-64/cmos/cmos.h>
 #include <dev/x86-64/floppy/floppy.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_floppy.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/sleep/sleep.h>
-#include <sys/asm/io.h>
-#include <sys/devicemgr/device.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
+#include <sys/sleep/sleep.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 
