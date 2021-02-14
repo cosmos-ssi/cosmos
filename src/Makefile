@@ -71,8 +71,12 @@ lint:
 	clang-format -n --Werror -style=file $(SRC_FILES)
 
 header-fix:
-	cd kernel && $(MAKE) -k CC=iwyu all 2>&1 > /dev/null | fix_include --nosafe_headers && \
-	cd ../user && $(MAKE) -k CC=iwyu all 2>&1 > /dev/null | fix_include --nosafe_headers
+	# cd kernel && $(MAKE) -k "CC=iwyu -I." all 2>&1 > /dev/null | fix_include --noreorder --nosafe_headers --dry_run 
+	cd kernel && $(MAKE) -k "CC=iwyu -Xiwyu --mapping_file=iwyu_mapping.imp -resource-dir . -isystem. -I." all 2>&1 > /dev/null | fix_include --noreorder --comments --nosafe_headers --dry_run
+	# cd kernel && $(MAKE) -k "CC=iwyu -v -resource-dir . -nobuiltininc -nostdinc -nostdlibinc -nolibc -nostdlib++ -nodefaultlibs" 
+	#all 2>&1 > /dev/null | fix_include --noreorder --comments --nosafe_headers --dry_run 
+	# cd kernel && $(MAKE) -k "CC=iwyu -isystem. -I. -nostdinc" all 2>&1 > /dev/null | fix_include --noreorder --comments --nosafe_headers --dry_run 
+	# && \ cd ../user && $(MAKE) -k CC=iwyu all 2>&1 > /dev/null | fix_include --noreorder --nosafe_headers --dry_run
 
 header-check:
 	cd kernel && $(MAKE) -k CC=iwyu all && \
