@@ -17,7 +17,7 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-typedef enum object_types_t { OBJECT_EXECUTABLE, OBJECT_PRESENTATION } object_types_t;
+typedef enum object_types_t { OBJECT_EXECUTABLE, OBJECT_PRESENTATION, OBJECT_PROCESS } object_types_t;
 
 typedef uint64_t object_handle_t;
 
