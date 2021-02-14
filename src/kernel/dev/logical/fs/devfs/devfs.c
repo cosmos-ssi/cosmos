@@ -53,7 +53,7 @@ struct filesystem_node* devfs_get_root_node(struct device* filesystem_device) {
     return device_data->root_node;
 }
 
-uint32_t devfs_read(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
+uint32_t devfs_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);

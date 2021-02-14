@@ -80,17 +80,64 @@ struct filesystem_node* initrd_get_root_node(struct device* filesystem_device) {
     return device_data->root_node;
 }
 
-uint32_t initrd_read(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
+uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
-    // read from node. we cant read from the root node, but we can find underlying file and folder nodes
-    PANIC("not implemented");
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * cant read or write root node
+        */
+        return 0;
+    } else {
+        /*
+        * get underlying sector size
+        */
+        uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
 
-    return 0;
+        uint32_t offset = device_data->header.headers[fs_node->id].offset;
+        ASSERT(offset > 0);
+        uint32_t length = device_data->header.headers[fs_node->id].length;
+        ASSERT(data_size >= length);
+        //  kprintf("offset %llu length %llu\n", offset, length);
+
+        uint32_t lba_offset = offset / sector_size;
+        uint32_t byte_offset = offset % sector_size;
+        uint32_t total_sectors = length / sector_size;
+        if ((length % 512) != 0) {
+            total_sectors += 1;
+        }
+        // if it spans sectors
+        if (byte_offset + length > 512) {
+            total_sectors += 1;
+        }
+        uint32_t buffer_size = total_sectors * sector_size;
+        uint8_t* buffer = kmalloc(buffer_size);
+        memzero(buffer, buffer_size);
+        uint32_t target_lba = device_data->lba + lba_offset;
+        //  kprintf("lba_offset %llu byte_offset %llu total_sectors %llu target_lba %llu buffer_size %llu\n", lba_offset,
+        //       byte_offset, total_sectors, target_lba, buffer_size);
+
+        /*
+        * read the blocks
+        */
+        blockutil_read(device_data->partition_device, buffer, buffer_size, target_lba);
+
+        /*
+        * copy the data
+        */
+        memcpy(data, (uint8_t*)&(buffer[byte_offset]), data_size);
+
+        /*
+        * release the buffer
+        */
+        kfree(buffer);
+        return 1;
+    }
 }
 
 uint32_t initrd_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {

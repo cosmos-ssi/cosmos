@@ -53,7 +53,7 @@ typedef struct filesystem_node* (*filesystem_get_root_node_function)(struct devi
 /*
 * read bytes from node
 */
-typedef uint32_t (*filesystem_read_function)(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size);
+typedef uint32_t (*filesystem_read_function)(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size);
 /*
 * write bytes to node
 */
