@@ -33,7 +33,6 @@ void node_cache_add(struct node_cache* nc, struct filesystem_node* fs_node) {
 struct filesystem_node* node_cache_find(struct node_cache* nc, uint32_t id) {
     ASSERT_NOT_NULL(nc);
     ASSERT_NOT_NULL(nc->node_tree);
-
     return tree_search(nc->node_tree, id);
 }
 

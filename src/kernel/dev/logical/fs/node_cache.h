@@ -4,7 +4,9 @@
 // Released under the stated terms in the file LICENSE            *
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
-
+/*
+* node caches are used by deviceapi_filesystem devices
+*/
 #ifndef _NODE_CACHE_H
 #define _NODE_CACHE_H
 
