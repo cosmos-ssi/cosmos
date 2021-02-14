@@ -12,8 +12,14 @@
 
 struct filesystem_node;
 
-void node_cache_add(struct filesystem_node* fs_node);
-struct filesystem_node* node_cache_find(uint32_t id);
-void node_cache_remove(uint32_t id);
+struct node_cache {
+    struct tree* node_tree;
+};
+
+struct node_cache* node_cache_new();
+void node_cache_delete(struct node_cache* nc);
+void node_cache_add(struct node_cache* nc, struct filesystem_node* fs_node);
+struct filesystem_node* node_cache_find(struct node_cache* nc, uint32_t id);
+void node_cache_remove(struct node_cache* nc, uint32_t id);
 
 #endif

@@ -6,6 +6,7 @@
 // ****************************************************************
 
 #include <dev/logical/fs/devfs/devfs.h>
+#include <dev/logical/fs/node_cache.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
@@ -17,6 +18,7 @@
 
 struct devfs_devicedata {
     struct filesystem_node* root_node;
+    struct node_cache* nc;
 };
 
 /*
@@ -37,8 +39,8 @@ uint8_t devfs_uninit(struct device* dev) {
     struct devfs_devicedata* device_data = (struct devfs_devicedata*)dev->device_data;
     kfree(dev->api);
     kfree(device_data->root_node);
+    node_cache_delete(device_data->nc);
     kfree(device_data);
-
     return 1;
 }
 
@@ -194,6 +196,7 @@ struct device* devfs_attach() {
     strncpy(r->name, "devfs", FILESYSTEM_MAX_NAME);
 
     device_data->root_node = r;
+    device_data->nc = node_cache_new();
     deviceinstance->device_data = device_data;
     /*
      * register
@@ -204,6 +207,7 @@ struct device* devfs_attach() {
         */
         return deviceinstance;
     } else {
+        node_cache_delete(device_data->nc);
         kfree(device_data->root_node);
         kfree(device_data);
         kfree(api);
