@@ -115,9 +115,19 @@ void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
         /*
         * root node
         */
+        dir->count = 0;
+        //  dir->count = devicetypes_count();
+        /*
+        * I'm sorry
+        */
+        for (uint32_t i = 0; i < MAX_DEVICE_TYPES; i++) {
+            struct arraylist* lst = devicetypes_get_devicelist(i);
+            if (0 != lst) {
 
-        //dir->count = devicetypes_count();
-
+                //    char* name = device_type_names[i];
+                //    kprintf("name %s\n", name);
+            }
+        }
     } else {
         /*
         * folders are device types

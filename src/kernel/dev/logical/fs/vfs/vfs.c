@@ -187,7 +187,6 @@ struct device* vfs_attach() {
      * device data
      */
     struct vfs_devicedata* device_data = (struct vfs_devicedata*)kmalloc(sizeof(struct vfs_devicedata));
-    device_data->children = 0;
     device_data->root_node = filesystem_node_new(folder, deviceinstance, "vfs", 0, 0);
     device_data->children = arraylist_new();
     deviceinstance->device_data = device_data;
@@ -223,7 +222,7 @@ void vfs_add_child(struct device* vfs_device, struct filesystem_node* child_node
     ASSERT_NOT_NULL(child_node);
     struct vfs_devicedata* device_data = (struct vfs_devicedata*)vfs_device->device_data;
     ASSERT_NOT_NULL(device_data);
-    device_data->children = arraylist_new();
+    ASSERT_NOT_NULL(device_data->children);
     arraylist_add(device_data->children, child_node);
 }
 

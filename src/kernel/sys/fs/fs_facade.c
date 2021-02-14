@@ -35,6 +35,7 @@ void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traver
     if (dir.count > 0) {
         for (uint32_t i = 0; i < dir.count; i++) {
             struct filesystem_node* child = fsfacade_find_node_by_id(fs_node, dir.ids[i]);
+            ASSERT_NOT_NULL(child);
             fsfacade_traverse_internal(child, f, depth + 1);
         }
     }
