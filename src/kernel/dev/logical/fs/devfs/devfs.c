@@ -130,6 +130,14 @@ void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
     }
 }
 
+uint64_t devfs_size(struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_device);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    // devices have no size
+    return 0;
+}
+
 struct device* devfs_attach() {
     /*
      * register device
@@ -153,6 +161,7 @@ struct device* devfs_attach() {
     api->write = &devfs_write;
     api->read = &devfs_read;
     api->list = &devfs_list_directory;
+    api->size = &devfs_size;
     deviceinstance->api = api;
     /*
      * device data

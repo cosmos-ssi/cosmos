@@ -10,7 +10,7 @@
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/deviceregistry.h>
 #include <sys/devicemgr/devicetypes.h>
-#include <sys/fs/fs_helper.h>
+#include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>
 

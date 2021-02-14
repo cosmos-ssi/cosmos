@@ -30,7 +30,7 @@
 #include <sys/deviceapi/deviceapi_serial.h>
 #include <sys/deviceapi/deviceapi_speaker.h>
 #include <sys/devicemgr/devicemgr.h>
-#include <sys/fs/fs_helper.h>
+#include <sys/fs/fs_facade.h>
 #include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
@@ -182,10 +182,10 @@ void CosmOS() {
 void dump_vfs() {
     struct device* vfs_dev = devicemgr_find_device("vfs0");
     ASSERT_NOT_NULL(vfs_dev);
-    struct filesystem_node* fs_node = fshelper_get_fs_rootnode(vfs_dev);
+    struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(vfs_dev);
     ASSERT_NOT_NULL(fs_node);
 
-    fshelper_dump(fs_node);
+    fsfacade_dump(fs_node);
 }
 
 /*
@@ -236,8 +236,8 @@ void attach_vfs() {
     struct device* rootfs_dev = vfs_attach();
     struct device* devfs_dev = devfs_attach();
     struct device* initrd_dev = attach_initrd();
-    struct filesystem_node* fsnode_devfs = fshelper_get_fs_rootnode(devfs_dev);
-    struct filesystem_node* fsnode_initrd = fshelper_get_fs_rootnode(initrd_dev);
+    struct filesystem_node* fsnode_devfs = fsfacade_get_fs_rootnode(devfs_dev);
+    struct filesystem_node* fsnode_initrd = fsfacade_get_fs_rootnode(initrd_dev);
     vfs_add_child(rootfs_dev, fsnode_devfs);
     vfs_add_child(rootfs_dev, fsnode_initrd);
 }

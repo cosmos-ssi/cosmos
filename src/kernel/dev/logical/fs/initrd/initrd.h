@@ -20,15 +20,6 @@
 struct device* initrd_attach(struct device* partition_device, uint32_t lba);
 void initrd_detach(struct device* dev);
 
-uint8_t initrd_get_file_count(struct device* initrd_dev);
-uint8_t initrd_get_file_name(struct device* initrd_dev, uint8_t idx, uint8_t* name, uint16_t size);
-uint32_t initrd_get_file_length(struct device* initrd_dev, uint8_t idx);
-uint8_t initrd_get_file_data(struct device* initrd_dev, uint8_t idx, uint8_t* data, uint32_t size);
-void initrd_dump_dir(struct device* initrd_dev);
 uint64_t initrd_lba();
-/*
-* return 0, 1 if successful, if not successful.  resulting index in idx
-*/
-uint8_t initrd_find_file(struct device* initrd_dev, uint8_t* name, uint8_t* idx);
 
 #endif

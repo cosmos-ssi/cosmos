@@ -150,6 +150,14 @@ void vfs_list_directory(struct filesystem_node* fs_node, struct filesystem_direc
     }
 }
 
+uint64_t vfs_size(struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_device);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    // vfs nodes have no size
+    return 0;
+}
+
 struct device* vfs_attach() {
     /*
      * register device
@@ -173,6 +181,7 @@ struct device* vfs_attach() {
     api->write = &vfs_write;
     api->read = &vfs_read;
     api->list = &vfs_list_directory;
+    api->size = &vfs_size;
     deviceinstance->api = api;
     /*
      * device data
