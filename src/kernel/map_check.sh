@@ -1,4 +1,5 @@
 #/bin/bash
+# Check the iwyu_mapping.imp file against codebase to identify symbols we may want to define for IWYU
 
 MAPPING_FILE=iwyu_mapping.imp
 _source=.iwyu.source.tmp
@@ -20,6 +21,9 @@ egrep -v "(//)" $_sym_tmp $_inc_tmp | grep -oP "(?<=\{ \")(.*?)(?=\")" | grep -v
 # find lines in our code that have symbols and includes that are not defined yet
 find . -type f -name "*.c" -o -name "*.h" -exec grep -n -Fwf $_not_defined_yet '{}' /dev/null \; > $_errors
 
+echo "# IWYU **********************"
+echo "# Symbols/Includes in the following code overlap with IWYU defaults"
+echo "# Consider defining them in iwyu_mapping.imp\n"
 cat $_errors
 
 # clean up
@@ -27,5 +31,5 @@ rm $_source
 rm $_sym_tmp
 rm $_inc_tmp
 rm $_not_defined_yet
-rm $_defined_already
-# rm $_errors
+# rm $_defined_already
+rm $_errors
