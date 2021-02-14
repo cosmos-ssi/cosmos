@@ -72,6 +72,9 @@ object_handle_t object_create_executable_from_presentation(object_handle_t pres)
 // object_presentation.c
 object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const char* name);
 
+// object_process.c
+object_handle_t object_create_process(object_handle_t exe, pid_t pid);
+
 // object_init.c
 void object_init();
 
