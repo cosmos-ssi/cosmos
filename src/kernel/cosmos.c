@@ -5,31 +5,12 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <dev/logical/console/serial_console.h>
+#include <cosmos_logical_devs.h>
 #include <dev/logical/console/vga_console.h>
-#include <dev/logical/ethernet/ethernet.h>
-#include <dev/logical/fs/devfs/devfs.h>
 #include <dev/logical/fs/initrd/initrd.h>
-#include <dev/logical/fs/vfs/vfs.h>
-#include <dev/logical/null/null.h>
-#include <dev/logical/ramdisk/ramdisk.h>
-#include <dev/logical/rand/rand.h>
-#include <dev/logical/tcpip/arp/arpdev.h>
-#include <dev/logical/tcpip/icmp/icmpdev.h>
-#include <dev/logical/tcpip/ip/ipdev.h>
-#include <dev/logical/tcpip/tcp/tcpdev.h>
-#include <dev/logical/tcpip/udp/udpdev.h>
-#include <dev/logical/tick/tick.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_console.h>
-#include <sys/deviceapi/deviceapi_cpu.h>
-#include <sys/deviceapi/deviceapi_dsp.h>
-#include <sys/deviceapi/deviceapi_pit.h>
-#include <sys/deviceapi/deviceapi_rtc.h>
-#include <sys/deviceapi/deviceapi_serial.h>
-#include <sys/deviceapi/deviceapi_speaker.h>
-#include <sys/devicemgr/devicemgr.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
@@ -46,16 +27,8 @@
 #include <types.h>
 
 void dev_tests();
-void attach_ramdisks();
-void attach_null();
-void attach_tick();
-void attach_rand();
-void attach_tcpip();
-void attach_vfs();
 void load_init_binary();
 void dump_vfs();
-
-void create_consoles();
 void video_write(const uint8_t* s);
 
 void CosmOS() {
@@ -114,18 +87,9 @@ void CosmOS() {
     kprintf("\n");
 
     /*
-     * mount two ram disks.  b/c we can.
+     * mount logical devices
      */
-    attach_ramdisks();
-    attach_null();
-    attach_tick();
-    attach_rand();
-    attach_tcpip();
-    attach_vfs();
-    /*
-     * create consoles
-     */
-    create_consoles();
+    attach_logical_devices();
 
     /*
      * say hi on the VGA console
@@ -160,7 +124,7 @@ void CosmOS() {
 
     // show the vfs
     kprintf("***** Devices *****\n");
-    devicemgr_dump_devices();
+    //  devicemgr_dump_devices();
 
     kprintf("\n");
     kprintf("***** VFS *****\n");
@@ -189,100 +153,12 @@ void dump_vfs() {
 }
 
 /*
- * create consoles (devices which implement deviceapi_console). a vga_console on device vga0 and a serial_console on serial0
- */
-void create_consoles() {
-    // video
-    //   struct device* vga = devicemgr_find_device("vga0");
-    //   if (0 != vga) {
-    // this makes "console0"
-    // vga_console_attach(vga);
-    //  }
-    // serial
-    struct device* serial = devicemgr_find_device("serial0");
-    if (0 != serial) {
-        // this makes "console1"
-        serial_console_attach(serial);
-    }
-}
-
-void attach_ramdisks() {
-    const uint16_t sector_size = 512;
-    const uint16_t sector_count1 = 1000;
-    ramdisk_attach(sector_size, sector_count1);
-    const uint16_t sector_count2 = 100;
-    ramdisk_attach(sector_size, sector_count2);
-}
-
-// mount the init rd
-struct device* attach_initrd() {
-    uint8_t devicename[] = {INITRD_DISK};
-
-    struct device* dsk = devicemgr_find_device(devicename);
-    if (0 != dsk) {
-        // attach initrd fs
-        //struct device* initrd =
-        return initrd_attach(dsk, initrd_lba());
-
-        //  initrd_dump_dir(initrd);
-
-    } else {
-        kprintf("Unable to find %s\n", devicename);
-        return 0;
-    }
-}
-
-void attach_vfs() {
-    struct device* rootfs_dev = vfs_attach();
-    // struct device* devfs_dev =
-    devfs_attach();
-    struct device* initrd_dev = attach_initrd();
-    // struct filesystem_node* fsnode_devfs = fsfacade_get_fs_rootnode(devfs_dev);
-    struct filesystem_node* fsnode_initrd = fsfacade_get_fs_rootnode(initrd_dev);
-    //  vfs_add_child(rootfs_dev, fsnode_devfs);
-    vfs_add_child(rootfs_dev, fsnode_initrd);
-}
-
-void attach_null() {
-    null_attach();
-}
-
-void attach_rand() {
-    rand_attach();
-}
-
-/*
 * load the init binary from the initrd fs
 */
 void load_init_binary() {
     uint8_t init_binary_name[] = {"cosmos_init"};
     init_load(INITRD_DISK, init_binary_name);
     kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, INITRD_DISK);
-}
-
-void attach_tick() {
-    struct device* pit = devicemgr_find_device("pit0");
-    if (0 != pit) {
-        tick_attach(pit);
-    }
-}
-
-/*
-* if vnic0 is there, mount IP on it
-*/
-void attach_tcpip() {
-    struct device* vnic = devicemgr_find_device("vnic0");
-    if (0 != vnic) {
-        struct device* eth = ethernet_attach(vnic);
-        arp_attach(eth);
-        icmp_attach(eth);
-        struct device* ip_dev = ip_attach(eth);
-        tcp_attach(ip_dev);
-        udp_attach(ip_dev);
-
-        // test arp!
-        //        test_arp();
-    }
 }
 
 /*
