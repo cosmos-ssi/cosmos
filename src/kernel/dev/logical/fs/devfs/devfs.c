@@ -7,6 +7,7 @@
 
 #include <dev/logical/fs/devfs/devfs.h>
 #include <dev/logical/fs/node_cache.h>
+#include <dev/logical/fs/node_util.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
@@ -189,13 +190,7 @@ struct device* devfs_attach() {
      * device data
      */
     struct devfs_devicedata* device_data = (struct devfs_devicedata*)kmalloc(sizeof(struct devfs_devicedata));
-    struct filesystem_node* r = (struct filesystem_node*)kmalloc(sizeof(struct filesystem_node));
-    memzero((uint8_t*)r, sizeof(struct filesystem_node));
-    r->filesystem_device = deviceinstance;
-    r->id = 0;
-    strncpy(r->name, "devfs", FILESYSTEM_MAX_NAME);
-
-    device_data->root_node = r;
+    device_data->root_node = filesystem_node_new(folder, deviceinstance, "devfs", 0, 0);
     device_data->nc = node_cache_new();
     deviceinstance->device_data = device_data;
     /*

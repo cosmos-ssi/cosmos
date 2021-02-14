@@ -9,6 +9,7 @@
 #include <dev/logical/fs/fs_util.h>
 #include <dev/logical/fs/initrd/initrd.h>
 #include <dev/logical/fs/node_cache.h>
+#include <dev/logical/fs/node_util.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_block.h>
@@ -221,12 +222,7 @@ struct device* initrd_attach(struct device* partition_device, uint32_t lba) {
      * device data
      */
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)kmalloc(sizeof(struct initrd_devicedata));
-    struct filesystem_node* r = (struct filesystem_node*)kmalloc(sizeof(struct filesystem_node));
-    memzero((uint8_t*)r, sizeof(struct filesystem_node));
-    r->filesystem_device = deviceinstance;
-    r->id = 0;
-    strncpy(r->name, "initrd", FILESYSTEM_MAX_NAME);
-    device_data->root_node = r;
+    device_data->root_node = filesystem_node_new(folder, deviceinstance, "initrd", 0, 0);
     device_data->lba = lba;
     device_data->partition_device = partition_device;
     device_data->nc = node_cache_new();

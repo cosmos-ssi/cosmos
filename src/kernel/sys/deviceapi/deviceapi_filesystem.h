@@ -14,7 +14,13 @@ struct device;
 
 #define FILESYSTEM_MAX_NAME 128
 
+enum filesystem_node_type { folder, file, device };
+
 struct filesystem_node {
+    /*
+    * type
+    */
+    enum filesystem_node_type type;
     /* 
     * owning device
     */
