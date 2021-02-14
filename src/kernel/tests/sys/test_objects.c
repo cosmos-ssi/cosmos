@@ -37,5 +37,7 @@ void test_objects() {
     object_executable_t* obj_exe = object_get_data(exe_handle);
     kprintf("page start, len: %llX %llX\n", (uint64_t)obj_exe->page_base, (uint64_t)obj_exe->page_count);
 
+    initrd_detach(initrd);
+
     return;
 }

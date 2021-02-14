@@ -8,6 +8,7 @@
 #include <dev/logical/fs/block_util.h>
 #include <dev/logical/fs/fs_util.h>
 #include <dev/logical/fs/initrd/initrd.h>
+#include <dev/logical/fs/node_cache.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_block.h>
@@ -36,6 +37,7 @@ struct initrd_devicedata {
     uint32_t lba;
     struct initrd_header header;
     struct filesystem_node* root_node;
+    struct node_cache* nc;
 };
 
 /*
@@ -64,6 +66,7 @@ uint8_t initrd_uninit(struct device* dev) {
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
     kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
     kfree(dev->api);
+    node_cache_delete(device_data->nc);
     kfree(device_data->root_node);
     kfree(device_data);
     return 1;
@@ -226,6 +229,7 @@ struct device* initrd_attach(struct device* partition_device, uint32_t lba) {
     device_data->root_node = r;
     device_data->lba = lba;
     device_data->partition_device = partition_device;
+    device_data->nc = node_cache_new();
     deviceinstance->device_data = device_data;
     /*
      * register
@@ -240,6 +244,7 @@ struct device* initrd_attach(struct device* partition_device, uint32_t lba) {
         */
         return deviceinstance;
     } else {
+        node_cache_delete(device_data->nc);
         kfree(device_data->root_node);
         kfree(device_data);
         kfree(api);
