@@ -36,8 +36,8 @@ $(COSMOS_INITRD_IMAGE): $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)  $(COSMOS_TEST_BINA
 $(COSMOS_INIT): $(COSMOS_ABI_ARCHIVE) init/init.o
 	$(LD) -m elf_x86_64 -o $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)
 
-$(COSMOS_ABI_ARCHIVE): rootfs/abi/cosmos_abi.o rootfs/abi/cosmos_syscall.o
-	$(AR) $(ARFLAGS) $(COSMOS_ABI_ARCHIVE) rootfs/abi/cosmos_abi.o rootfs/abi/cosmos_syscall.o
+$(COSMOS_ABI_ARCHIVE): abi/cosmos_abi.o abi/cosmos_syscall.o
+	$(AR) $(ARFLAGS) $(COSMOS_ABI_ARCHIVE) abi/cosmos_abi.o abi/cosmos_syscall.o
 
 # set search paths
 vpath %.c .
