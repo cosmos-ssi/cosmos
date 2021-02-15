@@ -23,6 +23,9 @@ struct filesystem_node* fsfacade_get_fs_rootnode(struct device* filesystem_devic
 
 void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traverse_function f, uint32_t depth) {
     ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_device);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+
     ASSERT_NOT_NULL(f);
 
     // call the callback
@@ -46,12 +49,18 @@ void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traver
  */
 void fsfacade_traverse(struct filesystem_node* fs_node, fsfacade_traverse_function f) {
     ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_device);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+
     ASSERT_NOT_NULL(f);
     fsfacade_traverse_internal(fs_node, f, 0);
 }
 
 void vfs_dump_traverse_function(struct filesystem_node* fs_node, uint32_t depth) {
     ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_device);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+
     for (int32_t i = 0; i < depth; i++) {
         kprintf(" ");
     }
