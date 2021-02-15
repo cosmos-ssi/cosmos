@@ -5,20 +5,11 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#ifndef _SYSCALL_H
-#define _SYSCALL_H
+#include <sys/kprintf/kprintf.h>
+#include <sys/syscall/syscall.h>
 
-#include <types.h>
+uint64_t sys_exit(void* args) {
+    kprintf("sys_exit, argument %llX\n", (uint64_t)args);
 
-typedef enum syscalls { SYSCALL_EXIT = 0, SYSCALL_MAX } syscalls;
-
-extern uint64_t (*syscall_table[SYSCALL_MAX])(void* args);
-
-// exit.c
-uint64_t sys_exit(void* args);
-
-// syscall_dispatcher.c
-void invalid_syscall();
-void syscall_dispatcher_init();
-
-#endif
+    return 0;
+}

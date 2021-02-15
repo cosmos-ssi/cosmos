@@ -34,7 +34,7 @@ void syscall_init() {
 
     syscall_dispatcher_init();
 
-    //asm volatile("syscall");
+    //asm volatile("mov $0, %rax\n\tmov $12345, %rbx\n\tsyscall");
 
     return;
 }
