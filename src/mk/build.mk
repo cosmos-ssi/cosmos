@@ -6,7 +6,7 @@
 # ****************************************************************
 
 NASM=nasm
-NASMARGS=-O0 -f elf64
+NASMARGS=-O0 -f elf64 -g
 NASMARGSFLAT= -O0 -f bin
 
 RM=rm -f
