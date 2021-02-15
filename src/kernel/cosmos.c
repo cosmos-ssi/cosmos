@@ -19,6 +19,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
+#include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
 #include <sys/syscall/syscall.h>
 #include <sys/x86-64/gdt/gdt.h>
@@ -68,6 +69,9 @@ void CosmOS() {
 
     kprintf("Initializing process loader and manager...\n");
     proc_init();
+
+    kprintf("Initializing scheduler...\n");
+    sched_init();
 
     kprintf("Initializing object manager...\n");
     object_init();
