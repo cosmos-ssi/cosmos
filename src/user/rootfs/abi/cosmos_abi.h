@@ -14,6 +14,7 @@
 
 #include <rootfs/lib/cosmos_types.h>
 
+uint64_t exit();
 uint64_t syscall_print_console();
 
 #endif

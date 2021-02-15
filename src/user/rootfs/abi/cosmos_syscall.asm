@@ -5,8 +5,9 @@ DEFAULT REL
 global syscall
 
 syscall:
-    pop rax;        // the syscall #
+    
+    mov rax, rdi   ; the syscall #
+    mov rbx, rsi   ; stack pointer
+    syscall
 
-    sysenter
-
-    retf
+    ret

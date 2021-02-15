@@ -10,6 +10,6 @@
 
 #include <rootfs/lib/cosmos_types.h>
 
-uint64_t syscall(uint64_t syscall_id);
+uint64_t syscall(uint64_t syscall_id, void* arglist);
 
 #endif
