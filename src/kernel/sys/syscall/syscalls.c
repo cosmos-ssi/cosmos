@@ -24,7 +24,7 @@ uint64_t syscall_print_console(uint64_t syscall_num, void* args) {
     struct device* console_dev = devicemgr_find_device("console0");
     if (0 != console_dev) {
         struct deviceapi_console* api = (struct deviceapi_console*)console_dev->api;
-        (*api->write)(console_dev, "Hello fron console\n");
+        (*api->write)(console_dev, "Hello from console\n");
     }
     return 0;
 }
