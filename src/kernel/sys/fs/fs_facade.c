@@ -88,6 +88,8 @@ struct filesystem_node* fsfacade_find_node_by_id(struct filesystem_node* fs_node
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->api);
     struct deviceapi_filesystem* fs_api = (struct deviceapi_filesystem*)fs_node->filesystem_device->api;
+
+    //  kprintf("fsfacade_find_node_by_id id %llu of parent %s\n", id, fs_node->name);
     if (0 != fs_api->find_id) {
         return (*fs_api->find_id)(fs_node, id);
     }

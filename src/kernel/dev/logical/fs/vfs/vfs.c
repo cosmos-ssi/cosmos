@@ -100,16 +100,20 @@ struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uin
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
     struct vfs_devicedata* device_data = (struct vfs_devicedata*)fs_node->filesystem_device->device_data;
+    //  kprintf("vfs_find_node_by_id node id %llu of node %s\n", id, fs_node->name);
     if (fs_node == device_data->root_node) {
         /*
         * root node
         */
         if (0 == device_data->children) {
+            //   kprintf("no chilren\n");
             return 0;
         } else {
-            ASSERT(id < arraylist_count(device_data->children));
-            for (uint32_t i = 0; i < arraylist_count(device_data->children); i++) {
+            uint32_t child_count = arraylist_count(device_data->children);
+            ASSERT(id < child_count);
+            for (uint32_t i = 0; i < child_count; i++) {
                 struct filesystem_node* n = (struct filesystem_node*)arraylist_get(device_data->children, i);
+                //     kprintf("n %llu\n", n->id);
                 if (n->id == id) {
                     return n;
                 }
@@ -117,7 +121,7 @@ struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uin
             return 0;
         }
     } else {
-        // devices are leaf nodes they have no children
+        kprintf("vfs nodes dont have chilren\n");
         return 0;
     }
 }
@@ -223,6 +227,8 @@ void vfs_add_child(struct device* vfs_device, struct filesystem_node* child_node
     struct vfs_devicedata* device_data = (struct vfs_devicedata*)vfs_device->device_data;
     ASSERT_NOT_NULL(device_data);
     ASSERT_NOT_NULL(device_data->children);
+    // the node id will be it's position in teh array
+    child_node->id = arraylist_count(device_data->children);
     arraylist_add(device_data->children, child_node);
 }
 
