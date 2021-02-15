@@ -66,9 +66,6 @@ void CosmOS() {
     kprintf("Initializing system call handler...\n");
     syscall_init();
 
-    kprintf("Initializing system call dispatcher...\n");
-    syscall_dispatcher_init();
-
     kprintf("Initializing process loader and manager...\n");
     proc_init();
 
