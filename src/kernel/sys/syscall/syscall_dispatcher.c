@@ -5,12 +5,36 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/x86-64/syscall/syscall.h>
+#include <sys/panic/panic.h>
+#include <sys/syscall/syscall.h>
+#include <types.h>
 
-void syscall_dispatcher(uint64_t syscall_num, void* args) {
-    kprintf("Syscall!\n");
-    kprintf("num, args: %llu, 0x%llX\n", syscall_num, (uint64_t)args);
+uint64_t (*syscall_table[SYSCALL_MAX])(void* args);
+
+void invalid_syscall() {
+    PANIC("Invalid system call!");
+
+    return;
+}
+
+uint64_t syscall_dispatcher(uint64_t syscall_num, void* args) {
+
+    /*
+     * I'm not using ASSERT macro here--my understanding is that those macros will
+     * expand to nothing in a release; since at this point we're dealing with
+     * data from userspace, we can't trust it.
+     */
+    if (syscall_num >= SYSCALL_MAX) {
+        invalid_syscall();
+    }
+
+    return syscall_table[syscall_num](args);
+}
+
+void syscall_dispatcher_init() {
+    syscall_table[SYSCALL_EXIT] = 0;
 
     return;
 }

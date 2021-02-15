@@ -5,10 +5,17 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#ifndef _X64_SYSCALL_H
-#define _X64_SYSCALL_H
+#ifndef _SYSCALL_H
+#define _SYSCALL_H
 
-extern void syscall_portal();
-void syscall_init();
+#include <types.h>
+
+typedef enum syscalls { SYSCALL_EXIT = 0, SYSCALL_MAX } syscalls;
+
+extern uint64_t (*syscall_table[SYSCALL_MAX])(void* args);
+
+// syscall_dispatcher.c
+void invalid_syscall();
+void syscall_dispatcher_init();
 
 #endif

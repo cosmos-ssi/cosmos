@@ -6,6 +6,7 @@
  *****************************************************************/
 
 #include <sys/asm/asm.h>
+#include <sys/syscall/syscall.h>
 #include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/syscall/syscall.h>
 #include <types.h>
@@ -30,6 +31,8 @@ void syscall_init() {
 
     // no flags
     asm_wrmsr(MSR_SFMASK, 0);
+
+    syscall_dispatcher_init();
 
     //asm volatile("syscall");
 
