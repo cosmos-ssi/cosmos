@@ -5,10 +5,11 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#ifndef _SYSCALL_H
-#define _SYSCALL_H
+#include <sys/kprintf/kprintf.h>
+#include <sys/x86-64/syscall/syscall.h>
 
-extern void syscall_portal();
-void syscall_init();
+void syscall_dispatcher() {
+    kprintf("Syscall!\n");
 
-#endif
+    return;
+}

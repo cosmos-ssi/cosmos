@@ -6,29 +6,9 @@
  *****************************************************************/
 
 #include <sys/asm/asm.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/x86-64/gdt/gdt.h>
+#include <sys/x86-64/syscall/syscall.h>
 #include <types.h>
-
-void syscall_entry() {
-    /*
-     * syscall stores return pointer and flags on rcx and rc11, respectively, so
-     * we need to save them
-     */
-    asm volatile("push %rcx\n\tpush %r11");
-
-    kprintf("System call!\n");
-
-    asm volatile("pop %r11\n\tpop %rcx");
-
-    /*
-     * Also need to pop rbp, since compiler "helpfully" pushes it for us in
-     * function prologue.
-     */
-    asm volatile("pop %rbp");
-
-    asm volatile("sysretq");
-}
 
 void syscall_init() {
     uint64_t reg_star;
@@ -46,10 +26,12 @@ void syscall_init() {
 
     asm_wrmsr(MSR_STAR, reg_star);
 
-    asm_wrmsr(MSR_LSTAR, (uint64_t)&syscall_entry);
+    asm_wrmsr(MSR_LSTAR, (uint64_t)&syscall_portal);
 
     // no flags
     asm_wrmsr(MSR_SFMASK, 0);
+
+    //asm volatile("syscall");
 
     return;
 }
