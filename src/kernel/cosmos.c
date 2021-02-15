@@ -20,7 +20,7 @@
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sync/sync.h>
-#include <sys/syscall/syscall_router.h>
+#include <sys/syscall/syscall.h>
 #include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/idt/idt.h>
 #include <sys/x86-64/syscall/syscall.h>
@@ -66,8 +66,8 @@ void CosmOS() {
     kprintf("Initializing system call handler...\n");
     syscall_init();
 
-    kprintf("Initializing system call router...\n");
-    syscall_router_init();
+    kprintf("Initializing system call dispatcher...\n");
+    syscall_dispatcher_init();
 
     kprintf("Initializing process loader and manager...\n");
     proc_init();
