@@ -51,6 +51,10 @@ syscall_portal:
 
          call syscall_dispatcher
 
+         ; no need to move return value--SysV ABI will place return from
+         ; syscall_dispatcher into rax, which is also where it goes in
+         ; CosmOS syscall ABI
+
          ;pop r11
          ;pop rcx
          popaq

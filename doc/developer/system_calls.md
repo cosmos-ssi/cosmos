@@ -7,6 +7,8 @@
 
 then execute the `syscall` instruction.
 
+Return value will be placed in `rax`.
+
 In addition to `rax` and `rbx`, the `syscall` instruction will store the return
 address in `rcx` and the FLAGS register in `r11`.  The system call handler will
 nave no way to access the original values in these registers before they are
