@@ -8,8 +8,9 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/x86-64/syscall/syscall.h>
 
-void syscall_dispatcher() {
+void syscall_dispatcher(uint64_t syscall_num, void* args) {
     kprintf("Syscall!\n");
+    kprintf("num, args: %llu, 0x%llX\n", syscall_num, (uint64_t)args);
 
     return;
 }

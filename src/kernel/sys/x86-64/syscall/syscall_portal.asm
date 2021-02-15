@@ -46,6 +46,9 @@ syscall_portal:
          ;push rcx
          ;push r11
 
+         mov rdi, rax
+         mov rsi, rbx
+
          call syscall_dispatcher
 
          ;pop r11
