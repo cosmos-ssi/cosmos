@@ -23,6 +23,7 @@ uint64_t syscall_dispatcher(uint64_t syscall_num, void* args) {
     if (syscall_num >= SYSCALL_MAX) {
         invalid_syscall(syscall_num, args);
     }
+    kprintf("Syscall, args: %llu, %llX\n", syscall_num, (uint64_t)args);
 
     return syscall_table[syscall_num](syscall_num, args);
 }

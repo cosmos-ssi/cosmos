@@ -16,6 +16,9 @@ typedef uint64_t (*syscall_handler)(uint64_t syscall_num, void* args);
 
 extern syscall_handler syscall_table[SYSCALL_MAX];
 
+// exit.c
+uint64_t sys_exit(void* args);
+
 // syscall_dispatcher.c
 void syscall_add(uint64_t syscall_num, syscall_handler handler);
 void syscall_dispatcher_init();
