@@ -33,5 +33,16 @@ As discussed in [IWYU](https://include-what-you-use.org/), the main goal of incl
 To scan for problems:
 `make header-check`
 
-To automatically fix problems:
+To automatically fix problems (careful, you should commit first in case this goes bad):
 `make header-fix`
+
+## IWYU Mappings
+
+IWYU uses hard-coded defaults for common libc symbols, which we need to override manually for a freestanding build. This is done via the `iwyu_mapping.imp` file,
+and you can learn the format [here](https://github.com/include-what-you-use/include-what-you-use/blob/master/docs/IWYUMappings.md).
+
+## Idiosyncrasies
+
+IWYU is alpha quality, built on top of clang, by and for Google, mostly for C++ codebases, and with no attention paid to freestanding requirements. Making it work in an osdev context is difficult and error prone.
+
+You will find it recommending `stdlib` based on your system headers from time to time, which you can fix by providing the correct headers and/or adding a mapping. This is most likely to happen with common types & includes like `uint8_t` or `<types.h>`. Most of the most obvious issues have been worked around, but YMMV.

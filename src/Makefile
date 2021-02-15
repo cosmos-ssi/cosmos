@@ -10,7 +10,7 @@ CRUFT_FILES=$(shell find . -type f \( -name "dump.dat" -o \
 									  -name "qemu.log" \))
 
 all: subsystems
-.PHONY: clean
+.PHONY: clean header-check header-fix
 
 bootimage: lint subsystems blank-disk
 	# make a file
@@ -75,3 +75,8 @@ header-check:
 	./util/iwyu_map_check.sh kernel kernel/iwyu_mapping.imp
 	cd kernel && $(MAKE) -k "CC=iwyu -Xiwyu --mapping_file=iwyu_mapping.imp -resource-dir . -isystem. -I." all 2>&1 > /dev/null | \
 	fix_include --reorder --comments --nosafe_headers --dry_run
+
+header-fix:
+	./util/iwyu_map_check.sh kernel kernel/iwyu_mapping.imp
+	cd kernel && $(MAKE) -k "CC=iwyu -Xiwyu --mapping_file=iwyu_mapping.imp -resource-dir . -isystem. -I." all 2>&1 > /dev/null | \
+	fix_include --reorder --comments --nosafe_headers
