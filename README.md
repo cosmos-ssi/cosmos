@@ -37,7 +37,7 @@ CosmOS will be an [SSI](https://en.wikipedia.org/wiki/Single_system_image) opera
 - [Keyboard](doc/developer/keyboard.md)
 - [IO Buffers](doc/developer/io_buffers.md)
 - [Strings](doc/developer/strings.md)
-- [Syscalls](doc/developer/syscalls.md)
+- [Syscalls](doc/developer/system_calls.md)
 - File Systems
   - [Trivial File System (TFS)](doc/developer/filesystems/trivial_file_system.md)
   - [Cosmos File System (CFS) Disk Format](doc/developer/filesystems/cosmos_disk_format.md)
