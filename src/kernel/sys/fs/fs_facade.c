@@ -100,6 +100,7 @@ struct filesystem_node* fsfacade_find_node_by_name(struct filesystem_node* fs_no
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+    ASSERT_NOT_NULL(name);
 
     struct filesystem_directory dir;
     fsfacade_list_directory(fs_node, &dir);
@@ -122,6 +123,7 @@ uint32_t fsfacade_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t 
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->api);
     ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
     struct deviceapi_filesystem* fs_api = (struct deviceapi_filesystem*)fs_node->filesystem_device->api;
     if (0 != fs_api->read) {
         return (*fs_api->read)(fs_node, data, data_size);
@@ -134,6 +136,8 @@ uint32_t fsfacade_write(struct filesystem_node* fs_node, const uint8_t* data, ui
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->api);
     ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
+
     struct deviceapi_filesystem* fs_api = (struct deviceapi_filesystem*)fs_node->filesystem_device->api;
     if (0 != fs_api->write) {
         return (*fs_api->write)(fs_node, data, data_size);
