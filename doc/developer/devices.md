@@ -3,7 +3,7 @@ The CosmOS strategy for detecting an initializing devices is below
 
 # DeviceManager
 
-the CosmOS device manager at `/devicemgr/devicemgr.h` contains a database of phsyical devices (PCI, non-PCI, etc).
+the CosmOS device manager at `/devicemgr/devicemgr.h` contains a database of physical devices (PCI, non-PCI, etc).
 
 # Registration
 
