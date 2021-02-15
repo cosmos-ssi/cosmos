@@ -30,11 +30,13 @@ uint64_t syscall_dispatcher(uint64_t syscall_num, void* args) {
         invalid_syscall();
     }
 
+    kprintf("Syscall, args: %llu, %llX\n", syscall_num, (uint64_t)args);
+
     return syscall_table[syscall_num](args);
 }
 
 void syscall_dispatcher_init() {
-    syscall_table[SYSCALL_EXIT] = 0;
+    syscall_table[SYSCALL_EXIT] = sys_exit;
 
     return;
 }
