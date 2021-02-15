@@ -7,17 +7,11 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/panic/panic.h>
 #include <sys/syscall/syscall.h>
+#include <sys/syscall/syscalls.h>
 #include <types.h>
 
-uint64_t (*syscall_table[SYSCALL_MAX])(void* args);
-
-void invalid_syscall() {
-    PANIC("Invalid system call!");
-
-    return;
-}
+syscall_handler syscall_table[SYSCALL_MAX];
 
 uint64_t syscall_dispatcher(uint64_t syscall_num, void* args) {
 
@@ -27,14 +21,19 @@ uint64_t syscall_dispatcher(uint64_t syscall_num, void* args) {
      * data from userspace, we can't trust it.
      */
     if (syscall_num >= SYSCALL_MAX) {
-        invalid_syscall();
+        invalid_syscall(syscall_num, args);
     }
 
-    return syscall_table[syscall_num](args);
+    return syscall_table[syscall_num](syscall_num, args);
+}
+
+void syscall_add(uint64_t syscall_num, syscall_handler handler) {
+    ASSERT(syscall_num < SYSCALL_MAX);
+    ASSERT_NOT_NULL(handler);
+    syscall_table[syscall_num] = handler;
 }
 
 void syscall_dispatcher_init() {
-    syscall_table[SYSCALL_EXIT] = 0;
-
-    return;
+    syscall_add(SYSCALL_EXIT, &syscall_exit);
+    syscall_add(SYSCALL_PRINT_CONSOLE, &syscall_print_console);
 }

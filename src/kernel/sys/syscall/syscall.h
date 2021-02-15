@@ -10,12 +10,14 @@
 
 #include <types.h>
 
-typedef enum syscalls { SYSCALL_EXIT = 0, SYSCALL_MAX } syscalls;
+typedef enum syscalls { SYSCALL_EXIT = 0, SYSCALL_PRINT_CONSOLE = 1, SYSCALL_MAX } syscalls;
 
-extern uint64_t (*syscall_table[SYSCALL_MAX])(void* args);
+typedef uint64_t (*syscall_handler)(uint64_t syscall_num, void* args);
+
+extern syscall_handler syscall_table[SYSCALL_MAX];
 
 // syscall_dispatcher.c
-void invalid_syscall();
+void syscall_add(uint64_t syscall_num, syscall_handler handler);
 void syscall_dispatcher_init();
 
 #endif

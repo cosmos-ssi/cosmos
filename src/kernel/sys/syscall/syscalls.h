@@ -10,9 +10,8 @@
 
 #include <types.h>
 
-typedef uint64_t (*syscall_handler)(uint64_t syscall_id);
-
-// syscall 1
-uint64_t syscall_print_console(uint64_t syscall_id);
+uint64_t syscall_print_console(uint64_t syscall_id, void* args);
+uint64_t syscall_exit(uint64_t syscall_id, void* args);
+uint64_t invalid_syscall(uint64_t syscall_id, void* args);
 
 #endif
