@@ -10,21 +10,40 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/syscall/syscalls.h>
 
-uint64_t invalid_syscall(uint64_t syscall_num, void* args) {
-    kprintf("Invalid syscall %llu\n", syscall_num);
+uint64_t invalid_syscall(uint64_t syscall_id, void* args) {
+    kprintf("Invalid syscall %llu\n", syscall_id);
     return 0;
 }
 
-uint64_t syscall_exit(uint64_t syscall_num, void* args) {
+uint64_t syscall_exit(uint64_t syscall_id, void* args) {
     // exit
     return 0;
 }
 
-uint64_t syscall_print_console(uint64_t syscall_num, void* args) {
+uint64_t syscall_print_console(uint64_t syscall_id, void* args) {
     struct device* console_dev = devicemgr_find_device("console0");
     if (0 != console_dev) {
         struct deviceapi_console* api = (struct deviceapi_console*)console_dev->api;
         (*api->write)(console_dev, "Hello from console\n");
     }
+    return 0;
+}
+
+uint64_t syscall_malloc(uint64_t syscall_id, void* args) {
+    kprintf("syscall %llu\n not implemented", syscall_id);
+    return 0;
+}
+
+uint64_t syscall_free(uint64_t syscall_id, void* args) {
+    kprintf("syscall %llu\n not implemented", syscall_id);
+    return 0;
+}
+uint64_t syscall_realloc(uint64_t syscall_id, void* args) {
+    kprintf("syscall %llu\n not implemented", syscall_id);
+    return 0;
+}
+
+uint64_t syscall_sleep(uint64_t syscall_id, void* args) {
+    kprintf("syscall %llu\n not implemented", syscall_id);
     return 0;
 }

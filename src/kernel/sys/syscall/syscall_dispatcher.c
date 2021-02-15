@@ -41,4 +41,8 @@ void syscall_add(uint64_t syscall_num, syscall_handler handler) {
 void syscall_dispatcher_init() {
     syscall_add(SYSCALL_EXIT, &syscall_exit);
     syscall_add(SYSCALL_PRINT_CONSOLE, &syscall_print_console);
+    syscall_add(SYSCALL_MALLOC, &syscall_malloc);
+    syscall_add(SYSCALL_FREE, &syscall_free);
+    syscall_add(SYSCALL_REALLOC, &syscall_realloc);
+    syscall_add(SYSCALL_SLEEP, &syscall_sleep);
 }
