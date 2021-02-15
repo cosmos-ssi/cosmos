@@ -25,7 +25,11 @@ uint64_t syscall_dispatcher(uint64_t syscall_num, void* args) {
     }
     kprintf("Syscall, args: %llu, %llX\n", syscall_num, (uint64_t)args);
 
-    return syscall_table[syscall_num](syscall_num, args);
+    if (0 != syscall_table[syscall_num]) {
+        return syscall_table[syscall_num](syscall_num, args);
+    } else {
+        invalid_syscall(syscall_num, args);
+    }
 }
 
 void syscall_add(uint64_t syscall_num, syscall_handler handler) {
