@@ -19,4 +19,6 @@ void sched_init() {
     current_task = (uint64_t**)kmalloc(sizeof(uint64_t));
     current_task[0] = (uint64_t*)kmalloc(sizeof(uint64_t));
     current_task[0][0] = 0;
+
+    return;
 }
