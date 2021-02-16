@@ -12,6 +12,7 @@
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/devicemgr/devicetypes.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
