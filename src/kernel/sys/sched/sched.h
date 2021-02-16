@@ -5,10 +5,14 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#ifndef _X64_SYSCALL_H
-#define _X64_SYSCALL_H
+#ifndef _SCHED_H
+#define _SCHED_H
+#include <types.h>
 
-extern void syscall_portal();
-void syscall_init();
+// one each for each processor/core combo
+extern uint64_t** current_task;
+
+// sched_init.c
+void sched_init();
 
 #endif

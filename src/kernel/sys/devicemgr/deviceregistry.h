@@ -26,7 +26,7 @@ void deviceregistry_iterate(device_iterator deviceIterator);
 void deviceregistry_iterate_type(device_type dt, device_iterator deviceIterator);
 
 // find a device by name ie "rtc0"
-struct device* deviceregistry_findDevice(const int8_t* name);
+struct device* deviceregistry_find_device(const int8_t* name);
 
 // find devices by devicetype and description
 void deviceregistry_find_devices_by_description(device_type dt, const int8_t* description, deviceSearchCallback cb);

@@ -9,6 +9,8 @@
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/deviceregistry.h>
 #include <sys/devicemgr/devicetypes.h>
+#include <sys/fs/fs_facade.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/string/string.h>
 
@@ -188,7 +190,7 @@ void deviceregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallb
 /*
  * find device by name.  return zero if there is no such device
  */
-struct device* deviceregistry_findDevice(const int8_t* name) {
+struct device* deviceregistry_find_device(const int8_t* name) {
     ASSERT_NOT_NULL(name);
     for (uint16_t i = 0; i < MAX_DEVICE_TYPES; i++) {
         struct arraylist* lst = devicetypes_get_devicelist(i);
@@ -200,7 +202,7 @@ struct device* deviceregistry_findDevice(const int8_t* name) {
                         return dev;
                     }
                 } else {
-                    PANIC("null dev in deviceregistry_findDevice");
+                    PANIC("null dev in deviceregistry_find_device");
                 }
             }
         }

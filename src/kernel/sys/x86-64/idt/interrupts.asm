@@ -89,9 +89,9 @@ extern isrBreakpoint_handler;
 irq0:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -102,9 +102,9 @@ irq0:
 irq1:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -115,9 +115,9 @@ irq1:
  irq2:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -128,9 +128,9 @@ irq1:
  irq3:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -141,9 +141,9 @@ irq1:
  irq4:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -154,9 +154,9 @@ irq1:
  irq5:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -167,9 +167,9 @@ irq1:
  irq6:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -180,9 +180,9 @@ irq1:
  irq7:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -193,9 +193,9 @@ irq1:
  irq8:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -206,9 +206,9 @@ irq1:
 irq9:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -219,9 +219,9 @@ irq9:
  irq10:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -232,9 +232,9 @@ irq9:
  irq11:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -245,9 +245,9 @@ irq9:
  irq12:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -258,9 +258,9 @@ irq9:
  irq13:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -271,9 +271,9 @@ irq9:
  irq14:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -284,9 +284,9 @@ irq9:
  irq15:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -297,9 +297,9 @@ irq9:
  isrDE:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -310,9 +310,9 @@ irq9:
 isrPFE:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -323,9 +323,9 @@ isrPFE:
 isrDebug:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -336,9 +336,9 @@ isrDebug:
 isrGPF:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -349,9 +349,9 @@ isrGPF:
 isrInvalidOpcode:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -362,9 +362,9 @@ isrInvalidOpcode:
 isrBreakpoint:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp
@@ -375,9 +375,9 @@ isrBreakpoint:
 isrGeneric:
     cli
     pushaq
-    xor ax, ax
-    mov es, ax
-    mov ds, ax
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
     cld
     xor rax, rax
     mov rdi, rsp

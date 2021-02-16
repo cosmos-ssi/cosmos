@@ -7,8 +7,10 @@
 
 #include <dev/logical/fs/initrd/initrd.h>
 #include <sys/debug/assert.h>
+#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
 #include <types.h>
@@ -26,7 +28,12 @@ void test_objects() {
     initrd = initrd_attach(disk, initrd_lba());
     ASSERT_NOT_NULL(initrd);
 
-    ASSERT_NOT_NULL(initrd_find_file(initrd, "test.bin", &idx));
+    struct filesystem_node* fs_root_node = fsfacade_get_fs_rootnode(initrd);
+    ASSERT_NOT_NULL(fs_root_node);
+    struct filesystem_node* fs_file_node = fsfacade_find_node_by_name(fs_root_node, "test.bin");
+    ASSERT_NOT_NULL(fs_file_node);
+
+    idx = fs_file_node->id;
     kprintf("Index: %hu\n", idx);
 
     object_handle_t pres_handle;

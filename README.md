@@ -23,6 +23,7 @@ CosmOS will be an [SSI](https://en.wikipedia.org/wiki/Single_system_image) opera
 - [Source Tree](doc/developer/source_tree.md)
 - [Devices](doc/developer/devices.md)
 - [Device Status](doc/developer/device_status.md)
+- [Working with Filesytems](doc/developer/working_with_filesystems.md)
 - [Boot Disk Layout](doc/developer/boot_disk_layout.md)
 - [VFS](doc/developer/vfs.md)
 - [Using Block Devices](doc/developer/using_block_devices.md)
@@ -36,6 +37,7 @@ CosmOS will be an [SSI](https://en.wikipedia.org/wiki/Single_system_image) opera
 - [Keyboard](doc/developer/keyboard.md)
 - [IO Buffers](doc/developer/io_buffers.md)
 - [Strings](doc/developer/strings.md)
+- [Syscalls](doc/developer/system_calls.md)
 - File Systems
   - [Trivial File System (TFS)](doc/developer/filesystems/trivial_file_system.md)
   - [Cosmos File System (CFS) Disk Format](doc/developer/filesystems/cosmos_disk_format.md)

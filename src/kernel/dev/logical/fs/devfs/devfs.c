@@ -98,11 +98,27 @@ struct filesystem_node* devfs_find_node_by_id(struct filesystem_node* fs_node, u
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    struct devfs_devicedata* device_data = (struct devfs_devicedata*)fs_node->filesystem_device->device_data;
+    //  kprintf("finding %llu\n", id);
 
-    // find subnode.  we can do this for the root node, but not contained nodes b/c devices are leaf nodes
-    PANIC("not implemented");
-
-    return 0;
+    /*
+    * check the cache
+    */
+    struct filesystem_node* this_node = node_cache_find(device_data->nc, id);
+    if (0 == this_node) {
+        struct arraylist* lst = devicetypes_get_devicelist(id);
+        if (0 != lst) {
+            // there is a node with that id, we need to make a fs entry and cache it
+            this_node = filesystem_node_new(folder, fs_node->filesystem_device, device_type_names[id], id, 0);
+            node_cache_add(device_data->nc, this_node);
+        }
+    } else {
+        //    kprintf("found in cache %llu\n", id);
+    }
+    if (0 == this_node) {
+        kprintf("no node with id %llu\n", id);
+    }
+    return this_node;
 }
 
 void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
@@ -115,19 +131,42 @@ void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
         /*
         * root node
         */
-
-        //dir->count = devicetypes_count();
-
+        dir->count = 0;
+        dir->count = devicetypes_count();
+        uint32_t folder_count = 0;
+        /*
+        * every device type a unique integer to identify it, so that can be the node_id
+        */
+        for (uint32_t i = 0; i < MAX_DEVICE_TYPES; i++) {
+            struct arraylist* lst = devicetypes_get_devicelist(i);
+            if (0 != lst) {
+                struct filesystem_node* this_node = node_cache_find(device_data->nc, i);
+                if (0 == this_node) {
+                    this_node = filesystem_node_new(folder, fs_node->filesystem_device, device_type_names[i], i, 0);
+                    node_cache_add(device_data->nc, this_node);
+                }
+                dir->ids[folder_count] = this_node->id;
+                folder_count += 1;
+            }
+        }
     } else {
         /*
         * folders are device types
         */
         if (fs_node->type == folder) {
-
+            //    kprintf("folder %s\n", fs_node->name);
         } else {
             // its a leaf node which is a device. it has no children
         }
     }
+}
+
+uint64_t devfs_size(struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_device);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    // devices have no size
+    return 0;
 }
 
 struct device* devfs_attach() {
@@ -153,6 +192,7 @@ struct device* devfs_attach() {
     api->write = &devfs_write;
     api->read = &devfs_read;
     api->list = &devfs_list_directory;
+    api->size = &devfs_size;
     deviceinstance->api = api;
     /*
      * device data

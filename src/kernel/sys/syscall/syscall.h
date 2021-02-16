@@ -5,10 +5,14 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#ifndef _X64_SYSCALL_H
-#define _X64_SYSCALL_H
+#ifndef _SYSCALL_H
+#define _SYSCALL_H
 
-extern void syscall_portal();
-void syscall_init();
+#include <sys/syscall/syscalls.h>
+#include <types.h>
+
+// syscall_dispatcher.c
+void syscall_add(uint64_t syscall_num, syscall_handler handler);
+void syscall_dispatcher_init();
 
 #endif

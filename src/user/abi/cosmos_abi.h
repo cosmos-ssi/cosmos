@@ -5,18 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _VFS_H
-#define _VFS_H
+/*
+* cosmos syscalls
+*/
 
-#include <types.h>
+#ifndef _COSMOS_ABI_H
+#define _COSMOS_ABI_H
 
-struct filesystem_node;
-struct device;
+#include <rootfs/lib/cosmos_types.h>
 
-struct device* vfs_attach(uint8_t* name);
-void vfs_detach(struct device* dev);
-
-void vfs_add_child(struct device* vfs_device, struct filesystem_node* child_node);
-void vfs_remove_child(struct device* vfs_device, uint64_t id);
-
+uint64_t syscall_exit();
+uint64_t syscall_print_console();
+uint64_t syscall_malloc(uint64_t size);
+uint64_t syscall_free(void* mem);
+uint64_t syscall_realloc(void* mem, uint64_t size);
+uint64_t syscall_sleep(uint64_t time);
 #endif

@@ -25,5 +25,13 @@ SECTIONS
 		_bss_end = .;
 		. = ALIGN(4096);
 	}
+	.debug : 
+	{
+		_debug_start = .;
+		*(.debug)
+		*(.stab)
+		_debug_end = .;
+		. = ALIGN(4096);
+	}
 	_end = .;
 }

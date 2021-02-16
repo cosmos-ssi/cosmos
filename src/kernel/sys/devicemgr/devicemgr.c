@@ -187,7 +187,7 @@ void devicemgr_set_device_description(struct device* dev, const uint8_t* descrip
 
 struct device* devicemgr_find_device(const uint8_t* name) {
     ASSERT_NOT_NULL(name);
-    return deviceregistry_findDevice(name);
+    return deviceregistry_find_device(name);
 }
 
 void devicemgr_find_devices_by_description(device_type dt, const uint8_t* description, deviceSearchCallback cb) {

@@ -5,15 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-/*
-* cosmos syscalls
-*/
-
-#ifndef _COSMOS_ABI_H
-#define _COSMOS_ABI_H
+#ifndef _COSMOS_SYSCALL_H
+#define _COSMOS_SYSCALL_H
 
 #include <rootfs/lib/cosmos_types.h>
 
-uint64_t cosmos_abi_com1_write(uint8_t c);
+uint64_t syscall(uint64_t syscall_id, void* arglist);
 
 #endif
