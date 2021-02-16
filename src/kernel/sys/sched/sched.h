@@ -8,8 +8,11 @@
 #ifndef _SCHED_H
 #define _SCHED_H
 
+#include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/proc/proc.h>
 #include <types.h>
+
+#define SCHEDULER_TASK_LIST(x, y) ((scheduler_task_t*)task_list[x][y]->data)
 
 typedef enum scheduler_state_t {
     SCHED_RUNNING,
@@ -32,6 +35,13 @@ typedef struct scheduler_task_t {
 
 // one each for each processor/core combo
 extern uint64_t** current_task;
+
+/*
+ * Note that functions in collection/linkedlist generally won't work on this
+ * because they assume a definite end, while this is going to be
+ * circularly-linked
+ */
+extern linkedlist*** task_list;
 
 // sched_add.c
 void sched_add();
