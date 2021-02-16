@@ -198,7 +198,7 @@ struct device* devfs_attach() {
      * device data
      */
     struct devfs_devicedata* device_data = (struct devfs_devicedata*)kmalloc(sizeof(struct devfs_devicedata));
-    device_data->root_node = filesystem_node_new(folder, deviceinstance, "devfs", 0, 0);
+    device_data->root_node = filesystem_node_new(folder, deviceinstance, "dev", 0, 0);
     device_data->nc = node_cache_new();
     deviceinstance->device_data = device_data;
     /*
