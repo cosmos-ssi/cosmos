@@ -56,6 +56,8 @@ uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, 
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
+
     ASSERT(data_size > 0);
 
     // check the device type
@@ -108,6 +110,8 @@ uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, u
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT_NOT_NULL(data);
+    ASSERT_NOT_NULL(data_size);
+
     ASSERT(data_size > 0);
 
     // check the device type
@@ -149,6 +153,7 @@ uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, u
 }
 
 uint8_t blockutil_is_block_device(struct device* dev) {
+    ASSERT_NOT_NULL(dev);
     if ((dev->devicetype == DISK) || (dev->devicetype == VBLOCK) || (dev->devicetype == RAMDISK) ||
         (dev->devicetype == PARTITION)) {
         return 1;

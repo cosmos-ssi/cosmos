@@ -36,7 +36,7 @@ uint16_t partition_table_util_sector_size(struct device* partition_table_device,
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
     ASSERT_NOT_NULL(partition_table_device->device_data);
-    panic("not implemented");
+    PANIC("not implemented");
     return 0;
 }
 
@@ -44,6 +44,6 @@ uint32_t partition_table_util_total_size(struct device* partition_table_device, 
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
     ASSERT_NOT_NULL(partition_table_device->device_data);
-    panic("not implemented");
+    PANIC("not implemented");
     return 0;
 }

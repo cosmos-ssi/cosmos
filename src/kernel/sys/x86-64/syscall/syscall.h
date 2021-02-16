@@ -5,10 +5,10 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#ifndef _SYSCALL_H
-#define _SYSCALL_H
+#ifndef _X64_SYSCALL_H
+#define _X64_SYSCALL_H
 
-void syscall_entry();
+extern void syscall_portal();
 void syscall_init();
 
 #endif

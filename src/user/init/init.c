@@ -8,18 +8,20 @@
 #include <init/init.h>
 
 // use this abi to print a char to screen
-//#include <abi/cosmos_abi.h>
+#include <abi/cosmos_abi.h>
 
 /*
 * we are in user-land context here.  This is the entry point to userland that the kernel code calls
 */
 void cosmos_userland_init() {
-    //  cosmos_abi_com1_write('^');
-    //  cosmos_abi_com1_write('H');
-    //  cosmos_abi_com1_write('I');
-    //  cosmos_abi_com1_write('^');
-    //  cosmos_abi_com1_write('\n');
+    syscall_print_console('^');
+    syscall_print_console('H');
+    syscall_print_console('I');
+    syscall_print_console('^');
+    syscall_print_console('\n');
 
+    // guess we're done...
+    syscall_exit();
     // here we mount a disk, I presume, and start reading files.
     // we likely end up starting a console for the console user to log into
 }

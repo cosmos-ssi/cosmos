@@ -14,6 +14,8 @@ object_handle_t object_create(object_types_t type, void* object_data) {
     object_t* obj;
 
     obj = (object_t*)kmalloc(sizeof(object_t));
+    obj->type = type;
+    obj->name = 0;
 
     if (!obj) {
         return 0;

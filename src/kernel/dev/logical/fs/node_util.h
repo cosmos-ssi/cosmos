@@ -5,13 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <rootfs/abi/cosmos_abi.h>
+#ifndef _NODE_UTIL_H
+#define _NODE_UTIL_H
 
-#define COSMOS_SYSCALL_COM1_WRITE 0x01
+#include <sys/deviceapi/deviceapi_filesystem.h>
 
-extern void cosmos_syscall(uint64_t rax, uint64_t rbx, uint64_t rcx, uint64_t rdx);
+struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, struct device*, const uint8_t* name,
+                                            uint64_t id, void* node_data);
 
-uint64_t cosmos_abi_com1_write(uint8_t c) {
-    cosmos_syscall(COSMOS_SYSCALL_COM1_WRITE, c, 0, 0);
-    return 0;
-}
+#endif

@@ -22,7 +22,7 @@ struct virtq* virtq_new(uint16_t size) {
      */
     // Queue Size value is always a power of 2.
     if (0 == (size && !(size & (size - 1)))) {
-        panic("Queue size must be a power of 2.");
+        PANIC("Queue size must be a power of 2.");
     }
     ret->size = size;
     /*
@@ -75,7 +75,7 @@ void virtq_delete(struct virtq* queue) {
             }
         }
     } else {
-        panic("descriptor array should not be null in virtq_delete");
+        PANIC("descriptor array should not be null in virtq_delete");
     }
     kfree(queue);
 }
@@ -105,7 +105,7 @@ void virtq_enqueue_descriptor(struct virtq* queue, struct virtq_descriptor* desc
     // put descriptor(s) in next available slot
     uint16_t slot = find_first_empty_slot(queue);
     if (-1 == slot) {
-        panic("Ran out of virtual queue slots\n");
+        PANIC("Ran out of virtual queue slots\n");
     }
     queue->descriptors[slot] = descriptor;
 
@@ -168,7 +168,7 @@ void virtq_descriptor_delete(struct virtq_descriptor* descriptor) {
     if (0 != descriptor->addr) {
         kfree(descriptor->addr);
     } else {
-        panic("virtq_descriptor address should not be zero");
+        PANIC("virtq_descriptor address should not be zero");
     }
     kfree(descriptor);
 }

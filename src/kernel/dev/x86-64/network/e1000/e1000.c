@@ -33,13 +33,13 @@ void e1000_ethernet_read(struct device* dev, uint64_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
-    panic("Ethernet read not implemented yet");
+    PANIC("Ethernet read not implemented yet");
 }
 void e1000_ethernet_write(struct device* dev, uint64_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
-    panic("Ethernet write not implemented yet");
+    PANIC("Ethernet write not implemented yet");
 }
 
 void e1000_search_cb(struct pci_device* dev) {

@@ -280,7 +280,7 @@ struct fs_directory_listing* fat_list_dir(struct device* dev) {
             current_sector = current_sector + 1;
         }
     } else {
-        panic("Unsupported FAT type");
+        PANIC("Unsupported FAT type");
     }
     return ret;
 }

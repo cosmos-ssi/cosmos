@@ -10,7 +10,7 @@
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/deviceregistry.h>
 #include <sys/devicemgr/devicetypes.h>
-#include <sys/fs/fs_helper.h>
+#include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>
 
@@ -88,7 +88,7 @@ uint16_t deviceregistry_devicecount_type(device_type dt) {
         }
         return 0;
     } else {
-        panic("Invalid device type passed to deviceregistry_devicecount_type");
+        PANIC("Invalid device type passed to deviceregistry_devicecount_type");
     }
     return 0;
 }
@@ -99,10 +99,10 @@ struct device* deviceregistry_get_device(device_type dt, uint16_t idx) {
         if (0 != lst) {
             return arraylist_get(lst, idx);
         } else {
-            panic("there are no devices of type");
+            PANIC("there are no devices of type");
         }
     } else {
-        panic("Invalid device type passed to deviceregistry_get_device");
+        PANIC("Invalid device type passed to deviceregistry_get_device");
     }
     return 0;
 }
@@ -117,13 +117,13 @@ void deviceregistry_iterate(device_iterator deviceIterator) {
                     if (0 != dev) {
                         (*deviceIterator)(dev);
                     } else {
-                        panic("null dev in deviceregistry_iterate");
+                        PANIC("null dev in deviceregistry_iterate");
                     }
                 }
             }
         }
     } else {
-        panic("Invalid iterator passed to deviceregistry_iterate");
+        PANIC("Invalid iterator passed to deviceregistry_iterate");
     }
 }
 
@@ -137,12 +137,12 @@ void deviceregistry_iterate_type(device_type dt, device_iterator deviceIterator)
                 if (0 != dev) {
                     (*deviceIterator)(dev);
                 } else {
-                    panic("null dev in deviceregistry_iterate");
+                    PANIC("null dev in deviceregistry_iterate");
                 }
             }
         }
     } else {
-        panic("Invalid device_type passed to deviceregistry_iterate");
+        PANIC("Invalid device_type passed to deviceregistry_iterate");
     }
 }
 
@@ -159,12 +159,12 @@ void deviceregistry_find_devices_by_description(device_type dt, const int8_t* de
                         (*cb)(dev);
                     }
                 } else {
-                    panic("null dev in deviceregistry_iterate");
+                    PANIC("null dev in deviceregistry_iterate");
                 }
             }
         }
     } else {
-        panic("Invalid device_type passed to devicemgr_find_devices_by_description");
+        PANIC("Invalid device_type passed to devicemgr_find_devices_by_description");
     }
 }
 
@@ -178,19 +178,19 @@ void deviceregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallb
                 if (0 != dev) {
                     (*cb)(dev);
                 } else {
-                    panic("null dev in deviceregistry_iterate");
+                    PANIC("null dev in deviceregistry_iterate");
                 }
             }
         }
     } else {
-        panic("Invalid device_type passed to devicemgr_find_devices_by_description");
+        PANIC("Invalid device_type passed to devicemgr_find_devices_by_description");
     }
 }
 
 /*
  * find device by name.  return zero if there is no such device
  */
-struct device* deviceregistry_findDevice(const int8_t* name) {
+struct device* deviceregistry_find_device(const int8_t* name) {
     ASSERT_NOT_NULL(name);
     for (uint16_t i = 0; i < MAX_DEVICE_TYPES; i++) {
         struct arraylist* lst = devicetypes_get_devicelist(i);
@@ -202,7 +202,7 @@ struct device* deviceregistry_findDevice(const int8_t* name) {
                         return dev;
                     }
                 } else {
-                    panic("null dev in deviceregistry_findDevice");
+                    PANIC("null dev in deviceregistry_find_device");
                 }
             }
         }

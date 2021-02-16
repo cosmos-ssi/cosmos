@@ -14,7 +14,8 @@ all: subsystems
 
 bootimage: subsystems
 	# make a file
-	$(DD) if=/dev/zero of=$(BOOTIMAGE) bs=32768 count=129024
+	#$(DD) if=/dev/zero of=$(BOOTIMAGE) bs=32768 count=129024
+	test -f $(BOOTIMAGE) || $(DD) if=/dev/zero of=$(BOOTIMAGE) bs=32768 count=129024 
 
 	# write boot loader
 	$(DD) if=boot/x86-64/boot.bin of=$(BOOTIMAGE) conv=notrunc bs=512 

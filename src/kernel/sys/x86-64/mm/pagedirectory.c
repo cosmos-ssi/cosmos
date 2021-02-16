@@ -108,7 +108,7 @@ void init_page_directory(int_15_map* phys_map, uint8_t num_blocks) {
                 page_directory[i].type = PDT_HOLE;
                 break;
             default:
-                panic("Invalid BIOS block type!");
+                PANIC("Invalid BIOS block type!");
         }
     }
 

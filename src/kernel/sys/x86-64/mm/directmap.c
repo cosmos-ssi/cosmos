@@ -79,7 +79,7 @@ int_15_map find_suitable_block(int_15_map* phys_map, uint8_t num_blocks, void* m
         // always 1 PML4 table, which is what cr3 points to
         pml4 = 1;
     } else {
-        panic("Not prepared for current page size!");
+        PANIC("Not prepared for current page size!");
     }
 
     // and then we adjust needed_size, keeping in mind that a page table entry is 8 bytes long
@@ -114,7 +114,7 @@ int_15_map find_suitable_block(int_15_map* phys_map, uint8_t num_blocks, void* m
      * 2021-01-05: It turns out that this condition can also emerge when there
      * is one physical block of sufficient size, but it starts below the end of
      * the kernel text + heap + stack area mapped by the bootloader, as
-     * specified by BOOT_MAPPED_PHYS.  So before we panic, we first use an
+     * specified by BOOT_MAPPED_PHYS.  So before we PANIC, we first use an
      * alternative strategy to allocate the start of the direct map and page
      * directory, in that block, at the physical address immediately after what
      * the bootloader maps.
@@ -145,7 +145,7 @@ int_15_map find_suitable_block(int_15_map* phys_map, uint8_t num_blocks, void* m
         }
 
         // If we get to this point, then kernel can't initialize and run
-        panic("No physical blocks of sufficient size found for direct map and page database!");
+        PANIC("No physical blocks of sufficient size found for direct map and page database!");
     }
 
     return phys_map[best];
@@ -196,7 +196,7 @@ void* setup_direct_map(int_15_map* phys_map, uint8_t num_blocks) {
     } else {
         /*
          * This is safe because the logic in find_suitable_block will cause a
-         * panic if there's not enough room in the block after BOOT_MAPPED_PHYS
+         * PANIC if there's not enough room in the block after BOOT_MAPPED_PHYS
          * to do what we need.
          */
         dmap_start = (void*)BOOT_MAPPED_PHYS;

@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * NE2000 support based on code from here https://github.com/matijaspanic/NE2000/blob/master/NE2000.c
+ * NE2000 support based on code from here https://github.com/matijasPANIC/NE2000/blob/master/NE2000.c
  */
 
 #include <dev/x86-64/network/ne2000pci/ne2000pci.h>
@@ -157,13 +157,13 @@ void ne2000pci_ethernet_read(struct device* dev, uint64_t* data, uint16_t size) 
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
-    panic("Ethernet read not implemented yet");
+    PANIC("Ethernet read not implemented yet");
 }
 void ne2000pci_ethernet_write(struct device* dev, uint64_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
-    panic("Ethernet write not implemented yet");
+    PANIC("Ethernet write not implemented yet");
 }
 
 void ne2000_pci_search_cb(struct pci_device* dev) {

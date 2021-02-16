@@ -11,5 +11,5 @@
 
 void isrGeneric_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
-    panic("Unhandled Exception");
+    PANIC("Unhandled Exception");
 }

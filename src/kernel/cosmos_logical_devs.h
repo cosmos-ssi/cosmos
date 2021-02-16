@@ -6,14 +6,12 @@
 // ****************************************************************
 
 /*
-* cosmos syscalls
+* sets up the logical devices (devices that are not hardware devices)
 */
 
-#ifndef _COSMOS_ABI_H
-#define _COSMOS_ABI_H
+#ifndef _COSMOS_LOGICAL_DEVS
+#define _COSMOS_LOGICAL_DEVS
 
-#include <rootfs/lib/cosmos_types.h>
-
-uint64_t cosmos_abi_com1_write(uint8_t c);
+void attach_logical_devices();
 
 #endif

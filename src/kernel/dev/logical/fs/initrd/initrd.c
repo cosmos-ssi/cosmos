@@ -8,6 +8,8 @@
 #include <dev/logical/fs/block_util.h>
 #include <dev/logical/fs/fs_util.h>
 #include <dev/logical/fs/initrd/initrd.h>
+#include <dev/logical/fs/node_cache.h>
+#include <dev/logical/fs/node_util.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/deviceapi/deviceapi_block.h>
@@ -36,6 +38,7 @@ struct initrd_devicedata {
     uint32_t lba;
     struct initrd_header header;
     struct filesystem_node* root_node;
+    struct node_cache* nc;
 };
 
 /*
@@ -64,6 +67,7 @@ uint8_t initrd_uninit(struct device* dev) {
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
     kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
     kfree(dev->api);
+    node_cache_delete(device_data->nc);
     kfree(device_data->root_node);
     kfree(device_data);
     return 1;
@@ -76,17 +80,64 @@ struct filesystem_node* initrd_get_root_node(struct device* filesystem_device) {
     return device_data->root_node;
 }
 
-uint32_t initrd_read(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
+uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
-    // read from node. we cant read from the root node, but we can find underlying file and folder nodes
-    panic("not implemented");
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * cant read or write root node
+        */
+        return 0;
+    } else {
+        /*
+        * get underlying sector size
+        */
+        uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
 
-    return 0;
+        uint32_t offset = device_data->header.headers[fs_node->id].offset;
+        ASSERT(offset > 0);
+        uint32_t length = device_data->header.headers[fs_node->id].length;
+        ASSERT(data_size >= length);
+        //  kprintf("offset %llu length %llu\n", offset, length);
+
+        uint32_t lba_offset = offset / sector_size;
+        uint32_t byte_offset = offset % sector_size;
+        uint32_t total_sectors = length / sector_size;
+        if ((length % 512) != 0) {
+            total_sectors += 1;
+        }
+        // if it spans sectors
+        if (byte_offset + length > 512) {
+            total_sectors += 1;
+        }
+        uint32_t buffer_size = total_sectors * sector_size;
+        uint8_t* buffer = kmalloc(buffer_size);
+        memzero(buffer, buffer_size);
+        uint32_t target_lba = device_data->lba + lba_offset;
+        //  kprintf("lba_offset %llu byte_offset %llu total_sectors %llu target_lba %llu buffer_size %llu\n", lba_offset,
+        //       byte_offset, total_sectors, target_lba, buffer_size);
+
+        /*
+        * read the blocks
+        */
+        blockutil_read(device_data->partition_device, buffer, buffer_size, target_lba);
+
+        /*
+        * copy the data
+        */
+        memcpy(data, (uint8_t*)&(buffer[byte_offset]), data_size);
+
+        /*
+        * release the buffer
+        */
+        kfree(buffer);
+        return 1;
+    }
 }
 
 uint32_t initrd_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
@@ -96,9 +147,10 @@ uint32_t initrd_write(struct filesystem_node* fs_node, const uint8_t* data, uint
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
-    // write to node. we cant write to the root node, but we can find underlying file and folder nodes
-    panic("not implemented");
 
+    /*
+    * cant write to initrd fs
+    */
     return 0;
 }
 
@@ -107,7 +159,7 @@ void initrd_open(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
-    panic("not implemented");
+    PANIC("not implemented");
 }
 
 void initrd_close(struct filesystem_node* fs_node) {
@@ -115,74 +167,66 @@ void initrd_close(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
 
-    panic("not implemented");
+    PANIC("not implemented");
 }
 
 struct filesystem_node* initrd_find_node_by_id(struct filesystem_node* fs_node, uint32_t id) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-
-    // find subnode.  we can do this for the root node, but not contained nodes b/c initrd doesn't support folders
-    panic("not implemented");
-
-    return 0;
-}
-
-struct filesystem_node* initrd_find_node_by_name(struct filesystem_node* fs_node, uint8_t* name) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-
-    ASSERT_NOT_NULL(name);
-    // find subnode.  we can do this for the root node, but not contained nodes b/c initrd doesn't support folders
-    panic("not implemented");
-
-    return 0;
-}
-
-/*
-* find a node by name
-*/
-struct filesystem_node* initrd_find_node_by_idx(struct filesystem_node* fs_node, uint32_t idx) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
     if (fs_node == device_data->root_node) {
         /*
         * root node
         */
-        ASSERT(idx >= 0);
-        ASSERT(idx < device_data->header.number_files);
-        //        return arraylist_get(device_data->children, idx);
-        panic("not implemented");
-        return 0;
-    } else {
-        /* 
-        * return zero here.  vfsdev has no concept of folders, therefore every node
-        * is at the top level; a child of the root
-        */
-        return 0;
-    }
-}
-/*
-* count
-*/
-uint32_t initrd_count(struct filesystem_node* fs_node) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
-    if (fs_node == device_data->root_node) {
-        /*
-        * root node
-        */
-        return devicemgr_device_count();
+        struct filesystem_node* ret = node_cache_find(device_data->nc, id);
+        if (0 == ret) {
+            ASSERT(id < device_data->header.number_files);
+            // the node id is the index into the headers
+            char* name = device_data->header.headers[id].name;
+            ret = filesystem_node_new(file, fs_node->filesystem_device, name, id, 0);
+            node_cache_add(device_data->nc, ret);
+        }
+        return ret;
     } else {
         // devices are leaf nodes they have no children
         return 0;
+    }
+}
+
+void initrd_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_device);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(dir);
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * root node
+        */
+        dir->count = device_data->header.number_files;
+        for (uint32_t i = 0; i < device_data->header.number_files; i++) {
+            // node id is the index into the header table
+            dir->ids[i] = i;
+        }
+    } else {
+        dir->count = 0;
+        // devices are leaf nodes they have no children
+    }
+}
+
+uint64_t initrd_size(struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_device);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
+    if (fs_node == device_data->root_node) {
+        /*
+        * cant read or write root node
+        */
+        return 0;
+    } else {
+        return device_data->header.headers[fs_node->id].length;
     }
 }
 
@@ -206,26 +250,21 @@ struct device* initrd_attach(struct device* partition_device, uint32_t lba) {
     memzero((uint8_t*)api, sizeof(struct deviceapi_filesystem));
     api->close = &initrd_close;
     api->find_id = &initrd_find_node_by_id;
-    api->find_name = &initrd_find_node_by_name;
     api->open = &initrd_open;
     api->root = &initrd_get_root_node;
     api->write = &initrd_write;
     api->read = &initrd_read;
-    api->find_idx = initrd_find_node_by_idx;
-    api->count = initrd_count;
+    api->list = &initrd_list_directory;
+    api->size = &initrd_size;
     deviceinstance->api = api;
     /*
      * device data
      */
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)kmalloc(sizeof(struct initrd_devicedata));
-    struct filesystem_node* r = (struct filesystem_node*)kmalloc(sizeof(struct filesystem_node));
-    memzero((uint8_t*)r, sizeof(struct filesystem_node));
-    r->filesystem_device = deviceinstance;
-    r->id = 0;
-    strncpy(r->name, "initrd", FILESYSTEM_MAX_NAME);
-    device_data->root_node = r;
+    device_data->root_node = filesystem_node_new(folder, deviceinstance, "initrd", 0, 0);
     device_data->lba = lba;
     device_data->partition_device = partition_device;
+    device_data->nc = node_cache_new();
     deviceinstance->device_data = device_data;
     /*
      * register
@@ -240,6 +279,7 @@ struct device* initrd_attach(struct device* partition_device, uint32_t lba) {
         */
         return deviceinstance;
     } else {
+        node_cache_delete(device_data->nc);
         kfree(device_data->root_node);
         kfree(device_data);
         kfree(api);
@@ -262,92 +302,6 @@ void initrd_detach(struct device* dev) {
     devicemgr_detach_device(dev);
 }
 
-uint8_t initrd_get_file_name(struct device* initrd_dev, uint8_t idx, uint8_t* name, uint16_t size) {
-    ASSERT_NOT_NULL(initrd_dev);
-    ASSERT_NOT_NULL(initrd_dev->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
-    ASSERT(idx < device_data->header.number_files);
-    ASSERT(size >= INITRD_NAME_SIZE);
-    strncpy(name, device_data->header.headers[idx].name, size);
-    return 1;
-}
-
-uint32_t initrd_get_file_length(struct device* initrd_dev, uint8_t idx) {
-    ASSERT_NOT_NULL(initrd_dev);
-    ASSERT_NOT_NULL(initrd_dev->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
-    ASSERT(idx < device_data->header.number_files);
-    return device_data->header.headers[idx].length;
-}
-
-uint8_t initrd_get_file_data(struct device* initrd_dev, uint8_t idx, uint8_t* data, uint32_t size) {
-    ASSERT_NOT_NULL(initrd_dev);
-    ASSERT_NOT_NULL(initrd_dev->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
-    ASSERT(idx < device_data->header.number_files);
-
-    uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
-
-    uint32_t offset = device_data->header.headers[idx].offset;
-    ASSERT(offset > 0);
-    uint32_t length = device_data->header.headers[idx].length;
-    ASSERT(size >= length);
-    //  kprintf("offset %llu length %llu\n", offset, length);
-
-    uint32_t lba_offset = offset / sector_size;
-    uint32_t byte_offset = offset % sector_size;
-    uint32_t total_sectors = length / sector_size;
-    if ((length % 512) != 0) {
-        total_sectors += 1;
-    }
-    // if it spans sectors
-    if (byte_offset + length > 512) {
-        total_sectors += 1;
-    }
-    uint32_t buffer_size = total_sectors * sector_size;
-    uint8_t* buffer = kmalloc(buffer_size);
-    memzero(buffer, buffer_size);
-    uint32_t target_lba = device_data->lba + lba_offset;
-    //  kprintf("lba_offset %llu byte_offset %llu total_sectors %llu target_lba %llu buffer_size %llu\n", lba_offset,
-    //       byte_offset, total_sectors, target_lba, buffer_size);
-
-    /*
-    * read the blocks
-    */
-    blockutil_read(device_data->partition_device, buffer, buffer_size, target_lba);
-
-    /*
-    * copy the data
-    */
-    memcpy(data, &(buffer[byte_offset]), size);
-
-    /*
-    * release the buffer
-    */
-    kfree(buffer);
-    return 1;
-}
-
-uint8_t initrd_get_file_count(struct device* initrd_dev) {
-    ASSERT_NOT_NULL(initrd_dev);
-    ASSERT_NOT_NULL(initrd_dev->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
-    return device_data->header.number_files;
-}
-
-void initrd_dump_dir(struct device* initrd_dev) {
-    ASSERT_NOT_NULL(initrd_dev);
-    ASSERT_NOT_NULL(initrd_dev->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)initrd_dev->device_data;
-    for (uint32_t i = 0; i < device_data->header.number_files; i++) {
-        struct initrd_file_header thisheader = device_data->header.headers[i];
-        //     debug_show_memblock((uint8_t*)&thisheader, sizeof(struct initrd_file_header));
-
-        kprintf("    %s at %#llX length %#llX magic %#X\n", thisheader.name, thisheader.offset, thisheader.length,
-                thisheader.magic);
-    }
-}
-
 /*
 * kernel is at 4th lba.  so figure out the kernel size and add
 */
@@ -360,22 +314,4 @@ uint64_t initrd_lba() {
 
     //  kprintf("kernel_sector_count %#llX\n", kernel_sector_count);
     // return 4 + kernel_sector_count;
-}
-
-uint8_t initrd_find_file(struct device* initrd_dev, uint8_t* name, uint8_t* idx) {
-    ASSERT_NOT_NULL(initrd_dev);
-    ASSERT_NOT_NULL(name);
-    ASSERT_NOT_NULL(idx);
-    ASSERT(strlen(name) < INITRD_NAME_SIZE);  // less than b/c of null termination
-    uint8_t file_count = initrd_get_file_count(initrd_dev);
-    for (uint8_t i = 0; i < file_count; i++) {
-        uint8_t thisname[INITRD_NAME_SIZE];
-        memzero(thisname, INITRD_NAME_SIZE);
-        initrd_get_file_name(initrd_dev, i, thisname, INITRD_NAME_SIZE);
-        if (0 == strcmp(thisname, name)) {
-            *idx = i;
-            return 1;
-        }
-    }
-    return 0;
 }

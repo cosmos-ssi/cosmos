@@ -6,7 +6,9 @@
  *****************************************************************/
 
 #include <dev/logical/fs/initrd/initrd.h>
+#include <sys/debug/assert.h>
 #include <sys/devicemgr/device.h>
+#include <sys/fs/fs_facade.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
@@ -35,14 +37,24 @@ object_handle_t object_create_executable_from_presentation(object_handle_t pres_
 
     initrd = initrd_attach(pres_obj->dev, initrd_lba());
 
-    pres_len = initrd_get_file_length(initrd, pres_obj->idx);
+    /*
+    * note that fsfacade can work on any device that implements deviceapi_filesystem, not just initrd
+    */
+    struct filesystem_node* fs_root_node = fsfacade_get_fs_rootnode(initrd);
+    ASSERT_NOT_NULL(fs_root_node);
+    struct filesystem_node* fs_file_node = fsfacade_find_node_by_id(fs_root_node, pres_obj->idx);
+    ASSERT_NOT_NULL(fs_file_node);
+
+    pres_len = fsfacade_size(fs_file_node);
+    // not all devices that implement deviceapi_filesystem may implement the "size" api
+    ASSERT_NOT_NULL(pres_len);
 
     exe_obj->page_count = (pres_len / PAGE_SIZE) + ((pres_len % PAGE_SIZE) ? 1 : 0);
 
     exe_obj->page_base = slab_allocate(exe_obj->page_count, PDT_INUSE);
 
     exe_buf = (BYTE*)CONV_PHYS_ADDR((exe_obj->page_base * PAGE_SIZE));
-    initrd_get_file_data(initrd, pres_obj->idx, (uint8_t*)exe_buf, PAGE_SIZE * exe_obj->page_count);
+    fsfacade_read(fs_file_node, (uint8_t*)exe_buf, PAGE_SIZE * exe_obj->page_count);
 
     exe_obj->from_presentation = true;
     exe_obj->presentation = pres_handle;

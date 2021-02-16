@@ -369,14 +369,14 @@ uint64_t isadma_get_dma_block(uint8_t channel, uint32_t len) {
     ASSERT(channel >= 0);
     ASSERT(channel < ISA_DMA_NUM_BUFFERS);
     if (len > ISA_DMA_BUFFER_SIZE) {
-        panic("buffer too large for DMA");
+        PANIC("buffer too large for DMA");
     }
 
     uint64_t start = (uint64_t)((uint64_t)isadma_buf + (ISA_DMA_BUFFER_SIZE * channel));
     uint64_t end = start + ISA_DMA_BUFFER_SIZE - 1;
 
     if (isadma_address_to_page(start) != isadma_address_to_page(end)) {
-        panic("DMA buffer crosses page boundary");
+        PANIC("DMA buffer crosses page boundary");
     }
     return start;
 }

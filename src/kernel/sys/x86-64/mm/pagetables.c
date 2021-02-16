@@ -200,7 +200,7 @@ uint16_t vaddr_ptt_index(void* address, ptt_levels level) {
             shift = PT_INDEX_SHIFT;
             break;
         default:
-            panic("Invalid PTT level provided!");
+            PANIC("Invalid PTT level provided!");
     }
 
     return ((uint64_t)address & mask) >> shift;

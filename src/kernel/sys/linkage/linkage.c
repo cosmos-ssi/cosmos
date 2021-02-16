@@ -15,6 +15,8 @@ extern uint64_t _data_start;
 extern uint64_t _data_end;
 extern uint64_t _bss_start;
 extern uint64_t _bss_end;
+extern uint64_t _debug_start;
+extern uint64_t _debug_end;
 
 uint64_t text_start = (uint64_t)&_text_start;
 uint64_t text_end = (uint64_t)&text_end;
@@ -22,6 +24,8 @@ uint64_t data_start = (uint64_t)&data_start;
 uint64_t data_end = (uint64_t)&data_end;
 uint64_t bss_start = (uint64_t)&bss_start;
 uint64_t bss_end = (uint64_t)&bss_end;
+uint64_t debug_start = (uint64_t)&debug_start;
+uint64_t debug_end = (uint64_t)&debug_end;
 
 void linkage_show_kernel_section_data() {
     kprintf("_text_start %#llX\n", text_start);
@@ -30,6 +34,8 @@ void linkage_show_kernel_section_data() {
     kprintf("_data_end %#llX\n", data_start);
     kprintf("_bss_start %#llX\n", bss_start);
     kprintf("_bss_end %#llX\n", bss_end);
+    kprintf("_debug_start %#llX\n", debug_start);
+    kprintf("_debug_end %#llX\n", debug_end);
 }
 
 uint64_t linkage_get_kernel_size() {
