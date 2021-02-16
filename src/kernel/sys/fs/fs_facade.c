@@ -37,6 +37,7 @@ void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traver
 
     if (dir.count > 0) {
         for (uint32_t i = 0; i < dir.count; i++) {
+            //      kprintf("dir node id %#llX\n", dir.ids[i]);
             struct filesystem_node* child = fsfacade_find_node_by_id(fs_node, dir.ids[i]);
             ASSERT_NOT_NULL(child);
             fsfacade_traverse_internal(child, f, depth + 1);
@@ -80,10 +81,14 @@ void fsfacade_list_directory(struct filesystem_node* fs_node, struct filesystem_
     struct deviceapi_filesystem* fs_api = (struct deviceapi_filesystem*)fs_node->filesystem_device->api;
     if (0 != fs_api->list) {
         (*fs_api->list)(fs_node, dir);
+
+        //   for (uint32_t i = 0; i < dir->count; i++) {
+        //      kprintf("i %#llX, id %#llX\n", i, dir->ids[i]);
+        //  }
     }
 }
 
-struct filesystem_node* fsfacade_find_node_by_id(struct filesystem_node* fs_node, uint32_t id) {
+struct filesystem_node* fsfacade_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->api);

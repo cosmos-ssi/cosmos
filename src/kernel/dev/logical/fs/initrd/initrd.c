@@ -170,7 +170,7 @@ void initrd_close(struct filesystem_node* fs_node) {
     PANIC("not implemented");
 }
 
-struct filesystem_node* initrd_find_node_by_id(struct filesystem_node* fs_node, uint32_t id) {
+struct filesystem_node* initrd_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);

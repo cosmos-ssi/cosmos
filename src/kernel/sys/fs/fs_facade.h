@@ -25,7 +25,7 @@ void fsfacade_dump(struct filesystem_node* fs_node);
 
 void fsfacade_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir);
 
-struct filesystem_node* fsfacade_find_node_by_id(struct filesystem_node* fs_node, uint32_t id);
+struct filesystem_node* fsfacade_find_node_by_id(struct filesystem_node* fs_node, uint64_t id);
 
 uint64_t fsfacade_size(struct filesystem_node* fs_node);
 
