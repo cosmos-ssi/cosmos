@@ -5,11 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/fs/vfs/vfs.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/device.h>
 #include <sys/fs/fs_facade.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 

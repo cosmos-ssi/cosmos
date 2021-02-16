@@ -9,8 +9,6 @@
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/deviceregistry.h>
 #include <sys/devicemgr/devicetypes.h>
-#include <sys/fs/fs_facade.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/string/string.h>
 

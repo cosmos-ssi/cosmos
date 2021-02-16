@@ -17,7 +17,6 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/string/mem.h>
-#include <sys/string/string.h>
 
 struct initrd_file_header {
     uint8_t magic;

@@ -7,6 +7,7 @@
 
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/sched/sched.h>
+#include <types.h>
 
 uint64_t** current_task;
 

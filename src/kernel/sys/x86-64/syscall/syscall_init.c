@@ -5,9 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/asm/asm.h>
 #include <sys/asm/msr.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/syscall/syscall.h>
 #include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/syscall/syscall.h>

@@ -6,22 +6,7 @@
  *****************************************************************/
 
 #include <cosmos_logical_devs.h>
-#include <dev/logical/console/serial_console.h>
-#include <dev/logical/console/vga_console.h>
-#include <dev/logical/ethernet/ethernet.h>
-#include <dev/logical/fs/devfs/devfs.h>
 #include <dev/logical/fs/initrd/initrd.h>
-#include <dev/logical/fs/vfs/vfs.h>
-#include <dev/logical/null/null.h>
-#include <dev/logical/ramdisk/ramdisk.h>
-#include <dev/logical/rand/rand.h>
-#include <dev/logical/tcpip/arp/arpdev.h>
-#include <dev/logical/tcpip/icmp/icmpdev.h>
-#include <dev/logical/tcpip/ip/ipdev.h>
-#include <dev/logical/tcpip/tcp/tcpdev.h>
-#include <dev/logical/tcpip/udp/udpdev.h>
-#include <dev/logical/tick/tick.h>
-#include <sys/asm/asm.h>
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_console.h>
@@ -36,8 +21,6 @@
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
-#include <sys/syscall/syscall.h>
-#include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/idt/idt.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/syscall/syscall.h>

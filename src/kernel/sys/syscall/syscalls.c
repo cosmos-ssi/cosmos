@@ -6,6 +6,7 @@
 // ****************************************************************
 
 #include <sys/deviceapi/deviceapi_console.h>
+#include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/syscall/syscalls.h>
