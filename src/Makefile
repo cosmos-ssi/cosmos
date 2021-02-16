@@ -79,4 +79,4 @@ header-check:
 header-fix:
 	./util/iwyu_map_check.sh kernel kernel/iwyu_mapping.imp
 	cd kernel && $(MAKE) -k "CC=iwyu -Xiwyu --mapping_file=iwyu_mapping.imp -resource-dir . -isystem. -I." all 2>&1 > /dev/null | \
-	fix_include --reorder --comments --nosafe_headers
+	fix_include --reorder --nocomments --nosafe_headers
