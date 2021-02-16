@@ -64,7 +64,7 @@ void vfs_dump_traverse_function(struct filesystem_node* fs_node, uint32_t depth)
     for (int32_t i = 0; i < depth; i++) {
         kprintf(" ");
     }
-    kprintf("%s %llu\n", fs_node->name, fs_node->id);
+    kprintf("%s %#llX\n", fs_node->name, fs_node->id);
 }
 
 void fsfacade_dump(struct filesystem_node* fs_node) {
