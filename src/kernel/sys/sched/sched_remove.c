@@ -5,17 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#ifndef _SCHED_H
-#define _SCHED_H
-#include <types.h>
+#include <sys/sched/sched.h>
 
-// one each for each processor/core combo
-extern uint64_t** current_task;
-
-// sched_init.c
-void sched_init();
-
-// sched_remove.c
-void sched_remove();
-
-#endif
+void sched_remove() {
+    return;
+}
