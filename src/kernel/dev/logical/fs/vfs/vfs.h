@@ -12,7 +12,7 @@
 
 struct filesystem_node;
 
-struct device* vfs_attach();
+struct device* vfs_attach(uint8_t* name);
 void vfs_detach(struct device* dev);
 
 void vfs_add_child(struct device* vfs_device, struct filesystem_node* child_node);

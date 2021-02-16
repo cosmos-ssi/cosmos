@@ -162,7 +162,8 @@ uint64_t vfs_size(struct filesystem_node* fs_node) {
     return 0;
 }
 
-struct device* vfs_attach() {
+struct device* vfs_attach(uint8_t* name) {
+    ASSERT_NOT_NULL(name);
     /*
      * register device
      */
@@ -191,7 +192,7 @@ struct device* vfs_attach() {
      * device data
      */
     struct vfs_devicedata* device_data = (struct vfs_devicedata*)kmalloc(sizeof(struct vfs_devicedata));
-    device_data->root_node = filesystem_node_new(folder, deviceinstance, "vfs", 0, 0);
+    device_data->root_node = filesystem_node_new(folder, deviceinstance, name, 0, 0);
     device_data->children = arraylist_new();
     deviceinstance->device_data = device_data;
     /*
