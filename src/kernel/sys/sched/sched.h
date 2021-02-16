@@ -12,10 +12,10 @@
 // one each for each processor/core combo
 extern uint64_t** current_task;
 
+// sched_add.c
+void sched_add();
+
 // sched_init.c
 void sched_init();
-
-// sched_remove.c
-void sched_remove();
 
 #endif

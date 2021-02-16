@@ -5,8 +5,10 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 
-void sched_remove() {
+void sched_add(pid_t pid) {
+
     return;
 }
