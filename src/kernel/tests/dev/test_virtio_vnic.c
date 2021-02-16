@@ -23,7 +23,7 @@ void test_virtio_vnic() {
     uint8_t devicename[] = {"vnic0"};
     struct device* dev = devicemgr_find_device(devicename);
     if (0 == dev) {
-        panic("nic0 not found");
+        PANIC("nic0 not found");
     }
 
     struct deviceapi_nic* nic_api = (struct deviceapi_nic*)dev->api;
