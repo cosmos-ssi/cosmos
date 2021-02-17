@@ -13,6 +13,7 @@
 #include <types.h>
 
 #define SCHEDULER_TASK_LIST(x, y) ((scheduler_task_t*)task_list[x][y]->data)
+#define SCHEDULER_TASK_LIST_ADJUST(x, y) (tasklist[x][y] = task_list[x][y]->next)
 
 typedef enum scheduler_state_t {
     SCHED_RUNNING,
