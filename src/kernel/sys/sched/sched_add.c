@@ -9,6 +9,7 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
+#include <sys/sync/sync.h>
 #include <types.h>
 
 void sched_add(uint64_t cpu, uint64_t core, pid_t pid) {
@@ -32,8 +33,12 @@ void sched_add(uint64_t cpu, uint64_t core, pid_t pid) {
 
     new_list_entry->data = (void*)new_task;
 
+    spinlock_acquire(&task_list_lock);
+
     new_list_entry->next = task_list[cpu][core]->next;
     task_list[cpu][core]->next = new_list_entry;
+
+    spinlock_release(&task_list_lock);
 
     return;
 }

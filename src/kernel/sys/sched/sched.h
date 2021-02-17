@@ -13,7 +13,7 @@
 #include <types.h>
 
 #define SCHEDULER_TASK_LIST(x, y) ((scheduler_task_t*)task_list[x][y]->data)
-#define SCHEDULER_TASK_LIST_ADJUST(x, y) (tasklist[x][y] = task_list[x][y]->next)
+#define SCHEDULER_TASK_LIST_ADJUST(x, y) (task_list[x][y] = task_list[x][y]->next)
 
 typedef enum scheduler_state_t {
     SCHED_RUNNING,
@@ -45,7 +45,7 @@ extern uint64_t** current_task;
 extern linkedlist*** task_list;
 
 // sched_add.c
-void sched_add();
+void sched_add(uint64_t cpu, uint64_t core, pid_t pid);
 
 // sched_init.c
 void sched_init();
