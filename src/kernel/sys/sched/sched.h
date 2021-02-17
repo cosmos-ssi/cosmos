@@ -7,15 +7,47 @@
 
 #ifndef _SCHED_H
 #define _SCHED_H
+
+#include <sys/collection/linkedlist/linkedlist.h>
+#include <sys/proc/proc.h>
 #include <types.h>
+
+#define SCHEDULER_TASK_LIST(x, y) ((scheduler_task_t*)task_list[x][y]->data)
+#define SCHEDULER_TASK_LIST_ADJUST(x, y) (tasklist[x][y] = task_list[x][y]->next)
+
+typedef enum scheduler_state_t {
+    SCHED_RUNNING,
+    SCHED_SLEEPING,
+    SCHED_IOWAIT,
+    SCHED_ZOMBIE  // In your he-ead, in your he-e-e-ead...
+} scheduler_state_t;
+
+typedef struct scheduler_task_t {
+    pid_t pid;
+    scheduler_state_t state;
+    uint64_t exit_code;
+
+    /* If, when going through the task list deciding which task to do next, we
+     * decide not to switch to this one for any reason, increment times_skipped.
+     * Reset to zero whenever this task IS the one switched to.
+     */
+    uint64_t times_skipped;
+} scheduler_task_t;
 
 // one each for each processor/core combo
 extern uint64_t** current_task;
 
+/*
+ * Note that functions in collection/linkedlist generally won't work on this
+ * because they assume a definite end, while this is going to be
+ * circularly-linked
+ */
+extern linkedlist*** task_list;
+
+// sched_add.c
+void sched_add();
+
 // sched_init.c
 void sched_init();
-
-// sched_remove.c
-void sched_remove();
 
 #endif
