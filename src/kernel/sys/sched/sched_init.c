@@ -9,6 +9,8 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/sched/sched.h>
 
+#include <sys/kprintf/kprintf.h>
+
 linkedlist*** task_list;
 
 void sched_init() {
