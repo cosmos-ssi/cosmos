@@ -34,4 +34,7 @@ struct filesystem_node* fsfacade_find_node_by_name(struct filesystem_node* fs_no
 uint32_t fsfacade_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size);
 
 uint32_t fsfacade_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size);
+
+void fsfacade_dump_node(struct filesystem_node* fs_node);
+
 #endif
