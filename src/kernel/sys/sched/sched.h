@@ -27,6 +27,12 @@ typedef struct scheduler_task_t {
     scheduler_state_t state;
     uint64_t exit_code;
 
+    /*
+     * Processes that have registered to be notified of this task's termination
+     * and exit code.
+     */
+    linkedlist* notify_term;
+
     /* If, when going through the task list deciding which task to do next, we
      * decide not to switch to this one for any reason, increment times_skipped.
      * Reset to zero whenever this task IS the one switched to.
@@ -49,5 +55,8 @@ void sched_add(uint64_t cpu, uint64_t core, pid_t pid);
 
 // sched_init.c
 void sched_init();
+
+// sched_terminate.c
+void sched_terminate();
 
 #endif
