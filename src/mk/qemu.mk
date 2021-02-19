@@ -23,7 +23,8 @@ QEMUARGS=                                                 \
   -audiodev coreaudio,id=audio0                           \
   -device adlib,audiodev=audio0                          \
   -monitor telnet::45454,server,nowait                    \
-  -D qemu.log
+  -D qemu.log                                               \
+  -vga std
 
   # -object filter-dump,id=f1,netdev=virtio,file=dump.dat      \
 

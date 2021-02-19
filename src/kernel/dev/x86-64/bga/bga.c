@@ -17,8 +17,6 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/x86-64/mm/pagetables.h>
 
-#define VBE_DISPI_BANK_ADDRESS 0xA0000
-#define VBE_DISPI_LFB_PHYSICAL_ADDRESS 0xE0000000
 #define VBE_DISPI_BANK_SIZE_KB 64
 
 #define VBE_DISPI_ID0 0xB0C0
@@ -66,9 +64,10 @@ uint32_t bga_buffer_size(struct bga_devicedata* device_data) {
     return (device_data->height * device_data->width) * (device_data->bit_depth / 8);
 }
 
-uint32_t bga_get_offset(uint32_t x, uint32_t y) {
-    //  return (Y * X - resolution + X) * 3;
-    return 0;
+// *3 for 24 bit color
+uint32_t bga_get_offset(struct bga_devicedata* device_data, uint32_t x, uint32_t y) {
+    ASSERT_NOT_NULL(device_data);
+    return (device_data->width * y * 3) + x;
 }
 
 void bga_write_register(uint16_t index_value, uint16_t data_value) {
@@ -116,7 +115,7 @@ uint8_t bga_device_init(struct device* dev) {
     * lfb
     */
     device_data->lfb_physical = dev->pci->bars[0];
-    device_data->lfb_virtual = 0;
+    device_data->lfb_virtual = (uint64_t)CONV_PHYS_ADDR(device_data->lfb_physical);
 
     /*
     * screen params
@@ -144,10 +143,10 @@ uint8_t bga_device_init(struct device* dev) {
     // color
     uint64_t buffer_size = bga_buffer_size(device_data);
     for (uint32_t i = 0; i < buffer_size; i += 3) {
-        // uint64_t address = device_data->lfb_physical + i;
-        //    kprintf("address : %#llX\n", address);
+        //   uint64_t address = device_data->lfb_virtual + i;
+        //  kprintf("address : %#llX\n", address);
 
-        //   asm_out_b(address, 0xFF);
+        //  asm_out_b(address, 0x00);
     }
 
     return 1;
