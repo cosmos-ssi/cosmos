@@ -63,7 +63,8 @@ typedef enum device_type {
     SDHCI = 0x27,            // sdhci0
     SMBIOS = 0x28,           // smbios0
     DEVFS = 0x29,            // devfs0, deviceapi_filesytem
-    VFS = 0x2A               // vfs0, deviceapi_filesytem
+    VFS = 0x2A,              // vfs0, deviceapi_filesytem
+    BGA = 0x2B               // bga0, deviceapi_bga
 } device_type;
 
 /*
