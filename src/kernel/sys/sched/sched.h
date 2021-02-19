@@ -12,8 +12,10 @@
 #include <sys/proc/proc.h>
 #include <types.h>
 
-#define SCHEDULER_TASK_LIST(x, y) ((scheduler_task_t*)task_list[x][y]->data)
-#define SCHEDULER_TASK_LIST_ADJUST(x, y) (task_list[x][y] = task_list[x][y]->next)
+// just to simplify a soup of parentheses
+#define TASK_LIST_DATA(x, y) ((scheduler_task_t*)task_list[x][y]->data)
+#define CURRENT_TASK_DATA(x, y) ((scheduler_task_t*)current_task[x][y]->data)
+#define TASK_LIST_ADJUST(x, y) (task_list[x][y] = task_list[x][y]->next)
 
 typedef enum scheduler_state_t {
     SCHED_RUNNING,
@@ -41,7 +43,7 @@ typedef struct scheduler_task_t {
 } scheduler_task_t;
 
 // one each for each processor/core combo
-extern uint64_t** current_task;
+extern linkedlist*** current_task;
 
 /*
  * Note that functions in collection/linkedlist generally won't work on this
