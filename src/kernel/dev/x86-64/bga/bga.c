@@ -15,6 +15,7 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/string/mem.h>
 #include <sys/x86-64/mm/pagetables.h>
 
 #define VBE_DISPI_BANK_SIZE_KB 64
@@ -140,14 +141,7 @@ uint8_t bga_device_init(struct device* dev) {
     bga_set_video_mode(device_data->width, device_data->height, device_data->bit_depth, 1, 1);
     //  }
 
-    // color
-    uint64_t buffer_size = bga_buffer_size(device_data);
-    for (uint32_t i = 0; i < buffer_size; i += 3) {
-        //   uint64_t address = device_data->lfb_virtual + i;
-        //  kprintf("address : %#llX\n", address);
-
-        //  asm_out_b(address, 0x00);
-    }
+    memset((uint8_t*)device_data->lfb_virtual, 0x33, (800 * 600) * 3);
 
     return 1;
 }
