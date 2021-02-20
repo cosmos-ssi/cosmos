@@ -22,6 +22,7 @@
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
 #include <sys/syscall/syscall.h>
+#include <sys/video/video_util.h>
 #include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/idt/idt.h>
 #include <sys/x86-64/syscall/syscall.h>
@@ -142,6 +143,9 @@ void CosmOS() {
     kprintf("\n");
 
     load_init_binary();
+
+    struct device* bga = devicemgr_find_device("bga0");
+    video_util_clear(bga, 0x66);
 
     while (1) {
         asm_hlt();
