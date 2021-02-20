@@ -15,7 +15,12 @@
 // just to simplify a soup of parentheses
 #define TASK_LIST_DATA(x, y) ((scheduler_task_t*)task_list[x][y]->data)
 #define CURRENT_TASK_DATA(x, y) ((scheduler_task_t*)current_task[x][y]->data)
+#define TASK_DATA(x) ((scheduler_task_t*)x->data)
 #define TASK_LIST_ADJUST(x, y) (task_list[x][y] = task_list[x][y]->next)
+
+// Replace these with something more sophisticated when appropriate
+#define CUR_CPU 0
+#define CUR_CORE 0
 
 typedef enum scheduler_state_t {
     SCHED_RUNNING,
@@ -60,5 +65,8 @@ void sched_init();
 
 // sched_terminate.c
 void sched_terminate();
+
+// task_select.c
+linkedlist* task_select();
 
 #endif
