@@ -12,7 +12,7 @@
 
 struct device;
 
-void video_util_clear(struct device* dev, uint32_t color);
+void video_util_clear(struct device* dev, uint32_t rgb);
 uint32_t video_util_get_width_function(struct device* dev);
 uint32_t video_util_get_height_function(struct device* dev);
 uint32_t video_util_get_colordepth_function(struct device* dev);

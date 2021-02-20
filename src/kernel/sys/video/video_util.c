@@ -10,18 +10,42 @@
 #include <sys/devicemgr/device.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/string/mem.h>
+#include <sys/video/rgb.h>
 #include <sys/video/video_util.h>
 
-void video_util_clear(struct device* dev, uint32_t color) {
+void video_util_clear(struct device* dev, uint32_t rgb) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT(dev->devicetype == BGA);
+    /*
+    * components
+    */
+    uint8_t r = rgb_r(rgb);
+    uint8_t g = rgb_g(rgb);
+    uint8_t b = rgb_b(rgb);
+    kprintf("rgb %#llX, r %#llX, g %#llX, b %#llX\n", rgb, r, g, b);
+    /*
+    * sizes
+    */
+    uint32_t width = video_util_get_width_function(dev);
+    ASSERT(width == 800);
+    uint32_t height = video_util_get_height_function(dev);
+    ASSERT(height == 600);
+    uint32_t colordepth = video_util_get_colordepth_function(dev);
+    ASSERT(colordepth == 24);
     /*
     * make a buffer
     */
     uint32_t buffer_size = video_util_get_buffersize(dev);
     uint8_t* buffer = kmalloc(buffer_size);
-    memset(buffer, (uint8_t)color, buffer_size);
+    /*
+    * paint
+    */
+    for (uint32_t i = 0; i < (width * height * 3); i += 3) {
+        buffer[i] = b;
+        buffer[i + 1] = g;
+        buffer[i + 2] = r;
+    }
     /*
     * blt
     */
