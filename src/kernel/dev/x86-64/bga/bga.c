@@ -100,13 +100,6 @@ void bga_set_bank(uint16_t bank_number) {
     bga_write_register(VBE_DISPI_INDEX_BANK, bank_number);
 }
 
-void bga_clear(struct device* dev, uint32_t color) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
-    memset((uint8_t*)device_data->lfb_virtual, (uint8_t)color, (device_data->width * device_data->height) * 3);
-}
-
 /*
  * perform device instance specific init here
  */
@@ -203,7 +196,6 @@ void bga_search_cb(struct pci_device* dev) {
      * device api
      */
     struct deviceapi_bga* api = (struct deviceapi_bga*)kmalloc(sizeof(struct deviceapi_bga));
-    api->clear = &bga_clear;
     api->get_colordepth = &bga_get_colordepth;
     api->get_width = &bga_get_width;
     api->get_height = &bga_get_height;

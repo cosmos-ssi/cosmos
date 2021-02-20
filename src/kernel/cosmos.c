@@ -145,7 +145,7 @@ void CosmOS() {
     load_init_binary();
 
     struct device* bga = devicemgr_find_device("bga0");
-    video_util_clear(bga, 0x66);
+    video_util_clear(bga, 0x33);
 
     while (1) {
         asm_hlt();
