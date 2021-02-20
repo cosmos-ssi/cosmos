@@ -114,7 +114,7 @@ uint8_t bga_device_init(struct device* dev) {
     /* 
     * lfb
     */
-    device_data->lfb_physical = dev->pci->bars[0];
+    device_data->lfb_physical = dev->pci->bars[0] & 0xFFFFFFF0;
     device_data->lfb_virtual = (uint64_t)CONV_PHYS_ADDR(device_data->lfb_physical);
 
     /*
