@@ -20,7 +20,6 @@ linkedlist* task_select() {
 
     pos = current_task[CUR_CPU][CUR_CORE];
     best_candidate = pos;
-    kprintf("pos: %llX\n", (uint64_t)pos);
 
     do {
         ASSERT_NOT_NULL(pos);
