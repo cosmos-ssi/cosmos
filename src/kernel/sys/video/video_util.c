@@ -23,7 +23,7 @@ void video_util_clear(struct device* dev, uint32_t rgb) {
     uint8_t r = rgb_r(rgb);
     uint8_t g = rgb_g(rgb);
     uint8_t b = rgb_b(rgb);
-    kprintf("rgb %#llX, r %#llX, g %#llX, b %#llX\n", rgb, r, g, b);
+    //    kprintf("rgb %#llX, r %#llX, g %#llX, b %#llX\n", rgb, r, g, b);
     /*
     * sizes
     */
@@ -49,10 +49,7 @@ void video_util_clear(struct device* dev, uint32_t rgb) {
     /*
     * blt
     */
-    struct deviceapi_bga* api = (struct deviceapi_bga*)dev->api;
-    if (0 != api->blt) {
-        (*api->blt)(dev, buffer, buffer_size);
-    }
+    video_util_blt(dev, buffer, buffer_size);
     /*
     * done
     */
