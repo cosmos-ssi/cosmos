@@ -36,7 +36,7 @@ void tree_delete(struct tree* t) {
 /*
  * warning, recursive
  */
-void tree_insert(struct tree* t, uint32_t key, void* value) {
+void tree_insert(struct tree* t, uint64_t key, void* value) {
     ASSERT_NOT_NULL(t);
     if (key < t->key) {
         if (0 != t->left) {
@@ -60,7 +60,7 @@ void tree_insert(struct tree* t, uint32_t key, void* value) {
 /*
  * warning, recursive
  */
-void* tree_search(struct tree* t, uint32_t key) {
+void* tree_search(struct tree* t, uint64_t key) {
     ASSERT_NOT_NULL(t);
     if (key == t->key) {
         return t->value;

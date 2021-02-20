@@ -30,13 +30,13 @@ void node_cache_add(struct node_cache* nc, struct filesystem_node* fs_node) {
     tree_insert(nc->node_tree, fs_node->id, fs_node);
 }
 
-struct filesystem_node* node_cache_find(struct node_cache* nc, uint32_t id) {
+struct filesystem_node* node_cache_find(struct node_cache* nc, uint64_t id) {
     ASSERT_NOT_NULL(nc);
     ASSERT_NOT_NULL(nc->node_tree);
     return tree_search(nc->node_tree, id);
 }
 
-void node_cache_remove(struct node_cache* nc, uint32_t id) {
+void node_cache_remove(struct node_cache* nc, uint64_t id) {
     ASSERT_NOT_NULL(nc);
     ASSERT_NOT_NULL(nc->node_tree);
 
