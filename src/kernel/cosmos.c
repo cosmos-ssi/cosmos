@@ -143,6 +143,8 @@ void CosmOS() {
 
     load_init_binary();
 
+    sched_start();
+
     while (1) {
         asm_hlt();
     }
