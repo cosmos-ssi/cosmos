@@ -12,14 +12,22 @@
 #include <sys/proc/proc.h>
 #include <types.h>
 
-#define SCHEDULER_TASK_LIST(x, y) ((scheduler_task_t*)task_list[x][y]->data)
-#define SCHEDULER_TASK_LIST_ADJUST(x, y) (task_list[x][y] = task_list[x][y]->next)
+// just to simplify a soup of parentheses
+#define TASK_LIST_DATA(x, y) ((scheduler_task_t*)task_list[x][y]->data)
+#define CURRENT_TASK_DATA(x, y) ((scheduler_task_t*)current_task[x][y]->data)
+#define TASK_DATA(x) ((scheduler_task_t*)x->data)
+#define TASK_LIST_ADJUST(x, y) (task_list[x][y] = task_list[x][y]->next)
+
+// Replace these with something more sophisticated when appropriate
+#define CUR_CPU 0
+#define CUR_CORE 0
 
 typedef enum scheduler_state_t {
-    SCHED_RUNNING,
-    SCHED_SLEEPING,
-    SCHED_IOWAIT,
-    SCHED_ZOMBIE  // In your he-ead, in your he-e-e-ead...
+    SCHED_RUNNING,   // duh
+    SCHED_SLEEPING,  // currently awaiting rescheduling
+    SCHED_IOWAIT,    // awaiting IO, do not schedule until received
+    SCHED_ZOMBIE,    // In your he-ead, in your he-e-e-ead...
+    SCHED_TERMINATE  // Terminated, waiting for kernel tasklet to clean up
 } scheduler_state_t;
 
 typedef struct scheduler_task_t {
@@ -41,7 +49,7 @@ typedef struct scheduler_task_t {
 } scheduler_task_t;
 
 // one each for each processor/core combo
-extern uint64_t** current_task;
+extern linkedlist*** current_task;
 
 /*
  * Note that functions in collection/linkedlist generally won't work on this
@@ -49,6 +57,9 @@ extern uint64_t** current_task;
  * circularly-linked
  */
 extern linkedlist*** task_list;
+
+// sched.c
+void sched_start();
 
 // sched_add.c
 void sched_add(uint64_t cpu, uint64_t core, pid_t pid);
@@ -58,5 +69,11 @@ void sched_init();
 
 // sched_terminate.c
 void sched_terminate();
+
+// tasklist.c
+linkedlist* task_find(pid_t pid);
+
+// task_select.c
+linkedlist* task_select();
 
 #endif

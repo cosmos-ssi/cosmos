@@ -5,16 +5,13 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/proc/proc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/sched/sched.h>
-#include <types.h>
 
-void sched_terminate(pid_t pid) {
-    linkedlist* task;
+void sched_start() {
+    linkedlist* start_task;
 
-    task = task_find(pid);
-
-    TASK_DATA(task)->state = SCHED_TERMINATE;
+    start_task = task_select();
 
     return;
 }

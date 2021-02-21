@@ -144,6 +144,7 @@ void CosmOS() {
 
     gui_init();
     gui_draw();
+    sched_start();
 
     while (1) {
         asm_hlt();

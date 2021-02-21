@@ -21,6 +21,8 @@ typedef uint64_t pid_t;
 typedef struct proc_info {
     pid_t pid;
     pttentry cr3;
+    uint64_t cpu;
+    uint64_t core;
     proc_register rax;
     proc_register rbx;
     proc_register rcx;
