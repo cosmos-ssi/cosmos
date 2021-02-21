@@ -26,6 +26,7 @@ struct canvas {
 };
 
 struct canvas* canvas_new(struct device* dev);
+void canvas_delete(struct canvas* cvs);
 /*
 * draw a line from x0,y0 to x1,y1
 */

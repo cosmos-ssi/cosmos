@@ -32,6 +32,12 @@ struct canvas* canvas_new(struct device* dev) {
     return ret;
 }
 
+void canvas_delete(struct canvas* cvs) {
+    ASSERT_NOT_NULL(cvs);
+    kfree(cvs->buffer);
+    kfree(cvs);
+}
+
 uint32_t canvas_pixel_offset(struct canvas* cvs, uint32_t x, uint32_t y) {
     ASSERT_NOT_NULL(cvs);
     ASSERT(x < cvs->width);
