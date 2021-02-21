@@ -20,7 +20,7 @@ linkedlist* task_find(pid_t pid) {
 
     cur = task_list[cpu][core];
 
-    while (TASK_DATA(cur)->pid != p) {
+    while (TASK_DATA(cur)->pid != pid) {
         cur = cur->next;
     }
 
