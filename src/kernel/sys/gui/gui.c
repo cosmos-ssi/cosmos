@@ -24,6 +24,7 @@ void gui_init() {
     if (0 != bga) {
         gui_state = (struct gui_state_data*)kmalloc(sizeof(struct gui_state_data));
         gui_state->canvas = canvas_new(bga);
+        gui_state->background_color = 0x97cee8;  // light blue
         //   canvas_dump(gui_state->canvas);
     } else {
         kprintf("Unable to find video device %s for GUI\n", VGA_DEVICE_NAME);
@@ -34,7 +35,7 @@ void gui_draw() {
     ASSERT_NOT_NULL(gui_state);
     ASSERT_NOT_NULL(gui_state->canvas);
 
-    canvas_clear(gui_state->canvas, 0xEEEEEE);
+    canvas_clear(gui_state->canvas, gui_state->background_color);
 
     //  canvas_draw_pixel(gui_state->canvas, 0, 0, 0x111111);
     canvas_blt(gui_state->canvas);
