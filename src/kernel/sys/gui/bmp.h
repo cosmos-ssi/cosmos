@@ -18,7 +18,8 @@ struct bmp {
     uint32_t buffer_size;
 };
 
-void bmp_load(uint8_t* devname, uint8_t* filename, struct bmp* bitmap);
+struct bmp* bmp_new();
+void bmp_load(struct bmp* bitmap, uint8_t* devname, uint8_t* filename);
 void bmp_delete(struct bmp* bitmap);
 
 #endif
