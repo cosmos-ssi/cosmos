@@ -93,10 +93,10 @@ uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, 
             memzero(buffer, sector_size);
             if (i == total_sectors - 1) {
                 uint32_t offset = data_size - total_bytes_written;
-                memcpy(buffer, &(data[i * sector_size]), offset);
+                memcpy(buffer, &(data[total_bytes_written]), offset);
                 total_bytes_written += offset;
             } else {
-                memcpy(buffer, &(data[i * sector_size]), sector_size);
+                memcpy(buffer, &(data[total_bytes_written]), sector_size);
                 total_bytes_written += sector_size;
             }
             uint32_t written = (*block_api->write)(dev, buffer, sector_size, i + start_lba);
@@ -157,10 +157,10 @@ uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, u
         ASSERT(read == sector_size);
         if (i == total_sectors - 1) {
             uint32_t offset = data_size - total_bytes_copied;
-            memcpy(&(data[i * sector_size]), buffer, offset);
+            memcpy(&(data[total_bytes_copied]), buffer, offset);
             total_bytes_copied += offset;
         } else {
-            memcpy(&(data[i * sector_size]), buffer, sector_size);
+            memcpy(&(data[total_bytes_copied]), buffer, sector_size);
             total_bytes_copied += sector_size;
         }
     }
