@@ -21,8 +21,9 @@ struct canvas {
     struct device* dev;
     uint32_t width;
     uint32_t height;
-    uint32_t color_depth;
+    uint32_t color_depth;  // bits
     uint32_t buffer_size;
+    uint32_t bytes_per_pixel;
 };
 
 struct canvas* canvas_new(struct device* dev);

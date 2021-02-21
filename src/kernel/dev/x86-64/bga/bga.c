@@ -111,9 +111,9 @@ uint8_t bga_device_init(struct device* dev) {
     /*
     * screen params
     */
-    device_data->width = 800;
-    device_data->height = 600;
-    device_data->bit_depth = 24;
+    device_data->width = 1024;
+    device_data->height = 768;
+    device_data->bit_depth = 32;
 
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX at lfb(physical) %#llX lfb(virtual) %#llX (%s)\n",
             dev->description, dev->pci->irq, dev->pci->vendor_id, dev->pci->device_id, device_data->lfb_physical,

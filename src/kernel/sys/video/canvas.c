@@ -22,13 +22,15 @@ struct canvas* canvas_new(struct device* dev) {
     */
     ret->buffer_size = video_util_get_buffersize(dev);
     ret->color_depth = video_util_get_colordepth(dev);
-    ASSERT(ret->color_depth == 24);
+    ASSERT(ret->color_depth == 32);
     ret->height = video_util_get_height(dev);
-    ASSERT(ret->height == 600);
+    ASSERT(ret->height == 768);
     ret->width = video_util_get_width(dev);
-    ASSERT(ret->width == 800);
+    ASSERT(ret->width == 1024);
     ret->buffer = kmalloc(ret->buffer_size);
     ret->dev = dev;
+    ret->bytes_per_pixel = ret->color_depth / 8;
+    ASSERT(ret->bytes_per_pixel == 4);
     return ret;
 }
 
@@ -42,7 +44,7 @@ uint32_t canvas_pixel_offset(struct canvas* cvs, uint32_t x, uint32_t y) {
     ASSERT_NOT_NULL(cvs);
     ASSERT(x < cvs->width);
     ASSERT(y < cvs->height);
-    return 3 * ((cvs->width * y) + x);
+    return cvs->bytes_per_pixel * ((cvs->width * y) + x);
 }
 
 void canvas_dump(struct canvas* cvs) {
@@ -77,7 +79,7 @@ void canvas_clear(struct canvas* cvs, uint32_t rgb) {
     /*
     * paint
     */
-    for (uint32_t i = 0; i < (cvs->width * cvs->height * 3); i += 3) {
+    for (uint32_t i = 0; i < (cvs->width * cvs->height * cvs->bytes_per_pixel); i += cvs->bytes_per_pixel) {
         cvs->buffer[i] = components.b;
         cvs->buffer[i + 1] = components.g;
         cvs->buffer[i + 2] = components.r;
