@@ -81,6 +81,8 @@ struct filesystem_node* initrd_get_root_node(struct device* filesystem_device) {
 }
 
 uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
+    //  kprintf("initrd_read node %s on device %s to buffer %#llX with length %llu\n", fs_node->name,
+    //        fs_node->filesystem_device->name, data, data_size);
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
@@ -112,21 +114,29 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
             total_sectors += 1;
         }
         // if it spans sectors
-        if (byte_offset + length > 512) {
+        if (byte_offset + length > sector_size) {
             total_sectors += 1;
         }
+
         uint32_t buffer_size = total_sectors * sector_size;
+        kprintf("buffer_size %llu\n", buffer_size);
+
         uint8_t* buffer = kmalloc(buffer_size);
+        ASSERT_NOT_NULL(buffer);
+        kprintf("buffer %%#llX\n", buffer);
+
         memzero(buffer, buffer_size);
         uint32_t target_lba = device_data->lba + lba_offset;
-        //  kprintf("lba_offset %llu byte_offset %llu total_sectors %llu target_lba %llu buffer_size %llu\n", lba_offset,
-        //       byte_offset, total_sectors, target_lba, buffer_size);
+
+        //   kprintf("lba_offset %llu byte_offset %llu total_sectors %llu target_lba %llu buffer_size %#llX\\n", lba_offset,
+        //         byte_offset, total_sectors, target_lba, buffer_size);
 
         /*
         * read the blocks
         */
         blockutil_read(device_data->partition_device, buffer, buffer_size, target_lba);
 
+        kprintf("blockutil_read completed\n");
         /*
         * copy the data
         */

@@ -152,6 +152,7 @@ uint32_t fsfacade_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t 
     ASSERT_NOT_NULL(fs_node->filesystem_device->api);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
+    kprintf("fsfacade_read node %s size %llu\n", fs_node->name, data_size);
     struct deviceapi_filesystem* fs_api = (struct deviceapi_filesystem*)fs_node->filesystem_device->api;
     if (0 != fs_api->read) {
         return (*fs_api->read)(fs_node, data, data_size);

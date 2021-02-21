@@ -46,9 +46,10 @@ void bmp_load(struct bmp* bitmap, uint8_t* devname, uint8_t* filename) {
         struct filesystem_node* fs_node = fsfacade_find_node_by_name(fs_root_node, filename);
         if (0 != fs_node) {
             bitmap->buffer_size = fsfacade_size(fs_node);
-            kprintf("Wallpaper size %llu\n", bitmap->buffer_size);
-            bitmap->buffer = kmalloc(bitmap->buffer_size);
-            fsfacade_read(fs_node, bitmap->buffer, bitmap->buffer_size);
+            uint8_t* buffer = kmalloc(bitmap->buffer_size);
+            fsfacade_read(fs_node, buffer, bitmap->buffer_size);
+            bitmap->buffer = buffer;
+            kprintf("read done\n");
         } else {
             kprintf("Unable to find file %s for GUI\n", filename);
         }

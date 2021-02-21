@@ -41,11 +41,11 @@ void gui_draw() {
     canvas_clear(gui_state->canvas, gui_state->background_color);
     canvas_blt(gui_state->canvas);
     canvas_dump(gui_state->canvas);
-    struct bmp* wallpaper = bmp_new();
-    if (0 != wallpaper) {
-        //   bmp_load(INIT_DEVICE_NAME, WALLPAPER_NAME, wallpaper);
-        kprintf("wallpaper size %llu\n", wallpaper->buffer_size);
-    }
+    //  struct bmp* wallpaper = bmp_new();
+    //  if (0 != wallpaper) {
+    //      bmp_load(wallpaper, INIT_DEVICE_NAME, WALLPAPER_NAME);
+    //      kprintf("wallpaper size %llu\n", wallpaper->buffer_size);
+    //  }
     struct window* w1 = window_new(400, 400, 100, 100);
     struct window* w2 = window_new(50, 50, 300, 300);
 
