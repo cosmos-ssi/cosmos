@@ -14,7 +14,6 @@
 
 struct device;
 
-void video_util_clear(struct device* dev, uint32_t rgb);
 uint32_t video_util_get_width(struct device* dev);
 uint32_t video_util_get_height(struct device* dev);
 uint32_t video_util_get_colordepth(struct device* dev);

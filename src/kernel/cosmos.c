@@ -146,6 +146,7 @@ void CosmOS() {
     load_init_binary();
 
     gui_init();
+    gui_draw();
 
     while (1) {
         asm_hlt();

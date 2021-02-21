@@ -11,6 +11,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 #include <sys/video/canvas.h>
+#include <sys/video/rgb.h>
 #include <sys/video/video_util.h>
 
 struct canvas* canvas_new(struct device* dev) {
@@ -45,7 +46,13 @@ void canvas_draw_line(struct canvas* cvs, uint32_t x1, uint32_t y1, uint32_t x2,
 void canvas_draw_pixel(struct canvas* cvs, uint32_t x, uint32_t y, uint32_t rgb) {
     ASSERT_NOT_NULL(cvs);
     uint32_t offset = (cvs, x, y);
-    kprintf("offset #%llX\n", offset);
+    kprintf("offset %#llX,\n", offset);
+    struct rgb_components components;
+    rgb_components(rgb, &components);
+
+    cvs->buffer[offset] = components.b;
+    cvs->buffer[offset + 1] = components.g;
+    cvs->buffer[offset + 2] = components.r;
 }
 
 void canvas_dump(struct canvas* cvs) {
@@ -53,4 +60,36 @@ void canvas_dump(struct canvas* cvs) {
 
     kprintf("width %llu, height %llu depth %llu size %llu\n", cvs->width, cvs->height, cvs->color_depth,
             cvs->buffer_size);
+}
+
+void canvas_blt(struct canvas* cvs) {
+    ASSERT_NOT_NULL(cvs);
+    ASSERT_NOT_NULL(cvs->buffer);
+    ASSERT_NOT_NULL(cvs->dev);
+    video_util_blt(cvs->dev, cvs->buffer, cvs->buffer_size);
+}
+
+void canvas_clear(struct canvas* cvs, uint32_t rgb) {
+    ASSERT_NOT_NULL(cvs);
+    ASSERT_NOT_NULL(cvs->buffer);
+    ASSERT_NOT_NULL(cvs->dev);
+    ASSERT_NOT_NULL(cvs->width);
+    ASSERT_NOT_NULL(cvs->height);
+    ASSERT_NOT_NULL(cvs->buffer_size);
+    ASSERT_NOT_NULL(cvs->color_depth);
+
+    /*
+    * components
+    */
+    struct rgb_components components;
+    rgb_components(rgb, &components);
+    //  kprintf("rgb %#llX, r %#llX, g %#llX, b %#llX\n", rgb, components.r, components.g, components.b);
+    /*
+    * paint
+    */
+    for (uint32_t i = 0; i < (cvs->width * cvs->height * 3); i += 3) {
+        cvs->buffer[i] = components.b;
+        cvs->buffer[i + 1] = components.g;
+        cvs->buffer[i + 2] = components.r;
+    }
 }

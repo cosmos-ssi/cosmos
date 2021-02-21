@@ -17,5 +17,5 @@ struct gui_state_data {
 };
 
 void gui_init();
-
+void gui_draw();
 #endif
