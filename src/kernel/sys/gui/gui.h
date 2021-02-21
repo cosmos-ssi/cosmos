@@ -5,6 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+/*
+* GUI uses the canvas object to draw the GUI
+*/
 #ifndef _GUI_H
 #define _GUI_H
 
