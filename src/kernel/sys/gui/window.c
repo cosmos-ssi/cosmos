@@ -16,8 +16,8 @@ struct window* window_new(uint32_t x, uint32_t y, uint32_t width, uint32_t heigh
     window_set_position(ret, x, y);
     window_set_dimensions(ret, width, height);
     ret->background_color = 0x777777;
-    ret->title_background_color = 0x555555;
-    ret->border_color = 0x052433;  // dark blue
+    ret->title_background_color = 0x052433;  // dark blue
+    ret->border_color = 0x052433;            // dark blue
     return ret;
 }
 
