@@ -12,7 +12,7 @@
 #include <sys/sync/sync.h>
 #include <types.h>
 
-void sched_add(uint64_t cpu, uint64_t core, pid_t pid) {
+linkedlist* sched_add(uint64_t cpu, uint64_t core, pid_t pid) {
     scheduler_task_t* new_task;
     linkedlist* new_list_entry;
 
@@ -41,5 +41,5 @@ void sched_add(uint64_t cpu, uint64_t core, pid_t pid) {
 
     spinlock_release(&task_list_lock);
 
-    return;
+    return new_list_entry;
 }

@@ -62,7 +62,7 @@ extern linkedlist*** task_list;
 void sched_start();
 
 // sched_add.c
-void sched_add(uint64_t cpu, uint64_t core, pid_t pid);
+linkedlist* sched_add(uint64_t cpu, uint64_t core, pid_t pid);
 
 // sched_init.c
 void sched_init();

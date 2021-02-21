@@ -14,11 +14,18 @@
 #define _OBJECTS_H
 
 #include <sys/collection/dtable/dtable.h>
+#include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/proc/proc.h>
 #include <types.h>
 
-typedef enum object_types_t { OBJECT_EXECUTABLE, OBJECT_PRESENTATION, OBJECT_PROCESS } object_types_t;
+typedef enum object_types_t {
+    OBJECT_EXECUTABLE,
+    OBJECT_PRESENTATION,
+    OBJECT_KERNEL_RPOCESS,
+    OBJECT_PROCESS,
+    OBJECT_TASK
+} object_types_t;
 
 typedef uint64_t object_handle_t;
 
@@ -59,6 +66,11 @@ typedef struct object_process_t {
     object_handle_t executable;
 } object_process_t;
 
+typedef struct object_task_t {
+    object_handle_t process;
+    linkedlist* sched_task;
+} object_task_t;
+
 extern dtable object_table;
 extern uint64_t object_table_next_idx;
 
@@ -74,6 +86,7 @@ object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const cha
 
 // object_process.c
 object_handle_t object_create_process(object_handle_t exe, pid_t pid);
+object_handle_t object_create_task(object_handle_t proc);
 
 // object_init.c
 void object_init();
