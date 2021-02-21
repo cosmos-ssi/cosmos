@@ -255,11 +255,11 @@ void vnic_tx(struct device* dev, uint64_t* data, uint16_t size) {
     uint32_t bufferSize = size + sizeof(virtio_net_hdr);
     virtio_net_hdr* netBuffer = iobuffers_request_buffer(bufferSize);
 
-    // Set parameters of netBuffer
-    memset((void*)netBuffer, 0, sizeof(virtio_net_hdr));
+    // Set the header (basic for now - all zeros)
+    memzero((uint8_t*)netBuffer, sizeof(virtio_net_hdr));
 
     // Copy packet to buffer
-    memcpy((void*)((void*)netBuffer + sizeof(virtio_net_hdr)), (void*)data, size);
+    memcpy((uint8_t*)((uint8_t*)netBuffer + sizeof(virtio_net_hdr)), (uint8_t*)data, size);
 
     // get the device data
     struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
