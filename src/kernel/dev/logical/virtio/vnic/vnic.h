@@ -45,7 +45,8 @@
 
 // These are the features required by this driver
 #undef VIRTIO_NET_REQUIRED_FEATURES
-#define VIRTIO_NET_REQUIRED_FEATURES (/*VIRTIO_NET_F_CSUM |*/ VIRTIO_NET_F_MAC | VIRTIO_NET_F_MRG_RXBUF)
+#define VIRTIO_NET_REQUIRED_FEATURES                                                                                   \
+    (VIRTIO_NET_F_CSUM | VIRTIO_NET_F_MAC | VIRTIO_NET_F_MRG_RXBUF | VIRTIO_NET_F_STATUS)
 
 // Flags for virtio_net_hdr
 #define VIRTIO_NET_HDR_F_NEEDS_CSUM 1
@@ -62,6 +63,10 @@
 // Indexes of virtqs on device. See // see 4.1.5.1.3 of virtio-v1.0-cs04.pdf
 #define VIRTQ_NET_RECEIVE_INDEX 0
 #define VIRTQ_NET_TRANSMIT_INDEX 1
+
+// Status exists if VIRTIO_NET_F_STATUS is set
+#define VIRTIO_NET_S_LINK_UP 1
+#define VIRTIO_NET_S_ANNOUNCE 2
 
 // Every packet sent or received must be preceded by a virtio_net_hdr
 typedef struct virtio_net_hdr {
@@ -82,9 +87,9 @@ struct vnic_devicedata {
 
 void devicemgr_register_vnic_devices();
 
-uint32_t vnic_read_register(uint16_t reg);
+uint32_t vnic_read_register(uint32_t reg);
 
-void vnic_write_register(uint16_t reg, uint32_t data);
+void vnic_write_register(uint32_t reg, uint32_t data);
 
 void vnic_setup_receive_buffers(struct virtq* receiveQueue, uint8_t count);
 

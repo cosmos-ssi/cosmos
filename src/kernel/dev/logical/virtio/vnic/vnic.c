@@ -19,12 +19,13 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
+#include <sys/string/string.h>
 #include <types.h>
 
 uint16_t vnet_base_port;
 uint8_t mac_addr[6];
 
-inline uint32_t vnic_read_register(uint16_t reg) {
+inline uint32_t vnic_read_register(uint32_t reg) {
     // if 4-byte register
     if (reg < VIRTIO_QUEUE_SIZE) {
         return asm_in_d(vnet_base_port + reg);
@@ -37,7 +38,7 @@ inline uint32_t vnic_read_register(uint16_t reg) {
     }
 }
 
-inline void vnic_write_register(uint16_t reg, uint32_t data) {
+inline void vnic_write_register(uint32_t reg, uint32_t data) {
     // if 4-byte register
     if (reg < VIRTIO_QUEUE_SIZE) {
         asm_out_d(vnet_base_port + reg, data);
@@ -80,9 +81,24 @@ void vnic_init_virtqueue(struct virtq** virtqueue, uint16_t queueIndex) {
     vnic_write_register(VIRTIO_QUEUE_ADDRESS, q_shifted);
 }
 
+uint8_t get_link_status() {
+    uint32_t device_status = vnic_read_register(VIRTIO_DEVICE_STATUS);
+    return ((device_status & VIRTIO_NET_S_LINK_UP) == VIRTIO_NET_S_LINK_UP);
+}
+
+void print_link_status() {
+    uint8_t link_status = get_link_status();
+    kprintf("   link status: %lu - ", link_status);
+
+    if (0 != link_status) {
+        kprintf("UP\n");
+    } else {
+        kprintf("DOWN\n");
+    }
+}
+
 uint8_t vnic_initialize_device(struct device* dev) {
     struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
-    uint8_t device_status;
 
     // get the I/O port
     device_data->base = pci_calcbar(dev->pci);
@@ -91,8 +107,7 @@ uint8_t vnic_initialize_device(struct device* dev) {
     kprintf("Initializing virtio-net driver... Base address: %#hX\n", vnet_base_port);
 
     // get starting device status
-    device_status = (uint8_t)vnic_read_register(VIRTIO_DEVICE_STATUS);
-    kprintf("   device status is %hX\n", device_status);
+    print_link_status();
 
     // Reset the virtio-network device
     vnic_write_register(VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_RESET_DEVICE);
@@ -150,7 +165,8 @@ uint8_t vnic_initialize_device(struct device* dev) {
             dev->pci->vendor_id, dev->pci->device_id, device_data->base, dev->name);
 
     // Tell the device it's initialized
-    vnic_write_register(VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_DRIVER_READY);
+    vnic_write_register(VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_DEVICE_ACKNOWLEGED | VIRTIO_STATUS_DRIVER_LOADED |
+                                                  VIRTIO_STATUS_FEATURES_OK | VIRTIO_STATUS_DRIVER_READY);
 
     // Remind the device that it has receive buffers.
     vnic_write_register(VIRTIO_QUEUE_NOTIFY, VIRTQ_NET_RECEIVE_INDEX);
@@ -160,9 +176,7 @@ uint8_t vnic_initialize_device(struct device* dev) {
     // DHCP_Send_Discovery(mac_addr);
 
     // get ending device status
-    device_status = (uint8_t)vnic_read_register(VIRTIO_DEVICE_STATUS);
-    kprintf("   device status is %hX\n", device_status);
-
+    print_link_status();
     kprintf("   virtio-net driver initialized.\n");
     return 1;
 }

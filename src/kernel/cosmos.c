@@ -202,5 +202,5 @@ void dev_tests() {
     // test_initrd();
     //  test_acpi();
     // test_virtio_virtqueue();
-    // test_virtio_vnic();
+    test_virtio_vnic();
 }

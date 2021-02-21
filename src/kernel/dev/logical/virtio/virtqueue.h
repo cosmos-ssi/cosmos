@@ -83,4 +83,7 @@ uint16_t virtq_get_available_idx(struct virtq* queue);
 // used
 uint16_t virtq_get_used_idx(struct virtq* queue);
 
+uint16_t find_first_empty_slot(struct virtq* queue);
+
+void virtq_print(uint8_t qname[], struct virtq* queue);
 #endif

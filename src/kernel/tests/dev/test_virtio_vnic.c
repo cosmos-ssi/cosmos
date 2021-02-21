@@ -6,6 +6,7 @@
 // ****************************************************************
 
 #include <dev/logical/virtio/virtio.h>
+#include <dev/logical/virtio/virtqueue.h>
 #include <dev/logical/virtio/vnic/vnic.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
@@ -27,10 +28,22 @@ void test_virtio_vnic() {
     }
 
     struct deviceapi_nic* nic_api = (struct deviceapi_nic*)dev->api;
+    struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
 
-    uint8_t num = 42;
-    nic_api->write(dev, (uint64_t*)&num, 8);
+    // status
+    uint8_t txq[] = {"TXQ: "};
+    uint8_t rxq[] = {"RXQ: "};
 
-    device_status = (uint8_t)vnic_read_register(VIRTIO_DEVICE_STATUS);
-    kprintf("   device status is %hX\n", device_status);
+    virtq_print(rxq, device_data->receive_queue);
+
+    uint8_t x = 0;
+    for (x = 0; x < 20; x++) {
+        virtq_print(txq, device_data->send_queue);
+
+        uint8_t s[] = {"test string"};
+        nic_api->write(dev, (uint64_t*)&s, sizeof(s));
+        device_status = (uint8_t)vnic_read_register(VIRTIO_DEVICE_STATUS);
+        kprintf("   device status is %hX\n", device_status);
+    }
+    virtq_print(rxq, device_data->receive_queue);
 }

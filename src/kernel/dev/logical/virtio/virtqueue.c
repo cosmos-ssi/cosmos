@@ -61,6 +61,26 @@ struct virtq* virtq_new(uint16_t size) {
 }
 
 /*
+ * print virtq
+ */
+void virtq_print(uint8_t qname[], struct virtq* queue) {
+    kprintf(qname);
+    kprintf("availidx: %u, usedidx: %u, lastidx: %u | ", queue->avail.idx, queue->used.idx, queue->last_seen_used);
+    kprintf("nextempty: %u, ", find_first_empty_slot(queue));
+    kprintf("status: ");
+    if (0 != queue->descriptors) {
+        for (uint16_t i = 0; i < queue->size; i++) {
+            if (0 == (queue->descriptors)[i]) {
+                kprintf("N");
+            } else {
+                kprintf("Y");
+            }
+        }
+        kprintf("\n");
+    }
+}
+
+/*
  * delete virtq
  */
 void virtq_delete(struct virtq* queue) {
