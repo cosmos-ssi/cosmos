@@ -27,4 +27,5 @@ void window_render(struct window* wind, struct canvas* cvs) {
     canvas_draw_line(cvs, wind->x, wind->y + wind->height, wind->x + wind->width, wind->y + wind->height, 0x000000);
     canvas_draw_line(cvs, wind->x, wind->y, wind->x, wind->y + wind->height, 0x000000);
     canvas_draw_line(cvs, wind->x + wind->width, wind->y, wind->x + wind->width, wind->y + wind->height, 0x000000);
+    canvas_fill(cvs, wind->x + 1, wind->y + 1, wind->x + wind->width - 1, wind->y + wind->height - 1, 0x777777);
 }

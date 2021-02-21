@@ -30,7 +30,7 @@ void canvas_draw_line(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1,
 void canvas_draw_pixel(struct canvas* cvs, uint32_t x, uint32_t y, uint32_t rgb);
 void canvas_dump(struct canvas* cvs);
 void canvas_clear(struct canvas* cvs, uint32_t rgb);
-
+void canvas_fill(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb);
 /*
 * blt the canvas to the underlying BGA device
 */
