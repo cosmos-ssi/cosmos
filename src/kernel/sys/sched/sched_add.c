@@ -19,6 +19,7 @@ void sched_add(uint64_t cpu, uint64_t core, pid_t pid) {
     new_task = (scheduler_task_t*)kmalloc(sizeof(scheduler_task_t));
 
     new_task->pid = pid;
+    new_task->notify_term = 0;
 
     /*
      * All new tasks begin in the SCHED_SLEEPING state; they do not begin
