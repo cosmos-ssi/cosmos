@@ -12,37 +12,29 @@
 #include <sys/string/mem.h>
 #include <sys/video/video_util.h>
 
-uint32_t video_util_get_width(struct device* dev) {
+void video_get_resolution(struct device* dev, struct deviceapi_resolution* resolution) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
+    ASSERT_NOT_NULL(resolution);
     ASSERT(dev->devicetype == BGA);
     struct deviceapi_bga* api = (struct deviceapi_bga*)dev->api;
-    if (0 != api->get_width) {
-        return (*api->get_width)(dev);
+    if (0 != api->get_resolution) {
+        (*api->get_resolution)(dev, resolution);
     }
-    return 0;
 }
 
-uint32_t video_util_get_height(struct device* dev) {
+void video_set_resolution(struct device* dev, struct deviceapi_resolution* resolution) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT(dev->devicetype == BGA);
-    struct deviceapi_bga* api = (struct deviceapi_bga*)dev->api;
-    if (0 != api->get_height) {
-        return (*api->get_height)(dev);
-    }
-    return 0;
-}
-
-uint32_t video_util_get_colordepth(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
+    ASSERT_NOT_NULL(resolution);
     ASSERT(dev->devicetype == BGA);
     struct deviceapi_bga* api = (struct deviceapi_bga*)dev->api;
-    if (0 != api->get_colordepth) {
-        return (*api->get_colordepth)(dev);
+    if (0 != api->set_resolution) {
+        (*api->set_resolution)(dev, resolution);
     }
-    return 0;
 }
 
 uint32_t video_util_get_buffersize(struct device* dev) {

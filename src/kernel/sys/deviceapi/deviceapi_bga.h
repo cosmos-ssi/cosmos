@@ -13,16 +13,20 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-typedef uint32_t (*bga_get_width_function)(struct device* dev);
-typedef uint32_t (*bga_get_height_function)(struct device* dev);
-typedef uint32_t (*bga_get_colordepth_function)(struct device* dev);
+struct deviceapi_resolution {
+    uint32_t width;
+    uint32_t height;
+    uint32_t color_depth;
+};
+
+typedef void (*bga_get_resolution_function)(struct device* dev, struct deviceapi_resolution* resolution);
+typedef void (*bga_set_resolution_function)(struct device* dev, struct deviceapi_resolution* resolution);
 typedef uint32_t (*bga_get_buffersize_function)(struct device* dev);
 typedef void (*bga_blt_function)(struct device* dev, uint8_t* buffer, uint32_t buffer_size);
 
 struct deviceapi_bga {
-    bga_get_width_function get_width;
-    bga_get_height_function get_height;
-    bga_get_colordepth_function get_colordepth;
+    bga_get_resolution_function get_resolution;
+    bga_set_resolution_function set_resolution;
     bga_get_buffersize_function get_buffersize;
     bga_blt_function blt;
 };

@@ -52,6 +52,8 @@
 #define VBE_DISPI_LFB_ENABLED 0x40
 #define VBE_DISPI_NOCLEARMEM 0x80
 
+void bga_set_resolution(struct device* dev, struct deviceapi_resolution* resolution);
+
 struct bga_devicedata {
     uint64_t lfb_physical;
     uint64_t lfb_virtual;
@@ -111,53 +113,17 @@ uint8_t bga_device_init(struct device* dev) {
     /*
     * screen params
     */
-    device_data->width = 1024;
-    device_data->height = 768;
-    device_data->bit_depth = 32;
+    struct deviceapi_resolution resolution;
+    resolution.width = 1280;
+    resolution.height = 1024;
+    resolution.color_depth = 32;
 
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX at lfb(physical) %#llX lfb(virtual) %#llX (%s)\n",
             dev->description, dev->pci->irq, dev->pci->vendor_id, dev->pci->device_id, device_data->lfb_physical,
             device_data->lfb_virtual, dev->name);
     kprintf("bga_buffer_size : %#llX\n", bga_buffer_size(device_data));
-
-    //  kprintf("bar0 : %#llX\n", dev->pci->bars[0]);
-    //  kprintf("bar1 : %#llX\n", dev->pci->bars[1]);
-    //  kprintf("bar2 : %#llX\n", dev->pci->bars[2]);
-    //  kprintf("bar3 : %#llX\n", dev->pci->bars[3]);
-    //  kprintf("bar4 : %#llX\n", dev->pci->bars[4]);
-    //  kprintf("bar5 : %#llX\n", dev->pci->bars[5]);
-
-    //  if (bga_is_available()) {
-    bga_set_video_mode(device_data->width, device_data->height, device_data->bit_depth, 1, 1);
-    //  }
-
-    memset((uint8_t*)device_data->lfb_virtual, 0x33, (device_data->width * device_data->height) * 3);
-
+    bga_set_resolution(dev, &resolution);
     return 1;
-}
-
-uint32_t bga_get_width(struct device* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->pci);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
-    return device_data->width;
-}
-
-uint32_t bga_get_height(struct device* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->pci);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
-    return device_data->height;
-}
-
-uint32_t bga_get_colordepth(struct device* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->pci);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
-    return device_data->bit_depth;
 }
 
 uint32_t bga_get_buffersize(struct device* dev) {
@@ -177,6 +143,31 @@ void bga_blt(struct device* dev, uint8_t* buffer, uint32_t buffer_size) {
     memcpy((uint8_t*)device_data->lfb_virtual, buffer, buffer_size);
 }
 
+void bga_get_resolution(struct device* dev, struct deviceapi_resolution* resolution) {
+    ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->pci);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(resolution);
+    resolution->color_depth = device_data->bit_depth;
+    resolution->height = device_data->height;
+    resolution->width = device_data->width;
+}
+
+void bga_set_resolution(struct device* dev, struct deviceapi_resolution* resolution) {
+    ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(dev->pci);
+    ASSERT_NOT_NULL(dev->device_data);
+    struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(resolution);
+    device_data->bit_depth = resolution->color_depth;
+    device_data->height = resolution->height;
+    device_data->width = resolution->width;
+    bga_set_video_mode(device_data->width, device_data->height, device_data->bit_depth, 1, 1);
+    memset((uint8_t*)device_data->lfb_virtual, 0x33,
+           (device_data->width * device_data->height) * (device_data->bit_depth / 8));
+}
+
 void bga_search_cb(struct pci_device* dev) {
     ASSERT_NOT_NULL(dev);
     /*
@@ -192,9 +183,8 @@ void bga_search_cb(struct pci_device* dev) {
      * device api
      */
     struct deviceapi_bga* api = (struct deviceapi_bga*)kmalloc(sizeof(struct deviceapi_bga));
-    api->get_colordepth = &bga_get_colordepth;
-    api->get_width = &bga_get_width;
-    api->get_height = &bga_get_height;
+    api->get_resolution = &bga_get_resolution;
+    api->set_resolution = &bga_set_resolution;
     api->get_buffersize = &bga_get_buffersize;
     api->blt = &bga_blt;
     deviceinstance->api = api;
