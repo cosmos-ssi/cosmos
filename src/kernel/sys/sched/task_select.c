@@ -11,8 +11,8 @@
 linkedlist* task_select() {
     /*
      * This function does not actually start the next task or update the
-     * current_task pointer, because sometimes it may be useful to know what the
-     * next task to be switched to would be, without actually switching to it
+     * current_task pointer.  It does, however, increment times_skipped as
+     * appropriate.
      */
 
     linkedlist* pos;
@@ -27,7 +27,15 @@ linkedlist* task_select() {
 
         if ((TASK_DATA(pos)->times_skipped > TASK_DATA(best_candidate)->times_skipped) &&
             (TASK_DATA(pos)->state == SCHED_SLEEPING)) {
+
+            // Since we're now skipping the prior best_candidate...
+            TASK_DATA(best_candidate)->times_skipped++;
+
+            // And we have a new best_candidate
             best_candidate = pos;
+
+        } else {
+            TASK_DATA(pos)->times_skipped++;
         }
 
         pos = pos->next;
