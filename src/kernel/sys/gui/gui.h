@@ -15,11 +15,13 @@
 
 struct canvas;
 struct bdf;
+struct arraylist;
 
 struct gui_state_data {
     uint32_t background_color;
     struct canvas* canvas;
     struct bdf* font;
+    struct arraylist* windows;
 };
 
 void gui_init();

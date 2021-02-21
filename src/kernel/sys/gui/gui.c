@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/gui/bdf.h>
@@ -30,6 +31,7 @@ void gui_init() {
         gui_state->canvas = canvas_new(bga);
         gui_state->background_color = 0x97cee8;  // light blue
         gui_state->font = bdf_new();
+        gui_state->windows = arraylist_new();
         bdf_load(gui_state->font, "fs2", "ter-u12b.bdf");
         //   canvas_dump(gui_state->canvas);
     } else {

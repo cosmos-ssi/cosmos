@@ -13,11 +13,16 @@
 #ifndef _BDF_H
 #define _BDF_H
 
+#include <sys/collection/arraylist/arraylist.h>
 #include <types.h>
 
+struct bdf_glyph {
+    uint8_t name[16];
+    uint8_t data[12];
+};
+
 struct bdf {
-    uint8_t* buffer;
-    uint32_t buffer_size;
+    struct arraylist* glyphs;
 };
 
 struct bdf* bdf_new();

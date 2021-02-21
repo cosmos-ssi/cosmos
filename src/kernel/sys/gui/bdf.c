@@ -12,25 +12,29 @@
 #include <sys/gui/bdf.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/string/mem.h>
+#include <sys/string/string.h>
 
 struct bdf* bdf_new() {
     struct bdf* ret = kmalloc(sizeof(struct bdf));
     memzero((uint8_t*)ret, sizeof(struct bdf));
+    ret->glyphs = arraylist_new();
     return ret;
+}
+
+void bdf_parse(struct bdf* font, uint8_t* buffer, uint32_t buffer_size) {
+    ASSERT_NOT_NULL(font);
+    ASSERT_NOT_NULL(buffer);
+    ASSERT_NOT_NULL(buffer_size);
+    uint32_t position_chars = strstr(buffer, 0, "CHARS");
+    kprintf("position_chars %llu\n", position_chars);
+    uint32_t position_end_chars = strstr(buffer, position_chars, "\n");
+    kprintf("position_end_chars %llu\n", position_end_chars);
 }
 
 void bdf_load(struct bdf* font, uint8_t* devname, uint8_t* filename) {
     ASSERT_NOT_NULL(devname);
     ASSERT_NOT_NULL(filename);
     ASSERT_NOT_NULL(font);
-    /*
-    * delete previous bmp if there is one
-    */
-    if (0 != font->buffer) {
-        kfree(font->buffer);
-        font->buffer = 0;
-        font->buffer_size = 0;
-    }
 
     /*
     * get device
@@ -46,10 +50,10 @@ void bdf_load(struct bdf* font, uint8_t* devname, uint8_t* filename) {
         */
         struct filesystem_node* fs_node = fsfacade_find_node_by_name(fs_root_node, filename);
         if (0 != fs_node) {
-            font->buffer_size = fsfacade_size(fs_node);
-            uint8_t* buffer = kmalloc(font->buffer_size);
-            fsfacade_read(fs_node, buffer, font->buffer_size);
-            font->buffer = buffer;
+            uint32_t buffer_size = fsfacade_size(fs_node);
+            uint8_t* buffer = kmalloc(buffer_size);
+            fsfacade_read(fs_node, buffer, buffer_size);
+            bdf_parse(font, buffer, buffer_size);
             // debug_show_memblock(font->buffer, font->buffer_size);
         } else {
             kprintf("Unable to find file %s for Font\n", filename);
@@ -60,8 +64,10 @@ void bdf_load(struct bdf* font, uint8_t* devname, uint8_t* filename) {
 }
 void bdf_delete(struct bdf* font) {
     ASSERT_NOT_NULL(font);
-    if (0 != font->buffer) {
-        kfree(font->buffer);
+    if (0 != font->glyphs) {
+        for (uint32_t i = 0; i < arraylist_count(font->glyphs); i++) {
+            kfree(arraylist_get(font->glyphs, i));
+        }
     }
     kfree(font);
 }
