@@ -130,13 +130,10 @@ void CosmOS() {
     dev_tests();
 
     // show the vfs
-    kprintf("***** Devices *****\n");
+    // kprintf("***** Devices *****\n");
     //  devicemgr_dump_devices();
 
-    kprintf("\n");
-    kprintf("***** VFS *****\n");
-    kprintf("\n");
-    dump_vfs();
+    //   dump_vfs();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
     kprintf("\n");
@@ -154,6 +151,9 @@ void CosmOS() {
 }
 
 void dump_vfs() {
+    kprintf("\n");
+    kprintf("***** VFS *****\n");
+    kprintf("\n");
     struct device* vfs_dev = devicemgr_find_device("vfs0");
     ASSERT_NOT_NULL(vfs_dev);
     struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(vfs_dev);

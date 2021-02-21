@@ -32,17 +32,17 @@ void test_objects() {
     ASSERT_NOT_NULL(fs_file_node);
 
     idx = fs_file_node->id;
-    kprintf("Index: %hu\n", idx);
+    //   kprintf("Index: %hu\n", idx);
 
-    object_handle_t pres_handle;
+    // object_handle_t pres_handle;
 
-    pres_handle = object_create_presentation(disk, idx, "test.bin");
-    object_handle_t exe_handle = object_create_executable_from_presentation(pres_handle);
+    // pres_handle = object_create_presentation(disk, idx, "test.bin");
+    // object_handle_t exe_handle = object_create_executable_from_presentation(pres_handle);
 
-    kprintf("pres_handle, exe_handle: %llu, %llu\n", pres_handle, exe_handle);
+    // kprintf("pres_handle, exe_handle: %llu, %llu\n", pres_handle, exe_handle);
 
-    object_executable_t* obj_exe = object_get_data(exe_handle);
-    kprintf("page start, len: %llX %llX\n", (uint64_t)obj_exe->page_base, (uint64_t)obj_exe->page_count);
+    // object_executable_t* obj_exe = object_get_data(exe_handle);
+    //  kprintf("page start, len: %llX %llX\n", (uint64_t)obj_exe->page_base, (uint64_t)obj_exe->page_count);
 
     initrd_detach(initrd);
 

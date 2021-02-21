@@ -7,6 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/gui/bmp.h>
 #include <sys/gui/gui.h>
 #include <sys/gui/window.h>
 #include <sys/kmalloc/kmalloc.h>
@@ -18,6 +19,8 @@
 struct gui_state_data* gui_state;
 
 #define VGA_DEVICE_NAME "bga0"
+#define INIT_DEVICE_NAME "fs2"
+#define WALLPAPER_NAME "ocean.bmp"
 
 void gui_init() {
     struct device* bga = devicemgr_find_device(VGA_DEVICE_NAME);
@@ -36,12 +39,11 @@ void gui_draw() {
     ASSERT_NOT_NULL(gui_state->canvas);
 
     canvas_clear(gui_state->canvas, gui_state->background_color);
-
-    //  canvas_draw_pixel(gui_state->canvas, 0, 0, 0x111111);
     canvas_blt(gui_state->canvas);
 
-    //    canvas_draw_line(gui_state->canvas, 0, 0, 300, 300, 0x222222);
-    //    canvas_blt(gui_state->canvas);
+    //   struct bmp* wallpaper = kmalloc(sizeof(struct bmp));
+    //   bmp_load(INIT_DEVICE_NAME, WALLPAPER_NAME, wallpaper);
+    //   kprintf("wallpaper size %llu\n", wallpaper->buffer_size);
 
     struct window* w1 = window_new(400, 400, 100, 100);
     struct window* w2 = window_new(50, 50, 300, 300);
