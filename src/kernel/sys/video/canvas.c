@@ -39,22 +39,6 @@ uint32_t canvas_pixel_offset(struct canvas* cvs, uint32_t x, uint32_t y) {
     return (cvs->width * y * 3) + x;
 }
 
-void canvas_draw_line(struct canvas* cvs, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t rgb) {
-    ASSERT_NOT_NULL(cvs);
-}
-
-void canvas_draw_pixel(struct canvas* cvs, uint32_t x, uint32_t y, uint32_t rgb) {
-    ASSERT_NOT_NULL(cvs);
-    uint32_t offset = (cvs, x, y);
-    kprintf("offset %#llX,\n", offset);
-    struct rgb_components components;
-    rgb_components(rgb, &components);
-
-    cvs->buffer[offset] = components.b;
-    cvs->buffer[offset + 1] = components.g;
-    cvs->buffer[offset + 2] = components.r;
-}
-
 void canvas_dump(struct canvas* cvs) {
     ASSERT_NOT_NULL(cvs);
 
@@ -91,5 +75,45 @@ void canvas_clear(struct canvas* cvs, uint32_t rgb) {
         cvs->buffer[i] = components.b;
         cvs->buffer[i + 1] = components.g;
         cvs->buffer[i + 2] = components.r;
+    }
+}
+
+void canvas_draw_pixel(struct canvas* cvs, uint32_t x, uint32_t y, uint32_t rgb) {
+    ASSERT_NOT_NULL(cvs);
+    uint32_t offset = canvas_pixel_offset(cvs, x, y);
+    kprintf("offset %#llX,\n", offset);
+    struct rgb_components components;
+    rgb_components(rgb, &components);
+    //  kprintf("rgb %#llX, r %#llX, g %#llX, b %#llX\n", rgb, components.r, components.g, components.b);
+
+    cvs->buffer[offset] = components.b;
+    cvs->buffer[offset + 1] = components.g;
+    cvs->buffer[offset + 2] = components.r;
+}
+
+/*
+* https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
+*/
+void canvas_draw_line(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
+    uint32_t dx, dy, p, x, y;
+
+    dx = x1 - x0;
+    dy = y1 - y0;
+
+    x = x0;
+    y = y0;
+
+    p = 2 * dy - dx;
+
+    while (x < x1) {
+        if (p >= 0) {
+            canvas_draw_pixel(cvs, x, y, rgb);
+            y = y + 1;
+            p = p + 2 * dy - 2 * dx;
+        } else {
+            canvas_draw_pixel(cvs, x, y, rgb);
+            p = p + 2 * dy;
+        }
+        x = x + 1;
     }
 }

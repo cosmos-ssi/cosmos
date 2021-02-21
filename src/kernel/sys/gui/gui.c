@@ -33,8 +33,11 @@ void gui_draw() {
     ASSERT_NOT_NULL(gui_state);
     ASSERT_NOT_NULL(gui_state->canvas);
 
-    canvas_clear(gui_state->canvas, 0xFFFFFF);
+    canvas_clear(gui_state->canvas, 0xAAAA77);
 
-    canvas_draw_pixel(gui_state->canvas, 0, 0, 0x111111);
+    //  canvas_draw_pixel(gui_state->canvas, 0, 0, 0x111111);
+    canvas_blt(gui_state->canvas);
+
+    canvas_draw_line(gui_state->canvas, 0, 0, 300, 300, 0x222222);
     canvas_blt(gui_state->canvas);
 }
