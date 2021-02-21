@@ -9,5 +9,20 @@
 #include <sys/sched/sched.h>
 
 linkedlist* task_find(pid_t pid) {
-    return 0;
+    uint64_t cpu, core;
+    proc_info_t* p;
+    linkedlist* cur;
+
+    p = dtable_get(proc_table, pid);
+
+    cpu = p->cpu;
+    core = p->core;
+
+    cur = task_list[cpu][core];
+
+    while (TASK_DATA(cur)->pid != p) {
+        cur = cur->next;
+    }
+
+    return cur;
 }
