@@ -8,6 +8,7 @@
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/gui/gui.h>
+#include <sys/gui/window.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
@@ -38,6 +39,10 @@ void gui_draw() {
     //  canvas_draw_pixel(gui_state->canvas, 0, 0, 0x111111);
     canvas_blt(gui_state->canvas);
 
-    canvas_draw_line(gui_state->canvas, 0, 0, 300, 300, 0x222222);
+    //    canvas_draw_line(gui_state->canvas, 0, 0, 300, 300, 0x222222);
+    //    canvas_blt(gui_state->canvas);
+
+    struct window* w = window_new(50, 50, 300, 300);
+    window_render(w, gui_state->canvas);
     canvas_blt(gui_state->canvas);
 }
