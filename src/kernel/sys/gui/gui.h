@@ -16,6 +16,7 @@
 struct canvas;
 struct bdf;
 struct arraylist;
+struct window;
 
 struct gui_state_data {
     uint32_t background_color;
@@ -26,4 +27,7 @@ struct gui_state_data {
 
 void gui_init();
 void gui_draw();
+
+struct window* gui_new_window();
+
 #endif
