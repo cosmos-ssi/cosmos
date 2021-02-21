@@ -25,20 +25,23 @@ struct canvas* canvas_new(struct device* dev) {
     ret->buffer = kmalloc(ret->buffer_size);
     ret->dev = dev;
     ret->bytes_per_pixel = ret->resolution.color_depth / 8;
-    ASSERT(ret->bytes_per_pixel == 4);
     return ret;
 }
 
 void canvas_delete(struct canvas* cvs) {
     ASSERT_NOT_NULL(cvs);
+    ASSERT_NOT_NULL(cvs->buffer);
     kfree(cvs->buffer);
     kfree(cvs);
 }
 
 uint32_t canvas_pixel_offset(struct canvas* cvs, uint32_t x, uint32_t y) {
     ASSERT_NOT_NULL(cvs);
+    ASSERT_NOT_NULL(cvs->resolution.width);
+    ASSERT_NOT_NULL(cvs->resolution.height);
     ASSERT(x < cvs->resolution.width);
     ASSERT(y < cvs->resolution.height);
+    ASSERT(cvs->bytes_per_pixel > 0);
     return cvs->bytes_per_pixel * ((cvs->resolution.width * y) + x);
 }
 
