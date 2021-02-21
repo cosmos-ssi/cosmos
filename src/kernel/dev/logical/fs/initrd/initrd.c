@@ -52,7 +52,7 @@ uint8_t initrd_init(struct device* dev) {
     * read the header
     */
     blockutil_read(device_data->partition_device, (uint8_t*)&(device_data->header), sizeof(struct initrd_header),
-                   device_data->lba);
+                   device_data->lba, 0);
 
     kprintf("Init %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
     return 1;
@@ -134,7 +134,7 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
         /*
         * read the blocks
         */
-        blockutil_read(device_data->partition_device, buffer, buffer_size, target_lba);
+        blockutil_read(device_data->partition_device, buffer, buffer_size, target_lba, 0);
 
         //   kprintf("blockutil_read completed\n");
         /*

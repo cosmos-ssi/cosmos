@@ -33,7 +33,7 @@ struct guid_pt_devicedata {
 void guid_pt_read_guid_pt_header(struct device* dev, struct guid_pt_header* header) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(header);
-    blockutil_read(dev, (uint8_t*)header, sizeof(struct guid_pt_header), GUID_PT_HEADER_LBA);
+    blockutil_read(dev, (uint8_t*)header, sizeof(struct guid_pt_header), GUID_PT_HEADER_LBA, 0);
 }
 
 /*
@@ -126,7 +126,7 @@ void guid_pt_read_guid_pt_entry(struct device* dev, struct guid_pt_entry* entry,
     * read the sector
     */
     uint8_t data[sector_size];
-    blockutil_read(device_data->block_device, data, sector_size, header.gpt_array_lba + sector);
+    blockutil_read(device_data->block_device, data, sector_size, header.gpt_array_lba + sector, 0);
     memcpy((uint8_t*)entry, &(data[remainder]), sizeof(struct guid_pt_entry));
 
     //   debug_show_memblock(entry, sizeof(struct guid_pt_entry));
@@ -220,7 +220,7 @@ uint32_t guid_part_read_sectors(struct device* dev, uint8_t partition_index, uin
     ASSERT_NOT_NULL(dev->device_data);
     struct guid_pt_devicedata* device_data = (struct guid_pt_devicedata*)dev->device_data;
     uint64_t lba = guid_pt_part_table_get_partition_lba(dev, partition_index);
-    return blockutil_read(device_data->block_device, data, data_size, lba + start_lba);
+    return blockutil_read(device_data->block_device, data, data_size, lba + start_lba, 0);
 }
 
 uint32_t guid_part_write_sectors(struct device* dev, uint8_t partition_index, uint8_t* data, uint32_t data_size,
@@ -229,7 +229,7 @@ uint32_t guid_part_write_sectors(struct device* dev, uint8_t partition_index, ui
     ASSERT_NOT_NULL(dev->device_data);
     struct guid_pt_devicedata* device_data = (struct guid_pt_devicedata*)dev->device_data;
     uint64_t lba = guid_pt_part_table_get_partition_lba(dev, partition_index);
-    return blockutil_write(device_data->block_device, data, data_size, lba + start_lba);
+    return blockutil_write(device_data->block_device, data, data_size, lba + start_lba, 0);
 }
 
 struct device* guid_pt_attach(struct device* block_device) {

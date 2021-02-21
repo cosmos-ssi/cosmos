@@ -50,9 +50,11 @@ uint32_t blockutil_get_total_size(struct device* dev) {
 /*
  * write multiple sectors
  */
-uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba,
+                         uint32_t start_byte) {
 
     //   kprintf("blockutil_write device %s, data_size %llu, start_lba %llu\n", dev->name, data_size, start_lba);
+    ASSERT(0 == start_byte);
 
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
@@ -112,10 +114,11 @@ uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, 
 /*
  * read multiple sectors
  */
-uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba,
+                        uint32_t start_byte) {
 
     //   kprintf("blockutil_read device %s, data_size %llu, start_lba %llu\n", dev->name, data_size, start_lba);
-
+    ASSERT(0 == start_byte);
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT_NOT_NULL(data);
