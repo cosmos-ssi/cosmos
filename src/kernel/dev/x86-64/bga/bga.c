@@ -65,12 +65,6 @@ uint32_t bga_buffer_size(struct bga_devicedata* device_data) {
     return (device_data->height * device_data->width) * (device_data->bit_depth / 8);
 }
 
-// *3 for 24 bit color
-uint32_t bga_get_offset(struct bga_devicedata* device_data, uint32_t x, uint32_t y) {
-    ASSERT_NOT_NULL(device_data);
-    return (device_data->width * y * 3) + x;
-}
-
 void bga_write_register(uint16_t index_value, uint16_t data_value) {
     asm_out_w(VBE_DISPI_IOPORT_INDEX, index_value);
     asm_out_w(VBE_DISPI_IOPORT_DATA, data_value);
@@ -149,6 +143,7 @@ uint32_t bga_get_width(struct device* dev) {
     struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
     return device_data->width;
 }
+
 uint32_t bga_get_height(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
@@ -156,6 +151,7 @@ uint32_t bga_get_height(struct device* dev) {
     struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
     return device_data->height;
 }
+
 uint32_t bga_get_colordepth(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
