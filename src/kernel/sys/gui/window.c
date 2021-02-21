@@ -16,6 +16,7 @@ struct window* window_new(uint32_t x, uint32_t y, uint32_t width, uint32_t heigh
     window_set_position(ret, x, y);
     window_set_dimensions(ret, width, height);
     ret->background_color = 0x777777;
+    ret->title_background_color = 0x555555;
     ret->border_color = 0x052433;  // dark blue
     return ret;
 }
@@ -25,13 +26,17 @@ void window_render(struct window* wind, struct canvas* cvs) {
     ASSERT_NOT_NULL(cvs);
     //  kprintf("x %llu, y %llu, width %llu, height %llu\n", wind->x, wind->y, wind->width, wind->height);
     canvas_draw_line(cvs, wind->x, wind->y, wind->x + wind->width, wind->y, wind->border_color);
+    canvas_draw_line(cvs, wind->x, wind->y + wind->titlebar_height, wind->x + wind->width,
+                     wind->y + wind->titlebar_height, wind->border_color);
     canvas_draw_line(cvs, wind->x, wind->y + wind->height, wind->x + wind->width, wind->y + wind->height,
                      wind->border_color);
     canvas_draw_line(cvs, wind->x, wind->y, wind->x, wind->y + wind->height, wind->border_color);
     canvas_draw_line(cvs, wind->x + wind->width, wind->y, wind->x + wind->width, wind->y + wind->height,
                      wind->border_color);
-    canvas_fill(cvs, wind->x + 1, wind->y + 1, wind->x + wind->width - 1, wind->y + wind->height - 1,
-                wind->background_color);
+    canvas_fill(cvs, wind->x + 1, wind->y + wind->titlebar_height + 1, wind->x + wind->width - 1,
+                wind->y + wind->height - 1, wind->background_color);
+    canvas_fill(cvs, wind->x + 1, wind->y + 1, wind->x + wind->width - 1, wind->y + wind->titlebar_height - 1,
+                wind->title_background_color);
 }
 
 void window_set_position(struct window* wind, uint32_t x, uint32_t y) {

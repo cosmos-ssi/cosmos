@@ -20,6 +20,7 @@ struct window {
     uint32_t background_color;
     uint32_t border_color;
     uint32_t titlebar_height;
+    uint32_t title_background_color;
 };
 
 struct window* window_new(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
