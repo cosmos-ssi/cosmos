@@ -74,6 +74,7 @@ uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, 
     // check that end sector is reasonable
     uint32_t sector_size = blockutil_get_sector_size(dev);
     ASSERT(sector_size > 0);
+    ASSERT(sector_size > start_byte);
 
     uint32_t total_sectors = data_size / sector_size;
     if (0 != data_size % sector_size) {
@@ -137,6 +138,7 @@ uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, u
     // check that end sector is reasonable
     uint32_t sector_size = blockutil_get_sector_size(dev);
     ASSERT(sector_size > 0);
+    ASSERT(sector_size > start_byte);
     uint32_t total_sectors = data_size / sector_size;
     if (0 != data_size % sector_size) {
         total_sectors += 1;
