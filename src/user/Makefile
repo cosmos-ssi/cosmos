@@ -30,7 +30,7 @@ initfs/test.bin: initfs/test.asm
 
 $(COSMOS_INITRD_IMAGE): $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)  $(COSMOS_TEST_BINARY)
 	rm -f $(COSMOS_INITRD_IMAGE)
-	../util/mkinitrd/mkinitrd cosmos_abi.a cosmos_init initfs/welcome.txt initfs/testdata.txt initfs/test.bin initfs/ocean.bmp
+	../util/mkinitrd/mkinitrd cosmos_abi.a cosmos_init initfs/welcome.txt initfs/testdata.txt initfs/test.bin initfs/ocean.bmp initfs/ter-u12b.bdf
 	mv initrd.img ../img/
 
 $(COSMOS_INIT): $(COSMOS_ABI_ARCHIVE) init/init.o

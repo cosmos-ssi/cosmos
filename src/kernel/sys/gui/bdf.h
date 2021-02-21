@@ -6,22 +6,22 @@
 // ****************************************************************
 
 /*
-* GUI uses the canvas object to draw the GUI
+* BDF font
 */
-#ifndef _GUI_H
-#define _GUI_H
+// https://wiki.osdev.org/VGA_Fonts#Decoding_of_bitmap_fonts
+
+#ifndef _BDF_H
+#define _BDF_H
 
 #include <types.h>
 
-struct canvas;
-struct bdf;
-
-struct gui_state_data {
-    uint32_t background_color;
-    struct canvas* canvas;
-    struct bdf* font;
+struct bdf {
+    uint8_t* buffer;
+    uint32_t buffer_size;
 };
 
-void gui_init();
-void gui_draw();
+struct bdf* bdf_new();
+void bdf_load(struct bdf* font, uint8_t* devname, uint8_t* filename);
+void bdf_delete(struct bdf* font);
+
 #endif
