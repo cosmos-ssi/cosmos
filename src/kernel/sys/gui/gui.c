@@ -8,9 +8,9 @@
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/devicemgr/devicemgr.h>
-#include <sys/gui/bdf.h>
 #include <sys/gui/bmp.h>
 #include <sys/gui/gui.h>
+#include <sys/gui/psf.h>
 #include <sys/gui/window.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
@@ -23,7 +23,7 @@ struct gui_state_data* gui_state;
 #define VGA_DEVICE_NAME "bga0"
 #define INIT_DEVICE_NAME "fs2"
 #define WALLPAPER_NAME "ocean.bmp"
-#define FONT_NAME "ter-u12b.bdf"
+#define FONT_NAME "zap-vga16.psf"
 
 void gui_init() {
     struct device* bga = devicemgr_find_device(VGA_DEVICE_NAME);
@@ -31,9 +31,9 @@ void gui_init() {
         gui_state = (struct gui_state_data*)kmalloc(sizeof(struct gui_state_data));
         gui_state->canvas = canvas_new(bga);
         gui_state->background_color = 0x97cee8;  // light blue
-        gui_state->font = bdf_new();
+        gui_state->font = psf_new();
         gui_state->windows = arraylist_new();
-        bdf_load(gui_state->font, INIT_DEVICE_NAME, FONT_NAME);
+        psf_load(gui_state->font, INIT_DEVICE_NAME, FONT_NAME);
         //   canvas_dump(gui_state->canvas);
 
         /*

@@ -14,14 +14,14 @@
 #include <types.h>
 
 struct canvas;
-struct bdf;
+struct psf_font;
 struct arraylist;
 struct window;
 
 struct gui_state_data {
     uint32_t background_color;
     struct canvas* canvas;
-    struct bdf* font;
+    struct psf_font* font;
     struct arraylist* windows;
 };
 
