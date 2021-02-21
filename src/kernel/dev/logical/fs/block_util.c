@@ -9,6 +9,7 @@
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_block.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 
@@ -138,7 +139,7 @@ uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, u
 
     // make the buffer
     uint32_t buffer_size = total_sectors * sector_size;
-    uint8_t buffer[buffer_size];
+    uint8_t* buffer = kmalloc(buffer_size);
     memzero(buffer, buffer_size);
 
     // read
@@ -147,6 +148,9 @@ uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, u
 
     // copy
     memcpy(data, buffer, data_size);
+
+    // done w buffer
+    kfree(buffer);
 
     // done
     return data_size;
