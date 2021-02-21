@@ -119,11 +119,11 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
         }
 
         uint32_t buffer_size = total_sectors * sector_size;
-        kprintf("buffer_size %llu\n", buffer_size);
+        //      kprintf("buffer_size %llu\n", buffer_size);
 
         uint8_t* buffer = kmalloc(buffer_size);
         ASSERT_NOT_NULL(buffer);
-        kprintf("buffer %%#llX\n", buffer);
+        //      kprintf("buffer %%#llX\n", buffer);
 
         memzero(buffer, buffer_size);
         uint32_t target_lba = device_data->lba + lba_offset;
@@ -136,7 +136,7 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
         */
         blockutil_read(device_data->partition_device, buffer, buffer_size, target_lba);
 
-        kprintf("blockutil_read completed\n");
+        //   kprintf("blockutil_read completed\n");
         /*
         * copy the data
         */

@@ -85,13 +85,16 @@ uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, 
     if (0 != block_api->write) {
         // make the buffer
         uint32_t buffer_size = total_sectors * sector_size;
-        uint8_t buffer[buffer_size];
+        uint8_t* buffer = kmalloc(buffer_size);
         memzero(buffer, (buffer_size));
         memcpy(buffer, data, data_size);
 
         // write
         uint32_t written = (*block_api->write)(dev, buffer, buffer_size, start_lba);
         ASSERT(written == buffer_size);
+
+        // done w buffer
+        kfree(buffer);
 
         // done
         return data_size;
