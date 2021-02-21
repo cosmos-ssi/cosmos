@@ -83,21 +83,26 @@ uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, 
     struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
     if (0 != block_api->write) {
-        // make the buffer
-        uint32_t buffer_size = total_sectors * sector_size;
-        uint8_t* buffer = kmalloc(buffer_size);
-        memzero(buffer, (buffer_size));
-        memcpy(buffer, data, data_size);
 
-        // write
-        uint32_t written = (*block_api->write)(dev, buffer, buffer_size, start_lba);
-        ASSERT(written == buffer_size);
-
-        // done w buffer
-        kfree(buffer);
+        // loop over lbas, reading a sector at a time and copying into the data
+        uint32_t total_bytes_written = 0;
+        for (uint32_t i = 0; i < total_sectors; i++) {
+            uint8_t buffer[sector_size];
+            memzero(buffer, sector_size);
+            if (i == total_sectors - 1) {
+                uint32_t offset = data_size - total_bytes_written;
+                memcpy(buffer, &(data[i * sector_size]), offset);
+                total_bytes_written += offset;
+            } else {
+                memcpy(buffer, &(data[i * sector_size]), sector_size);
+                total_bytes_written += sector_size;
+            }
+            uint32_t written = (*block_api->write)(dev, buffer, sector_size, i + start_lba);
+            ASSERT(written == sector_size);
+        }
 
         // done
-        return data_size;
+        return total_bytes_written;
     } else {
         // if the write API is nt provided, then the block_device is read-only.  return 0 bytes written.
         return 0;
@@ -147,10 +152,8 @@ uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, u
         memzero(buffer, sector_size);
         uint32_t read = (*block_api->read)(dev, buffer, sector_size, i + start_lba);
         ASSERT(read == sector_size);
-        //      kprintf("read bytes %llu index %llu\n", read, i);
         if (i == total_sectors - 1) {
             uint32_t offset = data_size - total_bytes_copied;
-            //   kprintf("offset %llu\n", offset);
             memcpy(&(data[i * sector_size]), buffer, offset);
             total_bytes_copied += offset;
         } else {
