@@ -11,13 +11,17 @@
 #include <sys/x86-64/mm/pagetables.h>
 #include <tests/sys/test_mm.h>
 
-void test_mm() {
-    mem_block* tmp;
-    tmp = usable_phys_blocks;
-
-    do {
-        kprintf("Base: %llX, Length: %llX\n", (uint64_t)tmp->base, tmp->len);
-    } while ((tmp = tmp->next));
+void test_mm_stresstest() {
+    uint32_t i = 1;
+    uint8_t* buffer = kmalloc(1024 * 1024);
+    while (0 != buffer) {
+        buffer = kmalloc(1024 * 1024);
+        i += 1;
+        kprintf("i %llu\n", i);
+    }
 }
 
-void test_pagetables() {}
+void test_mm() {
+    kprintf("Testing mm\n");
+    test_mm_stresstest();
+}

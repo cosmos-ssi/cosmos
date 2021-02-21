@@ -31,4 +31,5 @@ void tests_run() {
     test_ata();
     test_init_loader();
     test_objects();
+    //  test_mm();
 }
