@@ -27,11 +27,11 @@ void video_util_clear(struct device* dev, uint32_t rgb) {
     /*
     * sizes
     */
-    uint32_t width = video_util_get_width_function(dev);
+    uint32_t width = video_util_get_width(dev);
     ASSERT(width == 800);
-    uint32_t height = video_util_get_height_function(dev);
+    uint32_t height = video_util_get_height(dev);
     ASSERT(height == 600);
-    uint32_t colordepth = video_util_get_colordepth_function(dev);
+    uint32_t colordepth = video_util_get_colordepth(dev);
     ASSERT(colordepth == 24);
     /*
     * make a buffer
@@ -56,7 +56,7 @@ void video_util_clear(struct device* dev, uint32_t rgb) {
     kfree(buffer);
 }
 
-uint32_t video_util_get_width_function(struct device* dev) {
+uint32_t video_util_get_width(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT(dev->devicetype == BGA);
@@ -66,7 +66,8 @@ uint32_t video_util_get_width_function(struct device* dev) {
     }
     return 0;
 }
-uint32_t video_util_get_height_function(struct device* dev) {
+
+uint32_t video_util_get_height(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT(dev->devicetype == BGA);
@@ -76,7 +77,8 @@ uint32_t video_util_get_height_function(struct device* dev) {
     }
     return 0;
 }
-uint32_t video_util_get_colordepth_function(struct device* dev) {
+
+uint32_t video_util_get_colordepth(struct device* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT(dev->devicetype == BGA);

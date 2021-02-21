@@ -5,18 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _VIDEO_UTIL_H
-#define _VIDEO_UTIL_H
+#ifndef _GUI_H
+#define _GUI_H
 
 #include <types.h>
 
-struct device;
+struct gui_state_data {
+    uint32_t width;
+    uint32_t height;
+    uint32_t color_depth;
+    uint32_t buffer_size;
+    uint8_t* buffer;
+};
 
-void video_util_clear(struct device* dev, uint32_t rgb);
-uint32_t video_util_get_width(struct device* dev);
-uint32_t video_util_get_height(struct device* dev);
-uint32_t video_util_get_colordepth(struct device* dev);
-uint32_t video_util_get_buffersize(struct device* dev);
-void video_util_blt(struct device* dev, uint8_t* buffer, uint32_t buffer_size);
+void gui_init();
 
 #endif

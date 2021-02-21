@@ -12,6 +12,7 @@
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_console.h>
 #include <sys/fs/fs_facade.h>
+#include <sys/gui/gui.h>
 #include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
@@ -144,8 +145,7 @@ void CosmOS() {
 
     load_init_binary();
 
-    struct device* bga = devicemgr_find_device("bga0");
-    video_util_clear(bga, 0x33);
+    gui_init();
 
     while (1) {
         asm_hlt();
