@@ -173,16 +173,13 @@ void vga_search_cb(struct pci_device* dev) {
     api->scroll_text = &vga_device_scroll_text;
     api->set_mode = &vga_device_set_mode;
     api->write_text = &vga_device_write_text;
+    deviceinstance->api = api;
     /*
      * device data
      */
     struct vga_devicedata* device_data = (struct vga_devicedata*)kmalloc(sizeof(struct vga_devicedata));
     device_data->video_active_mode = 0;
     deviceinstance->device_data = device_data;
-    /*
-     * register
-     */
-    deviceinstance->api = api;
 }
 
 /**
