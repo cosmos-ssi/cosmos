@@ -10,6 +10,7 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
+#include <sys/video/canvas.h>
 #include <sys/video/video_util.h>
 
 struct gui_state_data* gui_state;
@@ -19,19 +20,13 @@ struct gui_state_data* gui_state;
 void gui_init() {
     struct device* bga = devicemgr_find_device(VGA_DEVICE_NAME);
     if (0 != bga) {
-        /*
-        * useful state data
-        */
-        gui_state = kmalloc(sizeof(struct gui_state_data));
-        gui_state->buffer_size = video_util_get_buffersize(bga);
-        gui_state->color_depth = video_util_get_colordepth(bga);
-        gui_state->height = video_util_get_height(bga);
-        gui_state->width = video_util_get_width(bga);
-        gui_state->buffer = kmalloc(gui_state->buffer_size);
+        gui_state = (struct gui_state_data*)kmalloc(sizeof(struct gui_state_data));
+        gui_state->canvas = canvas_new(bga);
+        canvas_dump(gui_state->canvas);
         /*
         * clear
         */
-        video_util_clear(bga, 0xFFFF00);
+        video_util_clear(bga, 0xEEEEEE);
     } else {
         kprintf("Unable to find video device %s for GUI\n", VGA_DEVICE_NAME);
     }

@@ -4,7 +4,9 @@
 // Released under the stated terms in the file LICENSE            *
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
-
+/*
+* wrapper for devices that implement deviceapi_bga
+*/
 #ifndef _VIDEO_UTIL_H
 #define _VIDEO_UTIL_H
 

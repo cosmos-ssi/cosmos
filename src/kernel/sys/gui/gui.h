@@ -10,12 +10,10 @@
 
 #include <types.h>
 
+struct canvas;
+
 struct gui_state_data {
-    uint32_t width;
-    uint32_t height;
-    uint32_t color_depth;
-    uint32_t buffer_size;
-    uint8_t* buffer;
+    struct canvas* canvas;
 };
 
 void gui_init();
