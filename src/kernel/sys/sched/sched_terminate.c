@@ -9,6 +9,12 @@
 #include <sys/sched/sched.h>
 #include <types.h>
 
-void sched_terminate(uint64_t cpu, uint64_t core, pid_t pid) {
+void sched_terminate(pid_t pid) {
+    linkedlist* task;
+
+    task = task_find(pid);
+
+    TASK_DATA(task)->state = SCHED_TERMINATE;
+
     return;
 }

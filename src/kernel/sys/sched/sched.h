@@ -23,10 +23,11 @@
 #define CUR_CORE 0
 
 typedef enum scheduler_state_t {
-    SCHED_RUNNING,
-    SCHED_SLEEPING,
-    SCHED_IOWAIT,
-    SCHED_ZOMBIE  // In your he-ead, in your he-e-e-ead...
+    SCHED_RUNNING,   // duh
+    SCHED_SLEEPING,  // currently awaiting rescheduling
+    SCHED_IOWAIT,    // awaiting IO, do not schedule until received
+    SCHED_ZOMBIE,    // In your he-ead, in your he-e-e-ead...
+    SCHED_TERMINATE  // Terminated, waiting for kernel tasklet to clean up
 } scheduler_state_t;
 
 typedef struct scheduler_task_t {
@@ -65,6 +66,9 @@ void sched_init();
 
 // sched_terminate.c
 void sched_terminate();
+
+// tasklist.c
+linkedlist* task_find(pid_t pid);
 
 // task_select.c
 linkedlist* task_select();
