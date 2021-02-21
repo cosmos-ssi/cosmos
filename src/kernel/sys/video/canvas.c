@@ -36,7 +36,7 @@ uint32_t canvas_pixel_offset(struct canvas* cvs, uint32_t x, uint32_t y) {
     ASSERT_NOT_NULL(cvs);
     ASSERT(x < cvs->width);
     ASSERT(y < cvs->height);
-    return (cvs->width * y * 3) + x;
+    return 3 * ((cvs->width * y) + x);
 }
 
 void canvas_dump(struct canvas* cvs) {
@@ -91,29 +91,100 @@ void canvas_draw_pixel(struct canvas* cvs, uint32_t x, uint32_t y, uint32_t rgb)
     cvs->buffer[offset + 2] = components.r;
 }
 
+uint32_t abs_diff(uint32_t x1, uint32_t x2) {
+    if (x2 > x1) {
+        return x2 - x1;
+    }
+    return x1 - x2;
+}
+
 /*
 * https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 */
-void canvas_draw_line(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
-    uint32_t dx, dy, p, x, y;
+void canvas_draw_sloped_line(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
+    ASSERT_NOT_NULL(cvs);
+    uint32_t dx = abs_diff(x0, x1);
+    uint32_t dy = abs_diff(y0, y1);
+    uint32_t p = 2 * dy - dx;
+    uint32_t twoDy = 2 * dy, twoDyDx = 2 * (dy - dx);
+    uint32_t x, y, xEnd;
+    if (x0 > x1) {
+        x = x1;
+        y = y1;
+        xEnd = x0;
+    } else {
+        x = x0;
+        y = y0;
+        xEnd = x1;
+    }
+    canvas_draw_pixel(cvs, x, y, rgb);
 
-    dx = x1 - x0;
-    dy = y1 - y0;
-
-    x = x0;
-    y = y0;
-
-    p = 2 * dy - dx;
-
-    while (x < x1) {
-        if (p >= 0) {
-            canvas_draw_pixel(cvs, x, y, rgb);
-            y = y + 1;
-            p = p + 2 * dy - 2 * dx;
-        } else {
-            canvas_draw_pixel(cvs, x, y, rgb);
-            p = p + 2 * dy;
+    while (x < xEnd) {
+        x++;
+        if (p < 0)
+            p += twoDy;
+        else {
+            y++;
+            p += twoDyDx;
         }
-        x = x + 1;
+        canvas_draw_pixel(cvs, x, y, rgb);
+    }
+}
+
+void canvas_draw_line(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
+    ASSERT_NOT_NULL(cvs);
+
+    //    kprintf("x0 %llu, y0 %llu, x1 %llu, y1 %llu\n", x0, y0, x1, y1);
+
+    if (x0 == x1) {
+        if (y1 > y0) {
+            for (uint32_t i = y0; i < y1; i++) {
+                canvas_draw_pixel(cvs, x0, i, rgb);
+            }
+        } else {
+            for (uint32_t i = y1; i < y0; i++) {
+                canvas_draw_pixel(cvs, x0, i, rgb);
+            }
+        }
+    } else if (y0 == y1) {
+        if (x1 > x0) {
+            for (uint32_t i = x0; i < x1; i++) {
+                canvas_draw_pixel(cvs, i, y0, rgb);
+            }
+        } else {
+            for (uint32_t i = x1; i < x0; i++) {
+                canvas_draw_pixel(cvs, i, y0, rgb);
+            }
+        }
+    } else {
+        canvas_draw_sloped_line(cvs, x0, y0, x1, y1, rgb);
+    }
+}
+
+void canvas_fill(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
+    ASSERT_NOT_NULL(cvs);
+    uint32_t x = 0;
+    uint32_t xx = 0;
+    uint32_t y = 0;
+    uint32_t yy = 0;
+
+    if (x1 > x0) {
+        x = x0;
+        xx = x1;
+    } else {
+        x = x1;
+        xx = x0;
+    }
+    if (y1 > y0) {
+        y = y0;
+        yy = y1;
+    } else {
+        y = y1;
+        yy = y0;
+    }
+    for (uint32_t i = x; i <= xx; i++) {
+        for (uint32_t j = y; j <= yy; j++) {
+            canvas_draw_pixel(cvs, i, j, rgb);
+        }
     }
 }

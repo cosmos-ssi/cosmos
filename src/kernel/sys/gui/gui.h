@@ -16,6 +16,7 @@
 struct canvas;
 
 struct gui_state_data {
+    uint32_t background_color;
     struct canvas* canvas;
 };
 
