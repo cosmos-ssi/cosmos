@@ -17,6 +17,7 @@
 #include <sys/deviceapi/deviceapi_nic.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
+#include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
@@ -249,12 +250,22 @@ void vnic_tx(struct device* dev, uint64_t* data, uint16_t size) {
     ASSERT_NOT_NULL(data);
 
     kprintf("vnic_tx sending data\n");
+
+    // Allocate a buffer for the packet & header
+    uint32_t bufferSize = size + sizeof(virtio_net_hdr);
+    virtio_net_hdr* netBuffer = iobuffers_request_buffer(bufferSize);
+
+    // Set parameters of netBuffer
+    memset((void*)netBuffer, 0, sizeof(virtio_net_hdr));
+
+    // Copy packet to buffer
+    memcpy((void*)((void*)netBuffer + sizeof(virtio_net_hdr)), (void*)data, size);
+
+    // get the device data
     struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
 
-    // create a buffer and descriptor to hold the data to be sent
-    // should we copy the data, since it gets deleted when the packet is ack'd?
-    // uint64_t* buffer = kmalloc(size);
-    struct virtq_descriptor* desc = virtq_descriptor_new(data, size, false);
+    // load a descriptor with our buffer
+    struct virtq_descriptor* desc = virtq_descriptor_new(netBuffer, bufferSize + sizeof(virtio_net_hdr), false);
 
     // queue it up
     virtq_enqueue_descriptor(device_data->send_queue, desc);

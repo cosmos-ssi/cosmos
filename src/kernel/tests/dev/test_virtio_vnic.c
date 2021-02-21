@@ -18,8 +18,6 @@
 #include <tests/dev/test_virtio_vnic.h>
 
 void test_virtio_vnic() {
-    uint8_t device_status;
-
     kprintf("test_virtio_vnic starting\n");
     uint8_t devicename[] = {"vnic0"};
     struct device* dev = devicemgr_find_device(devicename);
@@ -42,8 +40,6 @@ void test_virtio_vnic() {
 
         uint8_t s[] = {"test string"};
         nic_api->write(dev, (uint64_t*)&s, sizeof(s));
-        device_status = (uint8_t)vnic_read_register(VIRTIO_DEVICE_STATUS);
-        kprintf("   device status is %hX\n", device_status);
     }
     virtq_print(rxq, device_data->receive_queue);
 }
