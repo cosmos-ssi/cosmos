@@ -12,10 +12,9 @@
 
 struct window* window_new(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
     struct window* ret = (struct window*)kmalloc(sizeof(struct window));
-    ret->height = height;
-    ret->width = width;
-    ret->x = x;
-    ret->y = y;
+    ret->titlebar_height = 20;
+    window_set_position(ret, x, y);
+    window_set_dimensions(ret, width, height);
     ret->background_color = 0x777777;
     ret->border_color = 0x052433;  // dark blue
     return ret;
@@ -24,7 +23,7 @@ struct window* window_new(uint32_t x, uint32_t y, uint32_t width, uint32_t heigh
 void window_render(struct window* wind, struct canvas* cvs) {
     ASSERT_NOT_NULL(wind);
     ASSERT_NOT_NULL(cvs);
-    kprintf("x %llu, y %llu, width %llu, height %llu\n", wind->x, wind->y, wind->width, wind->height);
+    //  kprintf("x %llu, y %llu, width %llu, height %llu\n", wind->x, wind->y, wind->width, wind->height);
     canvas_draw_line(cvs, wind->x, wind->y, wind->x + wind->width, wind->y, wind->border_color);
     canvas_draw_line(cvs, wind->x, wind->y + wind->height, wind->x + wind->width, wind->y + wind->height,
                      wind->border_color);
@@ -33,4 +32,19 @@ void window_render(struct window* wind, struct canvas* cvs) {
                      wind->border_color);
     canvas_fill(cvs, wind->x + 1, wind->y + 1, wind->x + wind->width - 1, wind->y + wind->height - 1,
                 wind->background_color);
+}
+
+void window_set_position(struct window* wind, uint32_t x, uint32_t y) {
+    ASSERT_NOT_NULL(wind);
+    wind->x = x;
+    wind->y = y;
+}
+
+void window_set_dimensions(struct window* wind, uint32_t width, uint32_t height) {
+    ASSERT_NOT_NULL(wind);
+    wind->height = height;
+    if (wind->height < wind->titlebar_height) {
+        wind->height = wind->titlebar_height;
+    }
+    wind->width = width;
 }
