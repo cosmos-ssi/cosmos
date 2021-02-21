@@ -92,7 +92,15 @@ uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, 
         for (uint32_t i = 0; i < total_sectors; i++) {
             uint8_t buffer[sector_size];
             memzero(buffer, sector_size);
-            if (i == total_sectors - 1) {
+            if (i == 0) {
+                uint32_t needed = sector_size - start_byte;
+                if (needed > data_size) {
+                    needed = data_size;
+                }
+                //      kprintf("needed %llu\n", needed);
+                memcpy(&(buffer[start_byte]), &(data[total_bytes_written]), needed);
+                total_bytes_written += needed;
+            } else if (i == total_sectors - 1) {
                 uint32_t offset = data_size - total_bytes_written;
                 memcpy(buffer, &(data[total_bytes_written]), offset);
                 total_bytes_written += offset;
@@ -118,7 +126,7 @@ uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, 
 uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba,
                         uint32_t start_byte) {
 
-    //   kprintf("blockutil_read device %s, data_size %llu, start_lba %llu\n", dev->name, data_size, start_lba);
+    //  kprintf("blockutil_read device %s, data_size %llu, start_lba %llu\n", dev->name, data_size, start_lba);
     ASSERT(0 == start_byte);
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
@@ -157,8 +165,17 @@ uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, u
         memzero(buffer, sector_size);
         uint32_t read = (*block_api->read)(dev, buffer, sector_size, i + start_lba);
         ASSERT(read == sector_size);
-        if (i == total_sectors - 1) {
+        if (i == 0) {
+            uint32_t needed = sector_size - start_byte;
+            if (needed > data_size) {
+                needed = data_size;
+            }
+            //      kprintf("needed %llu\n", needed);
+            memcpy(&(data[total_bytes_copied]), &(buffer[start_byte]), needed);
+            total_bytes_copied += needed;
+        } else if (i == total_sectors - 1) {
             uint32_t offset = data_size - total_bytes_copied;
+            //      kprintf("offset %llu\n", offset);
             memcpy(&(data[total_bytes_copied]), buffer, offset);
             total_bytes_copied += offset;
         } else {
