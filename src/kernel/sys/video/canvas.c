@@ -81,7 +81,7 @@ void canvas_clear(struct canvas* cvs, uint32_t rgb) {
 void canvas_draw_pixel(struct canvas* cvs, uint32_t x, uint32_t y, uint32_t rgb) {
     ASSERT_NOT_NULL(cvs);
     uint32_t offset = canvas_pixel_offset(cvs, x, y);
-    kprintf("offset %#llX,\n", offset);
+    //  kprintf("offset %#llX,\n", offset);
     struct rgb_components components;
     rgb_components(rgb, &components);
     //  kprintf("rgb %#llX, r %#llX, g %#llX, b %#llX\n", rgb, components.r, components.g, components.b);
