@@ -9,9 +9,9 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/fs/file_util.h>
 #include <sys/fs/fs_facade.h>
-#include <sys/gui/bmp.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/string/mem.h>
+#include <sys/video/bmp.h>
 
 struct bmp* bmp_load(uint8_t* devname, uint8_t* filename) {
     ASSERT_NOT_NULL(devname);

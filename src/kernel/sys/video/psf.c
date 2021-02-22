@@ -10,10 +10,10 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/fs/file_util.h>
 #include <sys/fs/fs_facade.h>
-#include <sys/gui/psf.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
+#include <sys/video/psf.h>
 
 const uint8_t PSF1_MAGIC[2] = {0x36, 0x04};
 
