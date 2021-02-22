@@ -14,7 +14,6 @@
 
 void isrPFE_handler(stack_frame_error* frame) {
     ASSERT_NOT_NULL(frame);
-    kprintf("PFE error: %llX\n", frame->error);
 
     page_fault_handler(frame->error, asm_cr2_read(), asm_cr3_read());
 
