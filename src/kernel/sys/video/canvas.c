@@ -10,6 +10,7 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
+#include <sys/string/string.h>
 #include <sys/video/canvas.h>
 #include <sys/video/psf.h>
 #include <sys/video/rgb.h>
@@ -197,12 +198,39 @@ void canvas_fill(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint
     }
 }
 
+void canvas_draw_letters(struct canvas* cvs, struct psf1_font* font, uint32_t x, uint32_t y, uint8_t* str,
+                         uint32_t color) {
+    ASSERT_NOT_NULL(cvs);
+    ASSERT_NOT_NULL(font);
+    ASSERT_NOT_NULL(str);
+    uint32_t str_len = strlen(str);
+    uint32_t xx = x;
+    uint32_t space_size = 1;
+    uint32_t width = psf_height(font) / 2;
+
+    for (uint32_t i = 0; i < str_len; i++) {
+        canvas_draw_letter(cvs, font, xx, y, str[i], color);
+        xx += space_size;
+        xx += width;
+    }
+}
+
 void canvas_draw_letter(struct canvas* cvs, struct psf1_font* font, uint32_t x, uint32_t y, uint8_t c, uint32_t color) {
     ASSERT_NOT_NULL(cvs);
     ASSERT_NOT_NULL(font);
-
-    uint8_t* d = psf_character(font, c);
-    for (uint32_t i = 0; i < 4; i++) {  // 16px X 16px = 2b * 2b = 4
-        kprintf("d %#llX\n", d[i]);
+    uint32_t font_height = psf_height(font);
+    uint32_t x1 = x;
+    uint8_t* map = psf_character(font, c);
+    for (uint8_t j = 0; j < font_height; j++) {
+        uint8_t row = map[j];
+        for (uint8_t i = 0; i < 8; i++) {
+            if (row & 0x80) {
+                canvas_draw_pixel(cvs, x1, y, color);
+            }
+            row = row << 1;
+            x1 = x1 + 1;
+        }
+        y = y + 1;
+        x1 = x;
     }
 }

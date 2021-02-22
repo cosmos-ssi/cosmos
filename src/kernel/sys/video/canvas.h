@@ -50,4 +50,9 @@ void canvas_blt(struct canvas* cvs);
 */
 void canvas_draw_letter(struct canvas* cvs, struct psf1_font* font, uint32_t x, uint32_t y, uint8_t c, uint32_t color);
 
+/*
+* draw a string
+*/
+void canvas_draw_letters(struct canvas* cvs, struct psf1_font* font, uint32_t x, uint32_t y, uint8_t* str,
+                         uint32_t color);
 #endif

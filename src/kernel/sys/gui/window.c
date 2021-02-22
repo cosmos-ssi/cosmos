@@ -20,7 +20,8 @@ struct window* window_new(uint32_t x, uint32_t y, uint32_t width, uint32_t heigh
     ret->background_color = 0x777777;
     ret->title_background_color = 0x052433;  // dark blue
     ret->border_color = 0x052433;            // dark blue
-    strncpy(ret->title, "Cosmos", WINDOW_MAX_TITLE);
+    ret->title_font_color = 0xDDDDDD;        // white-ish
+    strncpy(ret->title, "CosmOS", WINDOW_MAX_TITLE);
     return ret;
 }
 
@@ -40,7 +41,7 @@ void window_render(struct window* wind, struct canvas* cvs) {
                 wind->y + wind->height - 1, wind->background_color);
     canvas_fill(cvs, wind->x + 1, wind->y + 1, wind->x + wind->width - 1, wind->y + wind->titlebar_height - 1,
                 wind->title_background_color);
-    canvas_draw_letter(cvs, gui_state->font, 10, 10, 'A', 0x000000);
+    canvas_draw_letters(cvs, gui_state->font, wind->x + 2, wind->y + 2, wind->title, wind->title_font_color);
 }
 
 void window_set_position(struct window* wind, uint32_t x, uint32_t y) {

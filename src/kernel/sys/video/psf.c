@@ -70,6 +70,5 @@ uint8_t* psf_character(struct psf1_font* font, uint16_t idx) {
     ASSERT_NOT_NULL(font);
     ASSERT_NOT_NULL(idx <= psf_total_characters(font));
     uint32_t offset = sizeof(struct psf1_font) + (idx * psf_height(font));
-    kprintf("offset: %llu\n", offset);
     return &(((uint8_t*)font)[offset]);
 }

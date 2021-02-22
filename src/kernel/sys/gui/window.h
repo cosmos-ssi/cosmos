@@ -23,6 +23,7 @@ struct window {
     uint32_t border_color;
     uint32_t titlebar_height;
     uint32_t title_background_color;
+    uint32_t title_font_color;
     uint8_t title[WINDOW_MAX_TITLE];
 };
 
