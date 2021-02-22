@@ -11,6 +11,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 #include <sys/video/canvas.h>
+#include <sys/video/psf.h>
 #include <sys/video/rgb.h>
 #include <sys/video/video_util.h>
 
@@ -193,5 +194,15 @@ void canvas_fill(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint
         for (uint32_t j = y; j <= yy; j++) {
             canvas_draw_pixel(cvs, i, j, rgb);
         }
+    }
+}
+
+void canvas_draw_letter(struct canvas* cvs, struct psf1_font* font, uint32_t x, uint32_t y, uint8_t c, uint32_t color) {
+    ASSERT_NOT_NULL(cvs);
+    ASSERT_NOT_NULL(font);
+
+    uint8_t* d = psf_character(font, c);
+    for (uint32_t i = 0; i < 4; i++) {  // 16px X 16px = 2b * 2b = 4
+        kprintf("d %#llX\n", d[i]);
     }
 }

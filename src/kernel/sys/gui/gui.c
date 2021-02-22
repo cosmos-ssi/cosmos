@@ -47,7 +47,6 @@ void gui_init() {
         */
         gui_new_window(400, 400, 100, 100);
         gui_new_window(50, 50, 300, 300);
-
     } else {
         kprintf("Unable to find video device %s for GUI\n", VGA_DEVICE_NAME);
     }

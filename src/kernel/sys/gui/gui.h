@@ -13,6 +13,8 @@
 
 #include <types.h>
 
+extern struct gui_state_data* gui_state;
+
 struct canvas;
 struct psf1_font;
 struct arraylist;
