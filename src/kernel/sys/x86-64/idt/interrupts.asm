@@ -314,6 +314,7 @@ isrPFE:
     cld
     call isrPFE_handler
     popaq
+    add rsp, 8
     iretq
 
 isrDebug:
@@ -336,6 +337,7 @@ isrGPF:
     cld
     call isrGPF_handler
     popaq
+    add rsp, 8
     iretq
 
 isrInvalidOpcode:
