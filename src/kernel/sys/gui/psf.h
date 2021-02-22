@@ -9,25 +9,24 @@
 * PSF font
 */
 // https://wiki.osdev.org/PC_Screen_Font
+// https://iot-programmer.com/index.php/articles/43-c/103-framebuffer-text-using-psf-1-fonts
+
 #ifndef _PSF_H
 #define _PSF_H
+
+#define PSF_FONT_MAGIC 0x3604
 
 #include <sys/collection/arraylist/arraylist.h>
 #include <types.h>
 
-struct psf_font {
-    uint32_t magic;          // magic bytes to identify PSF
-    uint32_t version;        // zero */
-    uint32_t headersize;     // offset of bitmaps in file, 32
-    uint32_t flags;          // 0 if there's no unicode table
-    uint32_t numglyph;       // number of glyphs
-    uint32_t bytesperglyph;  // size of each glyph
-    uint32_t height;         // height in pixels
-    uint32_t width;          // width in pixels
-    uint8_t* data;           // data
+struct psf1_font {
+    uint8_t magic[2];
+    uint8_t filemode;
+    uint8_t fontheight;
 };
 
-struct psf_font* psf_load(struct psf_font* font, uint8_t* devname, uint8_t* filename);
-void psf_delete(struct psf_font* font);
+struct psf1_font* psf_load(uint8_t* devname, uint8_t* filename);
+void psf_delete(struct psf1_font* font);
+void psf_dump(struct psf1_font* font);
 
 #endif

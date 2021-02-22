@@ -15,19 +15,26 @@
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
-struct psf_font* psf_load(struct psf_font* font, uint8_t* devname, uint8_t* filename) {
+struct psf1_font* psf_load(uint8_t* devname, uint8_t* filename) {
     ASSERT_NOT_NULL(devname);
     ASSERT_NOT_NULL(filename);
-    ASSERT_NOT_NULL(font);
 
     uint32_t len = 0;
     uint8_t* buffer = file_util_read_file(devname, filename, &len);
-
+    //   debug_show_memblock(buffer, len);
     kprintf("psf size %llu\n", len);
-    return (struct psf_font*)buffer;
+    return (struct psf1_font*)buffer;
 }
 
-void psf_delete(struct psf_font* font) {
+void psf_delete(struct psf1_font* font) {
     ASSERT_NOT_NULL(font);
     kfree(font);
+}
+
+void psf_dump(struct psf1_font* font) {
+    ASSERT_NOT_NULL(font);
+    kprintf("psf magic[0] %#llX\n", font->magic[0]);
+    kprintf("psf magic[1] %#llX\n", font->magic[1]);
+    kprintf("psf filemode %#llX\n", font->filemode);
+    kprintf("psf fontheight %#llX\n", font->fontheight);
 }

@@ -14,7 +14,7 @@
 #include <types.h>
 
 struct canvas;
-struct psf_font;
+struct psf1_font;
 struct arraylist;
 struct window;
 struct bmp;
@@ -22,7 +22,7 @@ struct bmp;
 struct gui_state_data {
     uint32_t background_color;
     struct canvas* canvas;
-    struct psf_font* font;
+    struct psf1_font* font;
     struct arraylist* windows;
     struct bmp* background_image;
 };
