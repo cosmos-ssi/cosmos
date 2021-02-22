@@ -36,7 +36,12 @@ void gui_init() {
         //   gui_state->background_image = bmp_load(INIT_DEVICE_NAME, WALLPAPER_NAME);
         gui_state->background_image = 0;
         canvas_dump(gui_state->canvas);
-        psf_dump(gui_state->font);
+        //    psf_dump(gui_state->font);
+
+        //  psf_character(gui_state->font, 0);
+        //  psf_character(gui_state->font, 10);
+        //  psf_character(gui_state->font, 256);
+
         /*
         * add some windows
         */

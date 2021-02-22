@@ -14,8 +14,6 @@
 #ifndef _PSF_H
 #define _PSF_H
 
-#define PSF_FONT_MAGIC 0x3604
-
 #include <sys/collection/arraylist/arraylist.h>
 #include <types.h>
 
@@ -28,5 +26,8 @@ struct psf1_font {
 struct psf1_font* psf_load(uint8_t* devname, uint8_t* filename);
 void psf_delete(struct psf1_font* font);
 void psf_dump(struct psf1_font* font);
-
+uint32_t psf_total_characters(struct psf1_font* font);
+uint32_t psf_height(struct psf1_font* font);
+uint8_t psf_is_unicode(struct psf1_font* font);
+uint8_t* psf_character(struct psf1_font* font, uint16_t idx);
 #endif
