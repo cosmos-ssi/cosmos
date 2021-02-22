@@ -17,7 +17,7 @@ void test_mm_stresstest() {
     while (0 != buffer) {
         buffer = kmalloc(1024 * 1024);
         i += 1;
-        kprintf("i %llu\n", i);
+        kprintf("i, addr: %llu, 0x%llX\n", i, buffer);
     }
 }
 
