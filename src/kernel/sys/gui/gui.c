@@ -31,9 +31,9 @@ void gui_init() {
         gui_state = (struct gui_state_data*)kmalloc(sizeof(struct gui_state_data));
         gui_state->canvas = canvas_new(bga);
         gui_state->background_color = 0x97cee8;  // light blue
-        gui_state->font = psf_new();
+        gui_state->font = psf_load(gui_state->font, INIT_DEVICE_NAME, FONT_NAME);
         gui_state->windows = arraylist_new();
-        psf_load(gui_state->font, INIT_DEVICE_NAME, FONT_NAME);
+
         //   canvas_dump(gui_state->canvas);
 
         /*
