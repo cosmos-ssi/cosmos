@@ -13,9 +13,9 @@
 #include <types.h>
 
 void isrDE(stack_frame* frame);
-void isrPFE(stack_frame* frame, uint64_t error);
+void isrPFE(stack_frame_error* frame);
 void isrGeneric(stack_frame* frame);
-void isrGPF(stack_frame* frame);
+void isrGPF(stack_frame_error* frame);
 void isrInvalidOpcode(stack_frame* frame);
 void isrDebug(stack_frame* frame);
 void isrBreakpoint(stack_frame* frame);

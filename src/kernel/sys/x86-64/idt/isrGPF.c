@@ -9,7 +9,7 @@
 #include <sys/x86-64/idt/exceptions.h>
 #include <types.h>
 
-void isrGPF_handler(stack_frame* frame) {
+void isrGPF_handler(stack_frame_error* frame) {
     ASSERT_NOT_NULL(frame);
     PANIC("GPF Exception\n");
 }
