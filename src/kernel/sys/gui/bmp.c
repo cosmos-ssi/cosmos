@@ -13,31 +13,19 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/string/mem.h>
 
-struct bmp* bmp_new() {
-    struct bmp* ret = kmalloc(sizeof(struct bmp));
-    memzero((uint8_t*)ret, sizeof(struct bmp));
-    return ret;
-}
-
-void bmp_load(struct bmp* bitmap, uint8_t* devname, uint8_t* filename) {
+struct bmp* bmp_load(uint8_t* devname, uint8_t* filename) {
     ASSERT_NOT_NULL(devname);
     ASSERT_NOT_NULL(filename);
-    ASSERT_NOT_NULL(bitmap);
-    /*
-    * delete previous bmp if there is one
-    */
-    if (0 != bitmap->buffer) {
-        kfree(bitmap->buffer);
-        bitmap->buffer = 0;
-        bitmap->buffer_size = 0;
-    }
+
+    struct bmp* ret = (struct bmp*)kmalloc(sizeof(struct bmp));
 
     uint32_t len;
     uint8_t* data = file_util_read_file(devname, filename, &len);
     kprintf("bmp size %llu\n", len);
 
-    bitmap->buffer = data;
-    bitmap->buffer_size = len;
+    ret->buffer = data;
+    ret->buffer_size = len;
+    return ret;
 }
 
 void bmp_delete(struct bmp* bitmap) {
