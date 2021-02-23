@@ -21,10 +21,13 @@ struct bmp* bmp_load(uint8_t* devname, uint8_t* filename) {
 
     uint32_t len;
     uint8_t* data = file_util_read_file(devname, filename, &len);
-    kprintf("bmp size %llu\n", len);
+    //  kprintf("bmp size %llu\n", len);
 
     ret->buffer = data;
     ret->buffer_size = len;
+
+    ret->file_header = (struct bitmap_file_header*)data;
+    ret->info_header = (struct bitmap_info_header*)&(data[sizeof(struct bitmap_file_header)]);
     return ret;
 }
 

@@ -22,7 +22,7 @@ struct gui_state_data* gui_state;
 
 #define VGA_DEVICE_NAME "bga0"
 #define INIT_DEVICE_NAME "fs2"
-#define WALLPAPER_NAME "ocean.bmp"
+#define WALLPAPER_NAME "cosmos.bmp"
 #define FONT_NAME "zap-vga16.psf"
 
 void gui_init() {
@@ -34,7 +34,6 @@ void gui_init() {
         gui_state->font = psf_load(INIT_DEVICE_NAME, FONT_NAME);
         gui_state->windows = arraylist_new();
         gui_state->background_image = bmp_load(INIT_DEVICE_NAME, WALLPAPER_NAME);
-        //    gui_state->background_image = 0;
         // canvas_dump(gui_state->canvas);
         //    psf_dump(gui_state->font);
 
@@ -58,12 +57,9 @@ void gui_draw() {
 
     canvas_clear(gui_state->canvas, gui_state->background_color);
     canvas_blt(gui_state->canvas);
-    //  canvas_dump(gui_state->canvas);
-    //  struct bmp* wallpaper = bmp_new();
-    //  if (0 != wallpaper) {
-    //      bmp_load(wallpaper, INIT_DEVICE_NAME, WALLPAPER_NAME);
-    //      kprintf("wallpaper size %llu\n", wallpaper->buffer_size);
-    //  }
+    if (0 != gui_state->background_image) {
+        canvas_draw_bitmap(gui_state->canvas, gui_state->background_image, 0, 0);
+    }
     for (uint32_t i = 0; i < arraylist_count(gui_state->windows); i++) {
         struct window* w = (struct window*)arraylist_get(gui_state->windows, i);
         ASSERT_NOT_NULL(w);

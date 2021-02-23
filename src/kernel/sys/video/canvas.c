@@ -11,6 +11,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
+#include <sys/video/bmp.h>
 #include <sys/video/canvas.h>
 #include <sys/video/psf.h>
 #include <sys/video/rgb.h>
@@ -90,6 +91,9 @@ void canvas_clear(struct canvas* cvs, uint32_t rgb) {
 
 void canvas_draw_pixel(struct canvas* cvs, uint32_t x, uint32_t y, uint32_t rgb) {
     ASSERT_NOT_NULL(cvs);
+    ASSERT(x < cvs->resolution.width);
+    ASSERT(y < cvs->resolution.height);
+
     uint32_t offset = canvas_pixel_offset(cvs, x, y);
     //  kprintf("offset %#llX,\n", offset);
     struct rgb_components components;
@@ -113,6 +117,11 @@ uint32_t abs_diff(uint32_t x1, uint32_t x2) {
 */
 void canvas_draw_sloped_line(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
     ASSERT_NOT_NULL(cvs);
+    ASSERT(x0 < cvs->resolution.width);
+    ASSERT(y0 < cvs->resolution.height);
+    ASSERT(x1 < cvs->resolution.width);
+    ASSERT(y1 < cvs->resolution.height);
+
     uint32_t dx = abs_diff(x0, x1);
     uint32_t dy = abs_diff(y0, y1);
     uint32_t p = 2 * dy - dx;
@@ -143,6 +152,10 @@ void canvas_draw_sloped_line(struct canvas* cvs, uint32_t x0, uint32_t y0, uint3
 
 void canvas_draw_line(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
     ASSERT_NOT_NULL(cvs);
+    ASSERT(x0 < cvs->resolution.width);
+    ASSERT(y0 < cvs->resolution.height);
+    ASSERT(x1 < cvs->resolution.width);
+    ASSERT(y1 < cvs->resolution.height);
 
     //    kprintf("x0 %llu, y0 %llu, x1 %llu, y1 %llu\n", x0, y0, x1, y1);
 
@@ -173,6 +186,11 @@ void canvas_draw_line(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1,
 
 void canvas_fill(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
     ASSERT_NOT_NULL(cvs);
+    ASSERT(x0 < cvs->resolution.width);
+    ASSERT(y0 < cvs->resolution.height);
+    ASSERT(x1 < cvs->resolution.width);
+    ASSERT(y1 < cvs->resolution.height);
+
     uint32_t x = 0;
     uint32_t xx = 0;
     uint32_t y = 0;
@@ -204,6 +222,9 @@ void canvas_draw_letters(struct canvas* cvs, struct psf1_font* font, uint32_t x,
     ASSERT_NOT_NULL(cvs);
     ASSERT_NOT_NULL(font);
     ASSERT_NOT_NULL(str);
+    ASSERT(x < cvs->resolution.width);
+    ASSERT(y < cvs->resolution.height);
+
     uint32_t str_len = strlen(str);
     uint32_t xx = x;
     uint32_t space_size = 1;
@@ -219,6 +240,9 @@ void canvas_draw_letters(struct canvas* cvs, struct psf1_font* font, uint32_t x,
 void canvas_draw_letter(struct canvas* cvs, struct psf1_font* font, uint32_t x, uint32_t y, uint8_t c, uint32_t color) {
     ASSERT_NOT_NULL(cvs);
     ASSERT_NOT_NULL(font);
+    ASSERT(x < cvs->resolution.width);
+    ASSERT(y < cvs->resolution.height);
+
     uint32_t font_height = psf_height(font);
     uint32_t x1 = x;
     uint8_t* map = psf_character(font, c);
@@ -234,4 +258,17 @@ void canvas_draw_letter(struct canvas* cvs, struct psf1_font* font, uint32_t x, 
         y = y + 1;
         x1 = x;
     }
+}
+
+/*
+* draw a bitmap
+*/
+void canvas_draw_bitmap(struct canvas* cvs, struct bmp* bitmap, uint32_t x, uint32_t y) {
+    ASSERT_NOT_NULL(cvs);
+    ASSERT_NOT_NULL(bitmap);
+    ASSERT(x < cvs->resolution.width);
+    ASSERT(y < cvs->resolution.height);
+
+    kprintf("offset %llu, w %llu h %llu\n", bitmap->file_header->offset, bitmap->info_header->width,
+            bitmap->info_header->height);
 }
