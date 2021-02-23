@@ -52,7 +52,7 @@ uint8_t initrd_init(struct device* dev) {
     * read the header
     */
     blockutil_read(device_data->partition_device, (uint8_t*)&(device_data->header), sizeof(struct initrd_header),
-                   device_data->lba);
+                   device_data->lba, 0);
 
     kprintf("Init %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
     return 1;
@@ -117,15 +117,6 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
         if (byte_offset + length > sector_size) {
             total_sectors += 1;
         }
-
-        uint32_t buffer_size = total_sectors * sector_size;
-        //      kprintf("buffer_size %llu\n", buffer_size);
-
-        uint8_t* buffer = kmalloc(buffer_size);
-        ASSERT_NOT_NULL(buffer);
-        //      kprintf("buffer %%#llX\n", buffer);
-
-        memzero(buffer, buffer_size);
         uint32_t target_lba = device_data->lba + lba_offset;
 
         //   kprintf("lba_offset %llu byte_offset %llu total_sectors %llu target_lba %llu buffer_size %#llX\\n", lba_offset,
@@ -134,18 +125,8 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
         /*
         * read the blocks
         */
-        blockutil_read(device_data->partition_device, buffer, buffer_size, target_lba);
+        blockutil_read(device_data->partition_device, data, data_size, target_lba, byte_offset);
 
-        //   kprintf("blockutil_read completed\n");
-        /*
-        * copy the data
-        */
-        memcpy(data, (uint8_t*)&(buffer[byte_offset]), data_size);
-
-        /*
-        * release the buffer
-        */
-        kfree(buffer);
         return 1;
     }
 }

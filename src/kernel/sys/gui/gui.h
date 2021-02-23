@@ -13,15 +13,25 @@
 
 #include <types.h>
 
+extern struct gui_state_data* gui_state;
+
 struct canvas;
-struct bdf;
+struct psf1_font;
+struct arraylist;
+struct window;
+struct bmp;
 
 struct gui_state_data {
     uint32_t background_color;
     struct canvas* canvas;
-    struct bdf* font;
+    struct psf1_font* font;
+    struct arraylist* windows;
+    struct bmp* background_image;
 };
 
 void gui_init();
 void gui_draw();
+
+struct window* gui_new_window();
+
 #endif

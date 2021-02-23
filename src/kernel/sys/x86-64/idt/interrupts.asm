@@ -309,15 +309,12 @@ irq9:
 
 isrPFE:
     cli
-    pushaq
-    xor rax, rax
-    mov es, rax
-    mov ds, rax
-    cld
-    xor rax, rax
     mov rdi, rsp
+    pushaq
+    cld
     call isrPFE_handler
     popaq
+    add rsp, 8
     iretq
 
 isrDebug:
@@ -335,15 +332,12 @@ isrDebug:
 
 isrGPF:
     cli
-    pushaq
-    xor rax, rax
-    mov es, rax
-    mov ds, rax
-    cld
-    xor rax, rax
     mov rdi, rsp
+    pushaq
+    cld
     call isrGPF_handler
     popaq
+    add rsp, 8
     iretq
 
 isrInvalidOpcode:

@@ -16,6 +16,8 @@
 #include <types.h>
 
 struct device;
+struct psf1_font;
+struct bmp;
 
 struct canvas {
     uint8_t* buffer;
@@ -43,5 +45,21 @@ void canvas_fill(struct canvas* cvs, uint32_t x0, uint32_t y0, uint32_t x1, uint
 * blt the canvas to the underlying BGA device
 */
 void canvas_blt(struct canvas* cvs);
+
+/*
+* draw a letter using psf1 font
+*/
+void canvas_draw_letter(struct canvas* cvs, struct psf1_font* font, uint32_t x, uint32_t y, uint8_t c, uint32_t color);
+
+/*
+* draw a string
+*/
+void canvas_draw_letters(struct canvas* cvs, struct psf1_font* font, uint32_t x, uint32_t y, uint8_t* str,
+                         uint32_t color);
+
+/*
+* draw a bitmap
+*/
+void canvas_draw_bitmap(struct canvas* cvs, struct bmp* bitmap, uint32_t x, uint32_t y);
 
 #endif
