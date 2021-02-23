@@ -271,4 +271,10 @@ void canvas_draw_bitmap(struct canvas* cvs, struct bmp* bitmap, uint32_t x, uint
 
     kprintf("offset %llu, w %llu h %llu\n", bitmap->file_header->offset, bitmap->info_header->width,
             bitmap->info_header->height);
+    for (uint32_t i = 0; i < bitmap->info_header->width; i++) {
+        for (uint32_t j = 0; j < bitmap->info_header->height; j++) {
+            uint32_t pixel = bitmap->bitdata[(i * bitmap->info_header->width) + j];
+            canvas_draw_pixel(cvs, i, j, pixel);
+        }
+    }
 }

@@ -15,6 +15,7 @@
 
 struct bmp {
     uint8_t* buffer;
+    uint32_t* bitdata;
     uint32_t buffer_size;
     uint32_t offset;
     struct bitmap_file_header* file_header;

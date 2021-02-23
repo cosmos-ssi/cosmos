@@ -25,9 +25,9 @@ struct bmp* bmp_load(uint8_t* devname, uint8_t* filename) {
 
     ret->buffer = data;
     ret->buffer_size = len;
-
     ret->file_header = (struct bitmap_file_header*)data;
     ret->info_header = (struct bitmap_info_header*)&(data[sizeof(struct bitmap_file_header)]);
+    ret->bitdata = (uint32_t*)&(data[ret->file_header->offset]);
     return ret;
 }
 
