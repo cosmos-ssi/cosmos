@@ -89,6 +89,9 @@ void* object_get_data(object_handle_t handle);
 // object_executable.c
 object_handle_t object_create_executable_from_presentation(object_handle_t pres);
 
+// object_init.c
+void object_init();
+
 // object_kernel_work.c
 object_handle_t object_kernel_work_create(void* (*work_func)(void*), void* arg);
 
@@ -96,13 +99,12 @@ object_handle_t object_kernel_work_create(void* (*work_func)(void*), void* arg);
 object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const char* name);
 
 // object_process.c
-object_handle_t object_create_process(object_handle_t exe, pid_t pid);
-object_handle_t object_create_task(object_handle_t proc);
-
-// object_init.c
-void object_init();
+object_handle_t object_process_create(object_handle_t exe);
 
 // object_table.c
 object_t* object_table_get(object_handle_t handle);
+
+// object_task.c
+object_handle_t object_task_create(object_handle_t proc);
 
 #endif

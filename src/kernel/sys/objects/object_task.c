@@ -5,17 +5,16 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/debug/assert.h>
-#include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
+#include <sys/sched/sched.h>
 
-object_handle_t object_process_create(object_handle_t exe) {
-    object_process_t* obj;
+object_handle_t object_task_create(object_handle_t proc) {
+    linkedlist* sched_task;
+    pid_t pid;
 
-    obj = (object_process_t*)kmalloc(sizeof(object_process_t));
-    ASSERT_NOT_NULL(obj);
+    pid = ((object_process_t*)OBJECT_DATA(proc))->pid;
 
-    obj->body = exe;
+    sched_task = sched_add(0, 0, pid);
 
-    return object_create(OBJECT_PROCESS, (void*)obj);
+    return 0;
 }
