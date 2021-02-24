@@ -15,5 +15,5 @@ dtable object_table;
 uint64_t object_table_next_idx;
 
 object_t* object_table_get(object_handle_t handle) {
-    return (object_t*)dtable_get(object_table, (uint64_t)handle);
+    return (object_t*)dtable_get(object_table, (uint64_t)handle - 1);
 }

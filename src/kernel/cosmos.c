@@ -149,8 +149,6 @@ void CosmOS() {
 
     idle_kernel_work = object_kernel_work_create(&kernel_idle, NULL);
 
-    //kernel_idle_process = object_create_pr
-
     while (1) {
         asm_hlt();
     }

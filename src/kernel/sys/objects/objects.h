@@ -19,6 +19,9 @@
 #include <sys/proc/proc.h>
 #include <types.h>
 
+// given a handle, retrieve object from table and return its data member
+#define OBJECT_DATA(x) (object_table_get(x)->data)
+
 typedef enum object_types_t {
     OBJECT_EXECUTABLE,
     OBJECT_PRESENTATION,
