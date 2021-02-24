@@ -5,7 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <string.h>
+#include <assert.h>
+#include <malloc.h>
+#include <str.h>
 
 uint64_t strlen(const uint8_t* s) {
     ASSERT_NOT_NULL(s);
@@ -27,7 +29,7 @@ uint8_t* strtrim(const uint8_t* s) {
     while ((s[j] == ' ') || (s[j] == '\t')) {
         j--;
     }
-    tgt = kmalloc((j + 2) * sizeof(uint8_t));  // +1 for the fact that it's a zero-based index, +1 for the terminator
+    tgt = malloc((j + 2) * sizeof(uint8_t));  // +1 for the fact that it's a zero-based index, +1 for the terminator
 
     for (i = 0; i <= j; i++) {
         tgt[i] = s[i];
@@ -129,7 +131,7 @@ uint8_t* substr(const uint8_t* str1, uint32_t start, uint32_t end, uint8_t* str2
     ASSERT_NOT_NULL(str1);
     ASSERT_NOT_NULL(str2);
     ASSERT_NOT_NULL(size);
-    uint32_t str1_len = strlen(str1);
+    //   uint32_t str1_len = strlen(str1);
     uint32_t str2_len = (end - start);
     ASSERT(start < str1_len);
     ASSERT(end <= str1_len);

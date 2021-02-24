@@ -5,10 +5,10 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef STRING_H
-#define STRING_H
+#ifndef _STR_H
+#define _STR_H
 
-#include <cosmos_types.h>
+#include <types.h>
 
 uint64_t strlen(const uint8_t* s);
 uint8_t* strtrim(const uint8_t* s);

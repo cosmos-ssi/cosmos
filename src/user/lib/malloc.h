@@ -5,14 +5,15 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _DEVICE_HPP
-#define _DEVICE_HPP
+#ifndef _MALLOC_H
+#define _MALLOC_H
 
-#include <abi/string.hpp>
+#include <types.h>
 
-class Device {
-  protected:
-    String device_name;
-};
+void* malloc(uint64_t size);
+void free(void* ptr);
+
+//void* operator new(uint64_t count);
+//void operator delete(void* ptr);
 
 #endif

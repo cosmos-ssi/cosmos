@@ -5,12 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <abi/str.h>
-#include <abi/string.hpp>
+#include <str.h>
+#include <string.hpp>
 
 String::String(const uint8_t* ptr) {
     this->sz = strlen(ptr) + 1;
-    this->m_data = ptr;
+    this->m_data = (uint8_t*)ptr;
 }
 
 String::String() : m_data(nullptr), sz(0) {}
@@ -25,7 +25,7 @@ String::String(const String& obj) {
     strncpy(this->m_data, obj.m_data, sz);
 }
 
-String::String(String&& obj) noexcept : sz(obj.sz), m_data(obj.m_data) {
+String::String(String&& obj) {
     obj.sz = 0;
     obj.m_data = 0;
 }

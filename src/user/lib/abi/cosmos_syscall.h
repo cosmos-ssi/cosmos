@@ -8,7 +8,7 @@
 #ifndef _COSMOS_SYSCALL_H
 #define _COSMOS_SYSCALL_H
 
-#include <rootfs/lib/cosmos_types.h>
+#include <types.h>
 
 uint64_t syscall(uint64_t syscall_id, void* arglist);
 

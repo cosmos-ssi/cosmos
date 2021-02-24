@@ -5,17 +5,24 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <abi/malloc.h>
+#ifndef _STRING_HPP
+#define _STRING_HPP
 
-void* malloc(uint64_t size) {
-    return 0;
-}
+#include <types.h>
 
-void free(void* ptr) {}
+class String {
+  public:
+    String(const uint8_t* ptr);
+    String();
+    String(const String& obj);
+    String(String&& obj);
+    ~String();
+    const uint64_t getSize();
+    const uint8_t* getData();
 
-//void* operator new(uint64_t count) {
-//    return malloc(count);
-//}
-//void operator delete(void* ptr) {
-//    return free(ptr);
-//}
+  private:
+    uint64_t sz;
+    uint8_t* m_data;
+};
+
+#endif

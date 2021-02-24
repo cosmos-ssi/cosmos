@@ -9,7 +9,8 @@
 #include <abi/cosmos_syscall.h>
 
 uint64_t exit() {
-    return syscall_exit(0, 0);
+    //   return syscall_exit(0, 0);
+    return 0;
 }
 
 uint64_t syscall_print_console(uint8_t* str) {

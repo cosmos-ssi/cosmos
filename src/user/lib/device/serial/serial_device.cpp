@@ -5,6 +5,6 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <abi/device/serial/serial_device.hpp>
+#include <device/serial/serial_device.hpp>
 
 void SerialDevice::writeln(uint8_t* str) {}

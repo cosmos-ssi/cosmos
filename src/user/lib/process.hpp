@@ -4,25 +4,16 @@
 // Released under the stated terms in the file LICENSE            *
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
+/*
+* userland wrapper for kernel process object
+*/
+#ifndef _PROCESS_HPP
+#define _PROCESS_HPP
 
-#ifndef _STRING_HPP
-#define _STRING_HPP
+#include <types.h>
 
-#include <rootfs/lib/cosmos_types.h>
-
-class String {
+class Process {
   public:
-    String(const uint8_t* ptr);
-    String();
-    String(const String& obj);
-    String(String&& obj);
-    ~String();
-    const uint64_t getSize();
-    const uint8_t* getData();
-
-  private:
-    uint64_t sz;
-    uint8_t* m_data;
 };
 
 #endif

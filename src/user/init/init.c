@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <init/init.h>
+#include <init.h>
 
 // use this abi to print a char to screen
 #include <abi/cosmos_abi.h>
@@ -21,7 +21,7 @@ void cosmos_userland_init() {
     syscall_print_console('\n');
 
     // guess we're done...
-    syscall_exit();
+    //  syscall_exit();
     // here we mount a disk, I presume, and start reading files.
     // we likely end up starting a console for the console user to log into
 }

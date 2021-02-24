@@ -5,9 +5,17 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef ASSERT_H
-#define ASSERT_H
+#include <malloc.h>
 
-#define ASSERT(x)
+void* malloc(uint64_t size) {
+    return 0;
+}
 
-#endif
+void free(void* ptr) {}
+
+//void* operator new(uint64_t count) {
+//    return malloc(count);
+//}
+//void operator delete(void* ptr) {
+//    return free(ptr);
+//}

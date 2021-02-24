@@ -5,14 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _SERIAL_DEVICE_HPP
-#define _SERIAL_DEVICE_HPP
+/*
+* cosmos syscalls
+*/
 
-#include <abi/device/device.hpp>
-#include <rootfs/lib/cosmos_types.h>
-class SerialDevice : Device {
-  public:
-    void writeln(uint8_t* str);
-};
+#ifndef _COSMOS_ABI_H
+#define _COSMOS_ABI_H
 
+#include <types.h>
+
+uint64_t syscall_exit();
+uint64_t syscall_print_console();
+uint64_t syscall_malloc(uint64_t size);
+uint64_t syscall_free(void* mem);
+uint64_t syscall_realloc(void* mem, uint64_t size);
+uint64_t syscall_sleep(uint64_t time);
 #endif
