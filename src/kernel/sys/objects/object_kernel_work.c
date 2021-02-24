@@ -5,6 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
 

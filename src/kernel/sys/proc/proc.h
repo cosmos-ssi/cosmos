@@ -71,7 +71,7 @@ extern dtable proc_table;
 extern uint64_t next_pid;
 
 // kernel_idle.c
-void kernel_idle(void* arg);
+void* kernel_idle(void* arg);
 
 // pid.c
 pid_t get_next_pid();
