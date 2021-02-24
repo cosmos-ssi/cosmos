@@ -1,0 +1,18 @@
+//*****************************************************************
+// This file is part of CosmOS                                    *
+// Copyright (C) 2020-2021 Tom Everett                            *
+// Released under the stated terms in the file LICENSE            *
+// See the file "LICENSE" in the source distribution for details  *
+// ****************************************************************
+
+#ifndef _SERIAL_DEVICE_HPP
+#define _SERIAL_DEVICE_HPP
+
+#include <abi/device/device.hpp>
+#include <rootfs/lib/cosmos_types.h>
+class SerialDevice : Device {
+  public:
+    void writeln(uint8_t* str);
+};
+
+#endif

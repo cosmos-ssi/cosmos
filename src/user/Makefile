@@ -15,12 +15,15 @@ all: $(COSMOS_INITRD_IMAGE)
 # ABI sources
 SRCS_C=$(shell find $(SRC_DIR)/ -type f -iname '*.c')
 HEADERS_C=$(shell find $(SRC_DIR)/ -type f -iname '*.h')
+SRCS_CPP=$(shell find $(SRC_DIR)/ -type f -iname '*.cpp')
+HEADERS_CPP=$(shell find $(SRC_DIR)/ -type f -iname '*.hpp')
 SRCS_ASM=$(shell find $(SRC_DIR)/ -type f -iname '*.asm' ! -name 'test.asm')
 
 # ABI object files
 OBJS_C=$(subst $(SRC_DIR)/, , $(SRCS_C:.c=.o))
+OBJS_CPP=$(subst $(SRC_DIR)/, , $(SRCS_CPP:.cpp=.o))
 OBJS_ASM=$(subst $(SRC_DIR)/, , $(SRCS_ASM:.asm=.o))
-OBJS=$(OBJS_C) $(OBJS_ASM)
+OBJS=$(OBJS_C) $(OBJS_CPP) $(OBJS_ASM)
 
 init/init.o: init/init.h init/init.c
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o init/init.o init/init.c
@@ -36,17 +39,23 @@ $(COSMOS_INITRD_IMAGE): $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)  $(COSMOS_TEST_BINA
 $(COSMOS_INIT): $(COSMOS_ABI_ARCHIVE) init/init.o
 	$(LD) -m elf_x86_64 -o $(COSMOS_INIT) $(COSMOS_ABI_ARCHIVE)
 
-$(COSMOS_ABI_ARCHIVE): abi/cosmos_abi.o abi/cosmos_syscall.o
-	$(AR) $(ARFLAGS) $(COSMOS_ABI_ARCHIVE) abi/cosmos_abi.o abi/cosmos_syscall.o
+$(COSMOS_ABI_ARCHIVE): abi/cosmos_abi.o abi/cosmos_syscall.o abi/device/device.o abi/device/serial/serial_device.o abi/malloc.o abi/string.o abi/str.o abi/process.o
+	$(AR) $(ARFLAGS) $(COSMOS_ABI_ARCHIVE) abi/cosmos_abi.o abi/cosmos_syscall.o abi/device/device.o abi/device/serial/serial_device.o abi/malloc.o abi/string.o abi/str.o abi/process.o
 
 # set search paths
 vpath %.c .
 vpath %.h .
+vpath %.cpp .
+vpath %.hpp .
 vpath %.asm .
 
 # C files	
 %.o: %.c $(HEADERS_C)
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
+
+# CPP files	
+%.o: %.cpp $(HEADERS_CPP)
+	$(CPP) $(CPPFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
 
 # asm files	
 %.o: %.asm
