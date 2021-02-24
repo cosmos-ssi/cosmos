@@ -10,8 +10,8 @@
 * this program will communicate with the kernel via ABI calls
 */
 
-#ifndef _INIT_H
-#define _INIT_H
+#ifndef _INIT_HPP
+#define _INIT_HPP
 
 void cosmos_userland_init();
 

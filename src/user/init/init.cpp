@@ -5,20 +5,22 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <init.h>
+#include <init.hpp>
 
-// use this abi to print a char to screen
-#include <abi/abi.h>
+#include <device/device.hpp>
+#include <device/serial/serial_device.hpp>
 
 /*
 * we are in user-land context here.  This is the entry point to userland that the kernel code calls
 */
 void cosmos_userland_init() {
-    syscall_print_console('^');
-    syscall_print_console('H');
-    syscall_print_console('I');
-    syscall_print_console('^');
-    syscall_print_console('\n');
+    //   SerialDevice* serialDevice = (SerialDevice*)Device::find("serial0");
+    //  serialDevice->writeln("Hello from user land");
+    //  syscall_print_console('^');
+    //  syscall_print_console('H');
+    //  syscall_print_console('I');
+    //  syscall_print_console('^');
+    //  syscall_print_console('\n');
 
     // guess we're done...
     //  syscall_exit();

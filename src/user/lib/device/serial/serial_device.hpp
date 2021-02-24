@@ -11,9 +11,9 @@
 #include <device/device.hpp>
 #include <types.h>
 
-class SerialDevice : Device {
+class SerialDevice : public Device {
   public:
-    void writeln(uint8_t* str);
+    void writeln(const char* str);
 };
 
 #endif

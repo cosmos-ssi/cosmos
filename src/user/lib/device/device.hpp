@@ -12,7 +12,10 @@
 
 class Device {
   protected:
-    String device_name;
+    String name;
+
+  public:
+    static Device* find(String name);
 };
 
 #endif

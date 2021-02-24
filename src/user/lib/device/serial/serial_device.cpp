@@ -7,4 +7,4 @@
 
 #include <device/serial/serial_device.hpp>
 
-void SerialDevice::writeln(uint8_t* str) {}
+void SerialDevice::writeln(const char* str) {}

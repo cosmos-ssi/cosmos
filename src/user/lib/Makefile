@@ -38,12 +38,13 @@ vpath %.asm .
 
 # CPP files	
 %.o: %.cpp $(HEADERS_CPP)
-	$(CC) $(CPPFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
 
 # asm files	
 %.o: %.asm
 	$(NASM) $(NASMARGS) $< -o $@ 
 	
 clean:
-	$(RM) -r *.o
+	$(RM) *.o
+	$(RM) $(OBJS)
 	$(RM) $(COSMOS_LIB_ARCHIVE)

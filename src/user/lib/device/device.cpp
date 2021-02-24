@@ -6,3 +6,7 @@
 // ****************************************************************
 
 #include <device/device.hpp>
+
+static Device* find(String name) {
+    return 0;
+}
