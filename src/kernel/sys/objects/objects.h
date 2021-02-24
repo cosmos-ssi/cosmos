@@ -22,7 +22,7 @@
 typedef enum object_types_t {
     OBJECT_EXECUTABLE,
     OBJECT_PRESENTATION,
-    OBJECT_KERNEL_RPOCESS,
+    OBJECT_KERNEL_WORK,
     OBJECT_PROCESS,
     OBJECT_TASK
 } object_types_t;
@@ -51,6 +51,10 @@ typedef struct object_executable_t {
     char* exe_name;
 } object_executable_t;
 
+typedef struct object_kernel_work_t {
+    void* (*work_func)(void*);
+} object_kernel_work_t;
+
 typedef struct object_presentation_t {
     /*
      * For now just encapsulate enough to use the initrd driver directly, once
@@ -63,7 +67,6 @@ typedef struct object_presentation_t {
 
 typedef struct object_process_t {
     pid_t pid;
-    enum { OBJECT_PROCESS_USER, OBJECT_PROCESS_KERNEL } type;
     object_handle_t body;
 } object_process_t;
 
@@ -81,6 +84,9 @@ void* object_get_data(object_handle_t handle);
 
 // object_executable.c
 object_handle_t object_create_executable_from_presentation(object_handle_t pres);
+
+// object_kernel_work.c
+object_handle_t object_kernel_work_create(void* (*work_func)(void*));
 
 // object_presentation.c
 object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const char* name);

@@ -144,7 +144,10 @@ void CosmOS() {
 
     gui_init();
     gui_draw();
-    sched_start();
+
+    //object_handle_t kernel_idle_process;
+
+    //kernel_idle_process = object_create_pr
 
     while (1) {
         asm_hlt();
