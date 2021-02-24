@@ -63,7 +63,8 @@ typedef struct object_presentation_t {
 
 typedef struct object_process_t {
     pid_t pid;
-    object_handle_t executable;
+    enum { OBJECT_PROCESS_USER, OBJECT_PROCESS_KERNEL } type;
+    object_handle_t body;
 } object_process_t;
 
 typedef struct object_task_t {

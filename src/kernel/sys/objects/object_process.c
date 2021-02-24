@@ -18,7 +18,7 @@ object_handle_t object_create_process(object_handle_t exe, pid_t pid) {
         PANIC("kmalloc failed!");
     }
 
-    obj->executable = exe;
+    obj->body = exe;
     obj->pid = pid;
 
     return object_create(OBJECT_PROCESS, (void*)obj);
