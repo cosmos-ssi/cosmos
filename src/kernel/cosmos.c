@@ -146,8 +146,10 @@ void CosmOS() {
     gui_draw();
 
     object_handle_t idle_kernel_work;
+    object_handle_t idle_process;
 
     idle_kernel_work = object_kernel_work_create(&kernel_idle, NULL);
+    idle_process = object_process_create(idle_kernel_work);
 
     while (1) {
         asm_hlt();

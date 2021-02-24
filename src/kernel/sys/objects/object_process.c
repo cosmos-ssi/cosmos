@@ -8,6 +8,7 @@
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
+#include <sys/proc/proc.h>
 
 object_handle_t object_process_create(object_handle_t exe) {
     object_process_t* obj;
@@ -16,6 +17,7 @@ object_handle_t object_process_create(object_handle_t exe) {
     ASSERT_NOT_NULL(obj);
 
     obj->body = exe;
+    obj->pid = proc_create();
 
     return object_create(OBJECT_PROCESS, (void*)obj);
 }

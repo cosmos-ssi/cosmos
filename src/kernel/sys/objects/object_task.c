@@ -12,7 +12,7 @@ object_handle_t object_task_create(object_handle_t proc) {
     linkedlist* sched_task;
     pid_t pid;
 
-    pid = ((object_process_t*)OBJECT_DATA(proc))->pid;
+    pid = (OBJECT_DATA(proc, object_process_t))->pid;
 
     sched_task = sched_add(0, 0, pid);
 
