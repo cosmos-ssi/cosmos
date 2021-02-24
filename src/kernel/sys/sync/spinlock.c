@@ -12,6 +12,7 @@ kernel_spinlock dma_buf_lock;
 kernel_spinlock dma_list_lock;
 kernel_spinlock page_dir_lock;
 kernel_spinlock page_table_lock;
+kernel_spinlock proc_table_lock;
 kernel_spinlock task_list_lock;
 
 void spinlocks_init() {
@@ -19,6 +20,7 @@ void spinlocks_init() {
     dma_list_lock = false;
     page_dir_lock = false;
     page_table_lock = false;
+    proc_table_lock = false;
     task_list_lock = false;
 
     return;

@@ -8,6 +8,7 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/dtable/dtable.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
 
@@ -17,6 +18,5 @@ void proc_init() {
     proc_table = dtable_init();
     next_pid = 0;
 
-    
     return;
 }
