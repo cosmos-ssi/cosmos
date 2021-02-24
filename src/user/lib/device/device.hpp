@@ -16,6 +16,7 @@ class Device {
 
   public:
     static Device* find(String name);
+    static Device* find(const char* name);
 };
 
 #endif

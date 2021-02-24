@@ -7,6 +7,10 @@
 
 #include <device/device.hpp>
 
-static Device* find(String name) {
+Device* Device::find(String name) {
+    return 0;
+}
+
+Device* Device::find(const char* name) {
     return 0;
 }

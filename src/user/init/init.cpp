@@ -8,20 +8,25 @@
 #include <init.hpp>
 
 #include <device/device.hpp>
+#include <device/filesystem/filesystem_device.hpp>
 #include <device/serial/serial_device.hpp>
+
+#define INIT_SERIAL_DEVICE "serial0"
+#define INIT_ROOT_FS_DEVICE "fs0"
 
 /*
 * we are in user-land context here.  This is the entry point to userland that the kernel code calls
 */
 void cosmos_userland_init() {
-    //   SerialDevice* serialDevice = (SerialDevice*)Device::find("serial0");
-    //  serialDevice->writeln("Hello from user land");
-    //  syscall_print_console('^');
-    //  syscall_print_console('H');
-    //  syscall_print_console('I');
-    //  syscall_print_console('^');
-    //  syscall_print_console('\n');
+    //  SerialDevice* serialDevice = (SerialDevice*)Device::find(INIT_SERIAL_DEVICE);
+    //  if (0 != serialDevice) {
+    //      serialDevice->writeln("Hello from user land");
+    //  }
 
+    //  FilesystemDevice* filesystemDevice = (FilesystemDevice*)Device::find(INIT_ROOT_FS_DEVICE);
+    //   if (0 != filesystemDevice) {
+    //       serialDevice->writeln("Found root file system");
+    //   }
     // guess we're done...
     //  syscall_exit();
     // here we mount a disk, I presume, and start reading files.
