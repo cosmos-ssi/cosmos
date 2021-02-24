@@ -5,11 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _COSMOS_SYSCALL_H
-#define _COSMOS_SYSCALL_H
+/*
+* cosmos syscalls
+*/
+
+#ifndef _ABI_H
+#define _ABI_H
 
 #include <types.h>
 
-uint64_t syscall(uint64_t syscall_id, void* arglist);
-
+uint64_t syscall_exit();
+uint64_t syscall_print_console();
+uint64_t syscall_malloc(uint64_t size);
+uint64_t syscall_free(void* mem);
+uint64_t syscall_realloc(void* mem, uint64_t size);
+uint64_t syscall_sleep(uint64_t time);
 #endif

@@ -79,3 +79,4 @@ dkms.conf
 **/qemu.log
 user/cosmos_init
 util/mkinitrd/mkinitrd
+/src/user/init/cosmos_init

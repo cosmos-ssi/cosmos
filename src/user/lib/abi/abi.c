@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <abi/cosmos_abi.h>
-#include <abi/cosmos_syscall.h>
+#include <abi/abi.h>
+#include <abi/syscall.h>
 
 uint64_t exit() {
     //   return syscall_exit(0, 0);

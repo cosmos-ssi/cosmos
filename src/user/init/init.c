@@ -8,7 +8,7 @@
 #include <init.h>
 
 // use this abi to print a char to screen
-#include <abi/cosmos_abi.h>
+#include <abi/abi.h>
 
 /*
 * we are in user-land context here.  This is the entry point to userland that the kernel code calls
