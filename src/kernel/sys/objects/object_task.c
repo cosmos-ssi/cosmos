@@ -5,16 +5,23 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
 #include <sys/sched/sched.h>
 
 object_handle_t object_task_create(object_handle_t proc) {
     linkedlist* sched_task;
     pid_t pid;
+    object_task_t* obj;
+
+    obj = (object_task_t*)kmalloc(sizeof(object_task_t));
+
+    obj->process = proc;
 
     pid = (OBJECT_DATA(proc, object_process_t))->pid;
 
-    sched_task = sched_add(0, 0, pid);
+    sched_task = sched_add(CUR_CPU, CUR_CORE, pid);
+    obj->sched_task = sched_task;
 
-    return 0;
+    return object_create(OBJECT_TASK, (void*)obj);
 }
