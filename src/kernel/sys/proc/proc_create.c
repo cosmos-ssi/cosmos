@@ -5,20 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
-#include <sys/panic/panic.h>
+#include <sys/proc/proc.h>
 
-object_handle_t object_create_process(object_handle_t exe, pid_t pid) {
-    object_process_t* obj;
-
-    obj = (object_process_t*)kmalloc(sizeof(object_process_t));
-    if (!obj) {
-        PANIC("kmalloc failed!");
-    }
-
-    obj->body = exe;
-    obj->pid = pid;
-
-    return object_create(OBJECT_EXECUTABLE, (void*)obj);
+proc_info_t* proc_create(object_t exe) {
+    return 0;
 }
