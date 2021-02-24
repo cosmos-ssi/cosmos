@@ -53,6 +53,7 @@ typedef struct object_executable_t {
 
 typedef struct object_kernel_work_t {
     void* (*work_func)(void*);
+    void* arg;
 } object_kernel_work_t;
 
 typedef struct object_presentation_t {
@@ -86,7 +87,7 @@ void* object_get_data(object_handle_t handle);
 object_handle_t object_create_executable_from_presentation(object_handle_t pres);
 
 // object_kernel_work.c
-object_handle_t object_kernel_work_create(void* (*work_func)(void*));
+object_handle_t object_kernel_work_create(void* (*work_func)(void*), void* arg);
 
 // object_presentation.c
 object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const char* name);
