@@ -2,7 +2,7 @@ include ../mk/flags.mk
 include ../mk/build.mk
 
 COSMOS_INITRD_IMAGE=initrd.img
-COSMOS_LIB_ARCHIVE=lib/cosmos_lib.a
+COSMOS_LIB_ARCHIVE=lib/libcosmos.a
 COSMOS_INIT=init/cosmos_init
 COSMOS_TEST_BINARY=fs/initfs/test.bin
 MKINITRD=../util/mkinitrd/mkinitrd

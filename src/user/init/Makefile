@@ -2,7 +2,7 @@ include ../../mk/flags.mk
 include ../../mk/build.mk
 
 COSMOS_INIT=cosmos_init
-COSMOS_ABI_ARCHIVE=../lib/cosmos_lib.a
+COSMOS_ABI_ARCHIVE=../lib/libcosmos.a
 
 EXTRA_CFLAGS= -I. -I../lib/
 

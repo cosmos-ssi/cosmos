@@ -1,7 +1,7 @@
 include ../../mk/flags.mk
 include ../../mk/build.mk
 
-COSMOS_LIB_ARCHIVE=cosmos_lib.a
+COSMOS_LIB_ARCHIVE=libcosmos.a
 
 EXTRA_CFLAGS= -I.
 
