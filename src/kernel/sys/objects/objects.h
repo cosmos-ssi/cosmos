@@ -99,4 +99,7 @@ object_handle_t object_create_task(object_handle_t proc);
 // object_init.c
 void object_init();
 
+// object_table.c
+object_t* object_table_get(object_handle_t handle);
+
 #endif

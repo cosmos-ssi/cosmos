@@ -28,7 +28,7 @@ object_handle_t object_create_task(object_handle_t proc) {
     linkedlist* sched_task;
     pid_t pid;
 
-    pid = ((object_process_t*)((object_t*)dtable_get(object_table, proc))->data)->pid;
+    pid = ((object_process_t*)(object_table_get(proc)->data))->pid;
 
     sched_task = sched_add(0, 0, pid);
 
