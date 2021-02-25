@@ -5,11 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _COSMOS_SYSCALL_H
-#define _COSMOS_SYSCALL_H
+#include <device/device.hpp>
 
-#include <rootfs/lib/cosmos_types.h>
+Device* Device::find(String name) {
+    return 0;
+}
 
-uint64_t syscall(uint64_t syscall_id, void* arglist);
-
-#endif
+Device* Device::find(const char* name) {
+    return 0;
+}

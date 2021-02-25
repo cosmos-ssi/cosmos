@@ -34,3 +34,11 @@ object_handle_t object_create(object_types_t type, void* object_data) {
     // return value BEFORE increment
     return object_table_next_idx++;
 }
+
+object_types_t object_type(object_handle_t obj) {
+    object_t* o;
+
+    o = object_table_get(obj);
+
+    return o->type;
+}

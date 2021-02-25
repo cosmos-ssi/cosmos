@@ -68,8 +68,8 @@ dkms.conf
 **/initrd.img
 
 # generated binaries
-/src/user/cosmos_init
-/src/util/mkinitrd/mkinitrd
+src/user/cosmos_init
+src/util/mkinitrd/mkinitrd
 
 # OS x resources
 **/*.DS_Store

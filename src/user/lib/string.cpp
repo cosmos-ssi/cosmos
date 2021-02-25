@@ -5,9 +5,41 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <string.h>
+#include <assert.h>
+#include <malloc.h>
+#include <string.hpp>
 
-uint64_t strlen(const uint8_t* s) {
+String::String(const uint8_t* ptr) {
+    this->sz = strlen(ptr) + 1;
+    this->m_data = (uint8_t*)ptr;
+}
+
+String::String() : m_data(nullptr), sz(0) {}
+
+String::~String() {
+    delete[] m_data;
+}
+
+String::String(const String& obj) {
+    this->sz = obj.sz;
+    this->m_data = new uint8_t[sz];
+    strncpy(this->m_data, obj.m_data, sz);
+}
+
+String::String(String&& obj) {
+    obj.sz = 0;
+    obj.m_data = 0;
+}
+
+const uint64_t String::getSize() {
+    return sz;
+}
+
+const uint8_t* String::getData() {
+    return m_data;
+}
+
+uint64_t String::strlen(const uint8_t* s) {
     ASSERT_NOT_NULL(s);
     uint64_t i = 0;
     while (s[i]) {
@@ -16,7 +48,7 @@ uint64_t strlen(const uint8_t* s) {
     return i;
 }
 
-uint8_t* strtrim(const uint8_t* s) {
+uint8_t* String::strtrim(const uint8_t* s) {
     ASSERT_NOT_NULL(s);
     uint64_t i = 0;
     uint64_t j;
@@ -27,7 +59,8 @@ uint8_t* strtrim(const uint8_t* s) {
     while ((s[j] == ' ') || (s[j] == '\t')) {
         j--;
     }
-    tgt = kmalloc((j + 2) * sizeof(uint8_t));  // +1 for the fact that it's a zero-based index, +1 for the terminator
+    tgt = (uint8_t*)malloc((j + 2) *
+                           sizeof(uint8_t));  // +1 for the fact that it's a zero-based index, +1 for the terminator
 
     for (i = 0; i <= j; i++) {
         tgt[i] = s[i];
@@ -37,7 +70,7 @@ uint8_t* strtrim(const uint8_t* s) {
     return tgt;
 }
 
-uint8_t* strncpy(uint8_t* dest, const uint8_t* src, uint64_t len) {
+uint8_t* String::strncpy(uint8_t* dest, const uint8_t* src, uint64_t len) {
     ASSERT_NOT_NULL(dest);
     ASSERT_NOT_NULL(src);
     ASSERT(len > 0);
@@ -49,7 +82,7 @@ uint8_t* strncpy(uint8_t* dest, const uint8_t* src, uint64_t len) {
     return dest;
 }
 
-uint8_t* strncat(uint8_t* dest, const uint8_t* src, uint64_t len) {
+uint8_t* String::strncat(uint8_t* dest, const uint8_t* src, uint64_t len) {
     ASSERT_NOT_NULL(dest);
     ASSERT_NOT_NULL(src);
     ASSERT(len > 0);
@@ -69,7 +102,7 @@ uint8_t* strncat(uint8_t* dest, const uint8_t* src, uint64_t len) {
     return dest;
 }
 
-uint8_t strcmp(const uint8_t* str1, const uint8_t* str2) {
+uint8_t String::strcmp(const uint8_t* str1, const uint8_t* str2) {
     ASSERT_NOT_NULL(str1);
     ASSERT_NOT_NULL(str2);
     for (uint64_t i = 0;; i++) {
@@ -82,7 +115,7 @@ uint8_t strcmp(const uint8_t* str1, const uint8_t* str2) {
     }
 }
 
-uint8_t strncmp(const uint8_t* str1, const uint8_t* str2, uint64_t len) {
+uint8_t String::strncmp(const uint8_t* str1, const uint8_t* str2, uint64_t len) {
     ASSERT_NOT_NULL(str1);
     ASSERT_NOT_NULL(str2);
     for (uint64_t i = 0;; i++) {
@@ -95,7 +128,7 @@ uint8_t strncmp(const uint8_t* str1, const uint8_t* str2, uint64_t len) {
     }
 }
 
-uint32_t strstr(const uint8_t* str1, uint32_t start, const uint8_t* str2) {
+uint32_t String::strstr(const uint8_t* str1, uint32_t start, const uint8_t* str2) {
     ASSERT_NOT_NULL(str1);
     ASSERT_NOT_NULL(str2);
     uint32_t str1_len = strlen(str1);
@@ -125,11 +158,11 @@ uint32_t strstr(const uint8_t* str1, uint32_t start, const uint8_t* str2) {
     return -1;
 }
 
-uint8_t* substr(const uint8_t* str1, uint32_t start, uint32_t end, uint8_t* str2, uint32_t size) {
+uint8_t* String::substr(const uint8_t* str1, uint32_t start, uint32_t end, uint8_t* str2, uint32_t size) {
     ASSERT_NOT_NULL(str1);
     ASSERT_NOT_NULL(str2);
     ASSERT_NOT_NULL(size);
-    uint32_t str1_len = strlen(str1);
+    //   uint32_t str1_len = strlen(str1);
     uint32_t str2_len = (end - start);
     ASSERT(start < str1_len);
     ASSERT(end <= str1_len);

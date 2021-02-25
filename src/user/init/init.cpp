@@ -5,23 +5,30 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <init/init.h>
+#include <init.hpp>
 
-// use this abi to print a char to screen
-#include <abi/cosmos_abi.h>
+#include <device/device.hpp>
+#include <device/filesystem/filesystem_device.hpp>
+#include <device/serial/serial_device.hpp>
+
+#define INIT_SERIAL_DEVICE "serial0"
+#define INIT_ROOT_FS_DEVICE "fs0"
 
 /*
 * we are in user-land context here.  This is the entry point to userland that the kernel code calls
 */
 void cosmos_userland_init() {
-    syscall_print_console('^');
-    syscall_print_console('H');
-    syscall_print_console('I');
-    syscall_print_console('^');
-    syscall_print_console('\n');
+    //  SerialDevice* serialDevice = (SerialDevice*)Device::find(INIT_SERIAL_DEVICE);
+    //  if (0 != serialDevice) {
+    //      serialDevice->writeln("Hello from user land");
+    //  }
 
+    //  FilesystemDevice* filesystemDevice = (FilesystemDevice*)Device::find(INIT_ROOT_FS_DEVICE);
+    //   if (0 != filesystemDevice) {
+    //       serialDevice->writeln("Found root file system");
+    //   }
     // guess we're done...
-    syscall_exit();
+    //  syscall_exit();
     // here we mount a disk, I presume, and start reading files.
     // we likely end up starting a console for the console user to log into
 }

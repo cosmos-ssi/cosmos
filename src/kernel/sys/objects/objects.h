@@ -20,7 +20,7 @@
 #include <types.h>
 
 // given a handle, retrieve object from table and return its data member
-#define OBJECT_DATA(x) (object_table_get(x)->data)
+#define OBJECT_DATA(handle, type) ((type*)(object_table_get(handle)->data))
 
 typedef enum object_types_t {
     OBJECT_EXECUTABLE,
@@ -84,7 +84,7 @@ extern uint64_t object_table_next_idx;
 
 // object.c
 object_handle_t object_create(object_types_t type, void* object_data);
-void* object_get_data(object_handle_t handle);
+object_types_t object_type(object_handle_t obj);
 
 // object_executable.c
 object_handle_t object_create_executable_from_presentation(object_handle_t pres);
@@ -96,7 +96,7 @@ void object_init();
 object_handle_t object_kernel_work_create(void* (*work_func)(void*), void* arg);
 
 // object_presentation.c
-object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const char* name);
+object_handle_t object_presentation_create(device_t* dev, uint8_t idx, const char* name);
 
 // object_process.c
 object_handle_t object_process_create(object_handle_t exe);

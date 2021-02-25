@@ -5,14 +5,13 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-/*
-* this is the init program, which cosmos will read from disk, and execute in user-land context to kick off userland code
-* this program will communicate with the kernel via ABI calls
-*/
+#include <abi/abi.h>
+#include <malloc.h>
 
-#ifndef _INIT_H
-#define _INIT_H
+void* malloc(uint64_t size) {
+    return (void*)syscall_malloc(size);
+}
 
-void cosmos_userland_init();
-
-#endif
+void free(void* ptr) {
+    syscall_free(ptr);
+}

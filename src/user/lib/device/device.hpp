@@ -5,9 +5,18 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef ASSERT_H
-#define ASSERT_H
+#ifndef _DEVICE_HPP
+#define _DEVICE_HPP
 
-#define ASSERT(x)
+#include <string.hpp>
+
+class Device {
+  protected:
+    String name;
+
+  public:
+    static Device* find(String name);
+    static Device* find(const char* name);
+};
 
 #endif
