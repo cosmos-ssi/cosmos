@@ -7,12 +7,13 @@
 
 #include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
 #include <types.h>
 
-linkedlist* sched_add(uint64_t cpu, uint64_t core, pid_t pid) {
+linkedlist* sched_add(uint64_t cpu, uint64_t core, pid_t pid, object_handle_t obj) {
     scheduler_task_t* new_task;
     linkedlist* new_list_entry;
 
@@ -29,6 +30,7 @@ linkedlist* sched_add(uint64_t cpu, uint64_t core, pid_t pid) {
 
     new_task->exit_code = 0;
     new_task->times_skipped = 0;
+    new_task->obj = obj;
 
     new_list_entry = linkedlist_new();
 
@@ -36,8 +38,17 @@ linkedlist* sched_add(uint64_t cpu, uint64_t core, pid_t pid) {
 
     spinlock_acquire(&task_list_lock);
 
-    new_list_entry->next = task_list[cpu][core]->next;
-    task_list[cpu][core]->next = new_list_entry;
+    if (task_list[cpu][core]) {
+        new_list_entry->next = task_list[cpu][core]->next;
+        task_list[cpu][core]->next = new_list_entry;
+    } else {
+        new_list_entry->next = new_list_entry;
+    }
+    task_list[cpu][core] = new_list_entry;
+
+    if (!current_task[cpu][core]) {
+        current_task[cpu][core] = new_list_entry;
+    }
 
     spinlock_release(&task_list_lock);
 

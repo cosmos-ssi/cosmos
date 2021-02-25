@@ -153,9 +153,7 @@ void CosmOS() {
     idle_process = object_process_create(idle_kernel_work);
     idle_task = object_task_create(idle_process);
 
-    while (1) {
-        asm_hlt();
-    }
+    sched_switch(task_select());
 }
 
 void dump_vfs() {

@@ -27,7 +27,7 @@ object_handle_t object_create_executable_from_presentation(object_handle_t pres_
 
     device_t* initrd;
 
-    pres_obj = (object_presentation_t*)object_get_data(pres_handle);
+    pres_obj = OBJECT_DATA(pres_handle, object_presentation_t);
 
     exe_obj = (object_executable_t*)kmalloc(sizeof(obj_executable_t));
 

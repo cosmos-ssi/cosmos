@@ -20,7 +20,7 @@ object_handle_t object_task_create(object_handle_t proc) {
 
     pid = (OBJECT_DATA(proc, object_process_t))->pid;
 
-    sched_task = sched_add(CUR_CPU, CUR_CORE, pid);
+    sched_task = sched_add(CUR_CPU, CUR_CORE, pid, proc);
     obj->sched_task = sched_task;
 
     return object_create(OBJECT_TASK, (void*)obj);
