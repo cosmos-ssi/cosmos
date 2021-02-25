@@ -8,6 +8,7 @@
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
+#include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
 
 object_handle_t object_process_create(object_handle_t exe) {
@@ -18,6 +19,15 @@ object_handle_t object_process_create(object_handle_t exe) {
 
     obj->body = exe;
     obj->pid = proc_create();
+
+    switch (object_type(obj->body)) {
+        case OBJECT_KERNEL_WORK:
+            break;
+        case OBJECT_EXECUTABLE:
+            break;
+        default:
+            PANIC("Invalid object type!");
+    }
 
     return object_create(OBJECT_PROCESS, (void*)obj);
 }
