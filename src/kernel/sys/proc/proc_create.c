@@ -5,23 +5,23 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/panic/panic.h>
+#include <sys/debug/assert.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/string/mem.h>
+#include <sys/sync/sync.h>
 
-proc_info_t* new_proc_info(pid_t pid, pttentry cr3) {
-    proc_info_t* proc_info = 0;
+pid_t proc_create() {
+    proc_info_t* proc_info;
 
     proc_info = (proc_info_t*)kmalloc(sizeof(proc_info_t));
-    if (!proc_info) {
-        PANIC("Unable to allocate space for proc_info struct!");
-    }
-
-    // clear struct
+    ASSERT_NOT_NULL(proc_info);
     memset((uint8_t*)proc_info, 0, sizeof(proc_info_t));
 
-    proc_info->pid = pid;
-    proc_info->cr3 = cr3;
+    spinlock_acquire(&proc_table_lock);
+    proc_info->pid = get_next_pid();
 
-    return proc_info;
+    spinlock_release(&proc_table_lock);
+    return proc_info->pid;
 }

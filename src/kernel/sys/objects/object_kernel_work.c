@@ -8,16 +8,19 @@
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
-#include <sys/proc/proc.h>
 
-object_handle_t object_process_create(object_handle_t exe) {
-    object_process_t* obj;
+object_handle_t object_kernel_work_create(void* (*work_func)(void*), void* arg) {
+    object_kernel_work_t* obj;
 
-    obj = (object_process_t*)kmalloc(sizeof(object_process_t));
+    obj = (object_kernel_work_t*)kmalloc(sizeof(object_kernel_work_t));
     ASSERT_NOT_NULL(obj);
 
-    obj->body = exe;
-    obj->pid = proc_create();
+    obj->work_func = work_func;
 
-    return object_create(OBJECT_PROCESS, (void*)obj);
+    // NULL is a valid value for arg, and is what should be passed to work
+    // functions that don't actually need an argument but have to accept one
+    // because of the signature.
+    obj->arg = arg;
+
+    return object_create(OBJECT_KERNEL_WORK, (void*)obj);
 }

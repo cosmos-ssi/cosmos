@@ -23,21 +23,12 @@ void sched_init() {
     task_list = (linkedlist***)kmalloc(sizeof(linkedlist**));
 
     task_list[0] = (linkedlist**)kmalloc(sizeof(linkedlist*));
-    task_list[0][0] = linkedlist_new();
-
-    task_list[0][0]->next = task_list[0][0];
-
-    task_list[0][0]->data = (void*)kmalloc(sizeof(scheduler_task_t));
-
-    TASK_LIST_DATA(0, 0)->pid = 0;
-    TASK_LIST_DATA(0, 0)->state = SCHED_SLEEPING;
-    TASK_LIST_DATA(0, 0)->times_skipped = 0;
-    TASK_LIST_DATA(0, 0)->exit_code = 0;
+    task_list[0][0] = 0;
 
     current_task = (linkedlist***)kmalloc(sizeof(linkedlist**));
     current_task[0] = (linkedlist**)kmalloc(sizeof(linkedlist*));
 
-    current_task[0][0] = task_list[0][0];  // set current task to kernel idle
+    current_task[0][0] = 0;
 
     return;
 }

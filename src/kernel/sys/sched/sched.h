@@ -9,13 +9,14 @@
 #define _SCHED_H
 
 #include <sys/collection/linkedlist/linkedlist.h>
+#include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <types.h>
 
 // just to simplify a soup of parentheses
 #define TASK_LIST_DATA(x, y) ((scheduler_task_t*)task_list[x][y]->data)
 #define CURRENT_TASK_DATA(x, y) ((scheduler_task_t*)current_task[x][y]->data)
-#define TASK_DATA(x) ((scheduler_task_t*)x->data)
+#define TASK_DATA(x) ((scheduler_task_t*)(x->data))
 #define TASK_LIST_ADJUST(x, y) (task_list[x][y] = task_list[x][y]->next)
 
 // Replace these with something more sophisticated when appropriate
@@ -46,6 +47,8 @@ typedef struct scheduler_task_t {
      * Reset to zero whenever this task IS the one switched to.
      */
     uint64_t times_skipped;
+
+    object_handle_t obj;
 } scheduler_task_t;
 
 // one each for each processor/core combo
@@ -59,10 +62,10 @@ extern linkedlist*** current_task;
 extern linkedlist*** task_list;
 
 // sched.c
-void sched_start();
+void sched_switch();
 
 // sched_add.c
-void sched_add(uint64_t cpu, uint64_t core, pid_t pid);
+linkedlist* sched_add(uint64_t cpu, uint64_t core, pid_t pid, object_handle_t obj);
 
 // sched_init.c
 void sched_init();

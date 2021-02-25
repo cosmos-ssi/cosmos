@@ -5,13 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/collection/dtable/dtable.h>
-#include <sys/objects/objects.h>
+#include <sys/proc/proc.h>
 
-void object_init() {
-    object_table = dtable_init();
-
-    object_table_next_idx = 1;
-
-    return;
+pid_t get_next_pid() {
+    return next_pid++;
 }

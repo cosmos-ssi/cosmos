@@ -6,8 +6,12 @@
  *****************************************************************/
 
 #include <sys/collection/dtable/dtable.h>
-#include <sys/kmalloc/kmalloc.h>
 #include <sys/proc/proc.h>
-#include <sys/string/mem.h>
 
 dtable proc_table;
+
+void proc_table_add(proc_info_t* proc_info, pid_t pid) {
+    dtable_set(proc_table, pid, (void*)proc_info);
+
+    return;
+}

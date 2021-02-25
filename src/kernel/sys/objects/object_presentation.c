@@ -14,7 +14,7 @@
 #include <sys/string/string.h>
 #include <types.h>
 
-object_handle_t object_create_presentation(device_t* dev, uint8_t idx, const char* name) {
+object_handle_t object_presentation_create(device_t* dev, uint8_t idx, const char* name) {
     object_presentation_t* obj_data;
     object_handle_t handle;
 

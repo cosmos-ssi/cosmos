@@ -15,6 +15,7 @@ extern kernel_spinlock dma_buf_lock;
 extern kernel_spinlock dma_list_lock;
 extern kernel_spinlock page_dir_lock;
 extern kernel_spinlock page_table_lock;
+extern kernel_spinlock proc_table_lock;
 extern kernel_spinlock task_list_lock;
 
 void spinlocks_init();

@@ -144,11 +144,16 @@ void CosmOS() {
 
     gui_init();
     gui_draw();
-    sched_start();
 
-    while (1) {
-        asm_hlt();
-    }
+    object_handle_t idle_kernel_work;
+    object_handle_t idle_process;
+    object_handle_t idle_task;
+
+    idle_kernel_work = object_kernel_work_create(&kernel_idle, NULL);
+    idle_process = object_process_create(idle_kernel_work);
+    idle_task = object_task_create(idle_process);
+
+    sched_switch(task_select());
 }
 
 void dump_vfs() {
