@@ -13,7 +13,4 @@
 void* malloc(uint64_t size);
 void free(void* ptr);
 
-//void* operator new(uint64_t count);
-//void operator delete(void* ptr);
-
 #endif

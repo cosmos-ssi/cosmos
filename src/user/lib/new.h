@@ -5,13 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <abi/abi.h>
-#include <malloc.h>
+#ifndef _NEW_H
+#define _NEW_H
 
-void* malloc(uint64_t size) {
-    return (void*)syscall_malloc(size);
-}
+#include <types.h>
 
-void free(void* ptr) {
-    syscall_free(ptr);
-}
+//void* operator new(uint64_t count);
+//void operator delete(void* ptr);
+
+#endif
