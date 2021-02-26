@@ -1,9 +1,8 @@
 include ../../../mk/flags.mk
 include ../../../mk/build.mk
+include ../user.mk
 
 TERM=term
-COSMOS_ABI_ARCHIVE=../../lib/libcosmos.a
-EXTRA_CFLAGS= -I. -I../../lib/
 
 SRC_DIR=.
 
@@ -13,7 +12,7 @@ term.o: term.hpp term.cpp
 	$(CC) $(USER_CFLAGS) $(EXTRA_CFLAGS) -c -o term.o term.cpp
 
 $(TERM): $(COSMOS_ABI_ARCHIVE) term.o
-	$(LD) -m elf_x86_64 -o $(TERM) -L $(COSMOS_ABI_ARCHIVE) term.o   
+	$(LD) -m elf_x86_64 -o $(TERM) term.o $(COSMOS_ABI_ARCHIVE)  
 	
 clean:
 	$(RM) *.o

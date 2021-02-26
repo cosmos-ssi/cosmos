@@ -23,7 +23,7 @@ OBJS_ASM=$(subst $(SRC_DIR)/, , $(SRCS_ASM:.asm=.o))
 OBJS=$(OBJS_C) $(OBJS_CPP) $(OBJS_ASM)
 
 $(COSMOS_LIB_ARCHIVE): $(OBJS)
-	$(AR) $(ARFLAGS) $(COSMOS_LIB_ARCHIVE) $(OBJS)
+	$(AR) crv $(COSMOS_LIB_ARCHIVE) $(OBJS)
 
 # set search paths
 vpath %.c .
