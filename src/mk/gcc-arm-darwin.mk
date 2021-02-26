@@ -11,7 +11,7 @@ TARGET_PLATFORM=TARGET_PLATFORM_ARM
 
 # cc (GCC tool chain)
 CC=arm-none-eabi-gcc
-CFLAGS=-c -ffreestanding -fPIC -O0 -DCOMPILE_PLATFORM=$(COMPILE_PLATFORM) -D$(TARGET_PLATFORM)
+KERNEL_CFLAGS=-c -ffreestanding -fPIC -O0 -DCOMPILE_PLATFORM=$(COMPILE_PLATFORM) -D$(TARGET_PLATFORM)
 
 # ld
 LD=arm-none-eabi-ld

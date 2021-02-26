@@ -10,7 +10,7 @@ SRC_DIR=.
 all: $(COSMOS_INIT)
 
 init.o: init.hpp init.cpp
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o init.o init.cpp
+	$(CC) $(USER_CFLAGS) $(EXTRA_CFLAGS) -c -o init.o init.cpp
 
 $(COSMOS_INIT): $(COSMOS_ABI_ARCHIVE) init.o
 	$(LD) -m elf_x86_64 -o $(COSMOS_INIT) -L $(COSMOS_ABI_ARCHIVE) init.o   

@@ -49,7 +49,7 @@ $(ARCHIVE_FILE): $(ARCHIVES) $(OBJS)
 
 # C files	
 %.o: %.c $(HEADERS_C)
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
+	$(CC) $(KERNEL_CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
 
 # asm files	
 %.o: %.asm

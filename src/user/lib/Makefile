@@ -34,11 +34,11 @@ vpath %.asm .
 
 # C files	
 %.o: %.c $(HEADERS_C)
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
+	$(CC) $(USER_CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
 
 # CPP files	
 %.o: %.cpp $(HEADERS_CPP)
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
+	$(CC) $(USER_CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
 
 # asm files	
 %.o: %.asm

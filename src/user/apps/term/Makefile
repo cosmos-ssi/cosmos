@@ -10,7 +10,7 @@ SRC_DIR=.
 all: $(TERM)
 
 term.o: term.hpp term.cpp
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o term.o term.cpp
+	$(CC) $(USER_CFLAGS) $(EXTRA_CFLAGS) -c -o term.o term.cpp
 
 $(TERM): $(COSMOS_ABI_ARCHIVE) term.o
 	$(LD) -m elf_x86_64 -o $(TERM) -L $(COSMOS_ABI_ARCHIVE) term.o   
