@@ -17,7 +17,6 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/linkage/linkage.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 

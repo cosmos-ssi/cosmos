@@ -5,12 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _LINKAGE_H
-#define _LINKAGE_H
+#ifndef __TEST_KERNELMAP_H
+#define __TEST_KERNELMAP_H
 
-#include <types.h>
+void test_kernelmap();
 
-uint64_t linkage_get_kernel_size();
-void linkage_show_kernel_section_data();
-uint64_t linkage_get_kernel_sector_count();
 #endif

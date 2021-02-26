@@ -134,6 +134,7 @@ void devicemgr_init_devices() {
     //  deviceregistry_iterate_type(RAMDISK, device_initIterator);
     deviceregistry_iterate_type(PARALLEL, device_initIterator);
     //  deviceregistry_iterate_type(SWAP, device_initIterator);
+    deviceregistry_iterate_type(KERNELMAP, device_initIterator);
 }
 
 struct device* devicemgr_new_device() {
@@ -232,6 +233,7 @@ void devicemgr_register_devices() {
     bda_devicemgr_register_devices();
     acpi_devicemgr_register_devices();
     smbios_devicemgr_register_devices();
+    kernelmap_devicemgr_register_devices();
 }
 
 #else

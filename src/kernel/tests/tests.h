@@ -15,6 +15,7 @@
 #include <tests/dev/test_cpu.h>
 #include <tests/dev/test_display.h>
 #include <tests/dev/test_floppy.h>
+#include <tests/dev/test_kernelmap.h>
 #include <tests/dev/test_null.h>
 #include <tests/dev/test_parallel.h>
 #include <tests/dev/test_pit.h>
