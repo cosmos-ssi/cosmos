@@ -23,7 +23,8 @@ $(COSMOS_TEST_BINARY): fs/initfs/test.asm
 	$(NASM) $(NASMFLATARGS) -o $(COSMOS_TEST_BINARY) fs/initfs/test.asm
 
 $(COSMOS_INITRD_IMAGE): $(COSMOS_INIT) $(COSMOS_LIB_ARCHIVE)  $(COSMOS_TEST_BINARY)
-	$(MKINITRD) $(COSMOS_INIT) $(COSMOS_LIB_ARCHIVE)  $(COSMOS_TEST_BINARY) fs/initfs/welcome.txt fs/initfs/testdata.txt fs/initfs/cosmos.bmp fs/initfs/zap-vga16.psf
+	$(MKINITRD) fs/initfs/ $(COSMOS_INIT) $(COSMOS_LIB_ARCHIVE) $(COSMOS_TEST_BINARY) 
+
 	mv initrd.img ../img/
 	
 clean:
