@@ -15,7 +15,8 @@ KERNEL_CFLAGS=-c -ffreestanding -fPIC -O0 -DCOMPILE_PLATFORM=$(COMPILE_PLATFORM)
 
 # ld
 LD=arm-none-eabi-ld
-LDFLAGS= -T $(LINKER_SCRIPT) -Map $(MAPFILE) -nostdlib --no-relax
+KERNEL_LDFLAGS= -T $(LINKER_SCRIPT) -Map $(MAPFILE) -nostdlib --no-relax
+USER_LDFLAGS=-m elf_x86_64 -nostdlib --no-relax
 
 # objcopy
 OBJCOPY=arm-none-eabi-objcopy
