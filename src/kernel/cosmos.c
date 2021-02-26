@@ -172,7 +172,7 @@ void dump_vfs() {
 * load the init binary from the initrd fs
 */
 void load_init_binary() {
-    uint8_t init_binary_name[] = {"cosmos_init"};
+    uint8_t init_binary_name[] = {"init"};
     init_load(INITRD_DISK, init_binary_name);
     kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, INITRD_DISK);
 }

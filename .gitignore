@@ -80,3 +80,5 @@ src/util/mkinitrd/mkinitrd
 user/cosmos_init
 util/mkinitrd/mkinitrd
 src/user/init/cosmos_init
+/src/user/apps/term/term
+/src/user/apps/init/init

@@ -1,10 +1,9 @@
-include ../../mk/flags.mk
-include ../../mk/build.mk
+include ../../../mk/flags.mk
+include ../../../mk/build.mk
 
-COSMOS_INIT=cosmos_init
-COSMOS_ABI_ARCHIVE=../lib/libcosmos.a
-
-EXTRA_CFLAGS= -I. -I../lib/
+COSMOS_INIT=init
+COSMOS_ABI_ARCHIVE=../../lib/libcosmos.a
+EXTRA_CFLAGS= -I. -I../../lib/
 
 SRC_DIR=.
 

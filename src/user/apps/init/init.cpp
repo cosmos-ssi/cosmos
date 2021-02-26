@@ -17,8 +17,8 @@
 /*
 * we are in user-land context here.  This is the entry point to userland that the kernel code calls
 */
-void cosmos_userland_init() {
-    //  SerialDevice* serialDevice = (SerialDevice*)Device::find(INIT_SERIAL_DEVICE);
+void init() {
+    //   SerialDevice* serialDevice = (SerialDevice*)Device::find(INIT_SERIAL_DEVICE);
     //  if (0 != serialDevice) {
     //      serialDevice->writeln("Hello from user land");
     //  }

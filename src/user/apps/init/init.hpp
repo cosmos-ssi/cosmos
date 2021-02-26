@@ -7,12 +7,11 @@
 
 /*
 * this is the init program, which cosmos will read from disk, and execute in user-land context to kick off userland code
-* this program will communicate with the kernel via ABI calls
 */
 
 #ifndef _INIT_HPP
 #define _INIT_HPP
 
-void cosmos_userland_init();
+void init();
 
 #endif
