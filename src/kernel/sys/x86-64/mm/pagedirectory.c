@@ -159,7 +159,7 @@ void setup_page_directory(void* start, int_15_map* phys_map, uint8_t num_blocks)
     }
 
     io_buf_bytes = io_space_end - io_space_start;
-    io_buf = io_space_start;
+    io_buf = (uint64_t)CONV_PHYS_ADDR(io_space_start);
 
     // Now the kernel text, heap, and stack space
     for (i = (SIXTEEN_MB / PAGE_SIZE); i < (BOOT_MAPPED_PHYS / PAGE_SIZE); i++) {

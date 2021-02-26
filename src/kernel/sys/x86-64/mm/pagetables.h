@@ -32,7 +32,7 @@ typedef uint64_t ptt_t;  // page translation table
  * within the direct-map area.
  */
 #define PTT_ADJUST_BASE(x) (((uint64_t)x < MAX_ID_MAP) ? (void*)x : (void*)((uint64_t)x + DIRECT_MAP_OFFSET))
-#define CONV_PHYS_ADDR(x) PTT_ADJUST_BASE(x)
+#define CONV_PHYS_ADDR(x) ((void*)((uint64_t)x + DIRECT_MAP_OFFSET))
 
 // And vice-versa
 #define CONV_DMAP_ADDR(x) ((void*)((uint64_t)x - DIRECT_MAP_OFFSET))
