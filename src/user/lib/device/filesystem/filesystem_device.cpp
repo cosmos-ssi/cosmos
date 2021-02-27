@@ -7,7 +7,7 @@
 
 #include <device/filesystem/filesystem_device.hpp>
 
-struct fs_node* FilesystemDevice::getRootNode(FilesystemDevice* filesystem_device) {
+struct fs_node* FilesystemDevice::getRootNode() {
     return 0;
 }
 
