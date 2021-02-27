@@ -17,7 +17,7 @@
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
 
-object_handle_t object_create_executable_from_presentation(object_handle_t pres_handle) {
+object_handle_t object_executable_create_from_presentation(object_handle_t pres_handle) {
     object_presentation_t* pres_obj;
     object_executable_t* exe_obj;
     uint64_t name_len;

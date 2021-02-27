@@ -87,7 +87,7 @@ object_handle_t object_create(object_types_t type, void* object_data);
 object_types_t object_type(object_handle_t obj);
 
 // object_executable.c
-object_handle_t object_create_executable_from_presentation(object_handle_t pres);
+object_handle_t object_executable_create_from_presentation(object_handle_t pres);
 
 // object_init.c
 void object_init();

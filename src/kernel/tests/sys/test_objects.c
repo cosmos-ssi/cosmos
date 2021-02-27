@@ -14,13 +14,13 @@
 #include <sys/objects/objects.h>
 
 void test_objects() {
-    device_t* disk;
+    /*device_t* disk;
     device_t* initrd;
-    uint8_t idx;
+    uint8_t idx;*/
 
     kprintf("Testing objects\n");
 
-    disk = devicemgr_find_device("disk0");
+    /*disk = devicemgr_find_device("disk0");
     ASSERT_NOT_NULL(disk);
 
     initrd = initrd_attach(disk, initrd_lba());
@@ -31,20 +31,23 @@ void test_objects() {
     struct filesystem_node* fs_file_node = fsfacade_find_node_by_name(fs_root_node, "test.bin");
     ASSERT_NOT_NULL(fs_file_node);
 
+    kprintf("Size: %llu\n", fsfacade_size(fs_file_node));
+
     idx = fs_file_node->id;
-    //   kprintf("Index: %hu\n", idx);
+    kprintf("Index: %hu\n", idx);
 
-    // object_handle_t pres_handle;
+    object_handle_t pres_handle;
 
-    // pres_handle = object_create_presentation(disk, idx, "test.bin");
-    // object_handle_t exe_handle = object_create_executable_from_presentation(pres_handle);
+    pres_handle = object_presentation_create(disk, idx, "test.bin");
+    object_handle_t exe_handle = object_executable_create_from_presentation(pres_handle);
 
-    // kprintf("pres_handle, exe_handle: %llu, %llu\n", pres_handle, exe_handle);
+    kprintf("pres_handle, exe_handle: %llu, %llu\n", pres_handle, exe_handle);
 
-    // object_executable_t* obj_exe = object_get_data(exe_handle);
-    //  kprintf("page start, len: %llX %llX\n", (uint64_t)obj_exe->page_base, (uint64_t)obj_exe->page_count);
+    object_executable_t* obj_exe = OBJECT_DATA(exe_handle, object_executable_t);
+    kprintf("page start, len: %llX %llX\n", (uint64_t)obj_exe->page_base, (uint64_t)obj_exe->page_count);
 
-    initrd_detach(initrd);
+    initrd_detach(initrd);*/
 
+    
     return;
 }

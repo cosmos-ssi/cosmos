@@ -17,7 +17,7 @@ struct device;
 
 enum filesystem_node_type { folder, file, device };
 
-struct filesystem_node {
+typedef struct filesystem_node {
     /*
     * type
     */
@@ -38,7 +38,7 @@ struct filesystem_node {
     * node_specific data
     */
     void* node_data;
-};
+} filesystem_node_t;
 
 struct filesystem_directory {
     uint64_t count;
