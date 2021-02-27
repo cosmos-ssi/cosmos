@@ -5,7 +5,6 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
 #include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
