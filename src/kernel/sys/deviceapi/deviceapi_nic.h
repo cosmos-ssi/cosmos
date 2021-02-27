@@ -13,8 +13,8 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-typedef void (*nic_read_function)(struct device* dev, uint64_t* data, uint16_t size);
-typedef void (*nic_write_function)(struct device* dev, uint64_t* data, uint16_t size);
+typedef void (*nic_read_function)(struct device* dev, uint8_t* data, uint16_t size);
+typedef void (*nic_write_function)(struct device* dev, uint8_t* data, uint16_t size);
 
 struct deviceapi_nic {
     nic_read_function read;

@@ -149,13 +149,13 @@ uint8_t ne2000_isa_init(struct device* dev) {
     return 1;
 }
 
-void ne2000isa_ethernet_read(struct device* dev, uint64_t* data, uint16_t size) {
+void ne2000isa_ethernet_read(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
     PANIC("Ethernet read not implemented yet");
 }
-void ne2000isa_ethernet_write(struct device* dev, uint64_t* data, uint16_t size) {
+void ne2000isa_ethernet_write(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
