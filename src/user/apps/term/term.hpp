@@ -12,7 +12,7 @@
 #ifndef _TERM_HPP
 #define _TERM_HPP
 
-#include <device/serial/serial_device.hpp>
+#include <cosmos.hpp>
 
 class Term {
   private:
@@ -22,5 +22,8 @@ class Term {
     Term();
     void run();
 };
+
+int main(int argc, char* argv[]);
+
 
 #endif

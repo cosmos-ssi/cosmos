@@ -5,16 +5,16 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <term.hpp>
+#ifndef _COSMOS_HPP
+#define _COSMOS_HPP
 
-Term::Term() {
-    this->serialDevice = 0;
-}
+#include <assert.h>
+#include <device/devices.hpp>
+#include <heap.hpp>
+#include <malloc.h>
+#include <new.h>
+#include <process.hpp>
+#include <string.hpp>
+#include <types.h>
 
-void Term::run() {
-    
-}
-
-int main(int argc, char* argv[]){
-    return 0;
-}
+#endif

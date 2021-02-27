@@ -7,7 +7,7 @@
 
 #include <device/filesystem/filesystem_device.hpp>
 
-struct fs_node* FilesystemDevice::get_root_node(FilesystemDevice* filesystem_device) {
+struct fs_node* FilesystemDevice::getRootNode(FilesystemDevice* filesystem_device) {
     return 0;
 }
 
@@ -22,11 +22,11 @@ uint32_t FilesystemDevice::write(struct fs_node* node, const uint8_t* data, uint
 void FilesystemDevice::open(struct fs_node* node) {}
 void FilesystemDevice::close(struct fs_node* node) {}
 
-struct fs_node* FilesystemDevice::find_node_by_id(struct fs_node* node, uint64_t id) {
+struct fs_node* FilesystemDevice::findNodeById(struct fs_node* node, uint64_t id) {
     return 0;
 }
 
-void FilesystemDevice::list_directory(struct fs_node* node, struct filesystem_directory* dir) {}
+void FilesystemDevice::listDirectory(struct fs_node* node, struct filesystem_directory* dir) {}
 
 uint64_t FilesystemDevice::size(struct fs_node* node) {
     return 0;

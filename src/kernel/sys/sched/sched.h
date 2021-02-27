@@ -24,11 +24,12 @@
 #define CUR_CORE 0
 
 typedef enum scheduler_state_t {
-    SCHED_RUNNING,   // duh
-    SCHED_SLEEPING,  // currently awaiting rescheduling
-    SCHED_IOWAIT,    // awaiting IO, do not schedule until received
-    SCHED_ZOMBIE,    // In your he-ead, in your he-e-e-ead...
-    SCHED_TERMINATE  // Terminated, waiting for kernel tasklet to clean up
+    SCHED_RUNNING,    // duh
+    SCHED_SLEEPING,   // currently awaiting rescheduling
+    SCHED_IOWAIT,     // awaiting IO, do not schedule until received
+    SCHED_ZOMBIE,     // In your he-ead, in your he-e-e-ead...
+    SCHED_TERMINATE,  // Terminated, waiting for kernel tasklet to clean up
+    SCHED_LASTRESORT  // only schedule if no other schedulable tasks
 } scheduler_state_t;
 
 typedef struct scheduler_task_t {

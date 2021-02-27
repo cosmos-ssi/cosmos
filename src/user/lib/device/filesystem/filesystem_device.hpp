@@ -49,7 +49,7 @@ class FilesystemDevice : public Device {
     /*
     * get root node
     */
-    struct fs_node* get_root_node(FilesystemDevice* filesystem_device);
+    struct fs_node* getRootNode(FilesystemDevice* filesystem_device);
 
     /*
     * read bytes from node
@@ -64,11 +64,11 @@ class FilesystemDevice : public Device {
     /*
     * find a node by id
     */
-    struct fs_node* find_node_by_id(struct fs_node* node, uint64_t id);
+    struct fs_node* findNodeById(struct fs_node* node, uint64_t id);
     /*
     * get directory list.  fills struct. 
     */
-    void list_directory(struct fs_node* node, struct filesystem_directory* dir);
+    void listDirectory(struct fs_node* node, struct filesystem_directory* dir);
     /*
     * get file size 
     */
