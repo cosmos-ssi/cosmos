@@ -7,9 +7,7 @@
 
 #include <init.hpp>
 
-#include <device/device.hpp>
-#include <device/filesystem/filesystem_device.hpp>
-#include <device/serial/serial_device.hpp>
+#include <cosmos.hpp>
 
 #define INIT_SERIAL_DEVICE "serial0"
 #define INIT_ROOT_FS_DEVICE "fs0"

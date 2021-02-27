@@ -5,22 +5,16 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-/*
-* userland console terminal
-*/
+#ifndef _COSMOS_HPP
+#define _COSMOS_HPP
 
-#ifndef _TERM_HPP
-#define _TERM_HPP
-
-#include <cosmos.hpp>
-
-class Term {
-  private:
-    SerialDevice* serialDevice;
-
-  public:
-    Term();
-    void run();
-};
+#include <assert.h>
+#include <device/devices.hpp>
+#include <heap.hpp>
+#include <malloc.h>
+#include <new.h>
+#include <process.hpp>
+#include <string.hpp>
+#include <types.h>
 
 #endif

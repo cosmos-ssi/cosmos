@@ -18,6 +18,10 @@ CosmOS will be an [SSI](https://en.wikipedia.org/wiki/Single_system_image) opera
 
 - [Building and Running CosmOS](doc/developer/build.md)
 
+## Userland
+
+- [Userland](doc/developer/userland.md)
+
 ## Kernel Documentation
 
 - [Source Tree](doc/developer/source_tree.md)
