@@ -24,28 +24,18 @@ object_handle_t object_executable_create_from_presentation(object_handle_t pres_
     uint32_t pres_len;
     object_handle_t exe_handle;
     BYTE* exe_buf;
-
-    device_t* initrd;
+    filesystem_node_t* node;
 
     pres_obj = OBJECT_DATA(pres_handle, object_presentation_t);
+    node = pres_obj->node;
 
     exe_obj = (object_executable_t*)kmalloc(sizeof(obj_executable_t));
 
-    name_len = strlen(pres_obj->vfs_name);
+    name_len = strlen(node->name);
     exe_obj->exe_name = (char*)kmalloc(sizeof(char) * (name_len + 1));
-    strncpy((uint8_t*)exe_obj->exe_name, (uint8_t*)pres_obj->vfs_name, name_len + 1);
+    strncpy((uint8_t*)exe_obj->exe_name, (uint8_t*)node->name, name_len + 1);
 
-    initrd = initrd_attach(pres_obj->dev, initrd_lba());
-
-    /*
-    * note that fsfacade can work on any device that implements deviceapi_filesystem, not just initrd
-    */
-    struct filesystem_node* fs_root_node = fsfacade_get_fs_rootnode(initrd);
-    ASSERT_NOT_NULL(fs_root_node);
-    struct filesystem_node* fs_file_node = fsfacade_find_node_by_id(fs_root_node, pres_obj->idx);
-    ASSERT_NOT_NULL(fs_file_node);
-
-    pres_len = fsfacade_size(fs_file_node);
+    pres_len = fsfacade_size(node);
     // not all devices that implement deviceapi_filesystem may implement the "size" api
     ASSERT_NOT_NULL(pres_len);
 
@@ -54,7 +44,7 @@ object_handle_t object_executable_create_from_presentation(object_handle_t pres_
     exe_obj->page_base = slab_allocate(exe_obj->page_count, PDT_INUSE);
 
     exe_buf = (BYTE*)CONV_PHYS_ADDR((exe_obj->page_base * PAGE_SIZE));
-    fsfacade_read(fs_file_node, (uint8_t*)exe_buf, PAGE_SIZE * exe_obj->page_count);
+    fsfacade_read(node, (uint8_t*)exe_buf, PAGE_SIZE * exe_obj->page_count);
 
     exe_obj->from_presentation = true;
     exe_obj->presentation = pres_handle;

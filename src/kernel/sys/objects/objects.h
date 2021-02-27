@@ -15,6 +15,7 @@
 
 #include <sys/collection/dtable/dtable.h>
 #include <sys/collection/linkedlist/linkedlist.h>
+#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/proc/proc.h>
 #include <types.h>
@@ -64,9 +65,7 @@ typedef struct object_presentation_t {
      * For now just encapsulate enough to use the initrd driver directly, once
      * vfs develops switch to that
      */
-    device_t* dev;
-    uint8_t idx;
-    char* vfs_name;
+    filesystem_node_t* node;
 } object_presentation_t;
 
 typedef struct object_process_t {
@@ -96,7 +95,7 @@ void object_init();
 object_handle_t object_kernel_work_create(void* (*work_func)(void*), void* arg);
 
 // object_presentation.c
-object_handle_t object_presentation_create(device_t* dev, uint8_t idx, const char* name);
+object_handle_t object_presentation_create(filesystem_node_t* node);
 
 // object_process.c
 object_handle_t object_process_create(object_handle_t exe);

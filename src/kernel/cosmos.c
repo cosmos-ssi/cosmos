@@ -155,7 +155,11 @@ void CosmOS() {
     idle_process = object_process_create(idle_kernel_work);
     idle_task = object_task_create(idle_process);
 
-    load_test_binary();
+    filesystem_node_t* test_bin;
+    object_handle_t test_pres_obj;
+
+    test_bin = load_test_binary();
+    test_pres_obj = object_presentation_create(test_bin);
 
     sched_switch(task_select());
 }
