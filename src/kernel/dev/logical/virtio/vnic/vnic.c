@@ -76,7 +76,7 @@ void vnic_init_virtqueue(struct virtq** virtqueue, uint16_t queueIndex) {
     // The API takes a 32 bit pointer, but we have a 64 bit pointer, so ... some conversions
     uint32_t q_shifted = (uint64_t)q >> 12;
 
-    kprintf("  Queue Address(%u): %#hX, shifted %#hX\n", queueIndex, q, q_shifted);
+    kprintf("  Queue Address(%u): %#hX\n", queueIndex, q);
 
     // Write addresses (divided by 4096) to address registers
     vnic_write_register(VIRTIO_QUEUE_ADDRESS, q_shifted);

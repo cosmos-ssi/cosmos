@@ -16,7 +16,7 @@
  */
 struct virtq* virtq_new(uint16_t size) {
     // virtqueue must be aligned on a 4096-byte boundary
-    struct virtq* ret = (struct virtq*)iobuffers_request_buffer(sizeof(struct virtq));
+    struct virtq* ret = (struct virtq*)iobuffers_request_buffer(sizeof(struct virtq));  // 32-bit identity mapped
     /*
      * size
      */
