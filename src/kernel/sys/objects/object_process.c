@@ -5,20 +5,29 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
 #include <sys/panic/panic.h>
+#include <sys/proc/proc.h>
 
-object_handle_t object_create_process(object_handle_t exe, pid_t pid) {
+object_handle_t object_process_create(object_handle_t exe) {
     object_process_t* obj;
 
     obj = (object_process_t*)kmalloc(sizeof(object_process_t));
-    if (!obj) {
-        PANIC("kmalloc failed!");
+    ASSERT_NOT_NULL(obj);
+
+    obj->body = exe;
+    obj->pid = proc_create();
+
+    switch (object_type(obj->body)) {
+        case OBJECT_KERNEL_WORK:
+            break;
+        case OBJECT_EXECUTABLE:
+            break;
+        default:
+            PANIC("Invalid object type!");
     }
 
-    obj->executable = exe;
-    obj->pid = pid;
-
-    return object_create(OBJECT_EXECUTABLE, (void*)obj);
+    return object_create(OBJECT_PROCESS, (void*)obj);
 }

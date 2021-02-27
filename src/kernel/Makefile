@@ -39,9 +39,9 @@ $(KERNEL_BIN): $(KERNEL_ELF)
 
 $(KERNEL_ELF): $(ARCHIVE_FILE)
 ifeq ($(TARGET_PLATFORM),TARGET_PLATFORM_i386)
-	$(LD) $(LDFLAGS) -o $(KERNEL_ELF) $(ARCHIVE_FILE)
+	$(LD) $(KERNEL_LDFLAGS) -o $(KERNEL_ELF) $(ARCHIVE_FILE)
 else
-	$(LD) $(LDFLAGS) -o $(KERNEL_ELF) $(ARCHIVE_FILE)
+	$(LD) $(KERNEL_LDFLAGS) -o $(KERNEL_ELF) $(ARCHIVE_FILE)
 endif
 
 $(ARCHIVE_FILE): $(ARCHIVES) $(OBJS)
@@ -49,7 +49,7 @@ $(ARCHIVE_FILE): $(ARCHIVES) $(OBJS)
 
 # C files	
 %.o: %.c $(HEADERS_C)
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
+	$(CC) $(KERNEL_CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
 
 # asm files	
 %.o: %.asm

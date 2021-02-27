@@ -8,9 +8,6 @@
 #include <sys/collection/dtable/dtable.h>
 #include <sys/objects/objects.h>
 
-dtable object_table;
-uint64_t object_table_next_idx;
-
 void object_init() {
     object_table = dtable_init();
 

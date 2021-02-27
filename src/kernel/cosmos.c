@@ -130,13 +130,10 @@ void CosmOS() {
     dev_tests();
 
     // show the vfs
-    kprintf("***** Devices *****\n");
+    // kprintf("***** Devices *****\n");
     //  devicemgr_dump_devices();
 
-    kprintf("\n");
-    kprintf("***** VFS *****\n");
-    kprintf("\n");
-    dump_vfs();
+    //   dump_vfs();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
     kprintf("\n");
@@ -148,12 +145,21 @@ void CosmOS() {
     gui_init();
     gui_draw();
 
-    while (1) {
-        asm_hlt();
-    }
+    object_handle_t idle_kernel_work;
+    object_handle_t idle_process;
+    object_handle_t idle_task;
+
+    idle_kernel_work = object_kernel_work_create(&kernel_idle, NULL);
+    idle_process = object_process_create(idle_kernel_work);
+    idle_task = object_task_create(idle_process);
+
+    sched_switch(task_select());
 }
 
 void dump_vfs() {
+    kprintf("\n");
+    kprintf("***** VFS *****\n");
+    kprintf("\n");
     struct device* vfs_dev = devicemgr_find_device("vfs0");
     ASSERT_NOT_NULL(vfs_dev);
     struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(vfs_dev);
@@ -166,7 +172,7 @@ void dump_vfs() {
 * load the init binary from the initrd fs
 */
 void load_init_binary() {
-    uint8_t init_binary_name[] = {"cosmos_init"};
+    uint8_t init_binary_name[] = {"init"};
     init_load(INITRD_DISK, init_binary_name);
     kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, INITRD_DISK);
 }

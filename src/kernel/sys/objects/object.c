@@ -35,11 +35,10 @@ object_handle_t object_create(object_types_t type, void* object_data) {
     return object_table_next_idx++;
 }
 
-void* object_get_data(object_handle_t handle) {
-    object_t* obj;
+object_types_t object_type(object_handle_t obj) {
+    object_t* o;
 
-    // see comment in object_create for explanation of handle - 1
-    obj = dtable_get(object_table, handle - 1);
+    o = object_table_get(obj);
 
-    return obj->data;
+    return o->type;
 }
