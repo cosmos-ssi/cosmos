@@ -187,7 +187,7 @@ void vnic_setup_receive_buffers(struct virtq* receiveQueue, uint8_t count) {
 
     // Allocate and add 16 buffers to receive queue
     for (uint16_t i = 0; i < count; ++i) {
-        uint64_t* buffer = kmalloc(bufferSize);
+        uint8_t* buffer = kmalloc(bufferSize);
         struct virtq_descriptor* desc = virtq_descriptor_new(buffer, bufferSize, true);
 
         virtq_enqueue_descriptor(receiveQueue, desc);
@@ -239,13 +239,13 @@ void vnic_irq_handler(stack_frame* frame) {
     // EOI sent to the PIC by the interrupt handler
 }
 
-void vnic_rx(struct device* dev, uint64_t* data, uint16_t size) {
+void vnic_rx(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     PANIC("vnic read not implemented yet");
 }
 
-void vnic_tx(struct device* dev, uint64_t* data, uint16_t size) {
+void vnic_tx(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
@@ -265,7 +265,8 @@ void vnic_tx(struct device* dev, uint64_t* data, uint16_t size) {
     struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
 
     // load a descriptor with our buffer
-    struct virtq_descriptor* desc = virtq_descriptor_new(netBuffer, bufferSize + sizeof(virtio_net_hdr), false);
+    struct virtq_descriptor* desc =
+        virtq_descriptor_new((uint8_t*)netBuffer, bufferSize + sizeof(virtio_net_hdr), false);
 
     // queue it up
     virtq_enqueue_descriptor(device_data->send_queue, desc);

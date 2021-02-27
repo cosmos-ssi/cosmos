@@ -33,13 +33,14 @@ void test_virtio_vnic() {
     uint8_t rxq[] = {"RXQ: "};
 
     virtq_print(rxq, device_data->receive_queue);
-
     uint8_t x = 0;
     for (x = 0; x < 20; x++) {
         virtq_print(txq, device_data->send_queue);
 
-        uint8_t s[] = {"test string"};
-        nic_api->write(dev, (uint64_t*)&s, sizeof(s));
+        uint8_t s[] = {"this is a test\0"};
+        uint8_t* buffer = (uint8_t*)kmalloc(strlen(s));
+        strncpy(buffer, s, strlen(s));
+        nic_api->write(dev, buffer, sizeof(buffer));
     }
     virtq_print(rxq, device_data->receive_queue);
 }

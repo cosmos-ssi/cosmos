@@ -166,10 +166,13 @@ struct virtq_descriptor* virtq_dequeue_descriptor(struct virtq* queue) {
 /*
  * new descriptor
  */
-struct virtq_descriptor* virtq_descriptor_new(void* buffer, uint32_t len, bool writable) {
+struct virtq_descriptor* virtq_descriptor_new(uint8_t* buffer, uint32_t len, bool writable) {
     ASSERT_NOT_NULL(buffer);
     struct virtq_descriptor* ret = kmalloc(sizeof(struct virtq_descriptor));
+
+    // buffer address must be guest-physical (IO buffers are identity mapped already)
     ret->addr = buffer;
+
     if (writable) {
         ret->flags = VIRTQ_DESC_F_DEVICE_WRITE_ONLY;
     } else {
