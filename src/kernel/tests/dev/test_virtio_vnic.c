@@ -37,10 +37,10 @@ void test_virtio_vnic() {
     for (x = 0; x < 20; x++) {
         virtq_print(txq, device_data->send_queue);
 
-        uint8_t s[] = {"this is a test\0"};
+        uint8_t s[] = "this is a test of the emergency broadcasting system\0";
         uint8_t* buffer = (uint8_t*)kmalloc(strlen(s));
-        strncpy(buffer, s, strlen(s));
-        nic_api->write(dev, buffer, sizeof(buffer));
+        strncpy(buffer, s, strlen(s) + 1);
+        nic_api->write(dev, buffer, strlen(s));
     }
     virtq_print(rxq, device_data->receive_queue);
 }

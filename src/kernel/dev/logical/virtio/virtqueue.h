@@ -28,7 +28,7 @@
 #define VIRTQ_DESC_F_INDIRECT 0x04  // buffer contains a list of buffer descriptors.
 
 struct virtq_descriptor {
-    uint8_t* addr; /* Address (guest-physical). */
+    uint64_t addr; /* Address (guest-physical). */
     uint32_t len;
     uint16_t flags;
     uint16_t next;

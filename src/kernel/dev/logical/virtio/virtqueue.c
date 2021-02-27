@@ -10,6 +10,7 @@
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/x86-64/mm/pagetables.h>
 
 /*
  * create virtq
@@ -170,8 +171,8 @@ struct virtq_descriptor* virtq_descriptor_new(uint8_t* buffer, uint32_t len, boo
     ASSERT_NOT_NULL(buffer);
     struct virtq_descriptor* ret = kmalloc(sizeof(struct virtq_descriptor));
 
-    // buffer address must be guest-physical (IO buffers are identity mapped already)
-    ret->addr = buffer;
+    // buffer address must be guest-physical
+    ret->addr = (uint64_t)CONV_DMAP_ADDR(buffer);
 
     if (writable) {
         ret->flags = VIRTQ_DESC_F_DEVICE_WRITE_ONLY;
@@ -189,7 +190,7 @@ struct virtq_descriptor* virtq_descriptor_new(uint8_t* buffer, uint32_t len, boo
 void virtq_descriptor_delete(struct virtq_descriptor* descriptor) {
     ASSERT_NOT_NULL(descriptor);
     if (0 != descriptor->addr) {
-        kfree(descriptor->addr);
+        kfree((uint8_t*)descriptor->addr);
     } else {
         PANIC("virtq_descriptor address should not be zero");
     }

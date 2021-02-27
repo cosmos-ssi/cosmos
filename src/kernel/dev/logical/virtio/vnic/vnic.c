@@ -265,8 +265,7 @@ void vnic_tx(struct device* dev, uint8_t* data, uint16_t size) {
     struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
 
     // load a descriptor with our buffer
-    struct virtq_descriptor* desc =
-        virtq_descriptor_new((uint8_t*)netBuffer, bufferSize + sizeof(virtio_net_hdr), false);
+    struct virtq_descriptor* desc = virtq_descriptor_new((uint8_t*)netBuffer, bufferSize, false);
 
     // queue it up
     virtq_enqueue_descriptor(device_data->send_queue, desc);
