@@ -13,10 +13,10 @@
 
 class BlockDevice : public Device {
   public:
-    uint32_t block_read_sectors(uint8_t* data, uint32_t data_size, uint32_t start_lba);
-    uint32_t block_write_sectors(uint8_t* data, uint32_t data_size, uint32_t start_lba);
-    uint16_t block_sector_size();
-    uint32_t block_total_size();
+    uint32_t readSectors(uint8_t* data, uint32_t data_size, uint32_t start_lba);
+    uint32_t writeSectors(uint8_t* data, uint32_t data_size, uint32_t start_lba);
+    uint16_t sectorSize();
+    uint32_t totalSize();
 };
 
 #endif

@@ -13,7 +13,7 @@
 
 class ConsoleDevice : public Device {
   public:
-    uint8_t setpos(uint8_t x, uint8_t y);
+    uint8_t setPos(uint8_t x, uint8_t y);
     void write(const char* s);
 };
 

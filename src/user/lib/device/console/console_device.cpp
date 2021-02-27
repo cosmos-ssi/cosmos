@@ -8,7 +8,7 @@
 
 #include <device/console/console_device.hpp>
 
-uint8_t ConsoleDevice::setpos(uint8_t x, uint8_t y) {
+uint8_t ConsoleDevice::setPos(uint8_t x, uint8_t y) {
     return 0;
 }
 
