@@ -24,6 +24,7 @@ QEMUARGS=                                                 \
   -device adlib,audiodev=audio0                          \
   -monitor telnet::45454,server,nowait                    \
   -D qemu.log                                               \
+  -d guest_errors,trace:*net*,trace:*virtio*,trace:*eth*,trace:*pci*,trace:*ioapic*   \
   -vga std
 
   # -object filter-dump,id=f1,netdev=virtio,file=dump.dat      \
