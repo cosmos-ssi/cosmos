@@ -6,3 +6,15 @@
 // ****************************************************************
 
 #include <process.hpp>
+
+void Process::sleep(uint64_t ms) {
+
+}
+
+uint64_t Process::pid(){
+    return 0;
+}
+
+Process* Process::fork(){
+    return 0;
+}

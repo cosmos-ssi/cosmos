@@ -14,6 +14,9 @@
 
 class Process {
   public:
+    void sleep(uint64_t ms);
+    uint64_t pid();
+    Process* fork();
 };
 
 #endif
