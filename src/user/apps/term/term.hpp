@@ -17,6 +17,11 @@
 class Term {
   private:
     SerialDevice* serialDevice;
+    void lineloop();
+    uint16_t readline(uint8_t* line, uint16_t len);
+
+    // return 0 to indicate end of terminal process
+    uint8_t processline(uint8_t* line);
 
   public:
     Term();
@@ -24,6 +29,5 @@ class Term {
 };
 
 int main(int argc, char* argv[]);
-
 
 #endif

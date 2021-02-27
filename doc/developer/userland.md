@@ -66,4 +66,5 @@ Null         | read            | 1900       | deviceapi_null
 Rand         | read            | 2000       | deviceapi_rand
 RTC          | read            | 2100       | deviceapi_rtc
 Tick         | read            | 2200       | deviceapi_tick
-Serial       | writeln         | 2300       | deviceapi_serial
+Serial       | readchar        | 2300       | deviceapi_serial
+Serial       | writechar       | 2301       | deviceapi_serial

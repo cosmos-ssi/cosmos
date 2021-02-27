@@ -14,6 +14,8 @@
 class SerialDevice : public Device {
   public:
     void writeln(const char* str);
+    uint8_t readChar();
+    void writeChar(uint8_t c);
 };
 
 #endif
