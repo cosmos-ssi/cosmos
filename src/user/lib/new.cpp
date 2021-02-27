@@ -5,12 +5,13 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <new.h>
+#include <new.hpp>
+#include <malloc.h>
 
-//void* operator new(uint64_t count) {
-//    return malloc(count);
-//}
+void* operator new(uint64_t count) {
+    return malloc(count);
+}
 
-//void operator delete(void* ptr) {
-//    return free(ptr);
-//}
+void operator delete(void* ptr) {
+    return free(ptr);
+}

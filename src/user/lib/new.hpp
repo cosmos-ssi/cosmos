@@ -4,13 +4,15 @@
 // Released under the stated terms in the file LICENSE            *
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
-
-#ifndef _NEW_H
-#define _NEW_H
+/*
+* this file globally overrides C++ new and delete
+*/
+#ifndef _NEW_HPP
+#define _NEW_HPP
 
 #include <types.h>
 
-//void* operator new(uint64_t count);
-//void operator delete(void* ptr);
+void* operator new(uint64_t count);
+void operator delete(void* ptr);
 
 #endif

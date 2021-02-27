@@ -12,7 +12,7 @@
 #include <device/devices.hpp>
 #include <heap.hpp>
 #include <malloc.h>
-#include <new.h>
+#include <new.hpp>
 #include <process.hpp>
 #include <string.hpp>
 #include <types.h>
