@@ -12,6 +12,6 @@
 #ifndef _INIT_HPP
 #define _INIT_HPP
 
-void init();
+int main(int argc, char* argv[]);
 
 #endif

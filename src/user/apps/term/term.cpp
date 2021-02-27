@@ -11,4 +11,10 @@ Term::Term() {
     this->serialDevice = 0;
 }
 
-void run() {}
+void Term::run() {
+    
+}
+
+int main(int argc, char* argv[]){
+    return 0;
+}
