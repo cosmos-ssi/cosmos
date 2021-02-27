@@ -13,8 +13,8 @@
 
 class ConsoleDevice : public Device {
   public:
-    uint8_t setpos(struct device* dev, uint8_t x, uint8_t y);
-    void write(struct device* dev, const char* s);
+    uint8_t setpos(uint8_t x, uint8_t y);
+    void write(const char* s);
 };
 
 #endif

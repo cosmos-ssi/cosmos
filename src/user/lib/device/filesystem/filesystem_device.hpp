@@ -54,25 +54,25 @@ class FilesystemDevice : public Device {
     /*
     * read bytes from node
     */
-    uint32_t read(struct fs_node, uint8_t* data, uint32_t data_size);
+    uint32_t read(struct fs_node* node, uint8_t* data, uint32_t data_size);
     /*
     * write bytes to node
     */
-    uint32_t write(struct fs_node, const uint8_t* data, uint32_t data_size);
-    void open(struct fs_node);
-    void close(struct fs_node);
+    uint32_t write(struct fs_node* node, const uint8_t* data, uint32_t data_size);
+    void open(struct fs_node* node);
+    void close(struct fs_node* node);
     /*
     * find a node by id
     */
-    struct fs_node* find_node_by_id(struct fs_node, uint64_t id);
+    struct fs_node* find_node_by_id(struct fs_node* node, uint64_t id);
     /*
     * get directory list.  fills struct. 
     */
-    void list_directory(struct fs_node, struct filesystem_directory* dir);
+    void list_directory(struct fs_node* node, struct filesystem_directory* dir);
     /*
     * get file size 
     */
-    uint64_t size(struct fs_node);
+    uint64_t size(struct fs_node* node);
 };
 
 #endif

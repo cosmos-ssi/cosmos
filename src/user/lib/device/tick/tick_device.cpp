@@ -1,4 +1,3 @@
-
 //*****************************************************************
 // This file is part of CosmOS                                    *
 // Copyright (C) 2020-2021 Tom Everett                            *
@@ -6,11 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <device/bga/bga_device.hpp>
+#include <device/tick/tick_device.hpp>
 
-void BGADevice::get_resolution(struct deviceapi_resolution* resolution) {}
-void BGADevice::set_resolution(struct deviceapi_resolution* resolution) {}
-uint32_t BGADevice::get_buffersize() {
+uint64_t TickDevice::read() {
     return 0;
 }
-void BGADevice::blt(uint8_t* buffer, uint32_t buffer_size) {}
