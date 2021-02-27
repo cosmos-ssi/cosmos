@@ -35,7 +35,7 @@ void dev_tests();
 void load_init_binary();
 void dump_vfs();
 void video_write(const uint8_t* s);
-uint64_t load_test_binary();
+filesystem_node_t* load_test_binary();
 
 void CosmOS() {
     /*
@@ -160,7 +160,7 @@ void CosmOS() {
     sched_switch(task_select());
 }
 
-uint64_t load_test_binary() {
+filesystem_node_t* load_test_binary() {
     device_t* vfs_dev;
     filesystem_node_t *vfs_node, *initrd_node, *file_node;
 
@@ -176,7 +176,7 @@ uint64_t load_test_binary() {
     file_node = fsfacade_find_node_by_name(initrd_node, "test.bin");
     ASSERT_NOT_NULL(file_node);
 
-    return file_node->id;
+    return file_node;
 }
 
 void dump_vfs() {
