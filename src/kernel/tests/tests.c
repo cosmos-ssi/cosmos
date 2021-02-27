@@ -30,7 +30,7 @@ void tests_run() {
     test_initrd();
     test_ata();
     test_init_loader();
-    test_objects();
+    //test_objects();
     test_kernelmap();
     //test_mm();
 }

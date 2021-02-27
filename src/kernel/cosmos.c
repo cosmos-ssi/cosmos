@@ -11,6 +11,7 @@
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_console.h>
+#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/gui/gui.h>
 #include <sys/init/init.h>
@@ -34,6 +35,7 @@ void dev_tests();
 void load_init_binary();
 void dump_vfs();
 void video_write(const uint8_t* s);
+filesystem_node_t* load_test_binary();
 
 void CosmOS() {
     /*
@@ -133,7 +135,7 @@ void CosmOS() {
     // kprintf("***** Devices *****\n");
     //  devicemgr_dump_devices();
 
-    //   dump_vfs();
+    dump_vfs();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
     kprintf("\n");
@@ -153,7 +155,28 @@ void CosmOS() {
     idle_process = object_process_create(idle_kernel_work);
     idle_task = object_task_create(idle_process);
 
+    load_test_binary();
+
     sched_switch(task_select());
+}
+
+filesystem_node_t* load_test_binary() {
+    device_t* vfs_dev;
+    filesystem_node_t *vfs_node, *initrd_node, *file_node;
+
+    vfs_dev = devicemgr_find_device("vfs0");
+    ASSERT_NOT_NULL(vfs_dev);
+
+    vfs_node = fsfacade_get_fs_rootnode(vfs_dev);
+    ASSERT_NOT_NULL(vfs_node);
+
+    initrd_node = fsfacade_find_node_by_name(vfs_node, "initrd");
+    ASSERT_NOT_NULL(initrd_node);
+
+    file_node = fsfacade_find_node_by_name(initrd_node, "test.bin");
+    ASSERT_NOT_NULL(file_node);
+
+    return file_node;
 }
 
 void dump_vfs() {
