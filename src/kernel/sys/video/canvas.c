@@ -6,7 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
@@ -17,7 +18,7 @@
 #include <sys/video/rgb.h>
 #include <sys/video/video_util.h>
 
-struct canvas* canvas_new(struct device* dev) {
+struct canvas* canvas_new(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     struct canvas* ret = (struct canvas*)kmalloc(sizeof(struct canvas));
     /*

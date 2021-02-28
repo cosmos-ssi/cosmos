@@ -5,11 +5,12 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <dev/logical/fs/initrd/initrd.h>
+#include <obj/logical/fs/initrd/initrd.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/device.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
 #include <sys/objects/objects.h>
 #include <sys/string/string.h>
 #include <sys/x86-64/mm/mm.h>

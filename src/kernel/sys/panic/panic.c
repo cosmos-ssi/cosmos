@@ -5,8 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <dev/x86-64/serial/serial.h>
-#include <sys/asm/misc.h>
+#include <obj/x86-64/serial/serial.h>
+#include <sys/asm/asm.h>
 #include <sys/panic/panic.h>
 #include <sys/string/string.h>
 

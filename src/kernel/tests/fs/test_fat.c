@@ -5,8 +5,10 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/fs/fat/fat.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <obj/logical/fs/fat/fat.h>
+#include <sys/debug/debug.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <tests/fs/test_fat.h>
 #include <types.h>
@@ -14,9 +16,9 @@
 void test_fat() {
     uint8_t devicename[] = {"disk1"};
 
-    struct device* dsk = devicemgr_find_device(devicename);
+    struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct device* dev = fat_attach(dsk);
+        struct object* dev = fat_attach(dsk);
         fat_detach(dev);
     } else {
         kprintf("Unable to find %s\n", devicename);

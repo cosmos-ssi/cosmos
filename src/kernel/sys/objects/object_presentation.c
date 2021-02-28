@@ -5,7 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/devicemgr/device.h>
+#include <obj/logical/fs/initrd/initrd.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
 #include <sys/panic/panic.h>
