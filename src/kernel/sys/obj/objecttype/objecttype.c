@@ -5,11 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <stdint.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/string/string.h>
+#include <types.h>
 
 struct object_type* objecttype_new(uint8_t* name, enum object_type_id id) {
     ASSERT_NOT_NULL(name);
