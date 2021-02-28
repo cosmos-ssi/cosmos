@@ -18,9 +18,10 @@ typedef uint64_t xmm_reg[2];
 
 typedef uint64_t pid_t;
 
-typedef struct proc_info {
+typedef struct proc_info_T {
     pid_t pid;
     pttentry cr3;
+    void* brk;
     uint64_t cpu;
     uint64_t core;
     proc_register rax;

@@ -48,7 +48,6 @@ pttentry proc_obtain_cr3() {
 void setup_user_process(pid_t pid, object_handle_t exe_obj) {
 
     proc_table_get(pid)->cr3 = proc_obtain_cr3();
-    kprintf("cr3: 0x%llX\n", proc_table_get(pid)->cr3);
 
     return;
 }
