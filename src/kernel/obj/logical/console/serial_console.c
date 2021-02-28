@@ -6,9 +6,12 @@
 // ****************************************************************
 
 #include <obj/logical/console/serial_console.h>
-#include <obj/x86-64/serial/serial.h>
+#include <stdint.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_console.h>
 #include <sys/objecttype/objecttype_serial.h>
 #include <sys/string/mem.h>

@@ -11,7 +11,7 @@
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 
-struct device;
+struct object;
 
 /*
  * find the block for the map entry for a block (indexed to first map block)

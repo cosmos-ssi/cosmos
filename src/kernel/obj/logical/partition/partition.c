@@ -5,12 +5,15 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/fs_util.h>
 #include <obj/logical/partition/partition.h>
 #include <obj/logical/partition_table/partition_table_util.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
+#include <sys/objecttype/objecttype_block.h>
 #include <sys/objecttype/objecttype_part_table.h>
 #include <sys/string/mem.h>
 

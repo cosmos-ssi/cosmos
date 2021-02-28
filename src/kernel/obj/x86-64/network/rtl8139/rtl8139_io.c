@@ -6,8 +6,9 @@
 // ****************************************************************
 
 #include <obj/x86-64/network/rtl8139/rtl8139_io.h>
-#include <sys/asm/asm.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
+#include <sys/objectmgr/object.h>
 #include <sys/panic/panic.h>
 
 #define RTL8139_REGISTER_TX_START_0 0x20

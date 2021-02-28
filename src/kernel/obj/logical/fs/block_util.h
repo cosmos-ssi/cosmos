@@ -8,8 +8,9 @@
 #ifndef _BLOCK_UTIL_H
 #define _BLOCK_UTIL_H
 
-#include <sys/objecttype/objecttype_block.h>
 #include <types.h>
+
+struct object;
 
 uint32_t blockutil_get_sector_size(struct object* dev);
 uint32_t blockutil_get_sector_count(struct object* dev);

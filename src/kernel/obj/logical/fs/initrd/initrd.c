@@ -6,18 +6,16 @@
 // ****************************************************************
 
 #include <obj/logical/fs/block_util.h>
-#include <obj/logical/fs/fs_util.h>
 #include <obj/logical/fs/initrd/initrd.h>
 #include <obj/logical/fs/node_cache.h>
 #include <obj/logical/fs/node_util.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_block.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_filesystem.h>
+#include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 
 struct initrd_file_header {

@@ -6,9 +6,8 @@
  *****************************************************************/
 
 #include <cosmos_logical_devs.h>
-#include <obj/logical/console/vga_console.h>
 #include <obj/logical/fs/initrd/initrd.h>
-#include <sys/asm/asm.h>
+#include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/gui/gui.h>
@@ -16,15 +15,14 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objects/objects.h>
 #include <sys/objecttype/objecttype_console.h>
 #include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
-#include <sys/syscall/syscall.h>
-#include <sys/video/video_util.h>
-#include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/idt/idt.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/syscall/syscall.h>

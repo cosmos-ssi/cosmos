@@ -8,7 +8,7 @@
 #ifndef _SFS_H
 #define _SFS_H
 
-struct device;
+struct object;
 
 struct object* sfs_attach(struct object* partition_device);
 void sfs_detach(struct object* dev);

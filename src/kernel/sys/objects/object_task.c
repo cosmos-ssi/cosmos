@@ -10,7 +10,6 @@
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
-#include <types.h>
 
 object_handle_t object_task_create(object_handle_t proc) {
     linkedlist* sched_task;

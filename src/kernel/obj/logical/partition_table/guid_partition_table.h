@@ -42,8 +42,6 @@ struct guid_pt_entry {
     uint8_t name[72];
 } __attribute__((packed));
 
-struct object;
-
 struct object* guid_pt_attach(struct object* block_device);
 void guid_pt_detach(struct object* dev);
 

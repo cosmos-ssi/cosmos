@@ -9,11 +9,6 @@
 #include <obj/x86-64/bridge/intel82371ab/intel82371ab.h>
 #include <obj/x86-64/bridge/inteli440fx/inteli440fx.h>
 #include <obj/x86-64/bridge/intelpciisa/intelpciisa.h>
-#include <sys/asm/asm.h>
-#include <sys/objectmgr/objectmgr.h>
-
-#include <sys/interrupt_router/interrupt_router.h>
-#include <sys/kprintf/kprintf.h>
 
 /**
  * find all bridge devices and register them

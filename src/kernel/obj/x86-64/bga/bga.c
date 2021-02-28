@@ -8,16 +8,18 @@
 // https://forum.osdev.org/viewtopic.php?f=1&t=30884
 
 #include <obj/x86-64/bga/bga.h>
-#include <obj/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
+#include <obj/x86-64/pci/devicetree.h>
+#include <obj/x86-64/pci/pci_device.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
-
-#include <sys/interrupt_router/interrupt_router.h>
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_bga.h>
 #include <sys/string/mem.h>
 #include <sys/x86-64/mm/pagetables.h>
+#include <types.h>
 
 #define VBE_DISPI_BANK_SIZE_KB 64
 

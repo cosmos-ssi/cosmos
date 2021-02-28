@@ -10,17 +10,17 @@
 #include <obj/logical/virtio/vblock/vblock.h>
 #include <obj/logical/virtio/virtio.h>
 #include <obj/logical/virtio/virtqueue.h>
-#include <obj/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
+#include <obj/x86-64/pci/devicetree.h>
+#include <obj/x86-64/pci/pci_device.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_block.h>
-#include <sys/sleep/sleep.h>
+#include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>

@@ -8,7 +8,7 @@
 #ifndef _DEVFS_H
 #define _DEVFS_H
 
-struct device;
+struct object;
 
 struct object* devfs_attach();
 void devfs_detach(struct object* dev);

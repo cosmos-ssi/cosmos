@@ -9,17 +9,19 @@
 
 #include <obj/x86-64/network/rtl8139/rtl8139.h>
 #include <obj/x86-64/network/rtl8139/rtl8139_io.h>
-#include <obj/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
+#include <obj/x86-64/pci/devicetree.h>
+#include <obj/x86-64/pci/pci_device.h>
+#include <sys/asm/byte.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_nic.h>
+#include <sys/panic/panic.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 #include <sys/x86-64/idt/irq.h>

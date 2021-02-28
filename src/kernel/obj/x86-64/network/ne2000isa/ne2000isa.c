@@ -9,15 +9,15 @@
  */
 
 #include <obj/x86-64/network/ne2000isa/ne2000isa.h>
-#include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_nic.h>
+#include <sys/panic/panic.h>
 #include <sys/sleep/sleep.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>

@@ -12,6 +12,7 @@
 #include <tests/fs/test_vfs.h>
 #include <tests/obj/test_ata.h>
 #include <tests/obj/test_bda.h>
+#include <tests/obj/test_kernelmap.h>
 #include <tests/obj/test_null.h>
 #include <tests/obj/test_ramdisk.h>
 #include <tests/obj/test_rand.h>
@@ -24,7 +25,6 @@
 #include <tests/sys/test_linkedlist.h>
 #include <tests/sys/test_malloc.h>
 #include <tests/sys/test_ntree.h>
-#include <tests/sys/test_objects.h>
 #include <tests/sys/test_ringbuffer.h>
 #include <tests/sys/test_string.h>
 #include <tests/sys/test_tree.h>

@@ -7,6 +7,9 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_ethernet.h>
 #include <sys/objecttype/objecttype_nic.h>
 #include <sys/string/mem.h>

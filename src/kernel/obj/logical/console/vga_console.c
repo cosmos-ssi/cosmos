@@ -6,12 +6,15 @@
 // ****************************************************************
 
 #include <obj/logical/console/vga_console.h>
-#include <obj/x86-64/serial/serial.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_console.h>
 #include <sys/objecttype/objecttype_vga.h>
 #include <sys/string/mem.h>
+#include <types.h>
 
 #define CONSOLE_TAB_WIDTH 5
 

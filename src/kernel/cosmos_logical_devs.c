@@ -7,9 +7,7 @@
 
 #include <cosmos_logical_devs.h>
 #include <obj/logical/console/serial_console.h>
-#include <obj/logical/console/vga_console.h>
 #include <obj/logical/ethernet/ethernet.h>
-#include <obj/logical/fs/devfs/devfs.h>
 #include <obj/logical/fs/initrd/initrd.h>
 #include <obj/logical/fs/vfs/vfs.h>
 #include <obj/logical/null/null.h>
@@ -21,17 +19,10 @@
 #include <obj/logical/tcpip/tcp/tcpdev.h>
 #include <obj/logical/tcpip/udp/udpdev.h>
 #include <obj/logical/tick/tick.h>
-#include <sys/objectmgr/objectmgr.h>
-
+#include <stdint.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_console.h>
-#include <sys/objecttype/objecttype_cpu.h>
-#include <sys/objecttype/objecttype_dsp.h>
-#include <sys/objecttype/objecttype_pit.h>
-#include <sys/objecttype/objecttype_rtc.h>
-#include <sys/objecttype/objecttype_serial.h>
-#include <sys/objecttype/objecttype_speaker.h>
+#include <sys/objectmgr/objectmgr.h>
 
 void attach_logical_devices() {
     /*

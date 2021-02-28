@@ -6,15 +6,16 @@
 // ****************************************************************
 
 #include <obj/x86-64/mouse/mouse.h>
-#include <obj/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_mouse.h>
+#include <sys/x86-64/idt/irq.h>
+#include <types.h>
 
 #define MOUSE_IRQ_NUMBER 12
 

@@ -7,12 +7,12 @@
 
 #include <obj/x86-64/kernelmap/kernelmap.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_kernelmap.h>
+#include <types.h>
 
 // defined in cosmos.ld
 extern uint64_t _text_start;

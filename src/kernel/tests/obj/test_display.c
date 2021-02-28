@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <stddef.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectmgr/object.h>
 #include <sys/objectmgr/objectmgr.h>

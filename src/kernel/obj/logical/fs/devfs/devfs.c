@@ -10,12 +10,13 @@
 #include <obj/logical/fs/node_util.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
 #include <sys/objectmgr/objectmgr.h>
 #include <sys/objectmgr/objecttypes.h>
 #include <sys/objecttype/objecttype_filesystem.h>
+#include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 #include <types.h>
 

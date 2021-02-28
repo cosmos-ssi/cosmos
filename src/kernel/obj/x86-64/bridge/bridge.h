@@ -8,8 +8,6 @@
 #ifndef _BRIDGE_H
 #define _BRIDGE_H
 
-#include <types.h>
-
 void bridge_objectmgr_register_objects();
 
 #endif

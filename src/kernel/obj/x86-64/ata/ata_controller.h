@@ -10,11 +10,9 @@
 
 #include <obj/x86-64/ata/ata.h>
 #include <obj/x86-64/ata/ata_dma.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <types.h>
 
-struct device;
+struct object;
 
 /*
  * device parameters for an ATA controller

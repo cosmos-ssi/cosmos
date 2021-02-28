@@ -8,11 +8,9 @@
 #ifndef _TFS_BLOCK_H
 #define _TFS_BLOCK_H
 
-#include <sys/objectmgr/objectmgr.h>
-
 #include <types.h>
 
-struct device;
+struct object;
 
 #define TFS_BLOCK_SIZE 512
 #define TFS_FILES_PER_DIR_BLOCK 63

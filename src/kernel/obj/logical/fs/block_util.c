@@ -7,10 +7,7 @@
 
 #include <obj/logical/fs/block_util.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
-
-#include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
 #include <sys/objecttype/objecttype_block.h>
 #include <sys/string/mem.h>
 

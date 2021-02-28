@@ -8,8 +8,6 @@
 #ifndef _SWAP_H
 #define _SWAP_H
 
-#include <types.h>
-
 struct object;
 
 struct object* swap_attach(struct object* block_device);

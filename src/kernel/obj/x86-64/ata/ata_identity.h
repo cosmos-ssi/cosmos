@@ -9,7 +9,6 @@
 #define _ATA_IDENTITY_H
 
 #include <obj/x86-64/ata/ata.h>
-#include <obj/x86-64/ata/ata_controller.h>
 #include <types.h>
 
 struct ata_controller;
