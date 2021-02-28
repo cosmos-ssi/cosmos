@@ -53,7 +53,7 @@ struct smbios_entry_point* smbios_get_smbios_entry_point(struct object* dev) {
 /*
  * perform device instance specific init here
  */
-uint8_t smbios_device_init(struct object* dev) {
+uint8_t smbios_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
     struct smbios_devicedata* object_data = (struct smbios_devicedata*)dev->object_data;
@@ -74,7 +74,7 @@ void smbios_objectmgr_register_objects() {
     struct object* deviceinstance = objectmgr_new_object();
     objectmgr_set_object_description(deviceinstance, "SMBIOS");
     deviceinstance->devicetype = SMBIOS;
-    deviceinstance->init = &smbios_device_init;
+    deviceinstance->init = &smbios_obj_init;
     /*
      * device data
      */

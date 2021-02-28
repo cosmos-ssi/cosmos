@@ -49,7 +49,7 @@ void ac97_handle_irq(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t device_initAC97(struct object* dev) {
+uint8_t obj_initAC97(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     struct ac97_devicedata* object_data = (struct ac97_devicedata*)dev->object_data;
     object_data->base = pci_calcbar(dev->pci);
@@ -65,7 +65,7 @@ void AC97PCISearchCB(struct pci_device* dev) {
      * register device
      */
     struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &device_initAC97;
+    deviceinstance->init = &obj_initAC97;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = DSP;
     objectmgr_set_object_description(deviceinstance, "Intel 82801AA AC97");

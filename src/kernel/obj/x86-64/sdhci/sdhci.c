@@ -37,7 +37,7 @@ void sdhci_irq_handler(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t sdhci_device_init(struct object* dev) {
+uint8_t sdhci_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     struct sdhci_devicedata* object_data = (struct sdhci_devicedata*)dev->object_data;
     object_data->base = (uint64_t)CONV_PHYS_ADDR(pci_calcbar(dev->pci));
@@ -50,7 +50,7 @@ uint8_t sdhci_device_init(struct object* dev) {
 /*
  * perform device instance specific uninit here
  */
-uint8_t sdhci_device_uninit(struct object* dev) {
+uint8_t sdhci_obj_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     return 1;
@@ -64,8 +64,8 @@ void sdhci_pci_search_cb(struct pci_device* dev) {
     objectmgr_set_object_description(deviceinstance, "SDHCI Controller");
     deviceinstance->devicetype = SDHCI;
     deviceinstance->pci = dev;
-    deviceinstance->init = &sdhci_device_init;
-    deviceinstance->uninit = sdhci_device_uninit;
+    deviceinstance->init = &sdhci_obj_init;
+    deviceinstance->uninit = sdhci_obj_uninit;
     /*
      * device api
      */

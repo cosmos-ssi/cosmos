@@ -171,7 +171,7 @@ void keyboard_send_command_queue() {}
 /*
  * perform device instance specific init here
  */
-uint8_t keyboard_device_init(struct object* dev) {
+uint8_t keyboard_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     //  struct pci_device* pci_dev = (struct pci_device*)dev->object_data;
     kprintf("Init %s at IRQ %llu (%s)\n", dev->description, KB_IRQ_NUMBER, dev->name);
@@ -195,7 +195,7 @@ void keyboard_objectmgr_register_objects() {
      * register device
      */
     struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &keyboard_device_init;
+    deviceinstance->init = &keyboard_obj_init;
     deviceinstance->devicetype = KEYBOARD;
     objectmgr_set_object_description(deviceinstance, "PS2 Keyboard");
     /*

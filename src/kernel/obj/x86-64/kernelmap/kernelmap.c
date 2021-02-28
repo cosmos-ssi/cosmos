@@ -36,7 +36,7 @@ uint64_t debug_end = (uint64_t)&debug_end;
 /*
  * perform device instance specific init here
  */
-uint8_t kernelmap_device_init(struct object* dev) {
+uint8_t kernelmap_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
@@ -62,7 +62,7 @@ void kernelmap_objectmgr_register_objects() {
     struct object* deviceinstance = objectmgr_new_object();
     objectmgr_set_object_description(deviceinstance, "Kernel map");
     deviceinstance->devicetype = KERNELMAP;
-    deviceinstance->init = &kernelmap_device_init;
+    deviceinstance->init = &kernelmap_obj_init;
     /*
      * api
      */

@@ -25,7 +25,7 @@ void pci_ehci_handle_irq(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t pci_ehci_device_init(struct object* dev) {
+uint8_t pci_ehci_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s at IRQ %llu\n", dev->description, dev->pci->irq);
     interrupt_router_register_interrupt_handler(dev->pci->irq, &pci_ehci_handle_irq);
@@ -38,7 +38,7 @@ void pci_ehci_search_cb(struct pci_device* dev) {
      * register device
      */
     struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &pci_ehci_device_init;
+    deviceinstance->init = &pci_ehci_obj_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = BRIDGE;
     objectmgr_set_object_description(deviceinstance, "PCI EHCI Controller");

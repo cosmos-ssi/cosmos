@@ -18,7 +18,7 @@ void cpu_manufacturer_id(uint8_t* cpuid);
 /*
  * perform device instance specific init here
  */
-uint8_t cpu_device_init(struct object* dev) {
+uint8_t cpu_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
@@ -72,7 +72,7 @@ void cpu_objectmgr_register_objects() {
     struct object* deviceinstance = objectmgr_new_object();
     objectmgr_set_object_description(deviceinstance, "CPU");
     deviceinstance->devicetype = CPU;
-    deviceinstance->init = &cpu_device_init;
+    deviceinstance->init = &cpu_obj_init;
     /*
      * device api
      */

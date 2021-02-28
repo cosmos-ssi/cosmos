@@ -21,7 +21,7 @@
 /*
  * perform device instance specific init here
  */
-uint8_t speaker_device_init(struct object* dev) {
+uint8_t speaker_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
@@ -66,7 +66,7 @@ void speaker_objectmgr_register_objects() {
     struct object* deviceinstance = objectmgr_new_object();
     objectmgr_set_object_description(deviceinstance, "Speaker");
     deviceinstance->devicetype = SPEAKER;
-    deviceinstance->init = &speaker_device_init;
+    deviceinstance->init = &speaker_obj_init;
     /*
      * device api
      */

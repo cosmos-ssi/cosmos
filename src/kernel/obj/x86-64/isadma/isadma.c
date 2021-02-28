@@ -385,7 +385,7 @@ uint64_t isadma_get_dma_block(uint8_t channel, uint32_t len) {
 /*
  * perform device instance specific init here
  */
-uint8_t isadma_device_init(struct object* dev) {
+uint8_t isadma_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     isadma_buf = iobuffers_request_buffer(ISA_DMA_BUFSIZ);
 
@@ -412,7 +412,7 @@ uint8_t isadma_device_init(struct object* dev) {
     return 1;
 }
 
-uint8_t isadma_device_uninit(struct object* dev) {
+uint8_t isadma_obj_uninit(struct object* dev) {
     iobuffers_release_buffer(isadma_buf);
     return 1;
 }
@@ -424,7 +424,7 @@ void isadma_objectmgr_register_objects() {
     struct object* deviceinstance = objectmgr_new_object();
     objectmgr_set_object_description(deviceinstance, "8237 ISA DMA");
     deviceinstance->devicetype = ISADMA;
-    deviceinstance->init = &isadma_device_init;
-    deviceinstance->uninit = &isadma_device_uninit;
+    deviceinstance->init = &isadma_obj_init;
+    deviceinstance->uninit = &isadma_obj_uninit;
     objectmgr_register_object(deviceinstance);
 }

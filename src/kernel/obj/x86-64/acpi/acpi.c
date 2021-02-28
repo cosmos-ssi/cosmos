@@ -52,7 +52,7 @@ struct fadt* acpi_get_fadt() {
 /*
  * perform device instance specific init here
  */
-uint8_t acpi_device_init(struct object* dev) {
+uint8_t acpi_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     //  uint64_t ebda_address = bda_get_ebda_address();
 
@@ -67,7 +67,7 @@ void acpi_objectmgr_register_objects() {
     struct object* deviceinstance = objectmgr_new_object();
     objectmgr_set_object_description(deviceinstance, "ACPI");
     deviceinstance->devicetype = ACPI;
-    deviceinstance->init = &acpi_device_init;
+    deviceinstance->init = &acpi_obj_init;
     /*
      * register
      */

@@ -40,7 +40,7 @@ struct vga_devicedata {
 /*
  * perform device instance specific init here
  */
-uint8_t vga_device_init(struct object* dev) {
+uint8_t vga_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
     struct vga_devicedata* object_data = (struct vga_devicedata*)dev->object_data;
@@ -161,7 +161,7 @@ void vga_search_cb(struct pci_device* dev) {
      * register device
      */
     struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &vga_device_init;
+    deviceinstance->init = &vga_obj_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = VGA;
     objectmgr_set_object_description(deviceinstance, "QEMU/Bochs VBE Framebuffer");

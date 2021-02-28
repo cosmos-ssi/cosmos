@@ -53,7 +53,7 @@ uint8_t adlib_read_status() {
 /*
  * perform device instance specific init here
  */
-uint8_t adlib_device_init(struct object* dev) {
+uint8_t adlib_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s\n", dev->description);
     //   interrupt_router_register_interrupt_handler(SB16_IRQ, &adlib_handle_irq);
@@ -67,7 +67,7 @@ void adlib_objectmgr_register_objects() {
     struct object* deviceinstance = objectmgr_new_object();
     objectmgr_set_object_description(deviceinstance, "Yamaha YM3812 (OPL2)");
     deviceinstance->devicetype = DSP;
-    deviceinstance->init = &adlib_device_init;
+    deviceinstance->init = &adlib_obj_init;
     /*
      * device api
      */

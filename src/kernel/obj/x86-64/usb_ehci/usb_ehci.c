@@ -22,7 +22,7 @@ struct usbcontroller_devicedata {
 /*
  * perform device instance specific init here
  */
-uint8_t usb_ehci_device_init(struct object* dev) {
+uint8_t usb_ehci_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     struct usbcontroller_devicedata* object_data = (struct usbcontroller_devicedata*)dev->object_data;
     object_data->base = pci_calcbar(dev->pci);
@@ -37,7 +37,7 @@ void usb_ehci_search_cb(struct pci_device* dev) {
      * register device
      */
     struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &usb_ehci_device_init;
+    deviceinstance->init = &usb_ehci_obj_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = USB;
     objectmgr_set_object_description(deviceinstance, "Intel 82801 USB EHCI Controller");

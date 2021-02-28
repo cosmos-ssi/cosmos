@@ -43,7 +43,7 @@ uint8_t cmos_read_register(uint8_t reg) {
  * perform device instance specific init here
  */
 
-uint8_t cmos_device_init(struct object* dev) {
+uint8_t cmos_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
@@ -56,7 +56,7 @@ void cmos_objectmgr_register_objects() {
     struct object* deviceinstance = objectmgr_new_object();
     objectmgr_set_object_description(deviceinstance, "i386 CMOS");
     deviceinstance->devicetype = CMOS;
-    deviceinstance->init = &cmos_device_init;
+    deviceinstance->init = &cmos_obj_init;
     /*
      * api
      */

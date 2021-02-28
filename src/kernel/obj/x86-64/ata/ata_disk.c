@@ -160,7 +160,7 @@ uint32_t ata_total_size(struct object* dev) {
     return disk->size;
 }
 
-uint8_t device_init_ata_disk(struct object* dev) {
+uint8_t obj_init_ata_disk(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
     struct ata_disk_devicedata* disk = (struct ata_disk_devicedata*)dev->object_data;
@@ -175,7 +175,7 @@ uint8_t device_init_ata_disk(struct object* dev) {
     return 1;
 }
 
-uint8_t device_uninit_ata_disk(struct object* dev) {
+uint8_t obj_uninit_ata_disk(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     fsutil_detach_partition_tables(dev);
     return 1;
@@ -186,8 +186,8 @@ void ata_register_disk(struct object* controllerDevice, uint8_t channel, uint8_t
      * register device
      */
     struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &device_init_ata_disk;
-    deviceinstance->uninit = &device_uninit_ata_disk;
+    deviceinstance->init = &obj_init_ata_disk;
+    deviceinstance->uninit = &obj_uninit_ata_disk;
     deviceinstance->devicetype = DISK;
     objectmgr_set_object_description(deviceinstance, "ATA Disk");
     /*

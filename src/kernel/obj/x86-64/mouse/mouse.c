@@ -107,7 +107,7 @@ uint8_t mouse_read() {
 /*
  * perform device instance specific init here
  */
-uint8_t mouse_device_init(struct object* dev) {
+uint8_t mouse_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s at IRQ %llu (%s)\n", dev->description, MOUSE_IRQ_NUMBER, dev->name);
     interrupt_router_register_interrupt_handler(MOUSE_IRQ_NUMBER, &mouse_irq_read);
@@ -154,7 +154,7 @@ void mouse_objectmgr_register_objects() {
      * register device
      */
     struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &mouse_device_init;
+    deviceinstance->init = &mouse_obj_init;
     deviceinstance->devicetype = MOUSE;
     objectmgr_set_object_description(deviceinstance, "PS2 Mouse");
     /*

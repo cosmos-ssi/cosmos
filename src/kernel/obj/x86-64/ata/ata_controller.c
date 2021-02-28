@@ -82,7 +82,7 @@ void ata_detect_addresses(struct object* dev) {
 /*
  * init ATA controller
  */
-uint8_t device_init_ata(struct object* dev) {
+uint8_t obj_init_ata(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
     struct ata_controller* controller = (struct ata_controller*)dev->object_data;
@@ -122,7 +122,7 @@ void ata_search_cb(struct pci_device* dev) {
      * register device
      */
     struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &device_init_ata;
+    deviceinstance->init = &obj_init_ata;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = ATA;
     objectmgr_set_object_description(deviceinstance, "ATA");

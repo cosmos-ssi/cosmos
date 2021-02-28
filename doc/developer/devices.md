@@ -53,7 +53,7 @@ These devices should expose an attach() API, and an unattach() API which can dyn
 
 The function `void initDevices();` is used by the device manager to initialize all fixed hardware devices. The devices will have passed a pointer to a init function with this prototype:
 
-`typedef void (*device_init)(struct object* dev);`
+`typedef void (*obj_init)(struct object* dev);`
 
 The DeviceMgr will assign a unique name to each device such as "serial0".
 

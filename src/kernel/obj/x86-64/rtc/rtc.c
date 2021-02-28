@@ -54,7 +54,7 @@ void rtc_handle_irq(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t rtc_device_init(struct object* dev) {
+uint8_t rtc_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s at IRQ %llu (%s)\n", dev->description, RTC_IRQ_NUMBER, dev->name);
 
@@ -133,7 +133,7 @@ void rtc_objectmgr_register_objects() {
     struct object* deviceinstance = objectmgr_new_object();
     objectmgr_set_object_description(deviceinstance, "RTC");
     deviceinstance->devicetype = RTC;
-    deviceinstance->init = &rtc_device_init;
+    deviceinstance->init = &rtc_obj_init;
     /*
      * device api
      */

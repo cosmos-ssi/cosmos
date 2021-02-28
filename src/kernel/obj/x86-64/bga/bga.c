@@ -99,7 +99,7 @@ void bga_set_bank(uint16_t bank_number) {
 /*
  * perform device instance specific init here
  */
-uint8_t bga_device_init(struct object* dev) {
+uint8_t bga_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
     ASSERT_NOT_NULL(dev->object_data);
@@ -176,7 +176,7 @@ void bga_search_cb(struct pci_device* dev) {
      * register device
      */
     struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &bga_device_init;
+    deviceinstance->init = &bga_obj_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = BGA;
     objectmgr_set_object_description(deviceinstance, "QEMU/Bochs BGA Framebuffer");

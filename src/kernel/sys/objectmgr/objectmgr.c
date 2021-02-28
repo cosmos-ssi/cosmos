@@ -64,7 +64,7 @@ uint16_t objectmgr_object_count() {
     return deviceregistry_devicecount();
 }
 
-void device_initIterator(struct object* dev) {
+void obj_initIterator(struct object* dev) {
     if (0 != dev) {
         if (0 == dev->init(dev)) {
             kprintf("Failed to Initialize %s\n", dev->name);
@@ -82,60 +82,60 @@ void objectmgr_init_objects() {
     /*
      * CPU first before first?
      */
-    deviceregistry_iterate_type(CPU, device_initIterator);
+    deviceregistry_iterate_type(CPU, obj_initIterator);
     /*
      * BDA, EBDA
      */
-    deviceregistry_iterate_type(BDA, device_initIterator);
-    deviceregistry_iterate_type(ACPI, device_initIterator);
+    deviceregistry_iterate_type(BDA, obj_initIterator);
+    deviceregistry_iterate_type(ACPI, obj_initIterator);
     /*
      * PIC first
      */
-    deviceregistry_iterate_type(PIC, device_initIterator);
+    deviceregistry_iterate_type(PIC, obj_initIterator);
     /*
      * Serial next
      */
-    deviceregistry_iterate_type(SERIAL, device_initIterator);
+    deviceregistry_iterate_type(SERIAL, obj_initIterator);
     /*
      * the PIT
      */
-    deviceregistry_iterate_type(PIT, device_initIterator);
+    deviceregistry_iterate_type(PIT, obj_initIterator);
     /*
      * CMOS
      */
-    deviceregistry_iterate_type(CMOS, device_initIterator);
+    deviceregistry_iterate_type(CMOS, obj_initIterator);
     /*
      * DMA
      */
-    deviceregistry_iterate_type(ISADMA, device_initIterator);
+    deviceregistry_iterate_type(ISADMA, obj_initIterator);
     /*
      * virtual devices
      */
-    deviceregistry_iterate_type(VNIC, device_initIterator);
-    deviceregistry_iterate_type(VBLOCK, device_initIterator);
+    deviceregistry_iterate_type(VNIC, obj_initIterator);
+    deviceregistry_iterate_type(VBLOCK, obj_initIterator);
     /*
      * everything else
      */
-    deviceregistry_iterate_type(RTC, device_initIterator);
-    deviceregistry_iterate_type(KEYBOARD, device_initIterator);
-    deviceregistry_iterate_type(VGA, device_initIterator);
-    deviceregistry_iterate_type(BGA, device_initIterator);
-    deviceregistry_iterate_type(USB, device_initIterator);
-    deviceregistry_iterate_type(NIC, device_initIterator);
-    deviceregistry_iterate_type(BRIDGE, device_initIterator);
-    deviceregistry_iterate_type(ATA, device_initIterator);
-    deviceregistry_iterate_type(MOUSE, device_initIterator);
-    deviceregistry_iterate_type(FLOPPY, device_initIterator);
-    deviceregistry_iterate_type(SPEAKER, device_initIterator);
-    deviceregistry_iterate_type(DSP, device_initIterator);
-    deviceregistry_iterate_type(DISK, device_initIterator);
-    deviceregistry_iterate_type(SDHCI, device_initIterator);
-    deviceregistry_iterate_type(SMBIOS, device_initIterator);
+    deviceregistry_iterate_type(RTC, obj_initIterator);
+    deviceregistry_iterate_type(KEYBOARD, obj_initIterator);
+    deviceregistry_iterate_type(VGA, obj_initIterator);
+    deviceregistry_iterate_type(BGA, obj_initIterator);
+    deviceregistry_iterate_type(USB, obj_initIterator);
+    deviceregistry_iterate_type(NIC, obj_initIterator);
+    deviceregistry_iterate_type(BRIDGE, obj_initIterator);
+    deviceregistry_iterate_type(ATA, obj_initIterator);
+    deviceregistry_iterate_type(MOUSE, obj_initIterator);
+    deviceregistry_iterate_type(FLOPPY, obj_initIterator);
+    deviceregistry_iterate_type(SPEAKER, obj_initIterator);
+    deviceregistry_iterate_type(DSP, obj_initIterator);
+    deviceregistry_iterate_type(DISK, obj_initIterator);
+    deviceregistry_iterate_type(SDHCI, obj_initIterator);
+    deviceregistry_iterate_type(SMBIOS, obj_initIterator);
 
-    //  deviceregistry_iterate_type(RAMDISK, device_initIterator);
-    deviceregistry_iterate_type(PARALLEL, device_initIterator);
-    //  deviceregistry_iterate_type(SWAP, device_initIterator);
-    deviceregistry_iterate_type(KERNELMAP, device_initIterator);
+    //  deviceregistry_iterate_type(RAMDISK, obj_initIterator);
+    deviceregistry_iterate_type(PARALLEL, obj_initIterator);
+    //  deviceregistry_iterate_type(SWAP, obj_initIterator);
+    deviceregistry_iterate_type(KERNELMAP, obj_initIterator);
 }
 
 struct object* objectmgr_new_object() {

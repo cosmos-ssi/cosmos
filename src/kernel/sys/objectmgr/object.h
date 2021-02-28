@@ -16,9 +16,9 @@ struct pci_device;
 struct object;
 
 // return 1 if successful, 0 if failed to unit
-typedef uint8_t (*device_init)(struct object* dev);
+typedef uint8_t (*obj_init)(struct object* dev);
 // return 1 is successful, 0 if failed to uninit, including if device refcount>0
-typedef uint8_t (*device_uninit)(struct object* dev);
+typedef uint8_t (*obj_uninit)(struct object* dev);
 
 typedef enum object_type {
     NONE = 0x00,
@@ -87,11 +87,11 @@ struct object {
     /*
      * init function
      */
-    device_init init;
+    obj_init init;
     /*
      * un-init function
      */
-    device_uninit uninit;
+    obj_uninit uninit;
     /*
      * human readable description provided by the driver
      */

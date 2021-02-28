@@ -27,7 +27,7 @@
 /*
  * perform device instance specific init here
  */
-void serial_device_init(struct object* dev) {
+void serial_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     //    struct serial_devicedata* object_data = (struct serial_devicedata*) dev->object_data;
     //    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n",dev->description, object_data->irq, object_data->address, dev->name);
@@ -47,7 +47,7 @@ void serial_register_device(uint8_t irq, uint64_t base) {
      * the device instance
      */
     struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &serial_device_init;
+    deviceinstance->init = &serial_obj_init;
     //    deviceinstance->object_data = object_data;
     deviceinstance->devicetype = SERIAL;
     objectmgr_set_object_description(deviceinstance, "PL101");

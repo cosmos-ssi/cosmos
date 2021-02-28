@@ -50,7 +50,7 @@ void parallel_device_ready(struct object* dev) {
 /*
  * perform device instance specific init here
  */
-uint8_t parallel_device_init(struct object* dev) {
+uint8_t parallel_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
     struct parallel_devicedata* object_data = (struct parallel_devicedata*)(dev->object_data);
@@ -95,7 +95,7 @@ void parallel_objectmgr_register_object(uint64_t base, uint8_t irq) {
     struct object* deviceinstance = objectmgr_new_object();
     objectmgr_set_object_description(deviceinstance, "Parallel Port");
     deviceinstance->devicetype = PARALLEL;
-    deviceinstance->init = &parallel_device_init;
+    deviceinstance->init = &parallel_obj_init;
     /*
      * device api
      */

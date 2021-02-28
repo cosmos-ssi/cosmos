@@ -28,7 +28,7 @@
 /*
  * perform device instance specific init here
  */
-uint8_t pic_device_init(struct object* dev) {
+uint8_t pic_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
 
@@ -61,7 +61,7 @@ void pic_objectmgr_register_objects() {
     struct object* deviceinstance = objectmgr_new_object();
     objectmgr_set_object_description(deviceinstance, "8259 PIC");
     deviceinstance->devicetype = PIC;
-    deviceinstance->init = &pic_device_init;
+    deviceinstance->init = &pic_obj_init;
     objectmgr_register_object(deviceinstance);
 
     return;
