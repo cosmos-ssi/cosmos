@@ -169,7 +169,6 @@ void objectmgr_find_objects_by_object_type(enum object_type_id dt, objectSearchC
     objectregistry_find_objects_by_objectype(dt, cb);
 }
 
-#ifdef TARGET_PLATFORM_i386
 void objectmgr_register_objects() {
     /*
      * scan the PCI bus first
@@ -223,13 +222,9 @@ void objectmgr_register_objects() {
     kernelmap_objectmgr_register_objects();
 }
 
-#else
-
-void objectmgr_register_objects() {
-    pl101_objectmgr_register_objects();
-}
-
-#endif
+//void objectmgr_register_objects() {
+//    pl101_objectmgr_register_objects();
+//}
 
 // attach a device (non-fixed devices... like RAM disks and SWAP)
 uint8_t objectmgr_attach_object(struct object* obj) {
