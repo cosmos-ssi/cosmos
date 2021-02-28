@@ -5,12 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _DEVFS_H
-#define _DEVFS_H
+#ifndef _OBJFS_H
+#define _OBJFS_H
 
 #include <types.h>
 
 struct object* objfs_attach();
-void devfs_detach(struct object* obj);
+void objfs_detach(struct object* obj);
 
 #endif

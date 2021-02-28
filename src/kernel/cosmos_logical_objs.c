@@ -9,8 +9,8 @@
 #include <obj/logical/console/serial_console.h>
 #include <obj/logical/console/vga_console.h>
 #include <obj/logical/ethernet/ethernet.h>
-#include <obj/logical/fs/devfs/devfs.h>
 #include <obj/logical/fs/initrd/initrd.h>
+#include <obj/logical/fs/objfs/objfs.h>
 #include <obj/logical/fs/vfs/vfs.h>
 #include <obj/logical/null/null.h>
 #include <obj/logical/ramdisk/ramdisk.h>

@@ -15,7 +15,7 @@ struct object;
 #define FILESYSTEM_MAX_NAME 128
 #define FILESYSTEM_MAX_FILES_PER_DIR 1024
 
-enum filesystem_node_type { folder, file, device };
+enum filesystem_node_type { folder, file, object };
 
 typedef struct filesystem_node {
     /*
