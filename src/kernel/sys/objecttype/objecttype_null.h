@@ -5,18 +5,18 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all tick devices will implement
+ * this file defines the interface that all null devices will implement
  */
-#ifndef _DEVICEAPI_TICK_H
-#define _DEVICEAPI_TICK_H
+#ifndef _OBJECTTYPE_NULL_H
+#define _OBJECTTYPE_NULL_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-typedef uint64_t (*tick_read_function)(struct device* dev);
+typedef uint8_t (*null_read_function)(struct device* dev);
 
-struct deviceapi_tick {
-    tick_read_function read;
+struct objecttype_null {
+    null_read_function read;
 };
 
 #endif

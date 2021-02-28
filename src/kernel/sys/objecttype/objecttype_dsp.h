@@ -5,18 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all null devices will implement
+ * this file defines the interface that all DSP devices will implement
  */
-#ifndef _DEVICEAPI_NULL_H
-#define _DEVICEAPI_NULL_H
+#ifndef _OBJECTTYPE_DSP_H
+#define _OBJECTTYPE_DSP_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-typedef uint8_t (*null_read_function)(struct device* dev);
+typedef void (*dsp_play_function)(struct device* dev, uint8_t* buffer, uint16_t rate, uint8_t depth, uint8_t channels,
+                                  uint64_t len);
 
-struct deviceapi_null {
-    null_read_function read;
+struct objecttype_dsp {
+    dsp_play_function play;
 };
 
 #endif

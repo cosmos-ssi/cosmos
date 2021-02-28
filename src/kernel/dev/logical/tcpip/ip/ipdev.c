@@ -6,8 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_ip.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/objecttype/objecttype_ip.h>
 #include <sys/string/mem.h>
 
 struct ip_devicedata {
@@ -64,8 +64,8 @@ struct device* ip_attach(struct device* ethernet_device) {
     /*
      * the device api
      */
-    struct deviceapi_ip* api = (struct deviceapi_ip*)kmalloc(sizeof(struct deviceapi_ip));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_ip));
+    struct objecttype_ip* api = (struct objecttype_ip*)kmalloc(sizeof(struct objecttype_ip));
+    memzero((uint8_t*)api, sizeof(struct objecttype_ip));
     api->read = &ip_read;
     api->write = &ip_write;
 

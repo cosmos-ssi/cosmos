@@ -7,15 +7,15 @@
 /*
  * this file defines the interface that all Serial devices will implement
  */
-#ifndef _DEVICEAPI_SERIAL_H
-#define _DEVICEAPI_SERIAL_H
+#ifndef _OBJECTTYPE_SERIAL_H
+#define _OBJECTTYPE_SERIAL_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
 typedef void (*serial_write_function)(struct device* dev, const int8_t* c);
 
-struct deviceapi_serial {
+struct objecttype_serial {
     serial_write_function write;
 };
 

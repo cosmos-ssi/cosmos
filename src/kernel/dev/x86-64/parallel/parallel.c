@@ -9,10 +9,10 @@
 #include <dev/x86-64/parallel/parallel.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_parallel.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_parallel.h>
 #include <sys/sleep/sleep.h>
 
 #define PARALLEL_DEVICE_LTP1_IRQ 7
@@ -98,7 +98,7 @@ void parallel_devicemgr_register_device(uint64_t base, uint8_t irq) {
     /*
      * device api
      */
-    struct deviceapi_parallel* api = (struct deviceapi_parallel*)kmalloc(sizeof(struct deviceapi_parallel));
+    struct objecttype_parallel* api = (struct objecttype_parallel*)kmalloc(sizeof(struct objecttype_parallel));
     api->write = &parallel_write;
     deviceinstance->api = api;
     /*

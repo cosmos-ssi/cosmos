@@ -13,8 +13,8 @@
 #include <dev/logical/partition_table/guid_partition_table.h>
 #include <dev/logical/partition_table/mbr_partition_table.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_part_table.h>
 #include <sys/devicemgr/devicemgr.h>
+#include <sys/objecttype/objecttype_part_table.h>
 
 void fsutil_attach_partition_tables(struct device* block_dev) {
     ASSERT_NOT_NULL(block_dev);
@@ -45,7 +45,7 @@ void fsutil_attach_partitions(struct device* partition_table_dev) {
     /*
      * mount partition devices
      */
-    struct deviceapi_part_table* api = (struct deviceapi_part_table*)partition_table_dev->api;
+    struct objecttype_part_table* api = (struct objecttype_part_table*)partition_table_dev->api;
     uint32_t num_partitions = (*api->partitions)(partition_table_dev);
     for (uint32_t i = 0; i < num_partitions; i++) {
         uint32_t sector_count = (*api->sectors)(partition_table_dev, i);

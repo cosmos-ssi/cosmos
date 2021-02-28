@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all RTC devices will implement
  */
-#ifndef _DEVICEAPI_RTC_H
-#define _DEVICEAPI_RTC_H
+#ifndef _OBJECTTYPE_RTC_H
+#define _OBJECTTYPE_RTC_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -28,7 +28,7 @@ typedef rtc_time_t (*rtc_time_function)(struct device* dev);
 typedef void (*rtc_event)();
 typedef void (*rtc_subscribe_function)(rtc_event event);
 
-struct deviceapi_rtc {
+struct objecttype_rtc {
     rtc_time_function rtc_time;
     rtc_subscribe_function subscribe;
 };

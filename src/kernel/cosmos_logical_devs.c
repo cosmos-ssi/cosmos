@@ -21,16 +21,16 @@
 #include <dev/logical/tcpip/tcp/tcpdev.h>
 #include <dev/logical/tcpip/udp/udpdev.h>
 #include <dev/logical/tick/tick.h>
-#include <sys/deviceapi/deviceapi_console.h>
-#include <sys/deviceapi/deviceapi_cpu.h>
-#include <sys/deviceapi/deviceapi_dsp.h>
-#include <sys/deviceapi/deviceapi_pit.h>
-#include <sys/deviceapi/deviceapi_rtc.h>
-#include <sys/deviceapi/deviceapi_serial.h>
-#include <sys/deviceapi/deviceapi_speaker.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_console.h>
+#include <sys/objecttype/objecttype_cpu.h>
+#include <sys/objecttype/objecttype_dsp.h>
+#include <sys/objecttype/objecttype_pit.h>
+#include <sys/objecttype/objecttype_rtc.h>
+#include <sys/objecttype/objecttype_serial.h>
+#include <sys/objecttype/objecttype_speaker.h>
 
 void attach_logical_devices() {
     /*

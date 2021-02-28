@@ -9,10 +9,10 @@
 #include <dev/x86-64/vga/vga.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_vga.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_vga.h>
 
 // CRT control I/O ports
 #define CRT_INDEX_REGISTER 0x3D4
@@ -168,7 +168,7 @@ void vga_search_cb(struct pci_device* dev) {
     /*
      * device api
      */
-    struct deviceapi_vga* api = (struct deviceapi_vga*)kmalloc(sizeof(struct deviceapi_vga));
+    struct objecttype_vga* api = (struct objecttype_vga*)kmalloc(sizeof(struct objecttype_vga));
     api->query_resolution = &vga_device_query_resolution;
     api->scroll_text = &vga_device_scroll_text;
     api->set_mode = &vga_device_set_mode;

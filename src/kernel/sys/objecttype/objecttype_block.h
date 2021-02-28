@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all ATA devices will implement
  */
-#ifndef _DEVICEAPI_BLOCK_H
-#define _DEVICEAPI_BLOCK_H
+#ifndef _OBJECTTYPE_BLOCK_H
+#define _OBJECTTYPE_BLOCK_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -27,7 +27,7 @@ typedef uint32_t (*block_write_sectors_function)(struct device* dev, uint8_t* da
 typedef uint16_t (*block_sector_size_function)(struct device* dev);
 typedef uint32_t (*block_total_size_function)(struct device* dev);
 
-struct deviceapi_block {
+struct objecttype_block {
     block_read_sectors_function read;
     block_write_sectors_function write;
     block_sector_size_function sector_size;

@@ -6,15 +6,15 @@
 // ****************************************************************
 
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_floppy.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_floppy.h>
 #include <tests/dev/test_floppy.h>
 
 void floppyread() {
     // get the floppy
     struct device* floppy = devicemgr_find_device("floppy0");
     if (0 != floppy) {
-        struct deviceapi_floppy* floppy_api = (struct deviceapi_floppy*)floppy->api;
+        struct objecttype_floppy* floppy_api = (struct objecttype_floppy*)floppy->api;
 
         uint8_t data[256];
         (*floppy_api->read)(floppy, 0, data, 255);

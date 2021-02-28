@@ -6,8 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_tcp.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/objecttype/objecttype_tcp.h>
 #include <sys/string/mem.h>
 
 struct tcp_devicedata {
@@ -64,8 +64,8 @@ struct device* tcp_attach(struct device* ip_device) {
     /*
      * the device api
      */
-    struct deviceapi_tcp* api = (struct deviceapi_tcp*)kmalloc(sizeof(struct deviceapi_tcp));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_tcp));
+    struct objecttype_tcp* api = (struct objecttype_tcp*)kmalloc(sizeof(struct objecttype_tcp));
+    memzero((uint8_t*)api, sizeof(struct objecttype_tcp));
     api->read = &tcp_read;
     api->write = &tcp_write;
 

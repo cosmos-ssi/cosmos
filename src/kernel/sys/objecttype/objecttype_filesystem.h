@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _DEVICEAPI_FILESYSTEM_H
-#define _DEVICEAPI_FILESYSTEM_H
+#ifndef _OBJECTTYPE_FILESYSTEM_H
+#define _OBJECTTYPE_FILESYSTEM_H
 
 #include <types.h>
 
@@ -73,7 +73,7 @@ typedef void (*filesystem_list_directory)(struct filesystem_node* fs_node, struc
 */
 typedef uint64_t (*filesystem_size)(struct filesystem_node* fs_node);
 
-struct deviceapi_filesystem {
+struct objecttype_filesystem {
     filesystem_get_root_node_function root;
     filesystem_read_function read;
     filesystem_write_function write;

@@ -8,7 +8,7 @@
 #ifndef _ARPDEV_H
 #define _ARPDEV_H
 
-#include <sys/deviceapi/deviceapi_arp.h>
+#include <sys/objecttype/objecttype_arp.h>
 #include <types.h>
 
 struct device;

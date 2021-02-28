@@ -10,9 +10,9 @@
 #include <dev/logical/virtio/vnic/vnic.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_nic.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_nic.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <tests/dev/test_virtio_vnic.h>
@@ -25,7 +25,7 @@ void test_virtio_vnic() {
         PANIC("nic0 not found");
     }
 
-    struct deviceapi_nic* nic_api = (struct deviceapi_nic*)dev->api;
+    struct objecttype_nic* nic_api = (struct objecttype_nic*)dev->api;
     struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
 
     // status

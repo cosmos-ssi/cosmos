@@ -8,8 +8,8 @@
 #include <dev/logical/fs/block_util.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_block.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_block.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <tests/dev/test_blockdevice.h>
@@ -22,7 +22,7 @@ And she wept, God bless you! for the apples and pears, \
 And we gave her all our money but our subway fares.";
 
 void test_block_device_base_api(struct device* dev) {
-    struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
+    struct objecttype_block* block_api = (struct objecttype_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
     uint32_t s = strlen(testdata);
     uint32_t written = (*block_api->write)(dev, testdata, s + 1, 7);

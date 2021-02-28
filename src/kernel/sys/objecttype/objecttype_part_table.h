@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all partition tables (MBR, GUID) will implement
  */
-#ifndef _DEVICEAPI_PART_TABLE_H
-#define _DEVICEAPI_PART_TABLE_H
+#ifndef _OBJECTTYPE_PART_TABLE_H
+#define _OBJECTTYPE_PART_TABLE_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -34,7 +34,7 @@ typedef uint32_t (*part_write_sectors_function)(struct device* dev, uint8_t part
 // return 1 if we are ok to detach this device
 typedef uint8_t (*part_table_detachable_function)(struct device* dev);
 
-struct deviceapi_part_table {
+struct objecttype_part_table {
     part_table_total_partitions_function partitions;
     part_table_get_partition_lba_function lba;
     part_table_get_partition_type_function type;

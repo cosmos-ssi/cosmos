@@ -5,25 +5,20 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all mouse devices will implement
+ * this file defines the interface that all TCP devices will implement
  */
-#ifndef _DEVICEAPI_MOUSE_H
-#define _DEVICEAPI_MOUSE_H
+#ifndef _OBJECTTYPE_TCP_H
+#define _OBJECTTYPE_TCP_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-struct mouse_status {
-    uint8_t mouse_cycle;
-    int8_t mouse_byte[3];
-    int8_t mouse_x;
-    int8_t mouse_y;
-};
+typedef void (*tcp_read_function)(struct device* dev, uint8_t* data, uint16_t size);
+typedef void (*tcp_write_function)(struct device* dev, uint8_t* data, uint16_t size);
 
-typedef struct mouse_status* (*mouse_status_function)(struct device* dev);
-
-struct deviceapi_mouse {
-    mouse_status_function status;
+struct objecttype_tcp {
+    tcp_read_function read;
+    tcp_write_function write;
 };
 
 #endif

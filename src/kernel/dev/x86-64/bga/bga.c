@@ -11,10 +11,10 @@
 #include <dev/x86-64/pci/pci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_bga.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_bga.h>
 #include <sys/string/mem.h>
 #include <sys/x86-64/mm/pagetables.h>
 
@@ -52,12 +52,12 @@
 #define VBE_DISPI_LFB_ENABLED 0x40
 #define VBE_DISPI_NOCLEARMEM 0x80
 
-void bga_set_resolution(struct device* dev, struct deviceapi_resolution* resolution);
+void bga_set_resolution(struct device* dev, struct objecttype_resolution* resolution);
 
 struct bga_devicedata {
     uint64_t lfb_physical;
     uint64_t lfb_virtual;
-    struct deviceapi_resolution resolution;
+    struct objecttype_resolution resolution;
 };
 
 uint32_t bga_buffer_size(struct bga_devicedata* device_data) {
@@ -112,7 +112,7 @@ uint8_t bga_device_init(struct device* dev) {
     /*
     * screen params
     */
-    struct deviceapi_resolution resolution;
+    struct objecttype_resolution resolution;
     resolution.width = 1280;
     resolution.height = 1024;
     resolution.color_depth = 32;
@@ -142,7 +142,7 @@ void bga_blt(struct device* dev, uint8_t* buffer, uint32_t buffer_size) {
     memcpy((uint8_t*)device_data->lfb_virtual, buffer, buffer_size);
 }
 
-void bga_get_resolution(struct device* dev, struct deviceapi_resolution* resolution) {
+void bga_get_resolution(struct device* dev, struct objecttype_resolution* resolution) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
     ASSERT_NOT_NULL(dev->device_data);
@@ -153,7 +153,7 @@ void bga_get_resolution(struct device* dev, struct deviceapi_resolution* resolut
     resolution->width = device_data->resolution.width;
 }
 
-void bga_set_resolution(struct device* dev, struct deviceapi_resolution* resolution) {
+void bga_set_resolution(struct device* dev, struct objecttype_resolution* resolution) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
     ASSERT_NOT_NULL(dev->device_data);
@@ -183,7 +183,7 @@ void bga_search_cb(struct pci_device* dev) {
     /*
      * device api
      */
-    struct deviceapi_bga* api = (struct deviceapi_bga*)kmalloc(sizeof(struct deviceapi_bga));
+    struct objecttype_bga* api = (struct objecttype_bga*)kmalloc(sizeof(struct objecttype_bga));
     api->get_resolution = &bga_get_resolution;
     api->set_resolution = &bga_set_resolution;
     api->get_buffersize = &bga_get_buffersize;

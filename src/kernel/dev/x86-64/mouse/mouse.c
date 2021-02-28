@@ -9,11 +9,11 @@
 #include <dev/x86-64/pci/pci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_mouse.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_mouse.h>
 
 #define MOUSE_IRQ_NUMBER 12
 
@@ -159,7 +159,7 @@ void mouse_devicemgr_register_devices() {
     /*
      * device api
      */
-    struct deviceapi_mouse* api = (struct deviceapi_mouse*)kmalloc(sizeof(struct deviceapi_mouse));
+    struct objecttype_mouse* api = (struct objecttype_mouse*)kmalloc(sizeof(struct objecttype_mouse));
     api->status = &ps2mouse_status;
     deviceinstance->api = api;
     /*

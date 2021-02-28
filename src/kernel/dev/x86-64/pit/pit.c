@@ -9,10 +9,10 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_pit.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_pit.h>
 
 // https://wiki.osdev.org/Programmable_Interval_Timer
 // http://www.osdever.net/bkerndev/Docs/pit.htm
@@ -78,7 +78,7 @@ void pit_devicemgr_register_devices() {
     /*
      * device api
      */
-    struct deviceapi_pit* api = (struct deviceapi_pit*)kmalloc(sizeof(struct deviceapi_pit));
+    struct objecttype_pit* api = (struct objecttype_pit*)kmalloc(sizeof(struct objecttype_pit));
     api->tickcount = &pit_tickcount;
     api->subscribe = &pit_subscribe;
     deviceinstance->api = api;

@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/deviceapi/deviceapi_dsp.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_dsp.h>
 //#include <sys/sound/tone.h>
 //#include <sys/sound/wav.h>
 #include <tests/dev/test_sb16.h>
@@ -17,7 +17,7 @@ void test_sb16() {
     //  if (0 != dsp) {
     //    struct wav_header* wav = sound_get_tone();
 
-    //  struct deviceapi_dsp* dsp_api = (struct deviceapi_dsp*)dsp->api;
+    //  struct objecttype_dsp* dsp_api = (struct objecttype_dsp*)dsp->api;
     //   dsp_play_function play_func = dsp_api->play;
     //        uint8_t* pcmstart = wav_pcm_start(wav);
 

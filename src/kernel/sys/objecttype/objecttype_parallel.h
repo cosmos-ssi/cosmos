@@ -5,20 +5,18 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all console devices will implement (vga and serial)
+ * this file defines the interface that all parallel port devices will implement
  */
-#ifndef _DEVICEAPI_CONSOLE_H
-#define _DEVICEAPI_CONSOLE_H
+#ifndef _OBJECTTYPE_PARALLEL_H
+#define _OBJECTTYPE_PARALLEL_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-typedef uint8_t (*console_setpos_function)(struct device* dev, uint8_t x, uint8_t y);
-typedef void (*console_write_function)(struct device* dev, const char* s);
+typedef void (*parallel_write_function)(struct device* dev, uint8_t* data, uint16_t size);
 
-struct deviceapi_console {
-    console_setpos_function setpos;
-    console_write_function write;
+struct objecttype_parallel {
+    parallel_write_function write;
 };
 
 #endif

@@ -5,18 +5,20 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all rand devices will implement
+ * this file defines the interface that all console devices will implement (vga and serial)
  */
-#ifndef _DEVICEAPI_RAND_H
-#define _DEVICEAPI_RAND_H
+#ifndef _OBJECTTYPE_CONSOLE_H
+#define _OBJECTTYPE_CONSOLE_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-typedef uint64_t (*rand_read_function)(struct device* dev);
+typedef uint8_t (*console_setpos_function)(struct device* dev, uint8_t x, uint8_t y);
+typedef void (*console_write_function)(struct device* dev, const char* s);
 
-struct deviceapi_rand {
-    rand_read_function read;
+struct objecttype_console {
+    console_setpos_function setpos;
+    console_write_function write;
 };
 
 #endif

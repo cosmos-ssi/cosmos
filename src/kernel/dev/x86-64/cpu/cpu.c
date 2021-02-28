@@ -8,9 +8,9 @@
 #include <dev/x86-64/cpu/cpu.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_cpu.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_cpu.h>
 
 void cpu_manufacturer_id(uint8_t* cpuid);
 
@@ -75,7 +75,7 @@ void cpu_devicemgr_register_devices() {
     /*
      * device api
      */
-    struct deviceapi_cpu* api = (struct deviceapi_cpu*)kmalloc(sizeof(struct deviceapi_cpu));
+    struct objecttype_cpu* api = (struct objecttype_cpu*)kmalloc(sizeof(struct objecttype_cpu));
     api->features = &cpu_get_features;
     api->apic = &cpu_has_apic;
     api->manufacturer = &cpu_manufacturer_id;

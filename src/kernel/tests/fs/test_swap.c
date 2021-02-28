@@ -9,8 +9,8 @@
 #include <dev/logical/ramdisk/ramdisk.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_swap.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_swap.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <tests/fs/ramdisk_helper.h>
@@ -28,7 +28,7 @@ void test_swap() {
     struct device* swap_device = swap_attach(rd);
     ASSERT_NOT_NULL(swap_device);
 
-    struct deviceapi_swap* swap_api = (struct deviceapi_swap*)swap_device->api;
+    struct objecttype_swap* swap_api = (struct objecttype_swap*)swap_device->api;
     ASSERT_NOT_NULL(swap_api);
 
     uint16_t block_size = (*swap_api->block_size)(swap_device);

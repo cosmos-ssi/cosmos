@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all cpu devices will implement
  */
-#ifndef _DEVICEAPI_CPU_H
-#define _DEVICEAPI_CPU_H
+#ifndef _OBJECTTYPE_CPU_H
+#define _OBJECTTYPE_CPU_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -95,7 +95,7 @@ typedef bool (*cpu_has_apic_function)();
  */
 typedef void (*cpu_manufacturer_id_function)(uint8_t* cpuid);
 
-struct deviceapi_cpu {
+struct objecttype_cpu {
     cpu_get_features_function features;
     cpu_has_apic_function apic;
     cpu_manufacturer_id_function manufacturer;

@@ -8,9 +8,9 @@
 #include <dev/x86-64/speaker/speaker.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_speaker.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_speaker.h>
 #include <sys/sleep/sleep.h>
 
 // https://wiki.osdev.org/PC_Speaker
@@ -69,7 +69,7 @@ void speaker_devicemgr_register_devices() {
     /*
      * device api
      */
-    struct deviceapi_speaker* api = (struct deviceapi_speaker*)kmalloc(sizeof(struct deviceapi_speaker));
+    struct objecttype_speaker* api = (struct objecttype_speaker*)kmalloc(sizeof(struct objecttype_speaker));
     api->beep = &speaker_beep;
     deviceinstance->api = api;
     /**

@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all ARP devices will implement
  */
-#ifndef _DEVICEAPI_ARP_H
-#define _DEVICEAPI_ARP_H
+#ifndef _OBJECTTYPE_ARP_H
+#define _OBJECTTYPE_ARP_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -36,7 +36,7 @@ struct arp {
 
 typedef void (*arp_request_function)(struct device* dev, struct arp* request, struct arp* response);
 
-struct deviceapi_arp {
+struct objecttype_arp {
     arp_request_function request;
 };
 

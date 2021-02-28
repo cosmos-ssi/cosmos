@@ -5,21 +5,14 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all PIT devices will implement
+ * this file defines the interface that all BIOS Data Area devices will implement
  */
-#ifndef _DEVICEAPI_PIT_H
-#define _DEVICEAPI_PIT_H
+#ifndef _OBJECTTYPE_CMOS_H
+#define _OBJECTTYPE_CMOS_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-typedef void (*pit_event)();
-typedef uint64_t (*pit_tickcount_function)(struct device* dev);
-typedef void (*pit_subscribe_function)(pit_event event);
-
-struct deviceapi_pit {
-    pit_tickcount_function tickcount;
-    pit_subscribe_function subscribe;
-};
+struct objecttype_cmos {};
 
 #endif

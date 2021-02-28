@@ -13,10 +13,10 @@
 #include <types.h>
 
 struct device;
-struct deviceapi_resolution;
+struct objecttype_resolution;
 
-void video_get_resolution(struct device* dev, struct deviceapi_resolution* resolution);
-void video_set_resolution(struct device* dev, struct deviceapi_resolution* resolution);
+void video_get_resolution(struct device* dev, struct objecttype_resolution* resolution);
+void video_set_resolution(struct device* dev, struct objecttype_resolution* resolution);
 uint32_t video_util_get_buffersize(struct device* dev);
 void video_util_blt(struct device* dev, uint8_t* buffer, uint32_t buffer_size);
 

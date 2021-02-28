@@ -8,9 +8,9 @@
 #include <dev/x86-64/cmos/cmos.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_cmos.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_cmos.h>
 
 void cmos_write_register(uint8_t reg, uint8_t val) {
     uint8_t pv;
@@ -59,7 +59,7 @@ void cmos_devicemgr_register_devices() {
     /*
      * api
      */
-    //    struct deviceapi_cmos* api = (struct deviceapi_cmos*)kmalloc(sizeof(struct deviceapi_cmos));
+    //    struct objecttype_cmos* api = (struct objecttype_cmos*)kmalloc(sizeof(struct objecttype_cmos));
     //    deviceinstance->api = api;
     /*
      * register

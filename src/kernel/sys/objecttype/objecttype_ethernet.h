@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all Ethernet devices will implement
  */
-#ifndef _DEVICEAPI_ETHERNET_H
-#define _DEVICEAPI_ETHERNET_H
+#ifndef _OBJECTTYPE_ETHERNET_H
+#define _OBJECTTYPE_ETHERNET_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -25,7 +25,7 @@ struct eth_hdr {
 typedef void (*ethernet_read_function)(struct device* dev, struct eth_hdr* eth, uint16_t size);
 typedef void (*ethernet_write_function)(struct device* dev, struct eth_hdr* eth, uint16_t size);
 
-struct deviceapi_ethernet {
+struct objecttype_ethernet {
     ethernet_read_function read;
     ethernet_write_function write;
 };

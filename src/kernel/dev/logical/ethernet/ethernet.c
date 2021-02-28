@@ -6,9 +6,9 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_ethernet.h>
-#include <sys/deviceapi/deviceapi_nic.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/objecttype/objecttype_ethernet.h>
+#include <sys/objecttype/objecttype_nic.h>
 #include <sys/string/mem.h>
 
 struct ethernet_devicedata {
@@ -43,7 +43,7 @@ void ethernet_read(struct device* dev, struct eth_hdr* eth, uint16_t size) {
     ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(eth);
     struct ethernet_devicedata* device_data = (struct ethernet_devicedata*)dev->device_data;
-    struct deviceapi_nic* nic_api = (struct deviceapi_nic*)device_data->nic_device->api;
+    struct objecttype_nic* nic_api = (struct objecttype_nic*)device_data->nic_device->api;
     nic_api->read(device_data->nic_device, (uint8_t*)eth, size);
 }
 
@@ -52,7 +52,7 @@ void ethernet_write(struct device* dev, struct eth_hdr* eth, uint16_t size) {
     ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(eth);
     struct ethernet_devicedata* device_data = (struct ethernet_devicedata*)dev->device_data;
-    struct deviceapi_nic* nic_api = (struct deviceapi_nic*)device_data->nic_device->api;
+    struct objecttype_nic* nic_api = (struct objecttype_nic*)device_data->nic_device->api;
     nic_api->write(device_data->nic_device, (uint8_t*)eth, size);
 }
 
@@ -71,8 +71,8 @@ struct device* ethernet_attach(struct device* nic_device) {
     /*
      * the device api
      */
-    struct deviceapi_ethernet* api = (struct deviceapi_ethernet*)kmalloc(sizeof(struct deviceapi_ethernet));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_ethernet));
+    struct objecttype_ethernet* api = (struct objecttype_ethernet*)kmalloc(sizeof(struct objecttype_ethernet));
+    memzero((uint8_t*)api, sizeof(struct objecttype_ethernet));
     api->read = &ethernet_read;
     api->write = &ethernet_write;
     deviceinstance->api = api;

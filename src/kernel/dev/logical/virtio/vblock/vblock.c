@@ -14,11 +14,11 @@
 #include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_block.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_block.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 #include <types.h>
@@ -233,8 +233,8 @@ void vblock_search_cb(struct pci_device* dev) {
     /*
      * the device api
      */
-    struct deviceapi_block* api = (struct deviceapi_block*)kmalloc(sizeof(struct deviceapi_block));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_block));
+    struct objecttype_block* api = (struct objecttype_block*)kmalloc(sizeof(struct objecttype_block));
+    memzero((uint8_t*)api, sizeof(struct objecttype_block));
     api->write = &vblockutil_write;
     api->read = &vblockutil_read;
     api->sector_size = &vblock_sector_size;

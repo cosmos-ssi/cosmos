@@ -10,8 +10,8 @@
 #include <dev/logical/partition/partition.h>
 #include <dev/logical/partition_table/partition_table_util.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_part_table.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/objecttype/objecttype_part_table.h>
 #include <sys/string/mem.h>
 
 struct partition_devicedata {
@@ -28,7 +28,7 @@ uint8_t partition_init(struct device* dev) {
     ASSERT_NOT_NULL(dev->device_data);
     struct partition_devicedata* device_data = (struct partition_devicedata*)dev->device_data;
 
-    struct deviceapi_part_table* pt_api = (struct deviceapi_part_table*)device_data->partition_table_device->api;
+    struct objecttype_part_table* pt_api = (struct objecttype_part_table*)device_data->partition_table_device->api;
     (*pt_api->type)(device_data->partition_table_device, device_data->partition_index, (device_data->type), 64);
 
     kprintf("Init %s on %s index %llu of type %s (%s)\n", dev->description, device_data->partition_table_device->name,
@@ -104,8 +104,8 @@ struct device* partition_attach(struct device* partition_table_device, uint8_t p
     /*
      * the device api
      */
-    struct deviceapi_block* api = (struct deviceapi_block*)kmalloc(sizeof(struct deviceapi_block));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_block));
+    struct objecttype_block* api = (struct objecttype_block*)kmalloc(sizeof(struct objecttype_block));
+    memzero((uint8_t*)api, sizeof(struct objecttype_block));
     api->sector_size = &partition_sector_size;
     api->total_size = &partition_total_size;
     api->read = &partition_read_sectors;

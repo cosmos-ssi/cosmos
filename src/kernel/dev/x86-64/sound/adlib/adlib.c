@@ -9,10 +9,10 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_dsp.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_dsp.h>
 
 // http://shipbrook.net/jeff/sb.html
 
@@ -70,7 +70,7 @@ void adlib_devicemgr_register_devices() {
     /*
      * device api
      */
-    struct deviceapi_dsp* api = (struct deviceapi_dsp*)kmalloc(sizeof(struct deviceapi_dsp));
+    struct objecttype_dsp* api = (struct objecttype_dsp*)kmalloc(sizeof(struct objecttype_dsp));
     deviceinstance->api = api;
     /*
      * register

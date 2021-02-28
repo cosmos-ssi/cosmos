@@ -8,10 +8,10 @@
 #include <dev/x86-64/kernelmap/kernelmap.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_kernelmap.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_kernelmap.h>
 
 // defined in cosmos.ld
 extern uint64_t _text_start;
@@ -65,7 +65,7 @@ void kernelmap_devicemgr_register_devices() {
     /*
      * api
      */
-    struct deviceapi_kernelmap* api = (struct deviceapi_kernelmap*)kmalloc(sizeof(struct deviceapi_kernelmap));
+    struct objecttype_kernelmap* api = (struct objecttype_kernelmap*)kmalloc(sizeof(struct objecttype_kernelmap));
     api->read = &kernelmap_read;
     deviceinstance->api = api;
     /*

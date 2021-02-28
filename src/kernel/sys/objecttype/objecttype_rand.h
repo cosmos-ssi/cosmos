@@ -5,14 +5,18 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all BIOS Data Area devices will implement
+ * this file defines the interface that all rand devices will implement
  */
-#ifndef _DEVICEAPI_BDA_H
-#define _DEVICEAPI_BDA_H
+#ifndef _OBJECTTYPE_RAND_H
+#define _OBJECTTYPE_RAND_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-struct deviceapi_bda {};
+typedef uint64_t (*rand_read_function)(struct device* dev);
+
+struct objecttype_rand {
+    rand_read_function read;
+};
 
 #endif

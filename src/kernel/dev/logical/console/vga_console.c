@@ -8,9 +8,9 @@
 #include <dev/logical/console/vga_console.h>
 #include <dev/x86-64/serial/serial.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_console.h>
-#include <sys/deviceapi/deviceapi_vga.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/objecttype/objecttype_console.h>
+#include <sys/objecttype/objecttype_vga.h>
 #include <sys/string/mem.h>
 
 #define CONSOLE_TAB_WIDTH 5
@@ -35,7 +35,7 @@ uint8_t vga_console_dev_init(struct device* dev) {
     device_data->vga_console_xpos = 0;
     device_data->vga_console_ypos = 0;
 
-    struct deviceapi_vga* vga_api = (struct deviceapi_vga*)device_data->vga_device->api;
+    struct objecttype_vga* vga_api = (struct objecttype_vga*)device_data->vga_device->api;
     ASSERT_NOT_NULL(vga_api);
 
     (*vga_api->query_resolution)(device_data->vga_device, &(device_data->vga_console_x_width),
@@ -61,7 +61,7 @@ uint8_t vga_console_dev_setpos(struct device* dev, uint8_t x, uint8_t y) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct vga_console_devicedata* device_data = (struct vga_console_devicedata*)dev->device_data;
-    struct deviceapi_vga* vga_api = (struct deviceapi_vga*)device_data->vga_device->api;
+    struct objecttype_vga* vga_api = (struct objecttype_vga*)device_data->vga_device->api;
     ASSERT_NOT_NULL(vga_api);
 
     // error if position is out of range
@@ -79,7 +79,7 @@ void vga_console_dev_write(struct device* dev, const char* c) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct vga_console_devicedata* device_data = (struct vga_console_devicedata*)dev->device_data;
-    struct deviceapi_vga* vga_api = (struct deviceapi_vga*)device_data->vga_device->api;
+    struct objecttype_vga* vga_api = (struct objecttype_vga*)device_data->vga_device->api;
     ASSERT_NOT_NULL(vga_api);
 
     uint64_t i =
@@ -149,8 +149,8 @@ struct device* vga_console_attach(struct device* vga_device) {
     /*
      * the device api
      */
-    struct deviceapi_console* api = (struct deviceapi_console*)kmalloc(sizeof(struct deviceapi_console));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_console));
+    struct objecttype_console* api = (struct objecttype_console*)kmalloc(sizeof(struct objecttype_console));
+    memzero((uint8_t*)api, sizeof(struct objecttype_console));
     api->setpos = &vga_console_dev_setpos;
     api->write = &vga_console_dev_write;
     deviceinstance->api = api;

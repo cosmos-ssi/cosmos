@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all swap devices will implement
  */
-#ifndef _DEVICEAPI_SWAP_H
-#define _DEVICEAPI_SWAP_H
+#ifndef _OBJECTTYPE_SWAP_H
+#define _OBJECTTYPE_SWAP_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -18,7 +18,7 @@ typedef void (*swap_write_function)(struct device* dev, uint8_t* data, uint32_t 
 typedef uint16_t (*swap_block_size_function)(struct device* dev);
 typedef uint16_t (*swap_block_count_function)(struct device* dev);
 
-struct deviceapi_swap {
+struct objecttype_swap {
     swap_read_function read;
     swap_write_function write;
     swap_block_size_function block_size;

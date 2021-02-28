@@ -14,11 +14,11 @@
 #include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_nic.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_nic.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <types.h>
@@ -293,8 +293,8 @@ void devicemgr_register_pci_vnic(struct pci_device* dev) {
     devicemgr_set_device_description(deviceinstance, "Virtio NIC");
 
     // define an api
-    struct deviceapi_nic* api = (struct deviceapi_nic*)kmalloc(sizeof(struct deviceapi_nic));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_nic));
+    struct objecttype_nic* api = (struct objecttype_nic*)kmalloc(sizeof(struct objecttype_nic));
+    memzero((uint8_t*)api, sizeof(struct objecttype_nic));
     api->write = &vnic_tx;
     api->read = &vnic_rx;
     deviceinstance->api = api;

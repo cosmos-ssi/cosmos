@@ -12,7 +12,7 @@
 #ifndef _CANVAS_H
 #define _CANVAS_H
 
-#include <sys/deviceapi/deviceapi_bga.h>
+#include <sys/objecttype/objecttype_bga.h>
 #include <types.h>
 
 struct device;
@@ -24,7 +24,7 @@ struct canvas {
     struct device* dev;
     uint32_t buffer_size;
     uint32_t bytes_per_pixel;
-    struct deviceapi_resolution resolution;
+    struct objecttype_resolution resolution;
 };
 
 struct canvas* canvas_new(struct device* dev);

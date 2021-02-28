@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all IP devices will implement
  */
-#ifndef _DEVICEAPI_IP_H
-#define _DEVICEAPI_IP_H
+#ifndef _OBJECTTYPE_IP_H
+#define _OBJECTTYPE_IP_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -31,7 +31,7 @@ struct ip_header {
 typedef void (*ip_read_function)(struct device* dev, uint8_t* data, uint16_t size);
 typedef void (*ip_write_function)(struct device* dev, uint8_t* data, uint16_t size);
 
-struct deviceapi_ip {
+struct objecttype_ip {
     ip_read_function read;
     ip_write_function write;
 };

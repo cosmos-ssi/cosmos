@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/deviceapi/deviceapi_parallel.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_parallel.h>
 #include <tests/dev/test_parallel.h>
 
 void test_parallel() {
@@ -14,7 +14,7 @@ void test_parallel() {
 
     struct device* parallel = devicemgr_find_device(devicename);
     if (0 != parallel) {
-        struct deviceapi_parallel* parallel_api = (struct deviceapi_parallel*)parallel->api;
+        struct objecttype_parallel* parallel_api = (struct objecttype_parallel*)parallel->api;
 
         (*parallel_api->write)(parallel, "hello", 6);
 

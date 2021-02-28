@@ -15,8 +15,8 @@
 #include <dev/logical/partition_table/mbr_partition_table.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_part_table.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/objecttype/objecttype_part_table.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
@@ -176,8 +176,8 @@ struct device* mbr_pt_attach(struct device* block_device) {
     /*
      * the device api
      */
-    struct deviceapi_part_table* api = (struct deviceapi_part_table*)kmalloc(sizeof(struct deviceapi_part_table));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_part_table));
+    struct objecttype_part_table* api = (struct objecttype_part_table*)kmalloc(sizeof(struct objecttype_part_table));
+    memzero((uint8_t*)api, sizeof(struct objecttype_part_table));
     api->partitions = &mbr_pt_part_table_total_partitions;
     api->lba = &mbr_pt_part_table_get_partition_lba;
     api->type = &mbr_pt_part_table_get_partition_type;

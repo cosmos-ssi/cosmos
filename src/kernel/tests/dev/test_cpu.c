@@ -5,15 +5,15 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/deviceapi/deviceapi_cpu.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_cpu.h>
 #include <tests/dev/test_cpu.h>
 
 void show_cpu_data() {
     // get the CPU
     struct device* cpu = devicemgr_find_device("cpu0");
     if (0 != cpu) {
-        struct deviceapi_cpu* cpu_api = (struct deviceapi_cpu*)cpu->api;
+        struct objecttype_cpu* cpu_api = (struct objecttype_cpu*)cpu->api;
         /*
          * show all CPU features
          */

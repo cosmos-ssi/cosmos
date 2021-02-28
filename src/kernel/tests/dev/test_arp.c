@@ -8,9 +8,9 @@
 #include <dev/logical/tcpip/arp/arpdev.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_arp.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_arp.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <tests/dev/test_arp.h>
@@ -20,7 +20,7 @@ void test_arp() {
 
     struct device* arp = devicemgr_find_device(devicename);
     if (0 != arp) {
-        struct deviceapi_arp* arp_api = (struct deviceapi_arp*)arp->api;
+        struct objecttype_arp* arp_api = (struct objecttype_arp*)arp->api;
 
         struct arp arp_request;
         arp_packet_init(&arp_request, ARP_REQUEST);

@@ -7,24 +7,24 @@
 /*
  * this file defines the interface that all BGA devices will implement
  */
-#ifndef _DEVICEAPI_BGA_H
-#define _DEVICEAPI_BGA_H
+#ifndef _OBJECTTYPE_BGA_H
+#define _OBJECTTYPE_BGA_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-struct deviceapi_resolution {
+struct objecttype_resolution {
     uint32_t width;
     uint32_t height;
     uint32_t color_depth;
 };
 
-typedef void (*bga_get_resolution_function)(struct device* dev, struct deviceapi_resolution* resolution);
-typedef void (*bga_set_resolution_function)(struct device* dev, struct deviceapi_resolution* resolution);
+typedef void (*bga_get_resolution_function)(struct device* dev, struct objecttype_resolution* resolution);
+typedef void (*bga_set_resolution_function)(struct device* dev, struct objecttype_resolution* resolution);
 typedef uint32_t (*bga_get_buffersize_function)(struct device* dev);
 typedef void (*bga_blt_function)(struct device* dev, uint8_t* buffer, uint32_t buffer_size);
 
-struct deviceapi_bga {
+struct objecttype_bga {
     bga_get_resolution_function get_resolution;
     bga_set_resolution_function set_resolution;
     bga_get_buffersize_function get_buffersize;

@@ -8,11 +8,11 @@
 #include <dev/logical/fs/block_util.h>
 #include <dev/logical/fs/sfs/sfs.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_block.h>
-#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_block.h>
+#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/string/mem.h>
 
 #define SFS_VOLUME_IDENTIFIER 0x01
@@ -193,8 +193,8 @@ struct device* sfs_attach(struct device* partition_device) {
     /*
      * the device api
      */
-    struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)kmalloc(sizeof(struct deviceapi_filesystem));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_filesystem));
+    struct objecttype_filesystem* api = (struct objecttype_filesystem*)kmalloc(sizeof(struct objecttype_filesystem));
+    memzero((uint8_t*)api, sizeof(struct objecttype_filesystem));
     //  api->format = &sfs_format;
     deviceinstance->api = api;
     /*

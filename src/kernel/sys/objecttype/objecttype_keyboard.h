@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all keyboard devices will implement
  */
-#ifndef _DEVICEAPI_KEYBOARD_H
-#define _DEVICEAPI_KEYBOARD_H
+#ifndef _OBJECTTYPE_KEYBOARD_H
+#define _OBJECTTYPE_KEYBOARD_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -28,7 +28,7 @@ typedef struct key_action_t {
 
 typedef key_action_t* (*keyboard_read_key)(struct device* dev);
 
-struct deviceapi_keyboard {
+struct objecttype_keyboard {
     keyboard_read_key read;
 };
 

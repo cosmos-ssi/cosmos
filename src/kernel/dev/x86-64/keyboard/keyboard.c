@@ -10,10 +10,10 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/ringbuffer/ringbuffer.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_keyboard.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_keyboard.h>
 #include <types.h>
 
 #define KB_IRQ_NUMBER 1
@@ -200,7 +200,7 @@ void keyboard_devicemgr_register_devices() {
     /*
      * the device api
      */
-    struct deviceapi_keyboard* api = (struct deviceapi_keyboard*)kmalloc(sizeof(struct deviceapi_keyboard));
+    struct objecttype_keyboard* api = (struct objecttype_keyboard*)kmalloc(sizeof(struct objecttype_keyboard));
     api->read = &keyboard_read;
     deviceinstance->api = api;
     /*

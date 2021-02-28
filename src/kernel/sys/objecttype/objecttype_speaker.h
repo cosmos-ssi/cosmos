@@ -5,14 +5,18 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all BIOS Data Area devices will implement
+ * this file defines the interface that all speaker devices will implement
  */
-#ifndef _DEVICEAPI_CMOS_H
-#define _DEVICEAPI_CMOS_H
+#ifndef _OBJECTTYPE_SPEAKER_H
+#define _OBJECTTYPE_SPEAKER_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-struct deviceapi_cmos {};
+typedef void (*speaker_beep_function)(struct device* dev, uint32_t frequency, uint32_t milliseconds);
+
+struct objecttype_speaker {
+    speaker_beep_function beep;
+};
 
 #endif

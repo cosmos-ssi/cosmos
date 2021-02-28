@@ -6,8 +6,8 @@
 // ****************************************************************
 
 #include <dev/logical/fs/tfs/tfs.h>
-#include <sys/deviceapi/deviceapi_block.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_block.h>
 #include <sys/string/string.h>
 #include <tests/fs/test_tfs.h>
 

@@ -12,10 +12,10 @@
 #include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_nic.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_nic.h>
 #include <sys/sleep/sleep.h>
 #include <types.h>
 
@@ -176,7 +176,7 @@ void ne2000isa_devicemgr_register_devices() {
     /*
      * the device api
      */
-    struct deviceapi_nic* api = (struct deviceapi_nic*)kmalloc(sizeof(struct deviceapi_nic));
+    struct objecttype_nic* api = (struct objecttype_nic*)kmalloc(sizeof(struct objecttype_nic));
     api->write = &ne2000isa_ethernet_read;
     api->read = &ne2000isa_ethernet_write;
     deviceinstance->api = api;

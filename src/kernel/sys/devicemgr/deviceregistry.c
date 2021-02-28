@@ -7,11 +7,11 @@
 
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/deviceregistry.h>
 #include <sys/devicemgr/devicetypes.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/string/string.h>
 
 void deviceregistry_init() {

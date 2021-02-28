@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all Kernelmap devices will implement
  */
-#ifndef _DEVICEAPI_KERNELMAP_H
-#define _DEVICEAPI_KERNELMAP_H
+#ifndef _OBJECTTYPE_KERNELMAP_H
+#define _OBJECTTYPE_KERNELMAP_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -26,7 +26,7 @@ struct kernelmap {
 
 typedef void (*kernelmap_read_function)(struct device* dev, struct kernelmap* km);
 
-struct deviceapi_kernelmap {
+struct objecttype_kernelmap {
     kernelmap_read_function read;
 };
 

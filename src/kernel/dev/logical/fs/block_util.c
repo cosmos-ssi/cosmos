@@ -7,10 +7,10 @@
 
 #include <dev/logical/fs/block_util.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_block.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_block.h>
 #include <sys/string/mem.h>
 
 uint32_t blockutil_get_sector_count(struct device* dev) {
@@ -28,7 +28,7 @@ uint32_t blockutil_get_sector_size(struct device* dev) {
     ASSERT_NOT_NULL(dev->api);
     ASSERT(1 == blockutil_is_block_device(dev));
 
-    struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
+    struct objecttype_block* block_api = (struct objecttype_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
     ASSERT_NOT_NULL(block_api->sector_size);
 
@@ -40,7 +40,7 @@ uint32_t blockutil_get_total_size(struct device* dev) {
     ASSERT_NOT_NULL(dev->api);
     ASSERT(1 == blockutil_is_block_device(dev));
 
-    struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
+    struct objecttype_block* block_api = (struct objecttype_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
     ASSERT_NOT_NULL(block_api->total_size);
 
@@ -82,7 +82,7 @@ uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, 
     ASSERT((start_lba + total_sectors) < sector_count);
 
     // get the api
-    struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
+    struct objecttype_block* block_api = (struct objecttype_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
     if (0 != block_api->write) {
 
@@ -152,7 +152,7 @@ uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, u
     ASSERT((start_lba + total_sectors) < sector_count);
 
     // get the api
-    struct deviceapi_block* block_api = (struct deviceapi_block*)dev->api;
+    struct objecttype_block* block_api = (struct objecttype_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
     ASSERT_NOT_NULL(block_api->read);
 

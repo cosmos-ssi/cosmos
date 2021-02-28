@@ -10,10 +10,10 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_rtc.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_rtc.h>
 #include <sys/sleep/sleep.h>
 #include <types.h>
 
@@ -136,7 +136,7 @@ void rtc_devicemgr_register_devices() {
     /*
      * device api
      */
-    struct deviceapi_rtc* api = (struct deviceapi_rtc*)kmalloc(sizeof(struct deviceapi_rtc));
+    struct objecttype_rtc* api = (struct objecttype_rtc*)kmalloc(sizeof(struct objecttype_rtc));
     api->rtc_time = &rtc_time;
     api->subscribe = &rtc_subscribe;
     deviceinstance->api = api;

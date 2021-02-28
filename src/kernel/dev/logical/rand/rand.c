@@ -6,8 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_rand.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/objecttype/objecttype_rand.h>
 #include <sys/string/mem.h>
 
 uint64_t RAND_MAX = (1 << 31);
@@ -61,8 +61,8 @@ struct device* rand_attach() {
     /*
      * the device api
      */
-    struct deviceapi_rand* api = (struct deviceapi_rand*)kmalloc(sizeof(struct deviceapi_rand));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_rand));
+    struct objecttype_rand* api = (struct objecttype_rand*)kmalloc(sizeof(struct objecttype_rand));
+    memzero((uint8_t*)api, sizeof(struct objecttype_rand));
     api->read = &rand_read;
     deviceinstance->api = api;
     /*

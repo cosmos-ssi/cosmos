@@ -11,10 +11,10 @@
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_dsp.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_dsp.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 
@@ -363,7 +363,7 @@ void sb16_devicemgr_register_device(uint64_t port) {
     /*
      * device api
      */
-    struct deviceapi_dsp* api = (struct deviceapi_dsp*)kmalloc(sizeof(struct deviceapi_dsp));
+    struct objecttype_dsp* api = (struct objecttype_dsp*)kmalloc(sizeof(struct objecttype_dsp));
     api->play = sb16_play;
     deviceinstance->api = api;
     /*

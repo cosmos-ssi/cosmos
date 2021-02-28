@@ -9,10 +9,10 @@
 #include <dev/x86-64/sdhci/sdhci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_block.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_block.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 
@@ -68,8 +68,8 @@ void sdhci_pci_search_cb(struct pci_device* dev) {
     /*
      * device api
      */
-    //   struct deviceapi_block* api = (struct deviceapi_block*)kmalloc(sizeof(struct deviceapi_block));
-    //   memzero((uint8_t*)api, sizeof(struct deviceapi_block));
+    //   struct objecttype_block* api = (struct objecttype_block*)kmalloc(sizeof(struct objecttype_block));
+    //   memzero((uint8_t*)api, sizeof(struct objecttype_block));
     //   deviceinstance->api = api;
     /*
      * the device_data

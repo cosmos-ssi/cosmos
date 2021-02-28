@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all ICMP devices will implement
  */
-#ifndef _DEVICEAPI_ICMP_H
-#define _DEVICEAPI_ICMP_H
+#ifndef _OBJECTTYPE_ICMP_H
+#define _OBJECTTYPE_ICMP_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -36,7 +36,7 @@ struct icmp_v4_dst_unreachable {
 typedef void (*icmp_read_function)(struct device* dev, uint8_t* data, uint16_t size);
 typedef void (*icmp_write_function)(struct device* dev, uint8_t* data, uint16_t size);
 
-struct deviceapi_ip {
+struct objecttype_ip {
     icmp_read_function read;
     icmp_write_function write;
 };

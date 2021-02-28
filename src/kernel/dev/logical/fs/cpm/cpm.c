@@ -9,10 +9,10 @@
 #include <dev/logical/fs/cpm/cpm.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_block.h>
-#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_block.h>
+#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
@@ -129,8 +129,8 @@ struct device* cpm_attach(struct device* partition_device) {
     /*
      * the device api
      */
-    struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)kmalloc(sizeof(struct deviceapi_filesystem));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_filesystem));
+    struct objecttype_filesystem* api = (struct objecttype_filesystem*)kmalloc(sizeof(struct objecttype_filesystem));
+    memzero((uint8_t*)api, sizeof(struct objecttype_filesystem));
     // api->format = &cpm_format;
     deviceinstance->api = api;
     /*

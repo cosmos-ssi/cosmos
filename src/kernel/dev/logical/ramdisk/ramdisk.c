@@ -8,10 +8,10 @@
 #include <dev/logical/ramdisk/ramdisk.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_block.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_block.h>
 #include <sys/string/mem.h>
 #include <types.h>
 
@@ -144,8 +144,8 @@ struct device* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     /*
      * the device api
      */
-    struct deviceapi_block* api = (struct deviceapi_block*)kmalloc(sizeof(struct deviceapi_block));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_block));
+    struct objecttype_block* api = (struct objecttype_block*)kmalloc(sizeof(struct objecttype_block));
+    memzero((uint8_t*)api, sizeof(struct objecttype_block));
     api->write = &ramdisk_write;
     api->read = &ramdisk_read;
     api->sector_size = &ramdisk_sector_size;

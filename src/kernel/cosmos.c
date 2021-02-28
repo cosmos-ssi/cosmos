@@ -10,8 +10,6 @@
 #include <dev/logical/fs/initrd/initrd.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_console.h>
-#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/gui/gui.h>
 #include <sys/init/init.h>
@@ -20,6 +18,8 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
+#include <sys/objecttype/objecttype_console.h>
+#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
@@ -206,7 +206,7 @@ void load_init_binary() {
  */
 void video_write(const uint8_t* s) {
     struct device* vga_console = devicemgr_find_device("console0");
-    struct deviceapi_console* console0_api = (struct deviceapi_console*)vga_console->api;
+    struct objecttype_console* console0_api = (struct objecttype_console*)vga_console->api;
     (*console0_api->write)(vga_console, s);
 }
 

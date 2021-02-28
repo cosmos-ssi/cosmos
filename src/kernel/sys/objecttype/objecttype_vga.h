@@ -7,8 +7,8 @@
 /*
  * this file defines the interface that all VGA devices will implement
  */
-#ifndef _DEVICEAPI_VGA_H
-#define _DEVICEAPI_VGA_H
+#ifndef _OBJECTTYPE_VGA_H
+#define _OBJECTTYPE_VGA_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
@@ -41,7 +41,7 @@ typedef uint8_t (*vga_write_text_function)(struct device* dev, const char* txt, 
                                            uint8_t attrib, enum vga_text_color fg_color, enum vga_text_color bg_color);
 typedef uint8_t (*vga_query_resolution_function)(struct device* dev, uint16_t* x, uint16_t* y);
 
-struct deviceapi_vga {
+struct objecttype_vga {
     vga_set_mode_function set_mode;
     vga_scroll_text_function scroll_text;
     vga_write_text_function write_text;

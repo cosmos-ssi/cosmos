@@ -6,8 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_null.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_null.h>
 #include <tests/dev/test_null.h>
 
 void test_null() {
@@ -17,7 +17,7 @@ void test_null() {
 
     struct device* null_ = devicemgr_find_device(devicename);
     if (0 != null_) {
-        struct deviceapi_null* null_api = (struct deviceapi_null*)null_->api;
+        struct objecttype_null* null_api = (struct objecttype_null*)null_->api;
 
         uint8_t n = (*null_api->read)(null_);
         ASSERT(0 == n);

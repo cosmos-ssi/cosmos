@@ -10,11 +10,11 @@
 #include <dev/logical/fs/node_util.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/devicemgr/devicetypes.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
@@ -226,8 +226,8 @@ struct device* devfs_attach() {
     /*
      * the device api
      */
-    struct deviceapi_filesystem* api = (struct deviceapi_filesystem*)kmalloc(sizeof(struct deviceapi_filesystem));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_filesystem));
+    struct objecttype_filesystem* api = (struct objecttype_filesystem*)kmalloc(sizeof(struct objecttype_filesystem));
+    memzero((uint8_t*)api, sizeof(struct objecttype_filesystem));
     api->close = &devfs_close;
     api->find_id = &devfs_find_node_by_id;
     api->open = &devfs_open;

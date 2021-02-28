@@ -8,11 +8,11 @@
 #include <dev/x86-64/ata/ata_disk.h>
 #include <dev/x86-64/ata/ata_dma.h>
 #include <sys/collection/linkedlist/linkedlist.h>
-#include <sys/deviceapi/deviceapi_block.h>
 #include <sys/devicemgr/device.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_block.h>
 #include <sys/string/mem.h>
 #include <sys/sync/sync.h>
 #include <sys/x86-64/mm/pagetables.h>

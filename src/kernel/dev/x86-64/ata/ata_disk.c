@@ -11,9 +11,9 @@
 #include <dev/x86-64/ata/ata_util.h>
 #include <sys/asm/byte.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_block.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_block.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 
@@ -202,8 +202,8 @@ void ata_register_disk(struct device* controllerDevice, uint8_t channel, uint8_t
     /*
      * the device api
      */
-    struct deviceapi_block* api = (struct deviceapi_block*)kmalloc(sizeof(struct deviceapi_block));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_block));
+    struct objecttype_block* api = (struct objecttype_block*)kmalloc(sizeof(struct objecttype_block));
+    memzero((uint8_t*)api, sizeof(struct objecttype_block));
     api->write = &ata_write;
     api->read = &ata_read;
     api->sector_size = &ata_sector_size;

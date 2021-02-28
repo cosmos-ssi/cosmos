@@ -6,8 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_nic.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_nic.h>
 #include <tests/dev/test_rtl8139.h>
 
 void test_rtl8139() {

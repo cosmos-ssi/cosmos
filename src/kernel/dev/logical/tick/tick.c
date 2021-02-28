@@ -6,9 +6,9 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_pit.h>
-#include <sys/deviceapi/deviceapi_tick.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/objecttype/objecttype_pit.h>
+#include <sys/objecttype/objecttype_tick.h>
 #include <sys/string/mem.h>
 
 struct tick_devicedata {
@@ -43,7 +43,7 @@ uint64_t tick_read(struct device* dev) {
     ASSERT_NOT_NULL(dev->device_data);
     struct tick_devicedata* device_data = (struct tick_devicedata*)dev->device_data;
 
-    struct deviceapi_pit* api = (struct deviceapi_pit*)device_data->pit_device->api;
+    struct objecttype_pit* api = (struct objecttype_pit*)device_data->pit_device->api;
     return (*api->tickcount)(device_data->pit_device);
 }
 
@@ -62,8 +62,8 @@ struct device* tick_attach(struct device* pit_device) {
     /*
      * the device api
      */
-    struct deviceapi_tick* api = (struct deviceapi_tick*)kmalloc(sizeof(struct deviceapi_tick));
-    memzero((uint8_t*)api, sizeof(struct deviceapi_tick));
+    struct objecttype_tick* api = (struct objecttype_tick*)kmalloc(sizeof(struct objecttype_tick));
+    memzero((uint8_t*)api, sizeof(struct objecttype_tick));
     api->read = &tick_read;
     deviceinstance->api = api;
     /*

@@ -9,9 +9,9 @@
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/deviceapi/deviceapi_bda.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_bda.h>
 
 #define BDA_ADDRESS 0x400
 
@@ -118,7 +118,7 @@ void bda_devicemgr_register_devices() {
     /*
      * api
      */
-    //   struct deviceapi_bda* api = (struct deviceapi_bda*)kmalloc(sizeof(struct deviceapi_bda));
+    //   struct objecttype_bda* api = (struct objecttype_bda*)kmalloc(sizeof(struct objecttype_bda));
     //   deviceinstance->api = api;
     /*
      * register

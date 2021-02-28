@@ -6,9 +6,9 @@
 // ****************************************************************
 
 #include <dev/logical/partition_table/mbr_partition_table.h>
-#include <sys/deviceapi/deviceapi_part_table.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_part_table.h>
 #include <tests/fs/test_mbr.h>
 
 void test_mbr() {
@@ -18,7 +18,7 @@ void test_mbr() {
     if (0 != dsk) {
         struct device* dev = mbr_pt_attach(dsk);
 
-        struct deviceapi_part_table* api = (struct deviceapi_part_table*)dev->api;
+        struct objecttype_part_table* api = (struct objecttype_part_table*)dev->api;
 
         uint8_t number_partitions = (*api->partitions)(dev);
         kprintf("number_partitions %llu\n", number_partitions);

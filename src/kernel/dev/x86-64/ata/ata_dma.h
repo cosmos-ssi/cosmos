@@ -8,7 +8,7 @@
 #ifndef _ATA_DMA_H
 #define _ATA_DMA_H
 
-#include <sys/deviceapi/deviceapi_block.h>
+#include <sys/objecttype/objecttype_block.h>
 #include <types.h>
 
 // Base physical address and size of ATA DMA buffer area

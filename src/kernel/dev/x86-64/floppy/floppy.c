@@ -10,10 +10,10 @@
 #include <dev/x86-64/pci/pci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_floppy.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_floppy.h>
 #include <sys/sleep/sleep.h>
 
 #define FLOPPY_IRQ_NUMBER 6
@@ -231,7 +231,7 @@ void floppy_register_device(uint64_t port, uint8_t type, bool master) {
     /*
      * the device api
      */
-    struct deviceapi_floppy* api = (struct deviceapi_floppy*)kmalloc(sizeof(struct deviceapi_floppy));
+    struct objecttype_floppy* api = (struct objecttype_floppy*)kmalloc(sizeof(struct objecttype_floppy));
     api->write = &floppy_read;
     api->read = &floppy_write;
     api->reset = &floppy_reset;

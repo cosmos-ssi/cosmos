@@ -5,19 +5,20 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all DSP devices will implement
+ * this file defines the interface that all NIC devices will implement
  */
-#ifndef _DEVICEAPI_DSP_H
-#define _DEVICEAPI_DSP_H
+#ifndef _OBJECTTYPE_NIC_H
+#define _OBJECTTYPE_NIC_H
 
 #include <sys/devicemgr/devicemgr.h>
 #include <types.h>
 
-typedef void (*dsp_play_function)(struct device* dev, uint8_t* buffer, uint16_t rate, uint8_t depth, uint8_t channels,
-                                  uint64_t len);
+typedef void (*nic_read_function)(struct device* dev, uint8_t* data, uint16_t size);
+typedef void (*nic_write_function)(struct device* dev, uint8_t* data, uint16_t size);
 
-struct deviceapi_dsp {
-    dsp_play_function play;
+struct objecttype_nic {
+    nic_read_function read;
+    nic_write_function write;
 };
 
 #endif
