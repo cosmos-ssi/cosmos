@@ -10,7 +10,8 @@
 #include <dev/x86-64/pci/pci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_floppy.h>
@@ -168,7 +169,7 @@ void command(uint8_t commandByte) {
 /*
  * perform device instance specific init here
  */
-uint8_t floppy_device_init(struct device* dev) {
+uint8_t floppy_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     //   struct floppy_devicedata* device_data = (struct floppy_devicedata*)dev->device_data;
     kprintf("Init %s at IRQ %llu (%s)\n", dev->description, FLOPPY_IRQ_NUMBER, dev->name);
@@ -200,7 +201,7 @@ void lba_2_chs(uint32_t lba, uint16_t* cyl, uint16_t* head, uint16_t* sector) {
 }
 
 // api
-void floppy_read(struct device* dev, uint32_t lba, uint8_t* data, uint16_t size) {
+void floppy_read(struct object* dev, uint32_t lba, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
@@ -208,14 +209,14 @@ void floppy_read(struct device* dev, uint32_t lba, uint8_t* data, uint16_t size)
 }
 
 // api
-void floppy_write(struct device* dev, uint32_t lba, uint8_t* data, uint16_t size) {
+void floppy_write(struct object* dev, uint32_t lba, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     //	PANIC("Floppy write not implemented yet");
 }
 
 // api
-void floppy_reset(struct device* dev) {
+void floppy_reset(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     PANIC("Floppy reset not implemented yet");
 }
@@ -224,10 +225,10 @@ void floppy_register_device(uint64_t port, uint8_t type, bool master) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &floppy_device_init;
     deviceinstance->devicetype = FLOPPY;
-    devicemgr_set_device_description(deviceinstance, "Floppy");
+    objectmgr_set_device_description(deviceinstance, "Floppy");
     /*
      * the device api
      */
@@ -247,7 +248,7 @@ void floppy_register_device(uint64_t port, uint8_t type, bool master) {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
 void floppy_register_floppy(uint64_t port) {
@@ -269,6 +270,6 @@ void floppy_register_floppy(uint64_t port) {
 /**
  * find all floppy devices and register them
  */
-void floppy_devicemgr_register_devices() {
+void floppy_objectmgr_register_devices() {
     floppy_register_floppy(FLOPPY_BASE);
 }

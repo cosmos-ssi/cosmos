@@ -13,16 +13,17 @@
 #include <dev/logical/partition_table/guid_partition_table.h>
 #include <dev/logical/partition_table/mbr_partition_table.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/objecttype/objecttype_part_table.h>
 
-void fsutil_attach_partition_tables(struct device* block_dev) {
+void fsutil_attach_partition_tables(struct object* block_dev) {
     ASSERT_NOT_NULL(block_dev);
     ASSERT_NOT_NULL(block_dev->api);
     ASSERT(1 == blockutil_is_block_device(block_dev));
 
     // try to attach gpt
-    struct device* gpt = guid_pt_attach(block_dev);
+    struct object* gpt = guid_pt_attach(block_dev);
     if (0 == gpt) {
         // maybe its mbr
         mbr_pt_attach(block_dev);
@@ -31,14 +32,14 @@ void fsutil_attach_partition_tables(struct device* block_dev) {
     }
 }
 
-void fsutil_detach_partition_tables(struct device* block_dev) {
+void fsutil_detach_partition_tables(struct object* block_dev) {
     ASSERT_NOT_NULL(block_dev);
     ASSERT_NOT_NULL(block_dev->api);
     ASSERT(1 == blockutil_is_block_device(block_dev));
     PANIC("not implemented");
 }
 
-void fsutil_attach_partitions(struct device* partition_table_dev) {
+void fsutil_attach_partitions(struct object* partition_table_dev) {
     ASSERT_NOT_NULL(partition_table_dev);
     ASSERT(partition_table_dev->devicetype == PARTITION_TABLE);
 
@@ -55,12 +56,12 @@ void fsutil_attach_partitions(struct device* partition_table_dev) {
     }
 }
 
-void fsutil_detach_partitions(struct device* partition_table_dev) {
+void fsutil_detach_partitions(struct object* partition_table_dev) {
     ASSERT_NOT_NULL(partition_table_dev);
     ASSERT(partition_table_dev->devicetype == PARTITION_TABLE);
 }
 
-void fsutil_attach_fs(struct device* partition_dev) {
+void fsutil_attach_fs(struct object* partition_dev) {
     ASSERT_NOT_NULL(partition_dev);
     ASSERT(partition_dev->devicetype == PARTITION);
 
@@ -69,7 +70,7 @@ void fsutil_attach_fs(struct device* partition_dev) {
     }
 }
 
-void fsutil_detach_fs(struct device* partition_dev) {
+void fsutil_detach_fs(struct object* partition_dev) {
     ASSERT_NOT_NULL(partition_dev);
     ASSERT(partition_dev->devicetype == PARTITION);
 }

@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void mouse_devicemgr_register_devices();
+void mouse_objectmgr_register_devices();
 
 #endif

@@ -14,7 +14,8 @@
 #include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
@@ -98,7 +99,7 @@ void print_link_status() {
     }
 }
 
-uint8_t vnic_initialize_device(struct device* dev) {
+uint8_t vnic_initialize_device(struct object* dev) {
     struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
 
     // get the I/O port
@@ -204,7 +205,7 @@ void vnic_irq_handler(stack_frame* frame) {
     // get virtual device
     uint8_t devicename[] = {"nic0"};
 
-    struct device* dev = devicemgr_find_device(devicename);
+    struct object* dev = objectmgr_find_device(devicename);
     if (0 == dev) {
         kprintf("Unable to find %s\n", devicename);
         return;
@@ -239,13 +240,13 @@ void vnic_irq_handler(stack_frame* frame) {
     // EOI sent to the PIC by the interrupt handler
 }
 
-void vnic_rx(struct device* dev, uint8_t* data, uint16_t size) {
+void vnic_rx(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     PANIC("vnic read not implemented yet");
 }
 
-void vnic_tx(struct device* dev, uint8_t* data, uint16_t size) {
+void vnic_tx(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
@@ -276,11 +277,11 @@ void vnic_tx(struct device* dev, uint8_t* data, uint16_t size) {
 
 // As part of PCI discovery, devicemgr calls this to register us as an instance of type VNIC.
 // We create a device instance, attach an API and data storage, and register it.
-void devicemgr_register_pci_vnic(struct pci_device* dev) {
+void objectmgr_register_pci_vnic(struct pci_device* dev) {
     ASSERT_NOT_NULL(dev);
 
     // create a new device
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
 
     // bind an initialization function to the device (called by devicemgr during startup)
     deviceinstance->init = &vnic_initialize_device;
@@ -290,7 +291,7 @@ void devicemgr_register_pci_vnic(struct pci_device* dev) {
 
     // set properties
     deviceinstance->devicetype = VNIC;
-    devicemgr_set_device_description(deviceinstance, "Virtio NIC");
+    objectmgr_set_device_description(deviceinstance, "Virtio NIC");
 
     // define an api
     struct objecttype_nic* api = (struct objecttype_nic*)kmalloc(sizeof(struct objecttype_nic));
@@ -304,11 +305,11 @@ void devicemgr_register_pci_vnic(struct pci_device* dev) {
     deviceinstance->device_data = device_data;
 
     // register
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
 // find all virtio ethernet devices and register them
-void devicemgr_register_vnic_devices() {
-    pci_devicemgr_search_device(PCI_CLASS_NETWORK, PCI_NETWORK_SUBCLASS_ETHERNET, VIRTIO_PCI_MANUFACTURER,
-                                VIRTIO_PCI_DEVICED_NETWORK, &devicemgr_register_pci_vnic);
+void objectmgr_register_vnic_devices() {
+    pci_objectmgr_search_device(PCI_CLASS_NETWORK, PCI_NETWORK_SUBCLASS_ETHERNET, VIRTIO_PCI_MANUFACTURER,
+                                VIRTIO_PCI_DEVICED_NETWORK, &objectmgr_register_pci_vnic);
 }

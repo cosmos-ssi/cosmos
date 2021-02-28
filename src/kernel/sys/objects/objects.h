@@ -15,7 +15,8 @@
 
 #include <sys/collection/dtable/dtable.h>
 #include <sys/collection/linkedlist/linkedlist.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/proc/proc.h>
 #include <types.h>

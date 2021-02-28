@@ -10,7 +10,7 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
 #define FILESYSTEM_MAX_NAME 128
 #define FILESYSTEM_MAX_FILES_PER_DIR 1024
@@ -25,7 +25,7 @@ typedef struct filesystem_node {
     /* 
     * owning device
     */
-    struct device* filesystem_device;
+    struct object* filesystem_device;
     /*
     * id
     */
@@ -48,7 +48,7 @@ struct filesystem_directory {
 /*
 * get root node
 */
-typedef struct filesystem_node* (*filesystem_get_root_node_function)(struct device* filesystem_device);
+typedef struct filesystem_node* (*filesystem_get_root_node_function)(struct object* filesystem_device);
 
 /*
 * read bytes from node

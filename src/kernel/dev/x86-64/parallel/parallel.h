@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void parallel_devicemgr_register_devices();
+void parallel_objectmgr_register_devices();
 
 #endif

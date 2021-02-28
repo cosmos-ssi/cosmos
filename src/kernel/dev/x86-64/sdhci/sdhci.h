@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void sdhci_devicemgr_register_devices();
+void sdhci_objectmgr_register_devices();
 
 #endif

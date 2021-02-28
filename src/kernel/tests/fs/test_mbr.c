@@ -6,7 +6,8 @@
 // ****************************************************************
 
 #include <dev/logical/partition_table/mbr_partition_table.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_part_table.h>
 #include <tests/fs/test_mbr.h>
@@ -14,9 +15,9 @@
 void test_mbr() {
     uint8_t devicename[] = {"disk1"};
 
-    struct device* dsk = devicemgr_find_device(devicename);
+    struct object* dsk = objectmgr_find_device(devicename);
     if (0 != dsk) {
-        struct device* dev = mbr_pt_attach(dsk);
+        struct object* dev = mbr_pt_attach(dsk);
 
         struct objecttype_part_table* api = (struct objecttype_part_table*)dev->api;
 

@@ -10,7 +10,8 @@
 #include <dev/x86-64/usb_ehci/usb_ehci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 
@@ -21,7 +22,7 @@ struct usbcontroller_devicedata {
 /*
  * perform device instance specific init here
  */
-uint8_t usb_ehci_device_init(struct device* dev) {
+uint8_t usb_ehci_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     struct usbcontroller_devicedata* device_data = (struct usbcontroller_devicedata*)dev->device_data;
     device_data->base = pci_calcbar(dev->pci);
@@ -35,11 +36,11 @@ void usb_ehci_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &usb_ehci_device_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = USB;
-    devicemgr_set_device_description(deviceinstance, "Intel 82801 USB EHCI Controller");
+    objectmgr_set_device_description(deviceinstance, "Intel 82801 USB EHCI Controller");
     /*
      * the device_data
      */
@@ -50,12 +51,12 @@ void usb_ehci_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
 /**
  * find all USB devices and register them
  */
-void usb_ehci_devicemgr_register_devices() {
-    pci_devicemgr_search_device(PCI_CLASS_SERIAL, PCI_SERIAL_SUBCLASS_USB, 0x8086, 0x24CD, &usb_ehci_search_cb);
+void usb_ehci_objectmgr_register_devices() {
+    pci_objectmgr_search_device(PCI_CLASS_SERIAL, PCI_SERIAL_SUBCLASS_USB, 0x8086, 0x24CD, &usb_ehci_search_cb);
 }

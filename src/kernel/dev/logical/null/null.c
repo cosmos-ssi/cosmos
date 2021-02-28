@@ -13,7 +13,7 @@
 /*
  * perform device instance specific init here
  */
-uint8_t null_init(struct device* dev) {
+uint8_t null_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
@@ -22,28 +22,28 @@ uint8_t null_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t null_uninit(struct device* dev) {
+uint8_t null_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
     return 1;
 }
 
-uint8_t null_read(struct device* dev) {
+uint8_t null_read(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     return 0;
 }
 
-struct device* null_attach() {
+struct object* null_attach() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &null_init;
     deviceinstance->uninit = &null_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = NULL0;
-    devicemgr_set_device_description(deviceinstance, "null");
+    objectmgr_set_device_description(deviceinstance, "null");
     /*
      * the device api
      */
@@ -54,7 +54,7 @@ struct device* null_attach() {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * return device
         */
@@ -66,7 +66,7 @@ struct device* null_attach() {
     }
 }
 
-void null_detach(struct device* dev) {
+void null_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

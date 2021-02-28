@@ -10,14 +10,14 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
-uint16_t partition_table_util_sector_size(struct device* partition_table_device, uint8_t partition_index);
-uint32_t partition_table_util_total_size(struct device* partition_table_device, uint8_t partition_index);
+uint16_t partition_table_util_sector_size(struct object* partition_table_device, uint8_t partition_index);
+uint32_t partition_table_util_total_size(struct object* partition_table_device, uint8_t partition_index);
 
-uint32_t partition_table_util_write_sectors(struct device* partition_table_device, uint8_t partition_index,
+uint32_t partition_table_util_write_sectors(struct object* partition_table_device, uint8_t partition_index,
                                             uint8_t* data, uint32_t data_size, uint32_t start_lba);
-uint32_t partition_table_util_read_sectors(struct device* partition_table_device, uint8_t partition_index,
+uint32_t partition_table_util_read_sectors(struct object* partition_table_device, uint8_t partition_index,
                                            uint8_t* data, uint32_t data_size, uint32_t start_lba);
 
 #endif

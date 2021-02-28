@@ -10,13 +10,14 @@
 #ifndef _OBJECTTYPE_SWAP_H
 #define _OBJECTTYPE_SWAP_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
-typedef void (*swap_read_function)(struct device* dev, uint8_t* data, uint32_t block);
-typedef void (*swap_write_function)(struct device* dev, uint8_t* data, uint32_t block);
-typedef uint16_t (*swap_block_size_function)(struct device* dev);
-typedef uint16_t (*swap_block_count_function)(struct device* dev);
+typedef void (*swap_read_function)(struct object* dev, uint8_t* data, uint32_t block);
+typedef void (*swap_write_function)(struct object* dev, uint8_t* data, uint32_t block);
+typedef uint16_t (*swap_block_size_function)(struct object* dev);
+typedef uint16_t (*swap_block_count_function)(struct object* dev);
 
 struct objecttype_swap {
     swap_read_function read;

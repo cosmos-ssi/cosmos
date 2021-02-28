@@ -10,7 +10,7 @@
 
 #include <types.h>
 
-void bda_devicemgr_register_devices();
+void bda_objectmgr_register_devices();
 
 uint16_t bda_serial0_base();
 uint16_t bda_serial1_base();

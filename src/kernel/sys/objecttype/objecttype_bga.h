@@ -10,7 +10,8 @@
 #ifndef _OBJECTTYPE_BGA_H
 #define _OBJECTTYPE_BGA_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 struct objecttype_resolution {
@@ -19,10 +20,10 @@ struct objecttype_resolution {
     uint32_t color_depth;
 };
 
-typedef void (*bga_get_resolution_function)(struct device* dev, struct objecttype_resolution* resolution);
-typedef void (*bga_set_resolution_function)(struct device* dev, struct objecttype_resolution* resolution);
-typedef uint32_t (*bga_get_buffersize_function)(struct device* dev);
-typedef void (*bga_blt_function)(struct device* dev, uint8_t* buffer, uint32_t buffer_size);
+typedef void (*bga_get_resolution_function)(struct object* dev, struct objecttype_resolution* resolution);
+typedef void (*bga_set_resolution_function)(struct object* dev, struct objecttype_resolution* resolution);
+typedef uint32_t (*bga_get_buffersize_function)(struct object* dev);
+typedef void (*bga_blt_function)(struct object* dev, uint8_t* buffer, uint32_t buffer_size);
 
 struct objecttype_bga {
     bga_get_resolution_function get_resolution;

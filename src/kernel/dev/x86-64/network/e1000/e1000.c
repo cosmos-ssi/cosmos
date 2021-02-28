@@ -9,7 +9,8 @@
 #include <dev/x86-64/pci/pci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_nic.h>
@@ -21,7 +22,7 @@ void e1000_irq_handler(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t e1000_init(struct device* dev) {
+uint8_t e1000_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX (%s)\n", dev->description, dev->pci->irq, dev->pci->vendor_id,
             dev->pci->device_id, dev->name);
@@ -29,13 +30,13 @@ uint8_t e1000_init(struct device* dev) {
     return 1;
 }
 
-void e1000_ethernet_read(struct device* dev, uint8_t* data, uint16_t size) {
+void e1000_ethernet_read(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
     PANIC("Ethernet read not implemented yet");
 }
-void e1000_ethernet_write(struct device* dev, uint8_t* data, uint16_t size) {
+void e1000_ethernet_write(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
@@ -46,11 +47,11 @@ void e1000_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &e1000_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = NIC;
-    devicemgr_set_device_description(deviceinstance, "E1000 NIC");
+    objectmgr_set_device_description(deviceinstance, "E1000 NIC");
     /*
      * the device api
      */
@@ -61,11 +62,11 @@ void e1000_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
 /**
  */
-void e1000_devicemgr_register_devices() {
-    pci_devicemgr_search_device(PCI_CLASS_NETWORK, PCI_NETWORK_SUBCLASS_ETHERNET, 0x8086, 0x100E, &e1000_search_cb);
+void e1000_objectmgr_register_devices() {
+    pci_objectmgr_search_device(PCI_CLASS_NETWORK, PCI_NETWORK_SUBCLASS_ETHERNET, 0x8086, 0x100E, &e1000_search_cb);
 }

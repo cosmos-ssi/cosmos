@@ -10,7 +10,8 @@
 #ifndef _OBJECTTYPE_BDA_H
 #define _OBJECTTYPE_BDA_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 struct objecttype_bda {};

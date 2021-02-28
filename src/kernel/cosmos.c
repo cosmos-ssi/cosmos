@@ -66,7 +66,7 @@ void CosmOS() {
      * init the device registry
      */
     kprintf("Initializing Device Registry...\n");
-    devicemgr_init();
+    objectmgr_init();
 
     kprintf("Initializing system call handler...\n");
     syscall_init();
@@ -83,14 +83,14 @@ void CosmOS() {
     /*
      * Register all devices
      */
-    devicemgr_register_devices();
-    //   kprintf("Registered %llu devices\n", devicemgr_device_count());
+    objectmgr_register_devices();
+    //   kprintf("Registered %llu devices\n", objectmgr_device_count());
 
     /*
      * Init all devices
      */
-    devicemgr_init_devices();
-    //  kprintf("There are %llu devices\n", devicemgr_device_count());
+    objectmgr_init_devices();
+    //  kprintf("There are %llu devices\n", objectmgr_device_count());
     kprintf("\n");
     kprintf("***** Hardware Initialization Complete *****\n");
     kprintf("\n");
@@ -133,7 +133,7 @@ void CosmOS() {
 
     // show the vfs
     // kprintf("***** Devices *****\n");
-    //  devicemgr_dump_devices();
+    //  objectmgr_dump_devices();
 
     dump_vfs();
 
@@ -162,10 +162,10 @@ void CosmOS() {
 }
 
 filesystem_node_t* load_test_binary() {
-    device_t* vfs_dev;
+    struct object* vfs_dev;
     filesystem_node_t *vfs_node, *initrd_node, *file_node;
 
-    vfs_dev = devicemgr_find_device("vfs0");
+    vfs_dev = objectmgr_find_device("vfs0");
     ASSERT_NOT_NULL(vfs_dev);
 
     vfs_node = fsfacade_get_fs_rootnode(vfs_dev);
@@ -184,7 +184,7 @@ void dump_vfs() {
     kprintf("\n");
     kprintf("***** VFS *****\n");
     kprintf("\n");
-    struct device* vfs_dev = devicemgr_find_device("vfs0");
+    struct object* vfs_dev = objectmgr_find_device("vfs0");
     ASSERT_NOT_NULL(vfs_dev);
     struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(vfs_dev);
     ASSERT_NOT_NULL(fs_node);
@@ -205,7 +205,7 @@ void load_init_binary() {
  * write to vga console which we created earlier (will be console0)
  */
 void video_write(const uint8_t* s) {
-    struct device* vga_console = devicemgr_find_device("console0");
+    struct object* vga_console = objectmgr_find_device("console0");
     struct objecttype_console* console0_api = (struct objecttype_console*)vga_console->api;
     (*console0_api->write)(vga_console, s);
 }

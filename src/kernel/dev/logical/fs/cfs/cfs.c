@@ -70,13 +70,13 @@ struct cfs_blockmap {
 } __attribute__((packed));
 
 struct cfs_devicedata {
-    struct device* partition_device;
+    struct object* partition_device;
 } __attribute__((packed));
 
 /*
  * total number of sectormap sectors for this disk
  */
-uint32_t cfs_total_sectormap_sectors(struct device* dev) {
+uint32_t cfs_total_sectormap_sectors(struct object* dev) {
     uint32_t sectors = blockutil_get_sector_count(dev);
 
     if (SECTORS_MAPPED_PER_SECTOR >= sectors) {
@@ -89,7 +89,7 @@ uint32_t cfs_total_sectormap_sectors(struct device* dev) {
 /*
  * read the superblock at lba 0
  */
-void cfs_read_superblock(struct device* dev, struct cfs_superblock* superblock) {
+void cfs_read_superblock(struct object* dev, struct cfs_superblock* superblock) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(superblock);
     blockutil_read(dev, (uint8_t*)superblock, sizeof(struct cfs_superblock), 0, 0);
@@ -98,7 +98,7 @@ void cfs_read_superblock(struct device* dev, struct cfs_superblock* superblock) 
 /*
  * write the superblock at lba 0
  */
-void cfs_write_superblock(struct device* dev, struct cfs_superblock* superblock) {
+void cfs_write_superblock(struct object* dev, struct cfs_superblock* superblock) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(superblock);
     blockutil_write(dev, (uint8_t*)superblock, sizeof(struct cfs_superblock), 0, 0);
@@ -107,7 +107,7 @@ void cfs_write_superblock(struct device* dev, struct cfs_superblock* superblock)
 /*
  * write blockmap, at a certain sector
  */
-void cfs_write_blockmap(struct device* dev, struct cfs_blockmap* blockmap, uint32_t sector) {
+void cfs_write_blockmap(struct object* dev, struct cfs_blockmap* blockmap, uint32_t sector) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(blockmap);
     blockutil_write(dev, (uint8_t*)blockmap, sizeof(struct cfs_blockmap), sector, 0);
@@ -116,7 +116,7 @@ void cfs_write_blockmap(struct device* dev, struct cfs_blockmap* blockmap, uint3
 /*
  * read blockmap, at a certain sector
  */
-void cfs_read_blockmap(struct device* dev, struct cfs_blockmap* blockmap, uint32_t sector) {
+void cfs_read_blockmap(struct object* dev, struct cfs_blockmap* blockmap, uint32_t sector) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(blockmap);
     blockutil_read(dev, (uint8_t*)blockmap, sizeof(struct cfs_blockmap), sector, 0);
@@ -125,7 +125,7 @@ void cfs_read_blockmap(struct device* dev, struct cfs_blockmap* blockmap, uint32
 /*
  * format. I just guessed here.
  */
-void cfs_format(struct device* dev) {
+void cfs_format(struct object* dev) {
     ASSERT_NOT_NULL(dev->device_data);
     struct cfs_devicedata* device_data = (struct cfs_devicedata*)dev->device_data;
 
@@ -155,7 +155,7 @@ void cfs_format(struct device* dev) {
 /*
  * perform device instance specific init here
  */
-uint8_t cfs_init(struct device* dev) {
+uint8_t cfs_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct cfs_devicedata* device_data = (struct cfs_devicedata*)dev->device_data;
@@ -166,7 +166,7 @@ uint8_t cfs_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t cfs_uninit(struct device* dev) {
+uint8_t cfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct cfs_devicedata* device_data = (struct cfs_devicedata*)dev->device_data;
@@ -177,19 +177,19 @@ uint8_t cfs_uninit(struct device* dev) {
     return 1;
 }
 
-struct device* cfs_attach(struct device* partition_device) {
+struct object* cfs_attach(struct object* partition_device) {
     ASSERT_NOT_NULL(partition_device);
     ASSERT(1 == blockutil_is_block_device(partition_device));
 
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &cfs_init;
     deviceinstance->uninit = &cfs_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = FILESYSTEM;
-    devicemgr_set_device_description(deviceinstance, "Cosmos File System");
+    objectmgr_set_device_description(deviceinstance, "Cosmos File System");
     /*
      * the device api
      */
@@ -206,11 +206,11 @@ struct device* cfs_attach(struct device* partition_device) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(partition_device);
+        objectmgr_increment_device_refcount(partition_device);
         /*
         * return device
         */
@@ -223,16 +223,16 @@ struct device* cfs_attach(struct device* partition_device) {
     }
 }
 
-void cfs_detach(struct device* dev) {
+void cfs_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct cfs_devicedata* device_data = (struct cfs_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->partition_device);
+    objectmgr_decrement_device_refcount(device_data->partition_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

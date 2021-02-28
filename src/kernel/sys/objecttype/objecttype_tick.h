@@ -10,10 +10,11 @@
 #ifndef _OBJECTTYPE_TICK_H
 #define _OBJECTTYPE_TICK_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
-typedef uint64_t (*tick_read_function)(struct device* dev);
+typedef uint64_t (*tick_read_function)(struct object* dev);
 
 struct objecttype_tick {
     tick_read_function read;

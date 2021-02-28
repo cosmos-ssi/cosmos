@@ -10,11 +10,12 @@
 #ifndef _OBJECTTYPE_PIT_H
 #define _OBJECTTYPE_PIT_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 typedef void (*pit_event)();
-typedef uint64_t (*pit_tickcount_function)(struct device* dev);
+typedef uint64_t (*pit_tickcount_function)(struct object* dev);
 typedef void (*pit_subscribe_function)(pit_event event);
 
 struct objecttype_pit {

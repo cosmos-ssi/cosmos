@@ -8,7 +8,8 @@
 #include <dev/logical/fs/block_util.h>
 #include <dev/logical/fs/sfs/sfs.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_block.h>
@@ -106,7 +107,7 @@ struct sfs_continuation_entry {
 } __attribute__((packed));
 
 struct sfs_devicedata {
-    struct device* partition_device;
+    struct object* partition_device;
 } __attribute__((packed));
 
 /*
@@ -120,12 +121,12 @@ bool sfs_is_valid_superblock(struct sfs_superblock* superblock) {
     return false;
 }
 
-void sfs_read_superblock(struct device* dev, struct sfs_superblock* superblock) {
+void sfs_read_superblock(struct object* dev, struct sfs_superblock* superblock) {
     ASSERT_NOT_NULL(dev);
     blockutil_read(dev, (uint8_t*)superblock, sizeof(struct sfs_superblock), 0, 0);
 }
 
-void sfs_format(struct device* dev) {
+void sfs_format(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct sfs_devicedata* device_data = (struct sfs_devicedata*)dev->device_data;
@@ -156,7 +157,7 @@ void sfs_format(struct device* dev) {
 /*
  * perform device instance specific init here
  */
-uint8_t sfs_init(struct device* dev) {
+uint8_t sfs_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct sfs_devicedata* device_data = (struct sfs_devicedata*)dev->device_data;
@@ -167,7 +168,7 @@ uint8_t sfs_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t sfs_uninit(struct device* dev) {
+uint8_t sfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
 
@@ -178,18 +179,18 @@ uint8_t sfs_uninit(struct device* dev) {
     return 1;
 }
 
-struct device* sfs_attach(struct device* partition_device) {
+struct object* sfs_attach(struct object* partition_device) {
     ASSERT_NOT_NULL(partition_device);
     ASSERT(1 == blockutil_is_block_device(partition_device));
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &sfs_init;
     deviceinstance->uninit = &sfs_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = FILESYSTEM;
-    devicemgr_set_device_description(deviceinstance, "Simple File System");
+    objectmgr_set_device_description(deviceinstance, "Simple File System");
     /*
      * the device api
      */
@@ -207,11 +208,11 @@ struct device* sfs_attach(struct device* partition_device) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(partition_device);
+        objectmgr_increment_device_refcount(partition_device);
 
         /*
         * return device
@@ -225,16 +226,16 @@ struct device* sfs_attach(struct device* partition_device) {
     }
 }
 
-void sfs_detach(struct device* dev) {
+void sfs_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct sfs_devicedata* device_data = (struct sfs_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->partition_device);
+    objectmgr_decrement_device_refcount(device_data->partition_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

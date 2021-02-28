@@ -9,7 +9,8 @@
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_bda.h>
 

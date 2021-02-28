@@ -10,7 +10,7 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
 // https://en.wikipedia.org/wiki/GUID_Partition_Table
 #define GUID_PARTIION_ID_MBR "024DEE41-33E7-11D3-9D69-0008C781F39F"
@@ -42,12 +42,12 @@ struct guid_pt_entry {
     uint8_t name[72];
 } __attribute__((packed));
 
-struct device;
+struct object;
 
-struct device* guid_pt_attach(struct device* block_device);
-void guid_pt_detach(struct device* dev);
+struct object* guid_pt_attach(struct object* block_device);
+void guid_pt_detach(struct object* dev);
 
-void guid_pt_dump(struct device* dev);
+void guid_pt_dump(struct object* dev);
 
 // string must be 16*4 + some in legnth so lets presume 128 bytes
 // type is 16 bytes for GPT

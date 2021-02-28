@@ -8,7 +8,8 @@
 #include <dev/x86-64/speaker/speaker.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_speaker.h>
 #include <sys/sleep/sleep.h>
@@ -20,7 +21,7 @@
 /*
  * perform device instance specific init here
  */
-uint8_t speaker_device_init(struct device* dev) {
+uint8_t speaker_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
@@ -50,7 +51,7 @@ void play_sound(uint32_t frequency) {
 }
 
 // Make a beep
-void speaker_beep(struct device* dev, uint32_t frequency, uint32_t milliseconds) {
+void speaker_beep(struct object* dev, uint32_t frequency, uint32_t milliseconds) {
     ASSERT_NOT_NULL(dev);
     play_sound(frequency);
     sleep_wait(milliseconds);
@@ -58,12 +59,12 @@ void speaker_beep(struct device* dev, uint32_t frequency, uint32_t milliseconds)
     // set_PIT_2(old_frequency);
 }
 
-void speaker_devicemgr_register_devices() {
+void speaker_objectmgr_register_devices() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "Speaker");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "Speaker");
     deviceinstance->devicetype = SPEAKER;
     deviceinstance->init = &speaker_device_init;
     /*
@@ -75,5 +76,5 @@ void speaker_devicemgr_register_devices() {
     /**
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

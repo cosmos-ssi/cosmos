@@ -21,11 +21,11 @@ void test_swap() {
     kprintf("Testing Swap\n");
 
     // make rd
-    struct device* rd = ramdisk_helper_create_rd();
+    struct object* rd = ramdisk_helper_create_rd();
     ASSERT_NOT_NULL(rd);
 
     // attach the swap
-    struct device* swap_device = swap_attach(rd);
+    struct object* swap_device = swap_attach(rd);
     ASSERT_NOT_NULL(swap_device);
 
     struct objecttype_swap* swap_api = (struct objecttype_swap*)swap_device->api;

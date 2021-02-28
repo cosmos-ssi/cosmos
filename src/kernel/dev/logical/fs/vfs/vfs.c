@@ -11,7 +11,8 @@
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_filesystem.h>
@@ -26,7 +27,7 @@ struct vfs_devicedata {
 /*
  * perform device instance specific init here
  */
-uint8_t vfs_init(struct device* dev) {
+uint8_t vfs_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
@@ -35,7 +36,7 @@ uint8_t vfs_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t vfs_uninit(struct device* dev) {
+uint8_t vfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s  (%s)\n", dev->description, dev->name);
     struct vfs_devicedata* device_data = (struct vfs_devicedata*)dev->device_data;
@@ -47,7 +48,7 @@ uint8_t vfs_uninit(struct device* dev) {
     return 1;
 }
 
-struct filesystem_node* vfs_get_root_node(struct device* filesystem_device) {
+struct filesystem_node* vfs_get_root_node(struct object* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(filesystem_device->device_data);
     struct vfs_devicedata* device_data = (struct vfs_devicedata*)filesystem_device->device_data;
@@ -162,18 +163,18 @@ uint64_t vfs_size(struct filesystem_node* fs_node) {
     return 0;
 }
 
-struct device* vfs_attach(uint8_t* name) {
+struct object* vfs_attach(uint8_t* name) {
     ASSERT_NOT_NULL(name);
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &vfs_init;
     deviceinstance->uninit = &vfs_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = VFS;
     deviceinstance->device_data = 0;
-    devicemgr_set_device_description(deviceinstance, "VFS File System");
+    objectmgr_set_device_description(deviceinstance, "VFS File System");
     /*
      * the device api
      */
@@ -198,7 +199,7 @@ struct device* vfs_attach(uint8_t* name) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * return device
         */
@@ -213,15 +214,15 @@ struct device* vfs_attach(uint8_t* name) {
     }
 }
 
-void vfs_detach(struct device* dev) {
+void vfs_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }
 
-void vfs_add_child(struct device* vfs_device, struct filesystem_node* child_node) {
+void vfs_add_child(struct object* vfs_device, struct filesystem_node* child_node) {
     ASSERT_NOT_NULL(vfs_device);
     ASSERT_NOT_NULL(vfs_device->device_data);
     ASSERT_NOT_NULL(child_node);
@@ -233,7 +234,7 @@ void vfs_add_child(struct device* vfs_device, struct filesystem_node* child_node
     arraylist_add(device_data->children, child_node);
 }
 
-void vfs_remove_child(struct device* vfs_device, uint64_t id) {
+void vfs_remove_child(struct object* vfs_device, uint64_t id) {
     ASSERT_NOT_NULL(vfs_device);
     ASSERT_NOT_NULL(vfs_device->device_data);
     PANIC("not implemented");

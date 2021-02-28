@@ -10,10 +10,11 @@
 #ifndef _OBJECTTYPE_PARALLEL_H
 #define _OBJECTTYPE_PARALLEL_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
-typedef void (*parallel_write_function)(struct device* dev, uint8_t* data, uint16_t size);
+typedef void (*parallel_write_function)(struct object* dev, uint8_t* data, uint16_t size);
 
 struct objecttype_parallel {
     parallel_write_function write;

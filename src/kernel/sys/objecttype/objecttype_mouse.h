@@ -10,7 +10,8 @@
 #ifndef _OBJECTTYPE_MOUSE_H
 #define _OBJECTTYPE_MOUSE_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 struct mouse_status {
@@ -20,7 +21,7 @@ struct mouse_status {
     int8_t mouse_y;
 };
 
-typedef struct mouse_status* (*mouse_status_function)(struct device* dev);
+typedef struct mouse_status* (*mouse_status_function)(struct object* dev);
 
 struct objecttype_mouse {
     mouse_status_function status;

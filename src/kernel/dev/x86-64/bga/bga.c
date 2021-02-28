@@ -11,7 +11,8 @@
 #include <dev/x86-64/pci/pci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_bga.h>
@@ -52,7 +53,7 @@
 #define VBE_DISPI_LFB_ENABLED 0x40
 #define VBE_DISPI_NOCLEARMEM 0x80
 
-void bga_set_resolution(struct device* dev, struct objecttype_resolution* resolution);
+void bga_set_resolution(struct object* dev, struct objecttype_resolution* resolution);
 
 struct bga_devicedata {
     uint64_t lfb_physical;
@@ -98,7 +99,7 @@ void bga_set_bank(uint16_t bank_number) {
 /*
  * perform device instance specific init here
  */
-uint8_t bga_device_init(struct device* dev) {
+uint8_t bga_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
     ASSERT_NOT_NULL(dev->device_data);
@@ -125,14 +126,14 @@ uint8_t bga_device_init(struct device* dev) {
     return 1;
 }
 
-uint32_t bga_get_buffersize(struct device* dev) {
+uint32_t bga_get_buffersize(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
     ASSERT_NOT_NULL(dev->device_data);
     return bga_buffer_size(dev->device_data);
 }
 
-void bga_blt(struct device* dev, uint8_t* buffer, uint32_t buffer_size) {
+void bga_blt(struct object* dev, uint8_t* buffer, uint32_t buffer_size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
     ASSERT_NOT_NULL(dev->device_data);
@@ -142,7 +143,7 @@ void bga_blt(struct device* dev, uint8_t* buffer, uint32_t buffer_size) {
     memcpy((uint8_t*)device_data->lfb_virtual, buffer, buffer_size);
 }
 
-void bga_get_resolution(struct device* dev, struct objecttype_resolution* resolution) {
+void bga_get_resolution(struct object* dev, struct objecttype_resolution* resolution) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
     ASSERT_NOT_NULL(dev->device_data);
@@ -153,7 +154,7 @@ void bga_get_resolution(struct device* dev, struct objecttype_resolution* resolu
     resolution->width = device_data->resolution.width;
 }
 
-void bga_set_resolution(struct device* dev, struct objecttype_resolution* resolution) {
+void bga_set_resolution(struct object* dev, struct objecttype_resolution* resolution) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
     ASSERT_NOT_NULL(dev->device_data);
@@ -174,12 +175,12 @@ void bga_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &bga_device_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = BGA;
-    devicemgr_set_device_description(deviceinstance, "QEMU/Bochs BGA Framebuffer");
-    devicemgr_register_device(deviceinstance);
+    objectmgr_set_device_description(deviceinstance, "QEMU/Bochs BGA Framebuffer");
+    objectmgr_register_device(deviceinstance);
     /*
      * device api
      */
@@ -203,6 +204,6 @@ void bga_search_cb(struct pci_device* dev) {
 /**
  * find all Display devices and register them
  */
-void bga_devicemgr_register_devices() {
-    pci_devicemgr_search_devicetype(PCI_CLASS_DISPLAY, PCI_DISPLAY_SUBCLASS_VGA, &bga_search_cb);
+void bga_objectmgr_register_devices() {
+    pci_objectmgr_search_devicetype(PCI_CLASS_DISPLAY, PCI_DISPLAY_SUBCLASS_VGA, &bga_search_cb);
 }

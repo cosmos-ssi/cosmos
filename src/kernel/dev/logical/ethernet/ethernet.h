@@ -10,10 +10,10 @@
 
 #include <sys/objecttype/objecttype_ethernet.h>
 #include <types.h>
-struct device;
+struct object;
 
-struct device* ethernet_attach(struct device* nic_device);
-void ethernet_detach(struct device* dev);
+struct object* ethernet_attach(struct object* nic_device);
+void ethernet_detach(struct object* dev);
 
 // hw_source and hw_dest are 6 bytes
 void ethernet_init_eth(struct eth_hdr* eth, uint8_t* hw_source, uint8_t* hw_dest, uint8_t* data, uint16_t payload_size);

@@ -10,9 +10,9 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
-struct device* icmp_attach(struct device* ethernet_device);
-void icmp_detach(struct device* dev);
+struct object* icmp_attach(struct object* ethernet_device);
+void icmp_detach(struct object* dev);
 
 #endif

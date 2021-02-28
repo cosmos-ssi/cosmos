@@ -85,7 +85,7 @@ struct vnic_devicedata {
     struct virtq* receive_queue;
 };
 
-void devicemgr_register_vnic_devices();
+void objectmgr_register_vnic_devices();
 
 uint32_t vnic_read_register(uint32_t reg);
 

@@ -8,9 +8,9 @@
 #ifndef _VGA_CONSOLE_H
 #define _VGA_CONSOLE_H
 
-struct device;
+struct object;
 
-struct device* vga_console_attach(struct device* vga_device);
-void vga_console_detach(struct device* dev);
+struct object* vga_console_attach(struct object* vga_device);
+void vga_console_detach(struct object* dev);
 
 #endif

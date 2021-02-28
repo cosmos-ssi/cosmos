@@ -16,7 +16,7 @@
 #define ISA_DMA_ALIGNMENT (uint32_t)0x10000                         // channels must be 64k aligned
 #define ISA_DMA_BUFSIZ (ISA_DMA_NUM_BUFFERS * ISA_DMA_BUFFER_SIZE)  // this is used by mm to reserve space
 
-void isadma_devicemgr_register_devices();
+void isadma_objectmgr_register_devices();
 
 /*
  * device reading from memory

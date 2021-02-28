@@ -10,11 +10,12 @@
 #ifndef _OBJECTTYPE_CONSOLE_H
 #define _OBJECTTYPE_CONSOLE_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
-typedef uint8_t (*console_setpos_function)(struct device* dev, uint8_t x, uint8_t y);
-typedef void (*console_write_function)(struct device* dev, const char* s);
+typedef uint8_t (*console_setpos_function)(struct object* dev, uint8_t x, uint8_t y);
+typedef void (*console_write_function)(struct object* dev, const char* s);
 
 struct objecttype_console {
     console_setpos_function setpos;

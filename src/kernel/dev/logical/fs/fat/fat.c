@@ -108,7 +108,7 @@ struct fat_fs_parameters {
 };
 
 struct fat_devicedata {
-    struct device* partition_device;
+    struct object* partition_device;
 } __attribute__((packed));
 
 void fat_dump_fat_fs_parameters(struct fat_fs_parameters* param) {
@@ -136,7 +136,7 @@ void fat_dump_fat_extBS_16(struct fat_extBS_16* ebs) {
     //   debug_show_memblock((uint8_t*)ebs, sizeof(struct fat_extBS_16));
 }
 
-void fat_read_fs_parameters(struct device* dev, struct fat_fs_parameters* param) {
+void fat_read_fs_parameters(struct object* dev, struct fat_fs_parameters* param) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(param);
 
@@ -180,7 +180,7 @@ void fat_read_fs_parameters(struct device* dev, struct fat_fs_parameters* param)
     kfree(buffer);
 }
 
-void fat_format(struct device* dev) {
+void fat_format(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     //   struct fat_devicedata* device_data = (struct fat_devicedata*)dev->device_data;
@@ -193,7 +193,7 @@ uint64_t fat_first_sector_of_cluster(uint32_t cluster, struct fat_fs_parameters*
     return ((cluster - 2) * fs_parameters->sectors_per_cluster) + fs_parameters->first_data_sector;
 }
 
-uint32_t fat_fat12_next_cluster(struct device* dev, uint32_t current_cluster, struct fat_fs_parameters* fs_parameters) {
+uint32_t fat_fat12_next_cluster(struct object* dev, uint32_t current_cluster, struct fat_fs_parameters* fs_parameters) {
     uint8_t FAT_table[fs_parameters->sector_size];
     uint32_t fat_offset = current_cluster + (current_cluster / 2);  // multiply by 1.5
     kprintf("fat_offset %llu\n", fat_offset);
@@ -216,7 +216,7 @@ uint32_t fat_fat12_next_cluster(struct device* dev, uint32_t current_cluster, st
     return table_value;
 }
 
-uint32_t fat_fat16_next_cluster(struct device* dev, uint32_t current_cluster, struct fat_fs_parameters* fs_parameters) {
+uint32_t fat_fat16_next_cluster(struct object* dev, uint32_t current_cluster, struct fat_fs_parameters* fs_parameters) {
     uint8_t FAT_table[fs_parameters->sector_size];
     uint32_t fat_offset = current_cluster * 2;
     uint32_t fat_sector = fs_parameters->first_fat_sector + (fat_offset / fs_parameters->sector_size);
@@ -228,7 +228,7 @@ uint32_t fat_fat16_next_cluster(struct device* dev, uint32_t current_cluster, st
     return *(unsigned short*)&FAT_table[ent_offset];
 }
 /*
-struct fs_directory_listing* fat_list_dir(struct device* dev) {
+struct fs_directory_listing* fat_list_dir(struct object* dev) {
     ASSERT_NOT_NULL(dev);
 
     struct fs_directory_listing* ret = fs_directory_listing_new();
@@ -301,7 +301,7 @@ struct fs_directory_listing* fat_list_dir(struct device* dev) {
 /*
  * perform device instance specific init here
  */
-uint8_t fat_init(struct device* dev) {
+uint8_t fat_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct fat_devicedata* device_data = (struct fat_devicedata*)dev->device_data;
@@ -312,7 +312,7 @@ uint8_t fat_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t fat_uninit(struct device* dev) {
+uint8_t fat_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct fat_devicedata* device_data = (struct fat_devicedata*)dev->device_data;
@@ -322,7 +322,7 @@ uint8_t fat_uninit(struct device* dev) {
     return 1;
 }
 
-struct device* fat_attach(struct device* partition_device) {
+struct object* fat_attach(struct object* partition_device) {
     ASSERT_NOT_NULL(partition_device);
     // basically the device needs to implement deviceapi_block
     ASSERT(1 == blockutil_is_block_device(partition_device));
@@ -330,12 +330,12 @@ struct device* fat_attach(struct device* partition_device) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &fat_init;
     deviceinstance->uninit = &fat_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = FILESYSTEM;
-    devicemgr_set_device_description(deviceinstance, "FAT File System");
+    objectmgr_set_device_description(deviceinstance, "FAT File System");
     /*
      * the device api
      */
@@ -353,11 +353,11 @@ struct device* fat_attach(struct device* partition_device) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(partition_device);
+        objectmgr_increment_device_refcount(partition_device);
         /*
         * return device
         */
@@ -370,16 +370,16 @@ struct device* fat_attach(struct device* partition_device) {
     }
 }
 
-void fat_detach(struct device* dev) {
+void fat_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct fat_devicedata* device_data = (struct fat_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->partition_device);
+    objectmgr_decrement_device_refcount(device_data->partition_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

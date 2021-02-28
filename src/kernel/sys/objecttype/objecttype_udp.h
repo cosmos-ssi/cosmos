@@ -10,11 +10,12 @@
 #ifndef _OBJECTTYPE_UDP_H
 #define _OBJECTTYPE_UDP_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
-typedef void (*udp_read_function)(struct device* dev, uint8_t* data, uint16_t size);
-typedef void (*udp_write_function)(struct device* dev, uint8_t* data, uint16_t size);
+typedef void (*udp_read_function)(struct object* dev, uint8_t* data, uint16_t size);
+typedef void (*udp_write_function)(struct object* dev, uint8_t* data, uint16_t size);
 
 struct objecttype_udp {
     udp_read_function read;

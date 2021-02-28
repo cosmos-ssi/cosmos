@@ -10,10 +10,11 @@
 #ifndef _OBJECTTYPE_SPEAKER_H
 #define _OBJECTTYPE_SPEAKER_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
-typedef void (*speaker_beep_function)(struct device* dev, uint32_t frequency, uint32_t milliseconds);
+typedef void (*speaker_beep_function)(struct object* dev, uint32_t frequency, uint32_t milliseconds);
 
 struct objecttype_speaker {
     speaker_beep_function beep;

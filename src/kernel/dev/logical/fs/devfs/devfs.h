@@ -10,7 +10,7 @@
 
 #include <types.h>
 
-struct device* devfs_attach();
-void devfs_detach(struct device* dev);
+struct object* devfs_attach();
+void devfs_detach(struct object* dev);
 
 #endif

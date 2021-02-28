@@ -12,13 +12,13 @@
 #include <sys/string/mem.h>
 
 struct ethernet_devicedata {
-    struct device* nic_device;
+    struct object* nic_device;
 } __attribute__((packed));
 
 /*
  * perform device instance specific init here
  */
-uint8_t ethernet_init(struct device* dev) {
+uint8_t ethernet_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct ethernet_devicedata* device_data = (struct ethernet_devicedata*)dev->device_data;
@@ -29,7 +29,7 @@ uint8_t ethernet_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t ethernet_uninit(struct device* dev) {
+uint8_t ethernet_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
@@ -38,7 +38,7 @@ uint8_t ethernet_uninit(struct device* dev) {
     return 1;
 }
 
-void ethernet_read(struct device* dev, struct eth_hdr* eth, uint16_t size) {
+void ethernet_read(struct object* dev, struct eth_hdr* eth, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(eth);
@@ -47,7 +47,7 @@ void ethernet_read(struct device* dev, struct eth_hdr* eth, uint16_t size) {
     nic_api->read(device_data->nic_device, (uint8_t*)eth, size);
 }
 
-void ethernet_write(struct device* dev, struct eth_hdr* eth, uint16_t size) {
+void ethernet_write(struct object* dev, struct eth_hdr* eth, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(eth);
@@ -56,18 +56,18 @@ void ethernet_write(struct device* dev, struct eth_hdr* eth, uint16_t size) {
     nic_api->write(device_data->nic_device, (uint8_t*)eth, size);
 }
 
-struct device* ethernet_attach(struct device* nic_device) {
+struct object* ethernet_attach(struct object* nic_device) {
     ASSERT_NOT_NULL(nic_device);
     ASSERT((nic_device->devicetype == NIC) || (nic_device->devicetype == VNIC));
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &ethernet_init;
     deviceinstance->uninit = &ethernet_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = ETHERNET;
-    devicemgr_set_device_description(deviceinstance, "Ethernet");
+    objectmgr_set_device_description(deviceinstance, "Ethernet");
     /*
      * the device api
      */
@@ -85,11 +85,11 @@ struct device* ethernet_attach(struct device* nic_device) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(nic_device);
+        objectmgr_increment_device_refcount(nic_device);
         /*
         * return device
         */
@@ -102,18 +102,18 @@ struct device* ethernet_attach(struct device* nic_device) {
     }
 }
 
-void ethernet_detach(struct device* dev) {
+void ethernet_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct ethernet_devicedata* device_data = (struct ethernet_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->nic_device);
+    objectmgr_decrement_device_refcount(device_data->nic_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }
 
 void ethernet_init_eth(struct eth_hdr* eth, uint8_t* hw_source, uint8_t* hw_dest, uint8_t* data,

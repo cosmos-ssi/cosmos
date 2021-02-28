@@ -9,13 +9,14 @@
 #define _TFS_MAP_H
 
 #include <dev/logical/fs/tfs/tfs_block.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 #define TFS_MAP_BLOCK_FREE 0
 #define TFS_MAP_BLOCK_USED 1
 
-uint32_t tfs_map_find_free_block(struct device* dev, struct tfs_superblock_block* superblock);
-void tfs_map_release_block(struct device* dev, uint64_t block, struct tfs_superblock_block* superblock);
-uint32_t tfs_map_block_count(struct device* dev);
+uint32_t tfs_map_find_free_block(struct object* dev, struct tfs_superblock_block* superblock);
+void tfs_map_release_block(struct object* dev, uint64_t block, struct tfs_superblock_block* superblock);
+uint32_t tfs_map_block_count(struct object* dev);
 #endif

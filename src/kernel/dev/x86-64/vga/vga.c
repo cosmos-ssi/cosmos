@@ -9,7 +9,8 @@
 #include <dev/x86-64/vga/vga.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_vga.h>
@@ -39,7 +40,7 @@ struct vga_devicedata {
 /*
  * perform device instance specific init here
  */
-uint8_t vga_device_init(struct device* dev) {
+uint8_t vga_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct vga_devicedata* device_data = (struct vga_devicedata*)dev->device_data;
@@ -53,7 +54,7 @@ uint8_t vga_device_init(struct device* dev) {
 }
 
 // api
-uint8_t vga_device_set_mode(struct device* dev, enum vga_video_mode mode) {
+uint8_t vga_device_set_mode(struct object* dev, enum vga_video_mode mode) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     //   struct vga_devicedata* device_data = (struct vga_devicedata*)dev->device_data;
@@ -67,7 +68,7 @@ uint8_t vga_device_set_mode(struct device* dev, enum vga_video_mode mode) {
 }
 
 // api
-void vga_device_scroll_text(struct device* dev) {
+void vga_device_scroll_text(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct vga_devicedata* device_data = (struct vga_devicedata*)dev->device_data;
@@ -107,7 +108,7 @@ void vga_cursor_set_position(uint16_t loc) {
 }
 
 // api
-uint8_t vga_device_write_text(struct device* dev, const char* txt, uint8_t start_row, uint8_t start_col, uint8_t attrib,
+uint8_t vga_device_write_text(struct object* dev, const char* txt, uint8_t start_row, uint8_t start_col, uint8_t attrib,
                               enum vga_text_color fg_color, enum vga_text_color bg_color) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
@@ -144,7 +145,7 @@ uint8_t vga_device_write_text(struct device* dev, const char* txt, uint8_t start
 }
 
 // api
-uint8_t vga_device_query_resolution(struct device* dev, uint16_t* x, uint16_t* y) {
+uint8_t vga_device_query_resolution(struct object* dev, uint16_t* x, uint16_t* y) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct vga_devicedata* device_data = (struct vga_devicedata*)dev->device_data;
@@ -159,12 +160,12 @@ void vga_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &vga_device_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = VGA;
-    devicemgr_set_device_description(deviceinstance, "QEMU/Bochs VBE Framebuffer");
-    devicemgr_register_device(deviceinstance);
+    objectmgr_set_device_description(deviceinstance, "QEMU/Bochs VBE Framebuffer");
+    objectmgr_register_device(deviceinstance);
     /*
      * device api
      */
@@ -185,6 +186,6 @@ void vga_search_cb(struct pci_device* dev) {
 /**
  * find all Display devices and register them
  */
-void vga_devicemgr_register_devices() {
-    pci_devicemgr_search_devicetype(PCI_CLASS_DISPLAY, PCI_DISPLAY_SUBCLASS_VGA, &vga_search_cb);
+void vga_objectmgr_register_devices() {
+    pci_objectmgr_search_devicetype(PCI_CLASS_DISPLAY, PCI_DISPLAY_SUBCLASS_VGA, &vga_search_cb);
 }

@@ -5,13 +5,13 @@ Cosmos include "fsfacade.h" to enable easily working with file systems.
 
 The first step of working with a filesystem is to get a filesystem mounted on a disk.
 
-This little piece of code mounts an `initrd` filesystem on the device `disk0`.  It's important to note that the device `struct device* initrd` implements `deviceapi_filesystem`.
+This little piece of code mounts an `initrd` filesystem on the device `disk0`.  It's important to note that the device `struct object* initrd` implements `deviceapi_filesystem`.
 
 
 ```java
-struct device* dsk = devicemgr_find_device("disk0");
+struct object* dsk = objectmgr_find_device("disk0");
 if (0 != dsk) {
-	struct device* initrd = initrd_attach(dsk, initrd_lba());
+	struct object* initrd = initrd_attach(dsk, initrd_lba());
 	ASSERT_NOT_NULL(initrd);
 ```
 
@@ -35,7 +35,7 @@ struct filesystem_node* fsfacade_get_fs_rootnode(initrd);
 Once we have the root node, we can use the other functions in `fsfacade.h`:
 
 ```java
-struct filesystem_node* fsfacade_get_fs_rootnode(struct device* filesystem_device);
+struct filesystem_node* fsfacade_get_fs_rootnode(struct object* filesystem_device);
 
 typedef void (*fsfacade_traverse_function)(struct filesystem_node* fs_node, uint32_t depth);
 

@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void vga_devicemgr_register_devices();
+void vga_objectmgr_register_devices();
 
 #endif

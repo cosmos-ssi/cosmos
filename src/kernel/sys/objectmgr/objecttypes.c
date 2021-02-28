@@ -6,8 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicetypes.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/objecttypes.h>
 
 struct array* types;
 

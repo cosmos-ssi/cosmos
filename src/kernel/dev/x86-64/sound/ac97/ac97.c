@@ -10,7 +10,8 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_dsp.h>
@@ -48,7 +49,7 @@ void ac97_handle_irq(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t device_initAC97(struct device* dev) {
+uint8_t device_initAC97(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     struct ac97_devicedata* device_data = (struct ac97_devicedata*)dev->device_data;
     device_data->base = pci_calcbar(dev->pci);
@@ -63,11 +64,11 @@ void AC97PCISearchCB(struct pci_device* dev) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &device_initAC97;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = DSP;
-    devicemgr_set_device_description(deviceinstance, "Intel 82801AA AC97");
+    objectmgr_set_device_description(deviceinstance, "Intel 82801AA AC97");
     /*
      * device api
      */
@@ -82,9 +83,9 @@ void AC97PCISearchCB(struct pci_device* dev) {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
-void ac97_devicemgr_register_devices() {
-    pci_devicemgr_search_device(PCI_CLASS_MULTIMEDIA, 0x01, 0x8086, 0x2415, &AC97PCISearchCB);
+void ac97_objectmgr_register_devices() {
+    pci_objectmgr_search_device(PCI_CLASS_MULTIMEDIA, 0x01, 0x8086, 0x2415, &AC97PCISearchCB);
 }

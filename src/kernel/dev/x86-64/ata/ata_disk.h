@@ -12,11 +12,12 @@
 #define _ATA_DISK_H
 
 #include <dev/x86-64/ata/ata_controller.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 typedef struct ata_disk_devicedata {
-    struct device* device;
+    struct object* device;
     struct ata_controller* controller;
     uint8_t channel;
     uint8_t disk;
@@ -25,7 +26,7 @@ typedef struct ata_disk_devicedata {
 /*
  * a disk only needs one function; a registration called by the controller
  */
-void ata_register_disk(struct device* controllerDevice, uint8_t channel, uint8_t disk);
-uint16_t ata_sector_size(struct device* dev);
+void ata_register_disk(struct object* controllerDevice, uint8_t channel, uint8_t disk);
+uint16_t ata_sector_size(struct object* dev);
 
 #endif

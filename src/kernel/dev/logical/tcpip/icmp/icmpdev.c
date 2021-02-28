@@ -11,13 +11,13 @@
 #include <sys/string/mem.h>
 
 struct icmp_devicedata {
-    struct device* ethernet_device;
+    struct object* ethernet_device;
 } __attribute__((packed));
 
 /*
  * perform device instance specific init here
  */
-uint8_t icmp_init(struct device* dev) {
+uint8_t icmp_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct icmp_devicedata* device_data = (struct icmp_devicedata*)dev->device_data;
@@ -28,7 +28,7 @@ uint8_t icmp_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t icmp_uninit(struct device* dev) {
+uint8_t icmp_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
@@ -37,30 +37,30 @@ uint8_t icmp_uninit(struct device* dev) {
     return 1;
 }
 
-void icmp_read(struct device* dev, uint8_t* data, uint16_t size) {
+void icmp_read(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     //  struct icmp_devicedata* device_data = (struct icmp_devicedata*)dev->device_data;
 }
-void icmp_write(struct device* dev, uint8_t* data, uint16_t size) {
+void icmp_write(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     //   struct icmp_devicedata* device_data = (struct icmp_devicedata*)dev->device_data;
 }
 
-struct device* icmp_attach(struct device* ethernet_device) {
+struct object* icmp_attach(struct object* ethernet_device) {
     ASSERT_NOT_NULL(ethernet_device);
     ASSERT(ethernet_device->devicetype == ETHERNET);
 
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &icmp_init;
     deviceinstance->uninit = &icmp_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = ICMP;
-    devicemgr_set_device_description(deviceinstance, "Internet Control Message Protocol");
+    objectmgr_set_device_description(deviceinstance, "Internet Control Message Protocol");
     /*
      * the device api
      */
@@ -79,11 +79,11 @@ struct device* icmp_attach(struct device* ethernet_device) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(ethernet_device);
+        objectmgr_increment_device_refcount(ethernet_device);
         /*
         * return device
         */
@@ -96,16 +96,16 @@ struct device* icmp_attach(struct device* ethernet_device) {
     }
 }
 
-void icmp_detach(struct device* dev) {
+void icmp_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct icmp_devicedata* device_data = (struct icmp_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->ethernet_device);
+    objectmgr_decrement_device_refcount(device_data->ethernet_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

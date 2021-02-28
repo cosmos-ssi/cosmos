@@ -10,7 +10,8 @@
 #ifndef _OBJECTTYPE_CPU_H
 #define _OBJECTTYPE_CPU_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 // https://wiki.osdev.org/CPUID

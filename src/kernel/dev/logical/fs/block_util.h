@@ -11,9 +11,9 @@
 #include <sys/objecttype/objecttype_block.h>
 #include <types.h>
 
-uint32_t blockutil_get_sector_size(struct device* dev);
-uint32_t blockutil_get_sector_count(struct device* dev);
-uint32_t blockutil_get_total_size(struct device* dev);
+uint32_t blockutil_get_sector_size(struct object* dev);
+uint32_t blockutil_get_sector_count(struct object* dev);
+uint32_t blockutil_get_total_size(struct object* dev);
 
 /*
 * read bytes into 'data'.  'data_size' is the number of bytes to read and 'start_lba' is the starting lba. 
@@ -23,7 +23,7 @@ uint32_t blockutil_get_total_size(struct device* dev);
 * if data_size smaller than the number of bytes in the sectors written multipled by sector size, the 
 * remaining space is null padded. data writng starts at "start_byte" bytes into first sector.
 */
-uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba,
+uint32_t blockutil_write(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba,
                          uint32_t start_byte);
 /*
 * write bytes from 'data'.  'data_size' is the number of bytes to write and 'start_lba' is the starting lba.
@@ -33,9 +33,9 @@ uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, 
 * the total data read from the block device is sectors * sector size, which may be larger than data_size
 * only data_size bytes will be written to data.  data reading starts from "start_byte" bytes into first sector.
 */
-uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba, uint32_t start_byte);
+uint32_t blockutil_read(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba, uint32_t start_byte);
 /*
 * check if a device is a block device (this is, supports deviceapi_block)
 */
-uint8_t blockutil_is_block_device(struct device* dev);
+uint8_t blockutil_is_block_device(struct object* dev);
 #endif

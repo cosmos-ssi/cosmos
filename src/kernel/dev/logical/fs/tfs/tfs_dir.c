@@ -15,7 +15,7 @@
 /*
  * returns file block, or zero
  */
-uint64_t tfs_dir_find_file(struct device* dev, uint8_t* filename) {
+uint64_t tfs_dir_find_file(struct object* dev, uint8_t* filename) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(filename);
     ASSERT(strlen(filename) < TFS_FILENAME_SIZE);
@@ -25,14 +25,14 @@ uint64_t tfs_dir_find_file(struct device* dev, uint8_t* filename) {
 /*
  * returns file block, or zero
  */
-uint64_t tfs_dir_add_file(struct device* dev, uint8_t* filename) {
+uint64_t tfs_dir_add_file(struct object* dev, uint8_t* filename) {
     ASSERT_NOT_NULL(dev);
     ASSERT(strlen(filename) < TFS_FILENAME_SIZE);
     ASSERT_NOT_NULL(filename);
     return 0;
 }
 
-void tfs_dir_iterate_files(struct device* dev, tfs_file_iterator file_iterator) {
+void tfs_dir_iterate_files(struct object* dev, tfs_file_iterator file_iterator) {
     ASSERT_NOT_NULL(file_iterator);
     ASSERT_NOT_NULL(dev);
     /*
@@ -76,7 +76,7 @@ void tfs_dir_iterate_files(struct device* dev, tfs_file_iterator file_iterator) 
     }
 }
 
-void tfs_dir_remove_file(struct device* dev, uint8_t* filename) {
+void tfs_dir_remove_file(struct object* dev, uint8_t* filename) {
     ASSERT_NOT_NULL(dev);
     ASSERT(strlen(filename) < TFS_FILENAME_SIZE);
     ASSERT_NOT_NULL(filename);

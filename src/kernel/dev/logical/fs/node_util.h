@@ -10,7 +10,7 @@
 
 #include <sys/objecttype/objecttype_filesystem.h>
 
-struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, struct device*, const uint8_t* name,
+struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, struct object*, const uint8_t* name,
                                             uint64_t id, void* node_data);
 
 #endif

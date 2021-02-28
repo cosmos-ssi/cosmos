@@ -10,29 +10,30 @@
 #ifndef _OBJECTTYPE_PART_TABLE_H
 #define _OBJECTTYPE_PART_TABLE_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
-typedef uint8_t (*part_table_total_partitions_function)(struct device* dev);
-typedef uint64_t (*part_table_get_partition_lba_function)(struct device* dev, uint8_t partition);
+typedef uint8_t (*part_table_total_partitions_function)(struct object* dev);
+typedef uint64_t (*part_table_get_partition_lba_function)(struct object* dev, uint8_t partition);
 // partition type 64 byte string
-typedef void (*part_table_get_partition_type_function)(struct device* dev, uint8_t partition, uint8_t* parititon_type,
+typedef void (*part_table_get_partition_type_function)(struct object* dev, uint8_t partition, uint8_t* parititon_type,
                                                        uint16_t len);
-typedef uint64_t (*part_table_get_sector_count_function)(struct device* dev, uint8_t partition);
+typedef uint64_t (*part_table_get_sector_count_function)(struct object* dev, uint8_t partition);
 
 /*
  * returns total bytes read
  */
-typedef uint32_t (*part_read_sectors_function)(struct device* dev, uint8_t partition_index, uint8_t* data,
+typedef uint32_t (*part_read_sectors_function)(struct object* dev, uint8_t partition_index, uint8_t* data,
                                                uint32_t data_size, uint32_t start_lba);
 /*
  * returns total bytes written
  */
-typedef uint32_t (*part_write_sectors_function)(struct device* dev, uint8_t partition_index, uint8_t* data,
+typedef uint32_t (*part_write_sectors_function)(struct object* dev, uint8_t partition_index, uint8_t* data,
                                                 uint32_t data_size, uint32_t start_lba);
 
 // return 1 if we are ok to detach this device
-typedef uint8_t (*part_table_detachable_function)(struct device* dev);
+typedef uint8_t (*part_table_detachable_function)(struct object* dev);
 
 struct objecttype_part_table {
     part_table_total_partitions_function partitions;

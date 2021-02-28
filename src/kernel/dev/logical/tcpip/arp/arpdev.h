@@ -11,10 +11,10 @@
 #include <sys/objecttype/objecttype_arp.h>
 #include <types.h>
 
-struct device;
+struct object;
 
-struct device* arp_attach(struct device* ethernet_device);
-void arp_detach(struct device* dev);
+struct object* arp_attach(struct object* ethernet_device);
+void arp_detach(struct object* dev);
 
 void arp_packet_init(struct arp* a, uint16_t opcode);
 

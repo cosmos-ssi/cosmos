@@ -10,7 +10,8 @@
 #ifndef _OBJECTTYPE_KEYBOARD_H
 #define _OBJECTTYPE_KEYBOARD_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 /*
@@ -26,7 +27,7 @@ typedef struct key_action_t {
     keypress_state state;
 } key_action_t;
 
-typedef key_action_t* (*keyboard_read_key)(struct device* dev);
+typedef key_action_t* (*keyboard_read_key)(struct object* dev);
 
 struct objecttype_keyboard {
     keyboard_read_key read;

@@ -8,7 +8,8 @@
 #include <dev/x86-64/cpu/cpu.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_cpu.h>
 
@@ -17,7 +18,7 @@ void cpu_manufacturer_id(uint8_t* cpuid);
 /*
  * perform device instance specific init here
  */
-uint8_t cpu_device_init(struct device* dev) {
+uint8_t cpu_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
@@ -64,12 +65,12 @@ void cpu_manufacturer_id(uint8_t* cpuid) {
     cpuid[12] = 0;
 }
 
-void cpu_devicemgr_register_devices() {
+void cpu_objectmgr_register_devices() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "CPU");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "CPU");
     deviceinstance->devicetype = CPU;
     deviceinstance->init = &cpu_device_init;
     /*
@@ -83,5 +84,5 @@ void cpu_devicemgr_register_devices() {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

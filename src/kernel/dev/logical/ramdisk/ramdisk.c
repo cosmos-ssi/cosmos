@@ -8,7 +8,8 @@
 #include <dev/logical/ramdisk/ramdisk.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_block.h>
@@ -28,7 +29,7 @@ struct ramdisk_devicedata {
 /*
  * perform device instance specific init here
  */
-uint8_t ramdisk_init(struct device* dev) {
+uint8_t ramdisk_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
@@ -41,7 +42,7 @@ uint8_t ramdisk_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t ramdisk_uninit(struct device* dev) {
+uint8_t ramdisk_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
@@ -56,7 +57,7 @@ uint8_t* ramdisk_calc_address(struct ramdisk_devicedata* device_data, uint32_t s
     return (uint8_t*)(uint64_t)((device_data->data) + (sector * device_data->sector_size));
 }
 
-uint32_t ramdisk_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t ramdisk_read(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -81,7 +82,7 @@ uint32_t ramdisk_read(struct device* dev, uint8_t* data, uint32_t data_size, uin
     return data_size;
 }
 
-uint32_t ramdisk_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t ramdisk_write(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -106,14 +107,14 @@ uint32_t ramdisk_write(struct device* dev, uint8_t* data, uint32_t data_size, ui
     return data_size;
 }
 
-uint16_t ramdisk_sector_size(struct device* dev) {
+uint16_t ramdisk_sector_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
 
     return device_data->sector_size;
 }
-uint32_t ramdisk_total_size(struct device* dev) {
+uint32_t ramdisk_total_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
@@ -121,16 +122,16 @@ uint32_t ramdisk_total_size(struct device* dev) {
     return device_data->size;
 }
 
-struct device* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
+struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &ramdisk_init;
     deviceinstance->uninit = &ramdisk_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = RAMDISK;
-    devicemgr_set_device_description(deviceinstance, "RAM disk");
+    objectmgr_set_device_description(deviceinstance, "RAM disk");
     /*
      * device data
      */
@@ -154,7 +155,7 @@ struct device* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * return device
         */
@@ -167,7 +168,7 @@ struct device* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     }
 }
 
-void ramdisk_detach(struct device* dev) {
+void ramdisk_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

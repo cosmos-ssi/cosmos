@@ -5,22 +5,22 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _DEVICE_H
-#define _DEVICE_H
+#ifndef _OBJECT_H
+#define _OBJECT_H
 #include <types.h>
 
-#define DEVICE_MAX_DESCRIPTION 64
+#define OBJECT_MAX_DESCRIPTION 64
 
 // forward declare these
 struct pci_device;
-struct device;
+struct object;
 
 // return 1 if successful, 0 if failed to unit
-typedef uint8_t (*device_init)(struct device* dev);
+typedef uint8_t (*device_init)(struct object* dev);
 // return 1 is successful, 0 if failed to uninit, including if device refcount>0
-typedef uint8_t (*device_uninit)(struct device* dev);
+typedef uint8_t (*device_uninit)(struct object* dev);
 
-typedef enum device_type {
+typedef enum object_type {
     NONE = 0x00,
     SERIAL = 0x01,           // serial0, deviceapi_serial
     VGA = 0x02,              // vga0, deviceapi_vga
@@ -71,11 +71,11 @@ typedef enum device_type {
 /*
  * array of names, indexed by device_type
  */
-extern int8_t* device_type_names[];
+extern int8_t* object_type_names[];
 
-typedef struct device {
+struct object {
     /*
-     * the combination of name (from device_type_names) and index
+     * the combination of name (from object_type_names) and index
      * create the device name.  ie "serial0".
      */
     int8_t* name;
@@ -83,7 +83,7 @@ typedef struct device {
     /*
      * the type (SERIAL, VGA etc)
      */
-    enum device_type devicetype;
+    enum object_type devicetype;
     /*
      * init function
      */
@@ -95,7 +95,7 @@ typedef struct device {
     /*
      * human readable description provided by the driver
      */
-    uint8_t description[DEVICE_MAX_DESCRIPTION];
+    uint8_t description[OBJECT_MAX_DESCRIPTION];
     /*
      * device-specific data
      */
@@ -113,6 +113,6 @@ typedef struct device {
     * and decremented when a device detaches from this device
     */
     uint8_t reference_count;
-} device_t;
+};
 
 #endif

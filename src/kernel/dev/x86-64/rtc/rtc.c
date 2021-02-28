@@ -10,7 +10,8 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_rtc.h>
@@ -53,7 +54,7 @@ void rtc_handle_irq(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t rtc_device_init(struct device* dev) {
+uint8_t rtc_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s at IRQ %llu (%s)\n", dev->description, RTC_IRQ_NUMBER, dev->name);
 
@@ -72,7 +73,7 @@ uint8_t rtc_device_init(struct device* dev) {
     return 1;
 }
 
-rtc_time_t rtc_time(struct device* dev) {
+rtc_time_t rtc_time(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     rtc_time_t a, b;
 
@@ -125,12 +126,12 @@ void rtc_subscribe(rtc_event event) {
 /*
  * find all RTC devices and register them
  */
-void rtc_devicemgr_register_devices() {
+void rtc_objectmgr_register_devices() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "RTC");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "RTC");
     deviceinstance->devicetype = RTC;
     deviceinstance->init = &rtc_device_init;
     /*
@@ -143,5 +144,5 @@ void rtc_devicemgr_register_devices() {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

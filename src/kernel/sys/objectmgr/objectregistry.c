@@ -7,10 +7,10 @@
 
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/deviceregistry.h>
-#include <sys/devicemgr/devicetypes.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/objectregistry.h>
+#include <sys/objectmgr/objecttypes.h>
 #include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/string/string.h>
 
@@ -24,7 +24,7 @@ void deviceregistry_init() {
 /*
 * register a device
 */
-void deviceregistry_registerdevice(struct device* dev) {
+void deviceregistry_registerdevice(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->devicetype);
 
@@ -45,7 +45,7 @@ void deviceregistry_registerdevice(struct device* dev) {
 /*
 * unregister a device
 */
-void deviceregistry_unregisterdevice(struct device* dev) {
+void deviceregistry_unregisterdevice(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->devicetype);
     /*
@@ -57,7 +57,7 @@ void deviceregistry_unregisterdevice(struct device* dev) {
     * find the device
     */
     for (uint32_t i = 0; i < arraylist_count(lst); i++) {
-        struct device* d = (struct device*)arraylist_get(lst, i);
+        struct object* d = (struct object*)arraylist_get(lst, i);
         ASSERT_NOT_NULL(d);
         if (0 == strcmp(d->name, dev->name)) {
             /*
@@ -93,7 +93,7 @@ uint16_t deviceregistry_devicecount_type(device_type dt) {
     return 0;
 }
 
-struct device* deviceregistry_get_device(device_type dt, uint16_t idx) {
+struct object* deviceregistry_get_device(device_type dt, uint16_t idx) {
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = devicetypes_get_devicelist(dt);
         if (0 != lst) {
@@ -113,7 +113,7 @@ void deviceregistry_iterate(device_iterator deviceIterator) {
             struct arraylist* lst = devicetypes_get_devicelist(i);
             if (0 != lst) {
                 for (uint32_t j = 0; j < arraylist_count(lst); j++) {
-                    struct device* dev = (struct device*)arraylist_get(lst, j);
+                    struct object* dev = (struct object*)arraylist_get(lst, j);
                     if (0 != dev) {
                         (*deviceIterator)(dev);
                     } else {
@@ -133,7 +133,7 @@ void deviceregistry_iterate_type(device_type dt, device_iterator deviceIterator)
         struct arraylist* lst = devicetypes_get_devicelist(dt);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
-                struct device* dev = (struct device*)arraylist_get(lst, j);
+                struct object* dev = (struct object*)arraylist_get(lst, j);
                 if (0 != dev) {
                     (*deviceIterator)(dev);
                 } else {
@@ -153,7 +153,7 @@ void deviceregistry_find_devices_by_description(device_type dt, const int8_t* de
         struct arraylist* lst = devicetypes_get_devicelist(dt);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
-                struct device* dev = (struct device*)arraylist_get(lst, j);
+                struct object* dev = (struct object*)arraylist_get(lst, j);
                 if (0 != dev) {
                     if (strcmp(dev->description, description) == 0) {
                         (*cb)(dev);
@@ -164,7 +164,7 @@ void deviceregistry_find_devices_by_description(device_type dt, const int8_t* de
             }
         }
     } else {
-        PANIC("Invalid device_type passed to devicemgr_find_devices_by_description");
+        PANIC("Invalid device_type passed to objectmgr_find_devices_by_description");
     }
 }
 
@@ -174,7 +174,7 @@ void deviceregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallb
         struct arraylist* lst = devicetypes_get_devicelist(dt);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
-                struct device* dev = (struct device*)arraylist_get(lst, j);
+                struct object* dev = (struct object*)arraylist_get(lst, j);
                 if (0 != dev) {
                     (*cb)(dev);
                 } else {
@@ -183,20 +183,20 @@ void deviceregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallb
             }
         }
     } else {
-        PANIC("Invalid device_type passed to devicemgr_find_devices_by_description");
+        PANIC("Invalid device_type passed to objectmgr_find_devices_by_description");
     }
 }
 
 /*
  * find device by name.  return zero if there is no such device
  */
-struct device* deviceregistry_find_device(const int8_t* name) {
+struct object* deviceregistry_find_device(const int8_t* name) {
     ASSERT_NOT_NULL(name);
     for (uint16_t i = 0; i < MAX_DEVICE_TYPES; i++) {
         struct arraylist* lst = devicetypes_get_devicelist(i);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
-                struct device* dev = (struct device*)arraylist_get(lst, j);
+                struct object* dev = (struct object*)arraylist_get(lst, j);
                 if (0 != dev) {
                     if (0 == strcmp(name, dev->name)) {
                         return dev;

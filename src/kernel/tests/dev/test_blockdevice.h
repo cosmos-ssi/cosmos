@@ -10,8 +10,8 @@
 #ifndef __TEST_BLOCKDEVICE_H
 #define __TEST_BLOCKDEVICE_H
 
-#include <sys/devicemgr/device.h>
+#include <sys/objectmgr/object.h>
 
-void test_block_device(struct device* dev);
+void test_block_device(struct object* dev);
 
 #endif

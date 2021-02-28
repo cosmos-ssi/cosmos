@@ -29,7 +29,7 @@ void calculate_ida_lba_register_values(uint32_t lba, uint8_t* registers) {
     registers[5] = 0;
 }
 
-uint32_t ata_rw(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba, bool read) {
+uint32_t ata_rw(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba, bool read) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(data);
@@ -127,7 +127,7 @@ uint32_t ata_rw(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t 
     return data_size;
 }
 
-uint32_t ata_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t ata_read(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -135,7 +135,7 @@ uint32_t ata_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_
     return ata_rw(dev, data, data_size, start_lba, true);
 }
 
-uint32_t ata_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t ata_write(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -144,7 +144,7 @@ uint32_t ata_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32
     return ata_rw(dev, data, data_size, start_lba, false);
 }
 
-uint16_t ata_sector_size(struct device* dev) {
+uint16_t ata_sector_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->device_data;
     struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
@@ -152,7 +152,7 @@ uint16_t ata_sector_size(struct device* dev) {
     return disk->bytes_per_sector;
 }
 
-uint32_t ata_total_size(struct device* dev) {
+uint32_t ata_total_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->device_data;
     struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
@@ -160,7 +160,7 @@ uint32_t ata_total_size(struct device* dev) {
     return disk->size;
 }
 
-uint8_t device_init_ata_disk(struct device* dev) {
+uint8_t device_init_ata_disk(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct ata_disk_devicedata* disk = (struct ata_disk_devicedata*)dev->device_data;
@@ -175,21 +175,21 @@ uint8_t device_init_ata_disk(struct device* dev) {
     return 1;
 }
 
-uint8_t device_uninit_ata_disk(struct device* dev) {
+uint8_t device_uninit_ata_disk(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     fsutil_detach_partition_tables(dev);
     return 1;
 }
 
-void ata_register_disk(struct device* controllerDevice, uint8_t channel, uint8_t disk) {
+void ata_register_disk(struct object* controllerDevice, uint8_t channel, uint8_t disk) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &device_init_ata_disk;
     deviceinstance->uninit = &device_uninit_ata_disk;
     deviceinstance->devicetype = DISK;
-    devicemgr_set_device_description(deviceinstance, "ATA Disk");
+    objectmgr_set_device_description(deviceinstance, "ATA Disk");
     /*
      * device data
      */
@@ -212,5 +212,5 @@ void ata_register_disk(struct device* controllerDevice, uint8_t channel, uint8_t
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

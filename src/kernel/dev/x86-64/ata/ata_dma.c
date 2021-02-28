@@ -8,10 +8,10 @@
 #include <dev/x86-64/ata/ata_disk.h>
 #include <dev/x86-64/ata/ata_dma.h>
 #include <sys/collection/linkedlist/linkedlist.h>
-#include <sys/devicemgr/device.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
 #include <sys/objecttype/objecttype_block.h>
 #include <sys/string/mem.h>
 #include <sys/sync/sync.h>
@@ -29,7 +29,7 @@ bool ata_dma_buf_avail[NUM_ATA_DMA_BUFS];
 linkedlist* dma_jobs;
 linkedlist* dma_ops;
 
-void ata_dma_add_job(device_t* dev, uint64_t start, uint64_t count, BYTE* buf, ata_dma_direction dir) {
+void ata_dma_add_job(struct object* dev, uint64_t start, uint64_t count, BYTE* buf, ata_dma_direction dir) {
     ata_dma_job* cur_job;
 
     // Add the job queue entry
@@ -75,7 +75,7 @@ void ata_dma_init() {
     return;
 }
 
-void ata_dma_read(device_t* dev, uint64_t start, uint64_t count, BYTE* buf) {
+void ata_dma_read(struct object* dev, uint64_t start, uint64_t count, BYTE* buf) {
     /*
      * Reads *count* sectors from device *dev* into *buf*, starting at LBA
      * address *start*

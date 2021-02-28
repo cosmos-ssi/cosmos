@@ -6,7 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/fs/file_util.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kmalloc/kmalloc.h>
@@ -22,7 +23,7 @@ uint8_t* file_util_read_file(uint8_t* device_name, uint8_t* file_name, uint32_t*
     /*
     * get device
     */
-    struct device* fs_dev = devicemgr_find_device(device_name);
+    struct object* fs_dev = objectmgr_find_device(device_name);
     if (0 != fs_dev) {
         /*
         * root node

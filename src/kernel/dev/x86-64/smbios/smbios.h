@@ -10,7 +10,7 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
 struct smbios_entry_point {
     uint8_t entry_point_string[4];  //This is _SM_
@@ -50,8 +50,8 @@ struct smbios_header {
     uint16_t handle;
 };
 
-void smbios_devicemgr_register_devices();
+void smbios_objectmgr_register_devices();
 
-struct smbios_entry_point* smbios_get_smbios_entry_point(struct device* dev);
+struct smbios_entry_point* smbios_get_smbios_entry_point(struct object* dev);
 
 #endif

@@ -10,11 +10,12 @@
 #ifndef _OBJECTTYPE_NIC_H
 #define _OBJECTTYPE_NIC_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
-typedef void (*nic_read_function)(struct device* dev, uint8_t* data, uint16_t size);
-typedef void (*nic_write_function)(struct device* dev, uint8_t* data, uint16_t size);
+typedef void (*nic_read_function)(struct object* dev, uint8_t* data, uint16_t size);
+typedef void (*nic_write_function)(struct object* dev, uint8_t* data, uint16_t size);
 
 struct objecttype_nic {
     nic_read_function read;

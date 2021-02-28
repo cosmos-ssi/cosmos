@@ -10,9 +10,9 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
-struct device* udp_attach(struct device* ip_device);
-void udp_detach(struct device* dev);
+struct object* udp_attach(struct object* ip_device);
+void udp_detach(struct object* dev);
 
 #endif

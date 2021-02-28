@@ -7,7 +7,8 @@
 
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/gui/gui.h>
 #include <sys/gui/window.h>
 #include <sys/kmalloc/kmalloc.h>
@@ -26,7 +27,7 @@ struct gui_state_data* gui_state;
 #define FONT_NAME "zap-vga16.psf"
 
 void gui_init() {
-    struct device* bga = devicemgr_find_device(VGA_DEVICE_NAME);
+    struct object* bga = objectmgr_find_device(VGA_DEVICE_NAME);
     if (0 != bga) {
         gui_state = (struct gui_state_data*)kmalloc(sizeof(struct gui_state_data));
         gui_state->canvas = canvas_new(bga);

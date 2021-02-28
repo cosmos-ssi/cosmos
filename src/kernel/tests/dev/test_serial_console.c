@@ -8,7 +8,8 @@
 #include <dev/logical/console/serial_console.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_console.h>
 
@@ -18,10 +19,10 @@ void test_serial_console_dev() {
     /*
      * find the physical disk
      */
-    struct device* serial = devicemgr_find_device(devicename);
+    struct object* serial = objectmgr_find_device(devicename);
     if (0 != serial) {
         // attach the console
-        struct device* console_device = serial_console_attach(serial);
+        struct object* console_device = serial_console_attach(serial);
 
         struct objecttype_console* console_api = (struct objecttype_console*)console_device->api;
 

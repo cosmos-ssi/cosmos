@@ -10,10 +10,11 @@
 #ifndef _OBJECTTYPE_SERIAL_H
 #define _OBJECTTYPE_SERIAL_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
-typedef void (*serial_write_function)(struct device* dev, const int8_t* c);
+typedef void (*serial_write_function)(struct object* dev, const int8_t* c);
 
 struct objecttype_serial {
     serial_write_function write;

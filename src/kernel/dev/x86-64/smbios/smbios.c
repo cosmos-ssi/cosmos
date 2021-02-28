@@ -11,7 +11,8 @@
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_bda.h>
 
@@ -42,7 +43,7 @@ uint64_t smbios_find() {
     }
 }
 
-struct smbios_entry_point* smbios_get_smbios_entry_point(struct device* dev) {
+struct smbios_entry_point* smbios_get_smbios_entry_point(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct smbios_devicedata* device_data = (struct smbios_devicedata*)dev->device_data;
@@ -52,7 +53,7 @@ struct smbios_entry_point* smbios_get_smbios_entry_point(struct device* dev) {
 /*
  * perform device instance specific init here
  */
-uint8_t smbios_device_init(struct device* dev) {
+uint8_t smbios_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct smbios_devicedata* device_data = (struct smbios_devicedata*)dev->device_data;
@@ -66,12 +67,12 @@ uint8_t smbios_device_init(struct device* dev) {
     }
 }
 
-void smbios_devicemgr_register_devices() {
+void smbios_objectmgr_register_devices() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "SMBIOS");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "SMBIOS");
     deviceinstance->devicetype = SMBIOS;
     deviceinstance->init = &smbios_device_init;
     /*
@@ -83,5 +84,5 @@ void smbios_devicemgr_register_devices() {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

@@ -10,9 +10,9 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
-struct device* rand_attach();
-void rand_detach(struct device* dev);
+struct object* rand_attach();
+void rand_detach(struct object* dev);
 
 #endif

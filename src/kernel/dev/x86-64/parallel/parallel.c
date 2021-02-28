@@ -9,7 +9,8 @@
 #include <dev/x86-64/parallel/parallel.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_parallel.h>
@@ -37,7 +38,7 @@ void parallel_irq_handler(stack_frame* frame) {
 /*
  * wait until ready
  */
-void parallel_device_ready(struct device* dev) {
+void parallel_device_ready(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct parallel_devicedata* device_data = (struct parallel_devicedata*)(dev->device_data);
@@ -49,7 +50,7 @@ void parallel_device_ready(struct device* dev) {
 /*
  * perform device instance specific init here
  */
-uint8_t parallel_device_init(struct device* dev) {
+uint8_t parallel_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct parallel_devicedata* device_data = (struct parallel_devicedata*)(dev->device_data);
@@ -63,7 +64,7 @@ uint8_t parallel_device_init(struct device* dev) {
     return 1;
 }
 
-void parallel_write(struct device* dev, uint8_t* data, uint16_t size) {
+void parallel_write(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(data);
@@ -87,12 +88,12 @@ void parallel_write(struct device* dev, uint8_t* data, uint16_t size) {
     }
 }
 
-void parallel_devicemgr_register_device(uint64_t base, uint8_t irq) {
+void parallel_objectmgr_register_device(uint64_t base, uint8_t irq) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "Parallel Port");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "Parallel Port");
     deviceinstance->devicetype = PARALLEL;
     deviceinstance->init = &parallel_device_init;
     /*
@@ -111,23 +112,23 @@ void parallel_devicemgr_register_device(uint64_t base, uint8_t irq) {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
-void parallel_devicemgr_register_devices() {
+void parallel_objectmgr_register_devices() {
     // lpt0
     uint16_t lpt1_base = bda_parallel0_base();
     if (0 != lpt1_base) {
-        parallel_devicemgr_register_device(lpt1_base, PARALLEL_DEVICE_LTP1_IRQ);
+        parallel_objectmgr_register_device(lpt1_base, PARALLEL_DEVICE_LTP1_IRQ);
     }
     // lpt1
     uint16_t lpt2_base = bda_parallel1_base();
     if (0 != lpt2_base) {
-        parallel_devicemgr_register_device(lpt2_base, PARALLEL_DEVICE_LTP2_IRQ);
+        parallel_objectmgr_register_device(lpt2_base, PARALLEL_DEVICE_LTP2_IRQ);
     }
     // lpt2
     uint16_t lpt3_base = bda_parallel2_base();
     if (0 != lpt3_base) {
-        parallel_devicemgr_register_device(lpt3_base, PARALLEL_DEVICE_LTP3_IRQ);
+        parallel_objectmgr_register_device(lpt3_base, PARALLEL_DEVICE_LTP3_IRQ);
     }
 }

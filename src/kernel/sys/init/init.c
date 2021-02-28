@@ -7,7 +7,8 @@
 
 #include <dev/logical/fs/initrd/initrd.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/fs/fs_facade.h>
 #include <sys/init/init.h>
 #include <sys/kmalloc/kmalloc.h>
@@ -20,9 +21,9 @@ uint8_t init_load(uint8_t* initrd_disk_name, uint8_t* initrd_binary_name) {
     ASSERT_NOT_NULL(initrd_disk_name);
     ASSERT_NOT_NULL(initrd_binary_name);
 
-    struct device* dsk = devicemgr_find_device(initrd_disk_name);
+    struct object* dsk = objectmgr_find_device(initrd_disk_name);
     if (0 != dsk) {
-        struct device* initrd = initrd_attach(dsk, initrd_lba());
+        struct object* initrd = initrd_attach(dsk, initrd_lba());
         ASSERT_NOT_NULL(initrd);
 
         // get root node

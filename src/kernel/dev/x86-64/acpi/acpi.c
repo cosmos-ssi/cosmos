@@ -10,7 +10,8 @@
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_bda.h>
 #include <sys/string/string.h>
@@ -51,7 +52,7 @@ struct fadt* acpi_get_fadt() {
 /*
  * perform device instance specific init here
  */
-uint8_t acpi_device_init(struct device* dev) {
+uint8_t acpi_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     //  uint64_t ebda_address = bda_get_ebda_address();
 
@@ -59,16 +60,16 @@ uint8_t acpi_device_init(struct device* dev) {
     return 1;
 }
 
-void acpi_devicemgr_register_devices() {
+void acpi_objectmgr_register_devices() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "ACPI");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "ACPI");
     deviceinstance->devicetype = ACPI;
     deviceinstance->init = &acpi_device_init;
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void vblock_devicemgr_register_devices();
+void vblock_objectmgr_register_devices();
 
 #endif

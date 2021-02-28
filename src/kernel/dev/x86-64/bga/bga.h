@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void bga_devicemgr_register_devices();
+void bga_objectmgr_register_devices();
 
 #endif

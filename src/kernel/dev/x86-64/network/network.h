@@ -14,6 +14,6 @@
 #include <dev/x86-64/network/ne2000pci/ne2000pci.h>
 #include <dev/x86-64/network/rtl8139/rtl8139.h>
 
-void network_devicemgr_register_devices();
+void network_objectmgr_register_devices();
 
 #endif

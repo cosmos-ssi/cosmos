@@ -15,7 +15,7 @@
 #include <sys/string/mem.h>
 
 struct partition_devicedata {
-    struct device* partition_table_device;
+    struct object* partition_table_device;
     uint8_t type[64];  // type string
     uint8_t partition_index;
 } __attribute__((packed));
@@ -23,7 +23,7 @@ struct partition_devicedata {
 /*
  * perform device instance specific init here
  */
-uint8_t partition_init(struct device* dev) {
+uint8_t partition_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct partition_devicedata* device_data = (struct partition_devicedata*)dev->device_data;
@@ -42,7 +42,7 @@ uint8_t partition_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t partition_uninit(struct device* dev) {
+uint8_t partition_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct partition_devicedata* device_data = (struct partition_devicedata*)dev->device_data;
@@ -55,21 +55,21 @@ uint8_t partition_uninit(struct device* dev) {
     return 1;
 }
 
-uint16_t partition_sector_size(struct device* dev) {
+uint16_t partition_sector_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct partition_devicedata* device_data = (struct partition_devicedata*)dev->device_data;
     return partition_table_util_sector_size(dev, device_data->partition_index);
 }
 
-uint32_t partition_total_size(struct device* dev) {
+uint32_t partition_total_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct partition_devicedata* device_data = (struct partition_devicedata*)dev->device_data;
     return partition_table_util_total_size(dev, device_data->partition_index);
 }
 
-uint32_t partition_read_sectors(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t partition_read_sectors(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -79,7 +79,7 @@ uint32_t partition_read_sectors(struct device* dev, uint8_t* data, uint32_t data
     return partition_table_util_read_sectors(dev, device_data->partition_index, data, data_size, start_lba);
 }
 
-uint32_t partition_write_sectors(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t partition_write_sectors(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -89,18 +89,18 @@ uint32_t partition_write_sectors(struct device* dev, uint8_t* data, uint32_t dat
     return partition_table_util_write_sectors(dev, device_data->partition_index, data, data_size, start_lba);
 }
 
-struct device* partition_attach(struct device* partition_table_device, uint8_t partition_index) {
+struct object* partition_attach(struct object* partition_table_device, uint8_t partition_index) {
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &partition_init;
     deviceinstance->uninit = &partition_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = PARTITION;
-    devicemgr_set_device_description(deviceinstance, "Partition");
+    objectmgr_set_device_description(deviceinstance, "Partition");
     /*
      * the device api
      */
@@ -125,11 +125,11 @@ struct device* partition_attach(struct device* partition_table_device, uint8_t p
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(partition_table_device);
+        objectmgr_increment_device_refcount(partition_table_device);
         /*
         * return device
         */
@@ -142,16 +142,16 @@ struct device* partition_attach(struct device* partition_table_device, uint8_t p
     }
 }
 
-void partition_detach(struct device* dev) {
+void partition_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct partition_devicedata* device_data = (struct partition_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->partition_table_device);
+    objectmgr_decrement_device_refcount(device_data->partition_table_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void kernelmap_devicemgr_register_devices();
+void kernelmap_objectmgr_register_devices();
 
 #endif

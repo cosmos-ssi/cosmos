@@ -36,7 +36,7 @@ struct xsdt {
     uint64_t* pointerToOtherSDT;
 };
 
-void acpi_devicemgr_register_devices();
+void acpi_objectmgr_register_devices();
 
 struct fadt* acpi_get_fadt();
 #endif

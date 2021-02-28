@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void sb16_devicemgr_register_devices();
+void sb16_objectmgr_register_devices();
 
 #endif

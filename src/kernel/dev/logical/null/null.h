@@ -10,9 +10,9 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
-struct device* null_attach();
-void null_detach(struct device* dev);
+struct object* null_attach();
+void null_detach(struct object* dev);
 
 #endif

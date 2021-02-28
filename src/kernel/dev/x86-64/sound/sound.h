@@ -12,6 +12,6 @@
 #include <dev/x86-64/sound/adlib/adlib.h>
 #include <dev/x86-64/sound/sb16/sb16.h>
 
-void sound_devicemgr_register_devices();
+void sound_objectmgr_register_devices();
 
 #endif

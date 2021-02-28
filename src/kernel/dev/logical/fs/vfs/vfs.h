@@ -12,10 +12,10 @@
 
 struct filesystem_node;
 
-struct device* vfs_attach(uint8_t* name);
-void vfs_detach(struct device* dev);
+struct object* vfs_attach(uint8_t* name);
+void vfs_detach(struct object* dev);
 
-void vfs_add_child(struct device* vfs_device, struct filesystem_node* child_node);
-void vfs_remove_child(struct device* vfs_device, uint64_t id);
+void vfs_add_child(struct object* vfs_device, struct filesystem_node* child_node);
+void vfs_remove_child(struct object* vfs_device, uint64_t id);
 
 #endif

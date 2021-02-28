@@ -8,9 +8,9 @@
 #ifndef _SERIAL_CONSOLE_H
 #define _SERIAL_CONSOLE_H
 
-struct device;
+struct object;
 
-struct device* serial_console_attach(struct device* serial_device);
-void serial_console_detach(struct device* dev);
+struct object* serial_console_attach(struct object* serial_device);
+void serial_console_detach(struct object* dev);
 
 #endif

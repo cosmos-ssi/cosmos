@@ -9,7 +9,8 @@
 #include <dev/x86-64/pci/pci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 
@@ -20,7 +21,7 @@ struct intelisapca_deviceddata {
 /*
  * perform device instance specific init here
  */
-uint8_t pciisa_init(struct device* dev) {
+uint8_t pciisa_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     struct intelisapca_deviceddata* device_data = (struct intelisapca_deviceddata*)dev->device_data;
     device_data->base = pci_calcbar(dev->pci);
@@ -34,11 +35,11 @@ void pciisa_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &pciisa_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = BRIDGE;
-    devicemgr_set_device_description(deviceinstance, "Intel PIIX3 PCI-to-ISA Bridge (Triton II)");
+    objectmgr_set_device_description(deviceinstance, "Intel PIIX3 PCI-to-ISA Bridge (Triton II)");
     /*
      * device data
      */
@@ -48,12 +49,12 @@ void pciisa_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
 /**
  * find all bridge devices and register them
  */
 void pciisa_bridge_register() {
-    pci_devicemgr_search_devicetype(PCI_CLASS_BRIDGE, PCI_BRIDGE_SUBCLASS_ISA, &pciisa_search_cb);
+    pci_objectmgr_search_devicetype(PCI_CLASS_BRIDGE, PCI_BRIDGE_SUBCLASS_ISA, &pciisa_search_cb);
 }

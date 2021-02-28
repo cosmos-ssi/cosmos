@@ -27,9 +27,9 @@ struct mbr_pt_header {
     uint8_t signature[2];
 } __attribute__((packed));
 
-struct device;
+struct object;
 
-struct device* mbr_pt_attach(struct device* block_device);
-void mbr_pt_detach(struct device* dev);
+struct object* mbr_pt_attach(struct object* block_device);
+void mbr_pt_detach(struct object* dev);
 
 #endif

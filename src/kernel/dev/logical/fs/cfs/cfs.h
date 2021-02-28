@@ -10,9 +10,9 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
-struct device* cfs_attach(struct device* partition_device);
-void cfs_detach(struct device* dev);
+struct object* cfs_attach(struct object* partition_device);
+void cfs_detach(struct object* dev);
 
 #endif

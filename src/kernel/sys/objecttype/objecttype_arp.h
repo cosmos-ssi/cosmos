@@ -10,7 +10,8 @@
 #ifndef _OBJECTTYPE_ARP_H
 #define _OBJECTTYPE_ARP_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 #define ARP_HLEN 6
@@ -34,7 +35,7 @@ struct arp {
     uint8_t dest_protocol[ARP_PLEN];    // Destination protocol address
 };
 
-typedef void (*arp_request_function)(struct device* dev, struct arp* request, struct arp* response);
+typedef void (*arp_request_function)(struct object* dev, struct arp* request, struct arp* response);
 
 struct objecttype_arp {
     arp_request_function request;

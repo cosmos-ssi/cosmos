@@ -14,9 +14,9 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
-struct device* tick_attach(struct device* pit_device);
-void tick_detach(struct device* dev);
+struct object* tick_attach(struct object* pit_device);
+void tick_detach(struct object* dev);
 
 #endif

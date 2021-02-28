@@ -10,7 +10,7 @@
 
 #include <types.h>
 
-void pl101_devicemgr_register_devices();
+void pl101_objectmgr_register_devices();
 void pl101_write_string(const uint8_t* c);
 
 #endif

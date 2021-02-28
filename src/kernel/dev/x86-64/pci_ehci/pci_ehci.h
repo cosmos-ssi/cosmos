@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void pci_ehci_devicemgr_register_devices();
+void pci_ehci_objectmgr_register_devices();
 
 #endif

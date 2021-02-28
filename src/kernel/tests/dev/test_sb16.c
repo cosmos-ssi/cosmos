@@ -13,7 +13,7 @@
 
 void test_sb16() {
     // get the sb
-    //  struct device* dsp = devicemgr_find_device("dsp0");
+    //  struct object* dsp = objectmgr_find_device("dsp0");
     //  if (0 != dsp) {
     //    struct wav_header* wav = sound_get_tone();
 

@@ -14,20 +14,21 @@
 #include <dev/x86-64/pci/pci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/string.h>
 #include <types.h>
 
-void ata_detect_devices(struct device* device, struct ata_controller* controller);
+void ata_detect_devices(struct object* device, struct ata_controller* controller);
 #define IDE_SERIAL_IRQ 14
 
 /*
  * detect all the addresses on a ATA controller
  */
-void ata_detect_addresses(struct device* dev) {
+void ata_detect_addresses(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     ASSERT_NOT_NULL(dev->pci);
@@ -81,7 +82,7 @@ void ata_detect_addresses(struct device* dev) {
 /*
  * init ATA controller
  */
-uint8_t device_init_ata(struct device* dev) {
+uint8_t device_init_ata(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct ata_controller* controller = (struct ata_controller*)dev->device_data;
@@ -120,11 +121,11 @@ void ata_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &device_init_ata;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = ATA;
-    devicemgr_set_device_description(deviceinstance, "ATA");
+    objectmgr_set_device_description(deviceinstance, "ATA");
     /*
      * device data
      */
@@ -133,14 +134,14 @@ void ata_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
-void ata_devicemgr_register_devices() {
-    pci_devicemgr_search_devicetype(PCI_CLASS_MASS_STORAGE, PCI_MASS_STORAGE_SUBCLASS_IDE, &ata_search_cb);
+void ata_objectmgr_register_devices() {
+    pci_objectmgr_search_devicetype(PCI_CLASS_MASS_STORAGE, PCI_MASS_STORAGE_SUBCLASS_IDE, &ata_search_cb);
 }
 
-void ata_detect_devices(struct device* device, struct ata_controller* controller) {
+void ata_detect_devices(struct object* device, struct ata_controller* controller) {
     uint8_t i, j;
     uint8_t status;
     //  struct ata_device_t* tmp;
@@ -186,7 +187,7 @@ void ata_detect_devices(struct device* device, struct ata_controller* controller
     return;
 }
 
-struct ata_device* ata_get_disk(struct device* dev, uint8_t channel, uint8_t disk) {
+struct ata_device* ata_get_disk(struct object* dev, uint8_t channel, uint8_t disk) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     ASSERT(((channel >= 0) && (channel <= 1)));

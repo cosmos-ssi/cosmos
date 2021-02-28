@@ -5,12 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _DEVICETYPES_H
-#define _DEVICETYPES_H
+#ifndef _OBJECTYPES_H
+#define _OBJECTTYPES_H
 
 #include <sys/collection/array/array.h>
 #include <sys/collection/arraylist/arraylist.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
 
 #define MAX_DEVICE_TYPES 256
 

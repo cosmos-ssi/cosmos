@@ -9,7 +9,8 @@
 #include <dev/x86-64/sdhci/sdhci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_block.h>
@@ -36,7 +37,7 @@ void sdhci_irq_handler(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t sdhci_device_init(struct device* dev) {
+uint8_t sdhci_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     struct sdhci_devicedata* device_data = (struct sdhci_devicedata*)dev->device_data;
     device_data->base = (uint64_t)CONV_PHYS_ADDR(pci_calcbar(dev->pci));
@@ -49,7 +50,7 @@ uint8_t sdhci_device_init(struct device* dev) {
 /*
  * perform device instance specific uninit here
  */
-uint8_t sdhci_device_uninit(struct device* dev) {
+uint8_t sdhci_device_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     return 1;
@@ -59,8 +60,8 @@ void sdhci_pci_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "SDHCI Controller");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "SDHCI Controller");
     deviceinstance->devicetype = SDHCI;
     deviceinstance->pci = dev;
     deviceinstance->init = &sdhci_device_init;
@@ -80,12 +81,12 @@ void sdhci_pci_search_cb(struct pci_device* dev) {
     /**
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
 /**
  * find all NE2000 devices and register them
  */
-void sdhci_devicemgr_register_devices() {
-    pci_devicemgr_search_device(PCI_CLASS_BASE_PERI, 0x05, 0x1B36, 0x07, &sdhci_pci_search_cb);
+void sdhci_objectmgr_register_devices() {
+    pci_objectmgr_search_device(PCI_CLASS_BASE_PERI, 0x05, 0x1B36, 0x07, &sdhci_pci_search_cb);
 }

@@ -6,7 +6,8 @@
 // ****************************************************************
 
 #include <dev/logical/ramdisk/ramdisk.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <tests/dev/test_blockdevice.h>
 #include <tests/dev/test_ramdisk.h>
@@ -18,9 +19,9 @@ void test_ramdisk() {
     kprintf("Testing RAM Disk\n");
 
     // attach the ramdisk
-    struct device* ramdisk_device = ramdisk_attach(RAMDISK_SECTOR_SIZE, RAMDISK_TOTAL_SECTORS);
+    struct object* ramdisk_device = ramdisk_attach(RAMDISK_SECTOR_SIZE, RAMDISK_TOTAL_SECTORS);
 
-    struct device* ramdisk = devicemgr_find_device(ramdisk_device->name);
+    struct object* ramdisk = objectmgr_find_device(ramdisk_device->name);
     if (0 != ramdisk) {
         test_block_device(ramdisk);
     } else {

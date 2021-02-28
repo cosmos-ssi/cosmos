@@ -21,7 +21,7 @@ And bought a morning paper, which neither of us read; \
 And she wept, God bless you! for the apples and pears, \
 And we gave her all our money but our subway fares.";
 
-void test_block_device_base_api(struct device* dev) {
+void test_block_device_base_api(struct object* dev) {
     struct objecttype_block* block_api = (struct objecttype_block*)dev->api;
     ASSERT_NOT_NULL(block_api);
     uint32_t s = strlen(testdata);
@@ -36,7 +36,7 @@ void test_block_device_base_api(struct device* dev) {
     ASSERT(strlen(readdata) == strlen(testdata));
 }
 
-void test_blockutil(struct device* dev) {
+void test_blockutil(struct object* dev) {
     uint32_t s = strlen(testdata);
     uint32_t written = blockutil_write(dev, testdata, s + 1, 0, 0);
     ASSERT(written == s + 1);
@@ -47,7 +47,7 @@ void test_blockutil(struct device* dev) {
     ASSERT(0 == strcmp(buffer, testdata));
 }
 
-void test_block_device(struct device* dev) {
+void test_block_device(struct object* dev) {
     kprintf("Testing block device %s\n", dev->name);
     //   test_block_device_base_api(dev);
     test_blockutil(dev);

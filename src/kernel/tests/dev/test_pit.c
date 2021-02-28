@@ -13,7 +13,7 @@
 
 void test_pit() {
     // get the PIT
-    struct device* pit = devicemgr_find_device("pit0");
+    struct object* pit = objectmgr_find_device("pit0");
     if (0 != pit) {
         struct objecttype_pit* pit_api = (struct objecttype_pit*)pit->api;
         pit_tickcount_function tickcount_func = pit_api->tickcount;

@@ -8,7 +8,8 @@
 #include <dev/x86-64/smbios/smbios.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <tests/dev/test_smbios.h>
 
@@ -19,7 +20,7 @@ void test_smbios() {
     /*
      * find the SMBIOS disk
      */
-    struct device* smbios = devicemgr_find_device(devicename);
+    struct object* smbios = objectmgr_find_device(devicename);
     if (0 != smbios) {
         ASSERT_NOT_NULL(smbios->device_data);
         struct smbios_entry_point* smbios_entry = smbios_get_smbios_entry_point(smbios);

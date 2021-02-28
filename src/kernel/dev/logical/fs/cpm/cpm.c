@@ -40,13 +40,13 @@ struct cpm_dir {
 } __attribute__((packed));
 
 struct cpm_devicedata {
-    struct device* partition_device;
+    struct object* partition_device;
     uint16_t block_device_sector_size;
     uint8_t sectors_needed_for_dir;
     uint32_t byte_size_dir;
 } __attribute__((packed));
 
-void cpm_format(struct device* dev) {
+void cpm_format(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct cpm_devicedata* device_data = (struct cpm_devicedata*)dev->device_data;
@@ -72,7 +72,7 @@ void cpm_format(struct device* dev) {
     kfree(buffer);
 }
 
-void cpm_read_dir(struct device* dev, struct cpm_dir* dir) {
+void cpm_read_dir(struct object* dev, struct cpm_dir* dir) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct cpm_devicedata* device_data = (struct cpm_devicedata*)dev->device_data;
@@ -92,7 +92,7 @@ void cpm_read_dir(struct device* dev, struct cpm_dir* dir) {
 /*
  * perform device instance specific init here
  */
-uint8_t cpm_init(struct device* dev) {
+uint8_t cpm_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct cpm_devicedata* device_data = (struct cpm_devicedata*)dev->device_data;
@@ -103,7 +103,7 @@ uint8_t cpm_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t cpm_uninit(struct device* dev) {
+uint8_t cpm_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct cpm_devicedata* device_data = (struct cpm_devicedata*)dev->device_data;
@@ -113,19 +113,19 @@ uint8_t cpm_uninit(struct device* dev) {
     return 1;
 }
 
-struct device* cpm_attach(struct device* partition_device) {
+struct object* cpm_attach(struct object* partition_device) {
     ASSERT(sizeof(struct cpm_file_entry) == CPM_FILE_ENTRY_LEN);
     ASSERT_NOT_NULL(partition_device);
     ASSERT(1 == blockutil_is_block_device(partition_device));
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &cpm_init;
     deviceinstance->uninit = &cpm_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = FILESYSTEM;
-    devicemgr_set_device_description(deviceinstance, "CP/M File System");
+    objectmgr_set_device_description(deviceinstance, "CP/M File System");
     /*
      * the device api
      */
@@ -151,11 +151,11 @@ struct device* cpm_attach(struct device* partition_device) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(partition_device);
+        objectmgr_increment_device_refcount(partition_device);
         /*
         * return device
         */
@@ -168,16 +168,16 @@ struct device* cpm_attach(struct device* partition_device) {
     }
 }
 
-void cpm_detach(struct device* dev) {
+void cpm_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct cpm_devicedata* device_data = (struct cpm_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->partition_device);
+    objectmgr_decrement_device_refcount(device_data->partition_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

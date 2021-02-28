@@ -10,7 +10,7 @@
 
 #include <types.h>
 
-struct device* tfs_attach(struct device* partition_device);
-void tfs_detach(struct device* dev);
+struct object* tfs_attach(struct object* partition_device);
+void tfs_detach(struct object* dev);
 
 #endif

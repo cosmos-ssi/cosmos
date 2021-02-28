@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void adlib_devicemgr_register_devices();
+void adlib_objectmgr_register_devices();
 
 #endif

@@ -8,7 +8,8 @@
 #include <dev/x86-64/pic/pic.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 
 // I/O ports
@@ -27,7 +28,7 @@
 /*
  * perform device instance specific init here
  */
-uint8_t pic_device_init(struct device* dev) {
+uint8_t pic_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
 
@@ -53,15 +54,15 @@ uint8_t pic_device_init(struct device* dev) {
     return 1;
 }
 
-void pic_devicemgr_register_devices() {
+void pic_objectmgr_register_devices() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "8259 PIC");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "8259 PIC");
     deviceinstance->devicetype = PIC;
     deviceinstance->init = &pic_device_init;
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 
     return;
 }

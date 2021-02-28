@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void speaker_devicemgr_register_devices();
+void speaker_objectmgr_register_devices();
 
 #endif

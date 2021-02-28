@@ -43,7 +43,7 @@
 #define VIRTIO_STATUS_DEVICE_ERROR 0x40
 #define VIRTIO_STATUS_DRIVER_FAILED 0x80
 
-void virtio_devicemgr_register_devices();
+void virtio_objectmgr_register_devices();
 
 bool virtio_isAligned(uint64_t address, uint32_t alignment);
 

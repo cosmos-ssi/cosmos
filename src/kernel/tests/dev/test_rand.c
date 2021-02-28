@@ -14,7 +14,7 @@
 void test_rand() {
     kprintf("Testing rand\n");
 
-    struct device* rand = devicemgr_find_device("rand0");
+    struct object* rand = objectmgr_find_device("rand0");
     if (0 != rand) {
         struct objecttype_rand* rand_api = (struct objecttype_rand*)rand->api;
         uint64_t last = 0;

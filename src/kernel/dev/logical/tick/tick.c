@@ -12,13 +12,13 @@
 #include <sys/string/mem.h>
 
 struct tick_devicedata {
-    struct device* pit_device;
+    struct object* pit_device;
 } __attribute__((packed));
 
 /*
  * perform device instance specific init here
  */
-uint8_t tick_init(struct device* dev) {
+uint8_t tick_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct tick_devicedata* device_data = (struct tick_devicedata*)dev->device_data;
@@ -29,7 +29,7 @@ uint8_t tick_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t tick_uninit(struct device* dev) {
+uint8_t tick_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
 
@@ -38,7 +38,7 @@ uint8_t tick_uninit(struct device* dev) {
     return 1;
 }
 
-uint64_t tick_read(struct device* dev) {
+uint64_t tick_read(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct tick_devicedata* device_data = (struct tick_devicedata*)dev->device_data;
@@ -47,18 +47,18 @@ uint64_t tick_read(struct device* dev) {
     return (*api->tickcount)(device_data->pit_device);
 }
 
-struct device* tick_attach(struct device* pit_device) {
+struct object* tick_attach(struct object* pit_device) {
     ASSERT_NOT_NULL(pit_device);
     ASSERT(pit_device->devicetype == PIT);
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &tick_init;
     deviceinstance->uninit = &tick_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = TICK;
-    devicemgr_set_device_description(deviceinstance, "Tick Count");
+    objectmgr_set_device_description(deviceinstance, "Tick Count");
     /*
      * the device api
      */
@@ -75,11 +75,11 @@ struct device* tick_attach(struct device* pit_device) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(pit_device);
+        objectmgr_increment_device_refcount(pit_device);
         /*
         * return device
         */
@@ -91,16 +91,16 @@ struct device* tick_attach(struct device* pit_device) {
     }
 }
 
-void tick_detach(struct device* dev) {
+void tick_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct tick_devicedata* device_data = (struct tick_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->pit_device);
+    objectmgr_decrement_device_refcount(device_data->pit_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

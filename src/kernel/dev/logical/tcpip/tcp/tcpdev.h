@@ -10,9 +10,9 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
-struct device* tcp_attach(struct device* ip_device);
-void tcp_detach(struct device* dev);
+struct object* tcp_attach(struct object* ip_device);
+void tcp_detach(struct object* dev);
 
 #endif

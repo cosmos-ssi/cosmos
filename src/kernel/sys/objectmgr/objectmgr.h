@@ -5,65 +5,65 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _DEVICEMGR_H
-#define _DEVICEMGR_H
+#ifndef _OBJECTMGR_H
+#define _OBJECTMGR_H
 
-#include <sys/devicemgr/device.h>
+#include <sys/objectmgr/object.h>
 #include <types.h>
 
 // new device, allocated on the kernel heap
-struct device* devicemgr_new_device();
+struct object* objectmgr_new_device();
 
 // register a device
-void devicemgr_register_device(struct device* dev);
+void objectmgr_register_device(struct object* dev);
 
 // unregister a device
-void devicemgr_unregister_device(struct device* dev);
+void objectmgr_unregister_device(struct object* dev);
 
 // init the device registry
-void devicemgr_init();
+void objectmgr_init();
 
 // register all the devices
-void devicemgr_register_devices();
+void objectmgr_register_devices();
 
 // count of device instances
-uint16_t devicemgr_device_count();
+uint16_t objectmgr_device_count();
 
 // init all devices
-void devicemgr_init_devices();
+void objectmgr_init_devices();
 
 // set description
-void devicemgr_set_device_description(struct device* dev, const uint8_t* description);
+void objectmgr_set_device_description(struct object* dev, const uint8_t* description);
 
 // find a device ie ("rtc0")
-struct device* devicemgr_find_device(const uint8_t* name);
+struct object* objectmgr_find_device(const uint8_t* name);
 
 // find devices by the device description
-typedef void (*deviceSearchCallback)(struct device* dev);
-void devicemgr_find_devices_by_description(device_type dt, const uint8_t* description, deviceSearchCallback cb);
+typedef void (*deviceSearchCallback)(struct object* dev);
+void objectmgr_find_devices_by_description(device_type dt, const uint8_t* description, deviceSearchCallback cb);
 
 // find devices by device_type
-void devicemgr_find_devices_by_device_type(device_type dt, deviceSearchCallback cb);
+void objectmgr_find_devices_by_device_type(device_type dt, deviceSearchCallback cb);
 
 // attach a device (non-fixed devices... like RAM disks and SWAP)
-uint8_t devicemgr_attach_device(struct device* dev);
+uint8_t objectmgr_attach_device(struct object* dev);
 
 // detach a device (non-fixed devices... like RAM disks and SWAP)
 // be aware, this has the effect of deleting the dev struct!
-uint8_t devicemgr_detach_device(struct device* dev);
+uint8_t objectmgr_detach_device(struct object* dev);
 
 /*
 * increment device reference count
 */
-uint8_t devicemgr_increment_device_refcount(struct device* dev);
+uint8_t objectmgr_increment_device_refcount(struct object* dev);
 
 /*
 * decrease device reference count
 */
-uint8_t devicemgr_decrement_device_refcount(struct device* dev);
+uint8_t objectmgr_decrement_device_refcount(struct object* dev);
 
 /*
 * dump all devices to console
 */
-void devicemgr_dump_devices();
+void objectmgr_dump_devices();
 #endif

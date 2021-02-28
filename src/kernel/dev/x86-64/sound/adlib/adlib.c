@@ -9,7 +9,8 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_dsp.h>
@@ -52,19 +53,19 @@ uint8_t adlib_read_status() {
 /*
  * perform device instance specific init here
  */
-uint8_t adlib_device_init(struct device* dev) {
+uint8_t adlib_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s\n", dev->description);
     //   interrupt_router_register_interrupt_handler(SB16_IRQ, &adlib_handle_irq);
     return 1;
 }
 
-void adlib_devicemgr_register_devices() {
+void adlib_objectmgr_register_devices() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "Yamaha YM3812 (OPL2)");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "Yamaha YM3812 (OPL2)");
     deviceinstance->devicetype = DSP;
     deviceinstance->init = &adlib_device_init;
     /*
@@ -75,5 +76,5 @@ void adlib_devicemgr_register_devices() {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

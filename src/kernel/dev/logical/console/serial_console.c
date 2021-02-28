@@ -14,13 +14,13 @@
 #include <sys/string/mem.h>
 
 struct serial_console_devicedata {
-    struct device* serial_device;
+    struct object* serial_device;
 };
 
 /*
  * perform device instance specific init here
  */
-uint8_t serial_console_dev_init(struct device* dev) {
+uint8_t serial_console_dev_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct serial_console_devicedata* device_data = (struct serial_console_devicedata*)dev->device_data;
@@ -31,7 +31,7 @@ uint8_t serial_console_dev_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t serial_console_uninit(struct device* dev) {
+uint8_t serial_console_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
 
@@ -42,12 +42,12 @@ uint8_t serial_console_uninit(struct device* dev) {
     return 1;
 }
 
-uint8_t serial_console_setpos(struct device* dev, uint8_t x, uint8_t y) {
+uint8_t serial_console_setpos(struct object* dev, uint8_t x, uint8_t y) {
     // do nothing
     return 0;
 }
 
-void serial_console_dev_write(struct device* dev, const char* s) {
+void serial_console_dev_write(struct object* dev, const char* s) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct serial_console_devicedata* device_data = (struct serial_console_devicedata*)dev->device_data;
@@ -56,18 +56,18 @@ void serial_console_dev_write(struct device* dev, const char* s) {
     (*serial_api->write)(device_data->serial_device, s);
 }
 
-struct device* serial_console_attach(struct device* serial_device) {
+struct object* serial_console_attach(struct object* serial_device) {
     ASSERT_NOT_NULL(serial_device);
     ASSERT(serial_device->devicetype == SERIAL);
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &serial_console_dev_init;
     deviceinstance->uninit = &serial_console_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = CONSOLE;
-    devicemgr_set_device_description(deviceinstance, "Serial Console");
+    objectmgr_set_device_description(deviceinstance, "Serial Console");
     /*
      * the device api
      */
@@ -86,11 +86,11 @@ struct device* serial_console_attach(struct device* serial_device) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(serial_device);
+        objectmgr_increment_device_refcount(serial_device);
         /*
         * return device
         */
@@ -103,16 +103,16 @@ struct device* serial_console_attach(struct device* serial_device) {
     }
 }
 
-void serial_console_detach(struct device* dev) {
+void serial_console_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct serial_console_devicedata* device_data = (struct serial_console_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->serial_device);
+    objectmgr_decrement_device_refcount(device_data->serial_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

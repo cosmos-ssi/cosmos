@@ -10,7 +10,7 @@
 
 #include <types.h>
 
-struct device* sfs_attach(struct device* partition_device);
-void sfs_detach(struct device* dev);
+struct object* sfs_attach(struct object* partition_device);
+void sfs_detach(struct object* dev);
 
 #endif

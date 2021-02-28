@@ -6,7 +6,8 @@
  *****************************************************************/
 
 #include <dev/logical/fs/initrd/initrd.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>

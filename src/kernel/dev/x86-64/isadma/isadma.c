@@ -11,7 +11,8 @@
 #include <dev/x86-64/isadma/isadma_page.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
 
@@ -384,7 +385,7 @@ uint64_t isadma_get_dma_block(uint8_t channel, uint32_t len) {
 /*
  * perform device instance specific init here
  */
-uint8_t isadma_device_init(struct device* dev) {
+uint8_t isadma_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     isadma_buf = iobuffers_request_buffer(ISA_DMA_BUFSIZ);
 
@@ -411,19 +412,19 @@ uint8_t isadma_device_init(struct device* dev) {
     return 1;
 }
 
-uint8_t isadma_device_uninit(struct device* dev) {
+uint8_t isadma_device_uninit(struct object* dev) {
     iobuffers_release_buffer(isadma_buf);
     return 1;
 }
 
-void isadma_devicemgr_register_devices() {
+void isadma_objectmgr_register_devices() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "8237 ISA DMA");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "8237 ISA DMA");
     deviceinstance->devicetype = ISADMA;
     deviceinstance->init = &isadma_device_init;
     deviceinstance->uninit = &isadma_device_uninit;
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

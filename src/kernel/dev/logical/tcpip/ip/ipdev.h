@@ -11,10 +11,10 @@
 #include <sys/objecttype/objecttype_ip.h>
 #include <types.h>
 
-struct device;
+struct object;
 
-struct device* ip_attach(struct device* ethernet_device);
-void ip_detach(struct device* dev);
+struct object* ip_attach(struct object* ethernet_device);
+void ip_detach(struct object* dev);
 
 uint16_t ip_checksum(uint16_t* addr, int count);
 

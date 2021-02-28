@@ -9,7 +9,8 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/ringbuffer/ringbuffer.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_serial.h>
@@ -26,7 +27,7 @@
 /*
  * perform device instance specific init here
  */
-void serial_device_init(struct device* dev) {
+void serial_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     //    struct serial_devicedata* device_data = (struct serial_devicedata*) dev->device_data;
     //    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n",dev->description, device_data->irq, device_data->address, dev->name);
@@ -45,11 +46,11 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * the device instance
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &serial_device_init;
     //    deviceinstance->device_data = device_data;
     deviceinstance->devicetype = SERIAL;
-    devicemgr_set_device_description(deviceinstance, "PL101");
+    objectmgr_set_device_description(deviceinstance, "PL101");
     /*
      * the device api
      */
@@ -59,13 +60,13 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
 /**
  * find all RS232 devices and register them
  */
-void serial_devicemgr_register_devices() {
+void serial_objectmgr_register_devices() {
     //   serial_register_device(SERIAL_IRQ2,COM1_ADDRESS);
 
     // TODO add code to check if these even exist

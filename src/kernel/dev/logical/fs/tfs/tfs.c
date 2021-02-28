@@ -20,13 +20,13 @@
 #include <sys/string/string.h>
 
 struct tfs_devicedata {
-    struct device* partition_device;
+    struct object* partition_device;
 } __attribute__((packed));
 
 /*
  * format. I just guessed here.
  */
-void tfs_format(struct device* dev) {
+void tfs_format(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct tfs_devicedata* device_data = (struct tfs_devicedata*)dev->device_data;
@@ -80,13 +80,13 @@ bool tfs_dir_list_iterator(struct tfs_file_block* file_block) {
     return true;
 }
 
-struct fs_directory_listing* tfs_list_dir(struct device* dev) {
+struct fs_directory_listing* tfs_list_dir(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     tfs_dir_iterate_files(dev, &tfs_dir_list_iterator);
     return 0;
 }
 
-void tfs_read(struct device* dev, const uint8_t* name, const uint8_t* data, uint32_t size) {
+void tfs_read(struct object* dev, const uint8_t* name, const uint8_t* data, uint32_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(name);
     ASSERT_NOT_NULL(data);
@@ -95,7 +95,7 @@ void tfs_read(struct device* dev, const uint8_t* name, const uint8_t* data, uint
     //   struct tfs_devicedata* device_data = (struct tfs_devicedata*)dev->device_data;
 }
 
-void tfs_write(struct device* dev, const uint8_t* name, const uint8_t* data, uint32_t size) {
+void tfs_write(struct object* dev, const uint8_t* name, const uint8_t* data, uint32_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(name);
     ASSERT_NOT_NULL(data);
@@ -120,7 +120,7 @@ void tfs_write(struct device* dev, const uint8_t* name, const uint8_t* data, uin
 /*
  * perform device instance specific init here
  */
-uint8_t tfs_init(struct device* dev) {
+uint8_t tfs_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct tfs_devicedata* device_data = (struct tfs_devicedata*)dev->device_data;
@@ -131,7 +131,7 @@ uint8_t tfs_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t tfs_uninit(struct device* dev) {
+uint8_t tfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
 
@@ -142,7 +142,7 @@ uint8_t tfs_uninit(struct device* dev) {
     return 1;
 }
 
-struct device* tfs_attach(struct device* partition_device) {
+struct object* tfs_attach(struct object* partition_device) {
     ASSERT(sizeof(struct tfs_superblock_block) == TFS_BLOCK_SIZE);
     ASSERT(sizeof(struct tfs_dir_block) == TFS_BLOCK_SIZE);
     ASSERT(sizeof(struct tfs_file_block) == TFS_BLOCK_SIZE);
@@ -153,12 +153,12 @@ struct device* tfs_attach(struct device* partition_device) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &tfs_init;
     deviceinstance->uninit = &tfs_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = FILESYSTEM;
-    devicemgr_set_device_description(deviceinstance, "Trivial File System");
+    objectmgr_set_device_description(deviceinstance, "Trivial File System");
     /*
      * the device api
      */
@@ -176,11 +176,11 @@ struct device* tfs_attach(struct device* partition_device) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(partition_device);
+        objectmgr_increment_device_refcount(partition_device);
         /*
         * return device
         */
@@ -193,16 +193,16 @@ struct device* tfs_attach(struct device* partition_device) {
     }
 }
 
-void tfs_detach(struct device* dev) {
+void tfs_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct tfs_devicedata* device_data = (struct tfs_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->partition_device);
+    objectmgr_decrement_device_refcount(device_data->partition_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

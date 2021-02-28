@@ -8,7 +8,8 @@
 #include <dev/x86-64/kernelmap/kernelmap.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_kernelmap.h>
@@ -35,13 +36,13 @@ uint64_t debug_end = (uint64_t)&debug_end;
 /*
  * perform device instance specific init here
  */
-uint8_t kernelmap_device_init(struct device* dev) {
+uint8_t kernelmap_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
 }
 
-void kernelmap_read(struct device* dev, struct kernelmap* km) {
+void kernelmap_read(struct object* dev, struct kernelmap* km) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(km);
     km->text_start = text_start;
@@ -54,12 +55,12 @@ void kernelmap_read(struct device* dev, struct kernelmap* km) {
     km->debug_end = debug_end;
 }
 
-void kernelmap_devicemgr_register_devices() {
+void kernelmap_objectmgr_register_devices() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "Kernel map");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "Kernel map");
     deviceinstance->devicetype = KERNELMAP;
     deviceinstance->init = &kernelmap_device_init;
     /*
@@ -71,5 +72,5 @@ void kernelmap_devicemgr_register_devices() {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

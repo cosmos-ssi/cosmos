@@ -13,13 +13,13 @@
 #include <sys/string/mem.h>
 
 struct arp_devicedata {
-    struct device* ethernet_device;
+    struct object* ethernet_device;
 } __attribute__((packed));
 
 /*
  * perform device instance specific init here
  */
-uint8_t arp_init(struct device* dev) {
+uint8_t arp_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct arp_devicedata* device_data = (struct arp_devicedata*)dev->device_data;
@@ -30,7 +30,7 @@ uint8_t arp_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t arp_uninit(struct device* dev) {
+uint8_t arp_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
@@ -42,7 +42,7 @@ uint8_t arp_uninit(struct device* dev) {
 /*
 * perform an ARP request
 */
-void arp_request(struct device* dev, struct arp* request, struct arp* response) {
+void arp_request(struct object* dev, struct arp* request, struct arp* response) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     // get our device data for this device
@@ -56,19 +56,19 @@ void arp_request(struct device* dev, struct arp* request, struct arp* response) 
     // (*ether_api->read)(device_data->ethernet_device, (uint8_t*)response, sizeof(struct arp));
 }
 
-struct device* arp_attach(struct device* ethernet_device) {
+struct object* arp_attach(struct object* ethernet_device) {
     ASSERT_NOT_NULL(ethernet_device);
     ASSERT(ethernet_device->devicetype == ETHERNET);
 
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &arp_init;
     deviceinstance->uninit = &arp_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = ARP;
-    devicemgr_set_device_description(deviceinstance, "Address Resolution Protocol");
+    objectmgr_set_device_description(deviceinstance, "Address Resolution Protocol");
     /*
      * the device api
      */
@@ -85,11 +85,11 @@ struct device* arp_attach(struct device* ethernet_device) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(ethernet_device);
+        objectmgr_increment_device_refcount(ethernet_device);
         /*
         * return device
         */
@@ -102,18 +102,18 @@ struct device* arp_attach(struct device* ethernet_device) {
     }
 }
 
-void arp_detach(struct device* dev) {
+void arp_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct arp_devicedata* device_data = (struct arp_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->ethernet_device);
+    objectmgr_decrement_device_refcount(device_data->ethernet_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }
 
 void arp_packet_init(struct arp* a, uint16_t opcode) {

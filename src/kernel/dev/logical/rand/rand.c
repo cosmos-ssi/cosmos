@@ -19,7 +19,7 @@ struct rand_devicedata {
 /*
  * perform device instance specific init here
  */
-uint8_t rand_init(struct device* dev) {
+uint8_t rand_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
@@ -29,7 +29,7 @@ uint8_t rand_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t rand_uninit(struct device* dev) {
+uint8_t rand_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
 
@@ -40,7 +40,7 @@ uint8_t rand_uninit(struct device* dev) {
 /*
 * https://rosettacode.org/wiki/Linear_congruential_generator#C
 */
-uint64_t rand_read(struct device* dev) {
+uint64_t rand_read(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct rand_devicedata* device_data = (struct rand_devicedata*)dev->device_data;
@@ -48,16 +48,16 @@ uint64_t rand_read(struct device* dev) {
     return device_data->last;
 }
 
-struct device* rand_attach() {
+struct object* rand_attach() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &rand_init;
     deviceinstance->uninit = &rand_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = RAND;
-    devicemgr_set_device_description(deviceinstance, "LCG Random Number Generator");
+    objectmgr_set_device_description(deviceinstance, "LCG Random Number Generator");
     /*
      * the device api
      */
@@ -74,7 +74,7 @@ struct device* rand_attach() {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * return device
         */
@@ -86,7 +86,7 @@ struct device* rand_attach() {
     }
 }
 
-void rand_detach(struct device* dev) {
+void rand_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }

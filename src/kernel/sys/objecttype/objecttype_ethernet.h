@@ -10,7 +10,8 @@
 #ifndef _OBJECTTYPE_ETHERNET_H
 #define _OBJECTTYPE_ETHERNET_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 #define ETHERNET_HW_LEN 6
@@ -22,8 +23,8 @@ struct eth_hdr {
     uint8_t* data;
 };
 
-typedef void (*ethernet_read_function)(struct device* dev, struct eth_hdr* eth, uint16_t size);
-typedef void (*ethernet_write_function)(struct device* dev, struct eth_hdr* eth, uint16_t size);
+typedef void (*ethernet_read_function)(struct object* dev, struct eth_hdr* eth, uint16_t size);
+typedef void (*ethernet_write_function)(struct object* dev, struct eth_hdr* eth, uint16_t size);
 
 struct objecttype_ethernet {
     ethernet_read_function read;

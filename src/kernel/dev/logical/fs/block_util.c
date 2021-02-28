@@ -7,13 +7,14 @@
 
 #include <dev/logical/fs/block_util.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_block.h>
 #include <sys/string/mem.h>
 
-uint32_t blockutil_get_sector_count(struct device* dev) {
+uint32_t blockutil_get_sector_count(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT(1 == blockutil_is_block_device(dev));
@@ -23,7 +24,7 @@ uint32_t blockutil_get_sector_count(struct device* dev) {
     return (total_size / sector_size);
 }
 
-uint32_t blockutil_get_sector_size(struct device* dev) {
+uint32_t blockutil_get_sector_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT(1 == blockutil_is_block_device(dev));
@@ -35,7 +36,7 @@ uint32_t blockutil_get_sector_size(struct device* dev) {
     return (*block_api->sector_size)(dev);
 }
 
-uint32_t blockutil_get_total_size(struct device* dev) {
+uint32_t blockutil_get_total_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->api);
     ASSERT(1 == blockutil_is_block_device(dev));
@@ -50,7 +51,7 @@ uint32_t blockutil_get_total_size(struct device* dev) {
 /*
  * write multiple sectors
  */
-uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba,
+uint32_t blockutil_write(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba,
                          uint32_t start_byte) {
 
     //   kprintf("blockutil_write device %s, data_size %llu, start_lba %llu\n", dev->name, data_size, start_lba);
@@ -122,7 +123,7 @@ uint32_t blockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, 
 /*
  * read multiple sectors
  */
-uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba,
+uint32_t blockutil_read(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba,
                         uint32_t start_byte) {
 
     //  kprintf("blockutil_read device %s, data_size %llu, start_lba %llu\n", dev->name, data_size, start_lba);
@@ -186,7 +187,7 @@ uint32_t blockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, u
     return total_bytes_copied;
 }
 
-uint8_t blockutil_is_block_device(struct device* dev) {
+uint8_t blockutil_is_block_device(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     if ((dev->devicetype == DISK) || (dev->devicetype == VBLOCK) || (dev->devicetype == RAMDISK) ||
         (dev->devicetype == PARTITION)) {

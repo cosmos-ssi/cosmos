@@ -13,7 +13,7 @@
 void test_rtl8139() {
     uint8_t devicename[] = {"nic0"};
 
-    struct device* ethernet = devicemgr_find_device(devicename);
+    struct object* ethernet = objectmgr_find_device(devicename);
     if (0 != ethernet) {
     } else {
         kprintf("Unable to find %s\n", devicename);

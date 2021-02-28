@@ -10,12 +10,13 @@
 #ifndef _OBJECTTYPE_FLOPPY_H
 #define _OBJECTTYPE_FLOPPY_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
-typedef void (*floppy_read_sector_function)(struct device* dev, uint32_t lba, uint8_t* data, uint16_t size);
-typedef void (*floppy_write_sector_function)(struct device* dev, uint32_t lba, uint8_t* data, uint16_t size);
-typedef void (*floppy_reset_function)(struct device* dev);
+typedef void (*floppy_read_sector_function)(struct object* dev, uint32_t lba, uint8_t* data, uint16_t size);
+typedef void (*floppy_write_sector_function)(struct object* dev, uint32_t lba, uint8_t* data, uint16_t size);
+typedef void (*floppy_reset_function)(struct object* dev);
 
 struct objecttype_floppy {
     floppy_read_sector_function read;

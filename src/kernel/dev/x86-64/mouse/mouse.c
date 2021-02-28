@@ -9,7 +9,8 @@
 #include <dev/x86-64/pci/pci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
@@ -106,7 +107,7 @@ uint8_t mouse_read() {
 /*
  * perform device instance specific init here
  */
-uint8_t mouse_device_init(struct device* dev) {
+uint8_t mouse_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s at IRQ %llu (%s)\n", dev->description, MOUSE_IRQ_NUMBER, dev->name);
     interrupt_router_register_interrupt_handler(MOUSE_IRQ_NUMBER, &mouse_irq_read);
@@ -139,7 +140,7 @@ uint8_t mouse_device_init(struct device* dev) {
     return 1;
 }
 
-struct mouse_status* ps2mouse_status(struct device* dev) {
+struct mouse_status* ps2mouse_status(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(current_mouse_status);
     return current_mouse_status;
@@ -148,14 +149,14 @@ struct mouse_status* ps2mouse_status(struct device* dev) {
 /**
  * find all PS/2 mouse devices and register them
  */
-void mouse_devicemgr_register_devices() {
+void mouse_objectmgr_register_devices() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &mouse_device_init;
     deviceinstance->devicetype = MOUSE;
-    devicemgr_set_device_description(deviceinstance, "PS2 Mouse");
+    objectmgr_set_device_description(deviceinstance, "PS2 Mouse");
     /*
      * device api
      */
@@ -165,5 +166,5 @@ void mouse_devicemgr_register_devices() {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

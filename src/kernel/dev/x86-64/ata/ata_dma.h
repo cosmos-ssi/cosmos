@@ -33,7 +33,7 @@ typedef struct ata_dma_address {
 } ata_dma_address;
 
 typedef struct ata_dma_job {
-    device_t* dev;
+    struct object* dev;
     uint64_t sectors_total;
     uint64_t start_sector;
     BYTE* buf;
@@ -58,8 +58,8 @@ typedef ata_dma_prd prdt[2][16];
 extern prdt* ata_dma_prdt;
 extern ata_dma_buf* bufs;
 
-void ata_dma_add_job(device_t* dev, uint64_t start, uint64_t count, BYTE* buf, ata_dma_direction dir);
+void ata_dma_add_job(struct object* dev, uint64_t start, uint64_t count, BYTE* buf, ata_dma_direction dir);
 void ata_dma_init();
-void ata_dma_read(device_t* dev, uint64_t start, uint64_t count, BYTE* buf);
+void ata_dma_read(struct object* dev, uint64_t start, uint64_t count, BYTE* buf);
 
 #endif

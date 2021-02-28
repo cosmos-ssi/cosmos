@@ -11,7 +11,8 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 
@@ -24,7 +25,7 @@ void pci_ehci_handle_irq(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t pci_ehci_device_init(struct device* dev) {
+uint8_t pci_ehci_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s at IRQ %llu\n", dev->description, dev->pci->irq);
     interrupt_router_register_interrupt_handler(dev->pci->irq, &pci_ehci_handle_irq);
@@ -36,11 +37,11 @@ void pci_ehci_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &pci_ehci_device_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = BRIDGE;
-    devicemgr_set_device_description(deviceinstance, "PCI EHCI Controller");
+    objectmgr_set_device_description(deviceinstance, "PCI EHCI Controller");
     /*
      * device data
      */
@@ -49,12 +50,12 @@ void pci_ehci_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
 /**
  * find all bridge devices and register them
  */
-void pci_ehci_devicemgr_register_devices() {
-    pci_devicemgr_search_device(PCI_CLASS_BASE_PERI, 0x05, 0x1B36, 0x07, &pci_ehci_search_cb);
+void pci_ehci_objectmgr_register_devices() {
+    pci_objectmgr_search_device(PCI_CLASS_BASE_PERI, 0x05, 0x1B36, 0x07, &pci_ehci_search_cb);
 }

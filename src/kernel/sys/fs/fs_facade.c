@@ -7,13 +7,13 @@
 
 #include <dev/logical/fs/vfs/vfs.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/device.h>
 #include <sys/fs/fs_facade.h>
+#include <sys/objectmgr/object.h>
 #include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
-struct filesystem_node* fsfacade_get_fs_rootnode(struct device* filesystem_device) {
+struct filesystem_node* fsfacade_get_fs_rootnode(struct object* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(filesystem_device->device_data);
     struct objecttype_filesystem* fs_api = (struct objecttype_filesystem*)filesystem_device->api;

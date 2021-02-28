@@ -7,24 +7,24 @@ the CosmOS device manager at `/devicemgr/devicemgr.h` contains a database of phy
 
 # Registration
 
-* Call the "register" function for each device type. For example `network_devicemgr_register_devices()` registers the network devices.
+* Call the "register" function for each device type. For example `network_objectmgr_register_devices()` registers the network devices.
 
 * The device type register function for the type calls register functions for each driver. For example
 
 ```java
-void network_devicemgr_register_devices() {
-    rtl8139_devicemgr_register_devices();
-    ne2000_devicemgr_register_devices();
+void network_objectmgr_register_devices() {
+    rtl8139_objectmgr_register_devices();
+    ne2000_objectmgr_register_devices();
 }
 ```
 
-Each device driver's register function finds all instance of the specific device type, and calls `void devicemgr_register_device(struct device* dev);` to register each instance.
+Each device driver's register function finds all instance of the specific device type, and calls `void objectmgr_register_device(struct object* dev);` to register each instance.
 
 Device's on the PCI bus can use the PCI search functions to find device instances
 
 ```
-void pci_devicemgr_search_device(pci_class,pci_subclass, vendor_id, device_id, pcideviceSearchCallback cb);
-void pci_devicemgr_search_devicetype(pci_class,pci_subclass, pcideviceSearchCallback cb);
+void pci_objectmgr_search_device(pci_class,pci_subclass, vendor_id, device_id, pcideviceSearchCallback cb);
+void pci_objectmgr_search_devicetype(pci_class,pci_subclass, pcideviceSearchCallback cb);
 ```
 
 The callback function `typedef void (*deviceSearchCallback)(struct pci_device* dev);` is called once for each device instance found in the PCI database.
@@ -53,7 +53,7 @@ These devices should expose an attach() API, and an unattach() API which can dyn
 
 The function `void initDevices();` is used by the device manager to initialize all fixed hardware devices. The devices will have passed a pointer to a init function with this prototype:
 
-`typedef void (*device_init)(struct device* dev);`
+`typedef void (*device_init)(struct object* dev);`
 
 The DeviceMgr will assign a unique name to each device such as "serial0".
 
@@ -62,7 +62,7 @@ The DeviceMgr will assign a unique name to each device such as "serial0".
 The enum `device_type` includes all types of devices known by CosmOS.  
 
 ```java
-typedef enum device_type {
+typedef enum object_type {
     NONE = 0x00,
     SERIAL = 0x01,
     VGA = 0x02,
@@ -101,7 +101,7 @@ It is not generally encouraged to include header files in the subdirectory /kern
 
 ```java
 	// query the device manager for the device serial0
-	struct device* serial0 = devicemgr_find_device("serial0");
+	struct object* serial0 = objectmgr_find_device("serial0");
 	// get the serial device api for the device
 	struct objecttype_serial* serial_api = (struct objecttype_serial*) serial0->api;
 	// get the "write" function from the api

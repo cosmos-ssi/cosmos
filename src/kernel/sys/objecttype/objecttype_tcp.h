@@ -10,11 +10,12 @@
 #ifndef _OBJECTTYPE_TCP_H
 #define _OBJECTTYPE_TCP_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
-typedef void (*tcp_read_function)(struct device* dev, uint8_t* data, uint16_t size);
-typedef void (*tcp_write_function)(struct device* dev, uint8_t* data, uint16_t size);
+typedef void (*tcp_read_function)(struct object* dev, uint8_t* data, uint16_t size);
+typedef void (*tcp_write_function)(struct object* dev, uint8_t* data, uint16_t size);
 
 struct objecttype_tcp {
     tcp_read_function read;

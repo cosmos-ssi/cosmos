@@ -8,7 +8,8 @@
 #include <dev/x86-64/cmos/cmos.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_cmos.h>
 
@@ -42,18 +43,18 @@ uint8_t cmos_read_register(uint8_t reg) {
  * perform device instance specific init here
  */
 
-uint8_t cmos_device_init(struct device* dev) {
+uint8_t cmos_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Init %s (%s)\n", dev->description, dev->name);
     return 1;
 }
 
-void cmos_devicemgr_register_devices() {
+void cmos_objectmgr_register_devices() {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
-    devicemgr_set_device_description(deviceinstance, "i386 CMOS");
+    struct object* deviceinstance = objectmgr_new_device();
+    objectmgr_set_device_description(deviceinstance, "i386 CMOS");
     deviceinstance->devicetype = CMOS;
     deviceinstance->init = &cmos_device_init;
     /*
@@ -64,5 +65,5 @@ void cmos_devicemgr_register_devices() {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

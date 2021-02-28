@@ -18,7 +18,7 @@
 void test_arp() {
     uint8_t devicename[] = {"arp0"};
 
-    struct device* arp = devicemgr_find_device(devicename);
+    struct object* arp = objectmgr_find_device(devicename);
     if (0 != arp) {
         struct objecttype_arp* arp_api = (struct objecttype_arp*)arp->api;
 

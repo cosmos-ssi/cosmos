@@ -8,15 +8,15 @@
 #ifndef _FS_UTIL_H
 #define _FS_UTIL_H
 
-struct device;
+struct object;
 
-void fsutil_attach_partition_tables(struct device* block_dev);
-void fsutil_detach_partition_tables(struct device* block_dev);
+void fsutil_attach_partition_tables(struct object* block_dev);
+void fsutil_detach_partition_tables(struct object* block_dev);
 
-void fsutil_attach_partitions(struct device* partition_table_dev);
-void fsutil_detach_partitions(struct device* partition_table_dev);
+void fsutil_attach_partitions(struct object* partition_table_dev);
+void fsutil_detach_partitions(struct object* partition_table_dev);
 
-void fsutil_attach_fs(struct device* partition_dev);
-void fsutil_detach_fs(struct device* partition_dev);
+void fsutil_attach_fs(struct object* partition_dev);
+void fsutil_detach_fs(struct object* partition_dev);
 
 #endif

@@ -8,7 +8,8 @@
 #ifndef _TFS_BLOCK_H
 #define _TFS_BLOCK_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 #define TFS_BLOCK_SIZE 512
@@ -51,13 +52,13 @@ struct tfs_map_block {
     uint8_t map[TFS_SECTORS_PER_MAP_BLOCK];
 } __attribute__((packed));
 
-void tfs_read_superblock(struct device* dev, struct tfs_superblock_block* superblock);
-void tfs_write_superblock(struct device* dev, struct tfs_superblock_block* superblock);
-void tfs_write_dir_block(struct device* dev, struct tfs_dir_block* dir_block, uint64_t lba);
-void tfs_read_dir_block(struct device* dev, struct tfs_dir_block* dir_block, uint64_t lba);
-void tfs_write_map_block(struct device* dev, struct tfs_map_block* map_block, uint64_t lba);
-void tfs_read_map_block(struct device* dev, struct tfs_map_block* map_block, uint64_t lba);
-void tfs_write_file_block(struct device* dev, struct tfs_file_block* file_block, uint64_t lba);
-void tfs_read_file_block(struct device* dev, struct tfs_file_block* file_block, uint64_t lba);
+void tfs_read_superblock(struct object* dev, struct tfs_superblock_block* superblock);
+void tfs_write_superblock(struct object* dev, struct tfs_superblock_block* superblock);
+void tfs_write_dir_block(struct object* dev, struct tfs_dir_block* dir_block, uint64_t lba);
+void tfs_read_dir_block(struct object* dev, struct tfs_dir_block* dir_block, uint64_t lba);
+void tfs_write_map_block(struct object* dev, struct tfs_map_block* map_block, uint64_t lba);
+void tfs_read_map_block(struct object* dev, struct tfs_map_block* map_block, uint64_t lba);
+void tfs_write_file_block(struct object* dev, struct tfs_file_block* file_block, uint64_t lba);
+void tfs_read_file_block(struct object* dev, struct tfs_file_block* file_block, uint64_t lba);
 
 #endif

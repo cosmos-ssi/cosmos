@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void cpu_devicemgr_register_devices();
+void cpu_objectmgr_register_devices();
 
 #endif

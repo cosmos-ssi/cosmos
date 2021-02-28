@@ -10,9 +10,9 @@
 
 #include <types.h>
 
-struct device;
+struct object;
 
-struct device* swap_attach(struct device* block_device);
-void swap_detach(struct device* dev);
+struct object* swap_attach(struct object* block_device);
+void swap_detach(struct object* dev);
 
 #endif

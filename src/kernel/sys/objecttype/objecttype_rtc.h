@@ -10,7 +10,8 @@
 #ifndef _OBJECTTYPE_RTC_H
 #define _OBJECTTYPE_RTC_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 typedef struct rtc_time_t {
@@ -24,7 +25,7 @@ typedef struct rtc_time_t {
     uint8_t century;
 } rtc_time_t;
 
-typedef rtc_time_t (*rtc_time_function)(struct device* dev);
+typedef rtc_time_t (*rtc_time_function)(struct object* dev);
 typedef void (*rtc_event)();
 typedef void (*rtc_subscribe_function)(rtc_event event);
 

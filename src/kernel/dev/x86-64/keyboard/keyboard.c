@@ -10,7 +10,8 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/ringbuffer/ringbuffer.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_keyboard.h>
@@ -170,7 +171,7 @@ void keyboard_send_command_queue() {}
 /*
  * perform device instance specific init here
  */
-uint8_t keyboard_device_init(struct device* dev) {
+uint8_t keyboard_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     //  struct pci_device* pci_dev = (struct pci_device*)dev->device_data;
     kprintf("Init %s at IRQ %llu (%s)\n", dev->description, KB_IRQ_NUMBER, dev->name);
@@ -178,7 +179,7 @@ uint8_t keyboard_device_init(struct device* dev) {
     return 1;
 }
 
-key_action_t* keyboard_read(struct device* dev) {
+key_action_t* keyboard_read(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     PANIC("Keyboard read not implemented yet");
     return 0;
@@ -187,16 +188,16 @@ key_action_t* keyboard_read(struct device* dev) {
 /**
  * find all keyboard devices and register them
  */
-void keyboard_devicemgr_register_devices() {
+void keyboard_objectmgr_register_devices() {
     keyboard_ringbuffer = ringbuffer_new(KBD_RINGBUFFER_SIZE);
 
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &keyboard_device_init;
     deviceinstance->devicetype = KEYBOARD;
-    devicemgr_set_device_description(deviceinstance, "PS2 Keyboard");
+    objectmgr_set_device_description(deviceinstance, "PS2 Keyboard");
     /*
      * the device api
      */
@@ -206,5 +207,5 @@ void keyboard_devicemgr_register_devices() {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }

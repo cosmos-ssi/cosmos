@@ -10,7 +10,8 @@
 #ifndef _OBJECTTYPE_CMOS_H
 #define _OBJECTTYPE_CMOS_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 struct objecttype_cmos {};

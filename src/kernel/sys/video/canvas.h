@@ -15,19 +15,19 @@
 #include <sys/objecttype/objecttype_bga.h>
 #include <types.h>
 
-struct device;
+struct object;
 struct psf1_font;
 struct bmp;
 
 struct canvas {
     uint8_t* buffer;
-    struct device* dev;
+    struct object* dev;
     uint32_t buffer_size;
     uint32_t bytes_per_pixel;
     struct objecttype_resolution resolution;
 };
 
-struct canvas* canvas_new(struct device* dev);
+struct canvas* canvas_new(struct object* dev);
 void canvas_delete(struct canvas* cvs);
 /*
 * draw a line from x0,y0 to x1,y1

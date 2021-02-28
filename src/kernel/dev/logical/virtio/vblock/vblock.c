@@ -14,7 +14,8 @@
 #include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
@@ -87,7 +88,7 @@ void vblock_irq_handler(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t vblock_init(struct device* dev) {
+uint8_t vblock_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
 
@@ -150,7 +151,7 @@ uint8_t vblock_init(struct device* dev) {
     return 1;
 }
 
-uint32_t vblockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t vblockutil_read(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -192,7 +193,7 @@ uint32_t vblockutil_read(struct device* dev, uint8_t* data, uint32_t data_size, 
     return 0;
 }
 
-uint32_t vblockutil_write(struct device* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+uint32_t vblockutil_write(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -201,14 +202,14 @@ uint32_t vblockutil_write(struct device* dev, uint8_t* data, uint32_t data_size,
     return 0;
 }
 
-uint16_t vblock_sector_size(struct device* dev) {
+uint16_t vblock_sector_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct vblock_devicedata* device_data = (struct vblock_devicedata*)dev->device_data;
     return device_data->sectorLength;
 }
 
-uint32_t vblock_total_size(struct device* dev) {
+uint32_t vblock_total_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct vblock_devicedata* device_data = (struct vblock_devicedata*)dev->device_data;
@@ -220,11 +221,11 @@ void vblock_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &vblock_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = VBLOCK;
-    devicemgr_set_device_description(deviceinstance, "Virtio ATA");
+    objectmgr_set_device_description(deviceinstance, "Virtio ATA");
     /*
      * device data
      */
@@ -243,13 +244,13 @@ void vblock_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
 /**
  * find all virtio block devices and register them
  */
-void vblock_devicemgr_register_devices() {
-    pci_devicemgr_search_device(PCI_CLASS_MASS_STORAGE, PCI_MASS_STORAGE_SUBCLASS_SCSI, VIRTIO_PCI_MANUFACTURER,
+void vblock_objectmgr_register_devices() {
+    pci_objectmgr_search_device(PCI_CLASS_MASS_STORAGE, PCI_MASS_STORAGE_SUBCLASS_SCSI, VIRTIO_PCI_MANUFACTURER,
                                 VIRTIO_PCI_DEVICED_BLOCK, &vblock_search_cb);
 }

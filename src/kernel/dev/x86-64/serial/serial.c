@@ -11,7 +11,8 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/ringbuffer/ringbuffer.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_serial.h>
@@ -41,7 +42,7 @@ void serial_write_char(const uint8_t c) {
     asm_out_b((uint64_t) & (comport->data), c);
 }
 
-void serial_irq_handler_for_device(struct device* dev) {
+void serial_irq_handler_for_device(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     //    struct serial_devicedata* device_data = (struct serial_devicedata*)dev->device_data;
@@ -55,7 +56,7 @@ void serial_irq_handler_for_device(struct device* dev) {
 }
 void serial_irq_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
-    devicemgr_find_devices_by_description(SERIAL, SERIAL_DESCRIPTION, &serial_irq_handler_for_device);
+    objectmgr_find_devices_by_description(SERIAL, SERIAL_DESCRIPTION, &serial_irq_handler_for_device);
 }
 
 void serial_write_string(const uint8_t* c) {
@@ -88,7 +89,7 @@ void serial_init_port(uint64_t portAddress) {
 /*
  * perform device instance specific init here
  */
-uint8_t serial_device_init(struct device* dev) {
+uint8_t serial_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     struct serial_devicedata* device_data = (struct serial_devicedata*)dev->device_data;
     kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", dev->description, device_data->irq, device_data->address,
@@ -98,7 +99,7 @@ uint8_t serial_device_init(struct device* dev) {
     return 1;
 }
 
-void serial_write(struct device* dev, const int8_t* c) {
+void serial_write(struct object* dev, const int8_t* c) {
     ASSERT_NOT_NULL(dev);
     serial_write_string(c);
 }
@@ -114,11 +115,11 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * the device instance
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &serial_device_init;
     deviceinstance->device_data = device_data;
     deviceinstance->devicetype = SERIAL;
-    devicemgr_set_device_description(deviceinstance, SERIAL_DESCRIPTION);
+    objectmgr_set_device_description(deviceinstance, SERIAL_DESCRIPTION);
     /*
      * the device api
      */
@@ -128,13 +129,13 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * register
      */
-    devicemgr_register_device(deviceinstance);
+    objectmgr_register_device(deviceinstance);
 }
 
 /**
  * find all RS232 devices and register them
  */
-void serial_devicemgr_register_devices() {
+void serial_objectmgr_register_devices() {
     // serial0
     uint16_t serial0_base = bda_serial0_base();
     if (0 != serial0_base) {

@@ -8,7 +8,8 @@
 #include <dev/logical/fs/initrd/initrd.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_filesystem.h>
@@ -22,11 +23,11 @@ void test_initrd() {
     // boot disk.....
     uint8_t devicename[] = {INITRD_DISK};
 
-    struct device* dsk = devicemgr_find_device(devicename);
+    struct object* dsk = objectmgr_find_device(devicename);
     if (0 != dsk) {
         //    kprintf("lba %llu\n", initrd_lba());
 
-        struct device* initrd = initrd_attach(dsk, initrd_lba());
+        struct object* initrd = initrd_attach(dsk, initrd_lba());
         ASSERT_NOT_NULL(initrd);
 
         struct filesystem_node* fs_root_node = fsfacade_get_fs_rootnode(initrd);

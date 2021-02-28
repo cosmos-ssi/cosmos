@@ -11,7 +11,7 @@
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
-struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, struct device* dev, const uint8_t* name,
+struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, struct object* dev, const uint8_t* name,
                                             uint64_t id, void* node_data) {
 
     ASSERT_NOT_NULL(dev);

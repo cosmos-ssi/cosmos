@@ -12,7 +12,8 @@
 #include <dev/logical/fs/node_util.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_block.h>
@@ -33,7 +34,7 @@ struct initrd_header {
 };
 
 struct initrd_devicedata {
-    struct device* partition_device;
+    struct object* partition_device;
     uint32_t lba;
     struct initrd_header header;
     struct filesystem_node* root_node;
@@ -43,7 +44,7 @@ struct initrd_devicedata {
 /*
  * perform device instance specific init here
  */
-uint8_t initrd_init(struct device* dev) {
+uint8_t initrd_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
@@ -60,7 +61,7 @@ uint8_t initrd_init(struct device* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t initrd_uninit(struct device* dev) {
+uint8_t initrd_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
@@ -72,7 +73,7 @@ uint8_t initrd_uninit(struct device* dev) {
     return 1;
 }
 
-struct filesystem_node* initrd_get_root_node(struct device* filesystem_device) {
+struct filesystem_node* initrd_get_root_node(struct object* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(filesystem_device->device_data);
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)filesystem_device->device_data;
@@ -220,19 +221,19 @@ uint64_t initrd_size(struct filesystem_node* fs_node) {
     }
 }
 
-struct device* initrd_attach(struct device* partition_device, uint32_t lba) {
+struct object* initrd_attach(struct object* partition_device, uint32_t lba) {
     ASSERT_NOT_NULL(partition_device);
     ASSERT(1 == blockutil_is_block_device(partition_device));
 
     /*
      * register device
      */
-    struct device* deviceinstance = devicemgr_new_device();
+    struct object* deviceinstance = objectmgr_new_device();
     deviceinstance->init = &initrd_init;
     deviceinstance->uninit = &initrd_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = FILESYSTEM;
-    devicemgr_set_device_description(deviceinstance, "initrd File System");
+    objectmgr_set_device_description(deviceinstance, "initrd File System");
     /*
      * the device api
      */
@@ -259,11 +260,11 @@ struct device* initrd_attach(struct device* partition_device, uint32_t lba) {
     /*
      * register
      */
-    if (0 != devicemgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_device(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        devicemgr_increment_device_refcount(partition_device);
+        objectmgr_increment_device_refcount(partition_device);
         /*
         * return device
         */
@@ -278,18 +279,18 @@ struct device* initrd_attach(struct device* partition_device, uint32_t lba) {
     }
 }
 
-void initrd_detach(struct device* dev) {
+void initrd_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
     /*
     * decrease ref count of underlying device
     */
-    devicemgr_decrement_device_refcount(device_data->partition_device);
+    objectmgr_decrement_device_refcount(device_data->partition_device);
     /*
     * detach
     */
-    devicemgr_detach_device(dev);
+    objectmgr_detach_device(dev);
 }
 
 /*

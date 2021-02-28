@@ -10,7 +10,8 @@
 #ifndef _OBJECTTYPE_KERNELMAP_H
 #define _OBJECTTYPE_KERNELMAP_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 struct kernelmap {
@@ -24,7 +25,7 @@ struct kernelmap {
     uint64_t debug_end;
 };
 
-typedef void (*kernelmap_read_function)(struct device* dev, struct kernelmap* km);
+typedef void (*kernelmap_read_function)(struct object* dev, struct kernelmap* km);
 
 struct objecttype_kernelmap {
     kernelmap_read_function read;

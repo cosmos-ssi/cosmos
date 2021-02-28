@@ -10,7 +10,8 @@
 #ifndef _OBJECTTYPE_ICMP_H
 #define _OBJECTTYPE_ICMP_H
 
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 struct icmp_v4 {
@@ -33,8 +34,8 @@ struct icmp_v4_dst_unreachable {
     uint8_t data[];
 } __attribute__((packed));
 
-typedef void (*icmp_read_function)(struct device* dev, uint8_t* data, uint16_t size);
-typedef void (*icmp_write_function)(struct device* dev, uint8_t* data, uint16_t size);
+typedef void (*icmp_read_function)(struct object* dev, uint8_t* data, uint16_t size);
+typedef void (*icmp_write_function)(struct object* dev, uint8_t* data, uint16_t size);
 
 struct objecttype_ip {
     icmp_read_function read;
