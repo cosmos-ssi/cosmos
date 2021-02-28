@@ -15,7 +15,7 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
-#include <sys/obj/objectmgr/objecttypes.h>
+#include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
@@ -153,7 +153,7 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
         /*
         * every device type has a unique integer to identify it, so that can be the node_id
         */
-        for (uint32_t i = 0; i < MAX_DEVICE_TYPES; i++) {
+        for (uint32_t i = 0; i < MAX_OBJECT_TYPES; i++) {
             struct arraylist* lst = objecttypes_get_objectlist(i);
             if (0 != lst) {
                 struct filesystem_node* this_node = node_cache_find(object_data->nc, i);

@@ -4,14 +4,10 @@
 // Released under the stated terms in the file LICENSE            *
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
-/*
-* these tests are used by other tests, of block devices like ata, partition, ramdisk...
-*/
-#ifndef __TEST_BLOCKDEVICE_H
-#define __TEST_BLOCKDEVICE_H
 
-#include <sys/obj/object/object.h>
+#ifndef _OBJECTTYPE_HPP
+#define _OBJECTTYPE_HPP
 
-void test_block_device(struct object* obj);
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #endif

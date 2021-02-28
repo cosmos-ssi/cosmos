@@ -12,7 +12,7 @@
 
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/objectmgr/objectregistry.h>
+#include <sys/obj/objectregistry/objectregistry.h>
 #include <sys/string/string.h>
 
 #define MAX_DEVICE_NAME_LENGTH 128
@@ -41,7 +41,7 @@ void objectmgr_register_object(struct object* obj) {
     /*
      * set index
      */
-    obj->type_index = objectregistry_devicecount_type(obj->objectype);
+    obj->type_index = objectregistry_objectcount_type(obj->objectype);
     /*
      * create name
      */
@@ -49,7 +49,7 @@ void objectmgr_register_object(struct object* obj) {
     /*
      * register
      */
-    objectregistry_registerdevice(obj);
+    objectregistry_registerobject(obj);
 }
 
 void objectmgr_unregister_object(struct object* obj) {
@@ -57,11 +57,11 @@ void objectmgr_unregister_object(struct object* obj) {
     /*
      * unregister
      */
-    objectregistry_unregisterdevice(obj);
+    objectregistry_unregisterobject(obj);
 }
 
 uint16_t objectmgr_object_count() {
-    return objectregistry_devicecount();
+    return objectregistry_objectcount();
 }
 
 void obj_initIterator(struct object* obj) {
@@ -167,20 +167,20 @@ void objectmgr_set_object_description(struct object* obj, const uint8_t* descrip
 
 struct object* objectmgr_find_object(const uint8_t* name) {
     ASSERT_NOT_NULL(name);
-    return objectregistry_find_device(name);
+    return objectregistry_find_object(name);
 }
 
-void objectmgr_find_objects_by_description(object_type dt, const uint8_t* description, deviceSearchCallback cb) {
+void objectmgr_find_objects_by_description(object_type dt, const uint8_t* description, objectSearchCallback cb) {
     ASSERT_NOT_NULL(description);
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
-    objectregistry_find_devices_by_description(dt, description, cb);
+    objectregistry_find_objects_by_description(dt, description, cb);
 }
 
-void objectmgr_find_objects_by_device_type(object_type dt, deviceSearchCallback cb) {
+void objectmgr_find_objects_by_device_type(object_type dt, objectSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
-    objectregistry_find_devices_by_objectype(dt, cb);
+    objectregistry_find_objects_by_objectype(dt, cb);
 }
 
 #ifdef TARGET_PLATFORM_i386

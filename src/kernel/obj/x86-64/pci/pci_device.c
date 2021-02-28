@@ -13,7 +13,7 @@
 struct arraylist* pci_devices;
 
 void pci_objectmgr_search_device(pci_class_codes pci_class, uint8_t pci_subclass, uint16_t vendor_id,
-                                 uint16_t device_id, pcideviceSearchCallback cb) {
+                                 uint16_t device_id, pciobjectSearchCallback cb) {
     ASSERT_NOT_NULL(pci_devices);
     uint16_t i = 0;
     for (i = 0; i < arraylist_count(pci_devices); i++) {
@@ -26,7 +26,7 @@ void pci_objectmgr_search_device(pci_class_codes pci_class, uint8_t pci_subclass
     }
 }
 
-void pci_objectmgr_search_objectype(pci_class_codes pci_class, uint8_t pci_subclass, pcideviceSearchCallback cb) {
+void pci_objectmgr_search_objectype(pci_class_codes pci_class, uint8_t pci_subclass, pciobjectSearchCallback cb) {
     ASSERT_NOT_NULL(pci_devices);
     uint16_t i = 0;
     for (i = 0; i < arraylist_count(pci_devices); i++) {

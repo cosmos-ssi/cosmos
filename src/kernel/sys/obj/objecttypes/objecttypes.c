@@ -7,21 +7,21 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/objectmgr/objecttypes.h>
+#include <sys/obj/objecttypes/objecttypes.h>
 
 struct array* types;
 
 void objecttypes_init() {
     //   kprintf("Init Device Types\n");
-    types = array_new(MAX_DEVICE_TYPES);
-    for (uint16_t i = 0; i < MAX_DEVICE_TYPES; i++) {
+    types = array_new(MAX_OBJECT_TYPES);
+    for (uint16_t i = 0; i < MAX_OBJECT_TYPES; i++) {
         array_set(types, i, 0);
     }
 }
 
 struct arraylist* objecttypes_get_objectlist(object_type dt) {
     ASSERT_NOT_NULL(types);
-    if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
+    if ((dt >= 0) && (dt < MAX_OBJECT_TYPES)) {
         return (struct arraylist*)array_get(types, dt);
     } else {
         PANIC("Invalid device type passed to objecttypes_get_objectlist");
@@ -31,7 +31,7 @@ struct arraylist* objecttypes_get_objectlist(object_type dt) {
 
 void objecttypes_set_objectlist(object_type dt, struct arraylist* lst) {
     ASSERT_NOT_NULL(types);
-    if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
+    if ((dt >= 0) && (dt < MAX_OBJECT_TYPES)) {
         array_set(types, dt, lst);
     } else {
         PANIC("Invalid device type passed to objecttypes_set_objectlist");
@@ -40,7 +40,7 @@ void objecttypes_set_objectlist(object_type dt, struct arraylist* lst) {
 
 uint32_t objecttypes_count() {
     uint32_t ret = 0;
-    for (uint32_t i = 0; i < MAX_DEVICE_TYPES; i++) {
+    for (uint32_t i = 0; i < MAX_OBJECT_TYPES; i++) {
         if (0 != array_get(types, i)) {
             ret += 1;
         }

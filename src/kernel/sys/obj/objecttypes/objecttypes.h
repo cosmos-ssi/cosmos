@@ -12,7 +12,7 @@
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 
-#define MAX_DEVICE_TYPES 256
+#define MAX_OBJECT_TYPES 256
 
 void objecttypes_init();
 struct arraylist* objecttypes_get_objectlist(object_type dt);

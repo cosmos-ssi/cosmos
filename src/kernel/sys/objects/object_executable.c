@@ -10,7 +10,7 @@
 #include <sys/fs/fs_facade.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/objectmgr/object.h>
+#include <sys/obj/object/object.h>
 #include <sys/objects/objects.h>
 #include <sys/string/string.h>
 #include <sys/x86-64/mm/mm.h>
