@@ -7,11 +7,14 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/string/mem.h>
 #include <sys/sync/sync.h>
 #include <sys/x86-64/mm/pagetables.h>
+
+pttentry proc_obtain_cr3();
 
 pid_t proc_create() {
     proc_info_t* proc_info;
@@ -29,15 +32,23 @@ pid_t proc_create() {
     return proc_info->pid;
 }
 
-void setup_user_process(pid_t pid, object_handle_t exe_obj) {
+pttentry proc_obtain_cr3() {
     uint64_t cr3_page;
     pttentry proc_cr3;
 
     cr3_page = slab_allocate(1, PDT_INUSE);
     ASSERT_NOT_NULL(cr3_page);
-    proc_cr3 = cr3_page * PAGE_SIZE;  // we don't need to set any flags
 
-    proc_table_get(pid)->cr3 = proc_cr3;
+    proc_cr3 = cr3_page * PAGE_SIZE;  // we don't need to set any flags
+    memset(CONV_PHYS_ADDR(proc_cr3), 0, PAGE_SIZE);
+
+    return proc_cr3;
+}
+
+void setup_user_process(pid_t pid, object_handle_t exe_obj) {
+
+    proc_table_get(pid)->cr3 = proc_obtain_cr3();
+    kprintf("cr3: 0x%llX\n", proc_table_get(pid)->cr3);
 
     return;
 }
