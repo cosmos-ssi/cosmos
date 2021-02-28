@@ -5,21 +5,23 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_floppy.h>
-#include <tests/dev/test_floppy.h>
+#include <sys/objecttype/objecttype_block.h>
+#include <sys/string/mem.h>
+#include <sys/string/string.h>
+#include <tests/obj/test_blockdevice.h>
+#include <tests/obj/test_vblock.h>
 
-void floppyread() {
-    // get the floppy
-    struct object* floppy = objectmgr_find_object("floppy0");
-    if (0 != floppy) {
-        struct objecttype_floppy* floppy_api = (struct objecttype_floppy*)floppy->api;
+void test_vblock() {
+    // get virtual block device
+    uint8_t devicename[] = {"vblock0"};
 
-        uint8_t data[256];
-        (*floppy_api->read)(floppy, 0, data, 255);
-        debug_show_memblock(data, 32);
+    struct object* vblock = objectmgr_find_object(devicename);
+    if (0 != vblock) {
+        test_block_device(vblock);
     } else {
-        kprintf("Unable to find floppy0\n");
+        kprintf("Unable to find %s\n", devicename);
     }
 }

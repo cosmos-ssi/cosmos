@@ -7,7 +7,7 @@
 
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_cpu.h>
-#include <tests/dev/test_cpu.h>
+#include <tests/obj/test_cpu.h>
 
 void show_cpu_data() {
     // get the CPU

@@ -5,16 +5,17 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/x86-64/acpi/acpi.h>
-#include <obj/x86-64/bda/bda.h>
-#include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <tests/dev/test_bda.h>
+#include <sys/objecttype/objecttype_vga.h>
+#include <tests/obj/test_display.h>
 
-void test_acpi() {
-    kprintf("Testing ACPI\n");
-    struct fadt* fadt = acpi_get_fadt();
-    ASSERT_NOT_NULL(fadt);
-    debug_show_memblock((uint8_t*)fadt, 32);
+void test_display() {
+    // get the display
+    struct object* vga = objectmgr_find_object("vga0");
+    if (0 != vga) {
+        struct objecttype_vga* vga_api = (struct objecttype_vga*)vga->api;
+        (*vga_api->write_text)(vga, "hi", 1, 1, NULL, VGA_TEXT_WHITE, VGA_TEXT_BLACK);
+    } else {
+        kprintf("Unable to find %s\n", vga);
+    }
 }

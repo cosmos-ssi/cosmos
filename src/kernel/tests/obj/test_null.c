@@ -8,7 +8,7 @@
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_null.h>
-#include <tests/dev/test_null.h>
+#include <tests/obj/test_null.h>
 
 void test_null() {
     kprintf("Testing null\n");

@@ -8,7 +8,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_speaker.h>
 #include <sys/sleep/sleep.h>
-#include <tests/dev/test_speaker.h>
+#include <tests/obj/test_speaker.h>
 
 /* void BeethovensFifth() {
     // get the speaker

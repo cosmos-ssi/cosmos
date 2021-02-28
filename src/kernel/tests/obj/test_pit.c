@@ -9,7 +9,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_pit.h>
 #include <sys/sleep/sleep.h>
-#include <tests/dev/test_pit.h>
+#include <tests/obj/test_pit.h>
 
 void test_pit() {
     // get the PIT

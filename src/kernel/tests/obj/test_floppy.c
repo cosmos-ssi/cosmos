@@ -7,15 +7,19 @@
 
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_nic.h>
-#include <tests/dev/test_rtl8139.h>
+#include <sys/objecttype/objecttype_floppy.h>
+#include <tests/obj/test_floppy.h>
 
-void test_rtl8139() {
-    uint8_t devicename[] = {"nic0"};
+void floppyread() {
+    // get the floppy
+    struct object* floppy = objectmgr_find_object("floppy0");
+    if (0 != floppy) {
+        struct objecttype_floppy* floppy_api = (struct objecttype_floppy*)floppy->api;
 
-    struct object* ethernet = objectmgr_find_object(devicename);
-    if (0 != ethernet) {
+        uint8_t data[256];
+        (*floppy_api->read)(floppy, 0, data, 255);
+        debug_show_memblock(data, 32);
     } else {
-        kprintf("Unable to find %s\n", devicename);
+        kprintf("Unable to find floppy0\n");
     }
 }

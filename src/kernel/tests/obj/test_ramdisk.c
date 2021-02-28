@@ -9,8 +9,8 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <tests/dev/test_blockdevice.h>
-#include <tests/dev/test_ramdisk.h>
+#include <tests/obj/test_blockdevice.h>
+#include <tests/obj/test_ramdisk.h>
 
 #define RAMDISK_SECTOR_SIZE 512
 #define RAMDISK_TOTAL_SECTORS 1000

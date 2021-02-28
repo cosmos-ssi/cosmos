@@ -11,7 +11,7 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <tests/dev/test_smbios.h>
+#include <tests/obj/test_smbios.h>
 
 void test_smbios() {
     kprintf("Testing SMBIOS\n");

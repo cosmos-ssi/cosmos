@@ -9,7 +9,7 @@
 #include <sys/objecttype/objecttype_dsp.h>
 //#include <sys/sound/tone.h>
 //#include <sys/sound/wav.h>
-#include <tests/dev/test_sb16.h>
+#include <tests/obj/test_sb16.h>
 
 void test_sb16() {
     // get the sb

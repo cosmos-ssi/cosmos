@@ -7,7 +7,7 @@
 
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_parallel.h>
-#include <tests/dev/test_parallel.h>
+#include <tests/obj/test_parallel.h>
 
 void test_parallel() {
     uint8_t devicename[] = {"par0"};

@@ -13,8 +13,8 @@
 #include <sys/objecttype/objecttype_block.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
-#include <tests/dev/test_ata.h>
-#include <tests/dev/test_blockdevice.h>
+#include <tests/obj/test_ata.h>
+#include <tests/obj/test_blockdevice.h>
 
 void test_ata1() {
     kprintf("Testing ATA Device...\n");

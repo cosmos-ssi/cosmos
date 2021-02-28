@@ -8,7 +8,7 @@
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_rtc.h>
-#include <tests/dev/test_rtc.h>
+#include <tests/obj/test_rtc.h>
 
 void test_rtc() {
     // get the time, b/c we can

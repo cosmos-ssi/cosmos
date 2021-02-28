@@ -5,17 +5,17 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/x86-64/kernelmap/kernelmap.h>
-#include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
-#include <tests/dev/test_kernelmap.h>
+#include <sys/objecttype/objecttype_nic.h>
+#include <tests/obj/test_rtl8139.h>
 
-void test_kernelmap() {
-    kprintf("Testing Kernelmap\n");
+void test_rtl8139() {
+    uint8_t devicename[] = {"nic0"};
 
-    struct object* dev = objectmgr_find_object("kernelmap0");
-    ASSERT_NOT_NULL(dev);
+    struct object* ethernet = objectmgr_find_object(devicename);
+    if (0 != ethernet) {
+    } else {
+        kprintf("Unable to find %s\n", devicename);
+    }
 }

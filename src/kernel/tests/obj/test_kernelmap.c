@@ -5,23 +5,17 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <obj/x86-64/kernelmap/kernelmap.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_block.h>
-#include <sys/string/mem.h>
-#include <sys/string/string.h>
-#include <tests/dev/test_blockdevice.h>
-#include <tests/dev/test_vblock.h>
+#include <tests/obj/test_kernelmap.h>
 
-void test_vblock() {
-    // get virtual block device
-    uint8_t devicename[] = {"vblock0"};
+void test_kernelmap() {
+    kprintf("Testing Kernelmap\n");
 
-    struct object* vblock = objectmgr_find_object(devicename);
-    if (0 != vblock) {
-        test_block_device(vblock);
-    } else {
-        kprintf("Unable to find %s\n", devicename);
-    }
+    struct object* dev = objectmgr_find_object("kernelmap0");
+    ASSERT_NOT_NULL(dev);
 }

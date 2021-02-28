@@ -8,7 +8,7 @@
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_serial.h>
-#include <tests/dev/test_serial.h>
+#include <tests/obj/test_serial.h>
 
 /*
  * write a message via the uniform serial api

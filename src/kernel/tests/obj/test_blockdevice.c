@@ -12,7 +12,7 @@
 #include <sys/objecttype/objecttype_block.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
-#include <tests/dev/test_blockdevice.h>
+#include <tests/obj/test_blockdevice.h>
 
 uint8_t* testdata = "We were very tired, we were very merry, \
 We had gone back and forth all night on the ferry. \

@@ -15,7 +15,7 @@
 #include <sys/objecttype/objecttype_nic.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
-#include <tests/dev/test_virtio_vnic.h>
+#include <tests/obj/test_virtio_vnic.h>
 
 void test_virtio_vnic() {
     kprintf("test_virtio_vnic starting\n");
