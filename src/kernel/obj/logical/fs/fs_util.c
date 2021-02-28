@@ -13,10 +13,10 @@
 #include <obj/logical/partition_table/guid_partition_table.h>
 #include <obj/logical/partition_table/mbr_partition_table.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <types.h>
-
 #include <sys/objectinterface/objectinterface_part_table.h>
+#include <sys/objectmgr/object.h>
+#include <sys/panic/panic.h>
+#include <types.h>
 
 void fsutil_attach_partition_tables(struct object* block_obj) {
     ASSERT_NOT_NULL(block_obj);

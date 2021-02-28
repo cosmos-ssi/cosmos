@@ -12,6 +12,10 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_pit.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
+#include <sys/x86-64/idt/irq.h>
+#include <types.h>
 
 // https://wiki.osdev.org/Programmable_Interval_Timer
 // http://www.osdever.net/bkerndev/Docs/pit.htm

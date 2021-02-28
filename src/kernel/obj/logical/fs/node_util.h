@@ -9,6 +9,7 @@
 #define _NODE_UTIL_H
 
 #include <sys/objectinterface/objectinterface_filesystem.h>
+#include <types.h>
 
 struct object;
 

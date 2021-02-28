@@ -7,6 +7,8 @@
 
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_console.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/syscall/syscalls.h>
 
 uint64_t invalid_syscall(uint64_t syscall_id, void* args) {

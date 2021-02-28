@@ -6,7 +6,7 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_nic.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <tests/obj/test_rtl8139.h>
 #include <types.h>
 

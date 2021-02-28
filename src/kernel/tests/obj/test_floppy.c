@@ -8,6 +8,8 @@
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_floppy.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <tests/obj/test_floppy.h>
 #include <types.h>
 

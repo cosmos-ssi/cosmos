@@ -10,7 +10,8 @@
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_bda.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/string/string.h>
 #include <sys/x86-64/mm/pagetables.h>
 

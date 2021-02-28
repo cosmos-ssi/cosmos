@@ -8,11 +8,6 @@
 #ifndef _OBJ_H
 #define _OBJ_H
 
-#include <obj/logical/fs/objfs/objfs.h>
-#include <obj/logical/fs/swap/swap.h>
-#include <obj/logical/ramdisk/ramdisk.h>
-#include <obj/logical/virtio/virtio.h>
-
 #ifdef TARGET_PLATFORM_i386
 
 #else

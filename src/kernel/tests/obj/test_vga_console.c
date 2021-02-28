@@ -8,6 +8,9 @@
 #include <obj/logical/console/vga_console.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_console.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
+#include <types.h>
 
 void test_vga_console_dev() {
     uint8_t devicename[] = {"vga0"};

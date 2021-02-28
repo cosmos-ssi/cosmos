@@ -6,8 +6,6 @@
  *****************************************************************/
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_filesystem.h>
-#include <sys/objects/objects.h>
 
 void test_objects() {
     /*device_t* disk;

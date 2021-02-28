@@ -6,7 +6,6 @@
  *****************************************************************/
 
 #include <cosmos_logical_objs.h>
-#include <obj/logical/console/vga_console.h>
 #include <obj/logical/fs/initrd/initrd.h>
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
@@ -18,6 +17,8 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_console.h>
 #include <sys/objectinterface/objectinterface_filesystem.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>

@@ -13,6 +13,9 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_vga.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
+#include <types.h>
 
 // CRT control I/O ports
 #define CRT_INDEX_REGISTER 0x3D4

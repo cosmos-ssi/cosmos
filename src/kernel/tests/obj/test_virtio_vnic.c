@@ -10,8 +10,9 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_nic.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/panic/panic.h>
-#include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <tests/obj/test_virtio_vnic.h>
 #include <types.h>

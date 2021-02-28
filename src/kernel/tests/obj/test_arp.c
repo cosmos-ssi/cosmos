@@ -9,6 +9,8 @@
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_arp.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/string/mem.h>
 #include <tests/obj/test_arp.h>
 #include <types.h>

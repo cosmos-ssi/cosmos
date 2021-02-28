@@ -12,8 +12,10 @@
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_block.h>
 #include <sys/objectinterface/objectinterface_filesystem.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
+#include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 
 struct initrd_file_header {

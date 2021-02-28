@@ -10,8 +10,11 @@
 #include <obj/logical/partition_table/partition_table_util.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_block.h>
 #include <sys/objectinterface/objectinterface_part_table.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/string/mem.h>
 
 struct partition_objectdata {

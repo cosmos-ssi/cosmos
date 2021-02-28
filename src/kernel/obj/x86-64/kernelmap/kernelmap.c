@@ -10,6 +10,9 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_kernelmap.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
+#include <types.h>
 
 // defined in cosmos.ld
 extern uint64_t _text_start;

@@ -12,10 +12,11 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_block.h>
-#include <sys/sleep/sleep.h>
-#include <sys/string/mem.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
+#include <sys/x86-64/idt/irq.h>
 #include <sys/x86-64/mm/pagetables.h>
+#include <types.h>
 
 #define SDHCI_COMMAND 0x00
 #define SDHCI_RESPONSE 0x10

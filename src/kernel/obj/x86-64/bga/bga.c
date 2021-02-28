@@ -15,6 +15,8 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_bga.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/string/mem.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>

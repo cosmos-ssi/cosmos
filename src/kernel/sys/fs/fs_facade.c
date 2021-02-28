@@ -7,6 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/fs/fs_facade.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_filesystem.h>
 #include <sys/objectmgr/object.h>
 #include <sys/string/mem.h>

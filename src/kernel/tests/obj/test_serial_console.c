@@ -8,6 +8,9 @@
 #include <obj/logical/console/serial_console.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_console.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
+#include <types.h>
 
 void test_serial_console_dev() {
     uint8_t devicename[] = {"serial0"};

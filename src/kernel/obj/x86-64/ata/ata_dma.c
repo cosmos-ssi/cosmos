@@ -11,8 +11,6 @@
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_block.h>
-#include <sys/objectmgr/object.h>
 #include <sys/string/mem.h>
 #include <sys/sync/sync.h>
 #include <sys/x86-64/mm/pagetables.h>

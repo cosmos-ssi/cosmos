@@ -7,6 +7,8 @@
 
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_pit.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/sleep/sleep.h>
 #include <tests/obj/test_pit.h>
 #include <types.h>

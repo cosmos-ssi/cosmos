@@ -10,8 +10,6 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_filesystem.h>
 #include <sys/objectmgr/objectmgr.h>
-#include <sys/string/string.h>
-#include <tests/fs/test_devfs.h>
 
 void test_vfs() {
     kprintf("Testing vfs\n");

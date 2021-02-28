@@ -7,6 +7,8 @@
 
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_serial.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <tests/obj/test_serial.h>
 
 /*

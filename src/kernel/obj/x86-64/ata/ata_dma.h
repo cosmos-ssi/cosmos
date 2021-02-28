@@ -8,7 +8,6 @@
 #ifndef _ATA_DMA_H
 #define _ATA_DMA_H
 
-#include <sys/objectinterface/objectinterface_block.h>
 #include <types.h>
 
 struct object;

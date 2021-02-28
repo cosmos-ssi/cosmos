@@ -10,6 +10,9 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_cpu.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
+#include <types.h>
 
 void cpu_manufacturer_id(uint8_t* cpuid);
 

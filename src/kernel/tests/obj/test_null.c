@@ -8,6 +8,8 @@
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_null.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <tests/obj/test_null.h>
 #include <types.h>
 
