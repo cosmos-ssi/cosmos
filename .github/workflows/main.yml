@@ -28,6 +28,12 @@ jobs:
       - name: nasm
         run: sudo apt install nasm
 
+      - name: lint
+        run: cd src;make lint
+
+      - name: header-check
+        run: cd src;make header-check
+
       - name: build
         run: cd src;make
 
@@ -50,6 +56,12 @@ jobs:
 
       - name: clang-format
         run: brew install clang-format
+
+      - name: lint
+        run: cd src;make lint
+
+      - name: header-check
+        run: cd src;make header-check
 
       - name: build
         run: cd src;make
