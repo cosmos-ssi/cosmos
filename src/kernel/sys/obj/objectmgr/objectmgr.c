@@ -8,16 +8,17 @@
 #include <obj/obj.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objectregistry/objectregistry.h>
+#include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/string/string.h>
 
 #define MAX_DEVICE_NAME_LENGTH 128
 
 void objectmgr_init() {
+    objecttypes_init();
     objectregistry_init();
 }
 

@@ -20,10 +20,6 @@
 struct arraylist* object_reg;
 
 void objectregistry_init() {
-    /*
-    * init the types
-    */
-    objecttypes_init();
     object_reg = arraylist_new();
 }
 

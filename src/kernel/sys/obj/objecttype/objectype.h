@@ -60,6 +60,11 @@ enum object_type_id {
     KERNELMAP = 0x2C         // kernelmap0, objecttype_kernelmap
 };
 
+/*
+ * array of names, indexed by object_type
+ */
+extern int8_t* object_type_names[];
+
 struct object_type {
     uint8_t name[OBJECT_TYPE_MAX_NAME];
     enum object_type_id id;

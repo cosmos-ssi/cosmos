@@ -21,11 +21,6 @@ typedef uint8_t (*obj_init)(struct object* obj);
 // return 1 is successful, 0 if failed to uninit, including if device refcount>0
 typedef uint8_t (*obj_uninit)(struct object* obj);
 
-/*
- * array of names, indexed by object_type
- */
-extern int8_t* object_type_names[];
-
 struct object {
     /*
      * the combination of name (from object_type_names) and index

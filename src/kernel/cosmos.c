@@ -63,9 +63,9 @@ void CosmOS() {
     kprintf("Initializing IO buffers...\n");
     iobuffers_init();
     /*
-     * init the device registry
+     * init the object manager
      */
-    kprintf("Initializing Device Registry...\n");
+    kprintf("Initializing Object Manager...\n");
     objectmgr_init();
 
     kprintf("Initializing system call handler...\n");
