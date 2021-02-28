@@ -8,3 +8,8 @@
 #include <device/serial/serial_device.hpp>
 
 void SerialDevice::writeln(const char* str) {}
+
+uint8_t SerialDevice::readChar() {
+    return 0;
+}
+void SerialDevice::writeChar(uint8_t c) {}

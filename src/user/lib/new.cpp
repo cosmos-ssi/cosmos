@@ -5,29 +5,13 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-/*
-* userland console terminal
-*/
+#include <new.hpp>
+#include <malloc.h>
 
-#ifndef _TERM_HPP
-#define _TERM_HPP
+void* operator new(uint64_t count) {
+    return malloc(count);
+}
 
-#include <cosmos.hpp>
-
-class Term {
-  private:
-    SerialDevice* serialDevice;
-    void lineloop();
-    uint16_t readline(uint8_t* line, uint16_t len);
-
-    // return 0 to indicate end of terminal process
-    uint8_t processline(uint8_t* line);
-
-  public:
-    Term();
-    void run();
-};
-
-int main(int argc, char* argv[]);
-
-#endif
+void operator delete(void* ptr) {
+    return free(ptr);
+}

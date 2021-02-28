@@ -28,7 +28,8 @@ bootimage: subsystems
 	# write initrd fs at offset of 10MB
 	$(DD) if=$(INITRD) of=$(BOOTIMAGE) conv=notrunc bs=512 seek=20480
 
-subsystems: lint boot-subsystem kernel-subsystem utils user-subsystem blank-disk
+#subsystems: lint boot-subsystem kernel-subsystem utils user-subsystem blank-disk
+subsystems: boot-subsystem kernel-subsystem utils user-subsystem blank-disk
 	
 blank-disk:
 	$(DD) if=/dev/zero of=$(BLANK_DISK) bs=1024 count=10240

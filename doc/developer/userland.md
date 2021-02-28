@@ -36,38 +36,35 @@ The userland API is object-oriented.  As a result, there is a mapping of syscall
 
 
 ## System Call Numbers
-Class        | Method          |#     |
--------------|-----------------|------|
-Process      | Sleep           | 1100
-Process      | Exit            | 1101
-BGA          | getResolution   | 1200
-BGA          | setResolution   | 1201
-BGA          | getBuffersize   | 1202
-BGA          | blt             | 1203
-Block        | readSectors     | 1300
-Block        | writeSectors    | 1301
-Block        | sectorSize      | 1302
-Block        | totalSize       | 1303
-Console      | setPos          | 1401
-Console      | write           | 1402
-Filesystem   | getRootNode     | 1500
-Filesystem   | read            | 1501
-Filesystem   | write           | 1502
-Filesystem   | open            | 1503
-Filesystem   | close           | 1504
-Filesystem   | findNodeById    | 1505
-Filesystem   | listDirectory   | 1506
-Filesystem   | size            | 1507
-Keyboard     | read            | 1601
-Mouse        | read            | 1701
-NIC          | read            | 1801
-NIC          | write           | 1802
-Null         | read            | 1901
-Rand         | read            | 2001
-RTC          | read            | 2101
-Tick         | read            | 2201
-Serial       | writeln         | 2301
-
-
-
-
+Class        | Method          | syscall #  | Kernel API   
+-------------|-----------------|------------|-------------------|
+Process      | Sleep           | 1100       | deviceapi_process
+Process      | Exit            | 1101       |
+BGA          | getResolution   | 1200       | deviceapi_bga
+BGA          | setResolution   | 1201       |
+BGA          | getBuffersize   | 1202       |
+BGA          | blt             | 1203       |
+Block        | readSectors     | 1300       | deviceapi_block
+Block        | writeSectors    | 1301       |
+Block        | sectorSize      | 1302       |
+Block        | totalSize       | 1303       |
+Console      | setPos          | 1400       | deviceapi_console
+Console      | write           | 1401       |
+Filesystem   | getRootNode     | 1500       | deviceapi_filesystem
+Filesystem   | read            | 1501       |
+Filesystem   | write           | 1502       |
+Filesystem   | open            | 1503       |
+Filesystem   | close           | 1504       |
+Filesystem   | findNodeById    | 1505       |
+Filesystem   | listDirectory   | 1506       |
+Filesystem   | size            | 1507       |
+Keyboard     | read            | 1600       | deviceapi_keyboard
+Mouse        | read            | 1700       | deviceapi_mouse
+NIC          | read            | 1800       | deviceapi_nic
+NIC          | write           | 1801       |
+Null         | read            | 1900       | deviceapi_null
+Rand         | read            | 2000       | deviceapi_rand
+RTC          | read            | 2100       | deviceapi_rtc
+Tick         | read            | 2200       | deviceapi_tick
+Serial       | readchar        | 2300       | deviceapi_serial
+Serial       | writechar       | 2301       | deviceapi_serial

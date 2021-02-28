@@ -49,7 +49,7 @@ class FilesystemDevice : public Device {
     /*
     * get root node
     */
-    struct fs_node* getRootNode(FilesystemDevice* filesystem_device);
+    struct fs_node* getRootNode();
 
     /*
     * read bytes from node

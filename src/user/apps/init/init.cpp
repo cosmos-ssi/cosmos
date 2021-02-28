@@ -11,6 +11,7 @@
 
 #define INIT_SERIAL_DEVICE "serial0"
 #define INIT_ROOT_FS_DEVICE "fs0"
+#define INIT_TERM_PROGRAM "term"
 
 /*
 * we are in user-land context here.  This is the entry point to userland that the kernel code calls
@@ -25,9 +26,9 @@ int main(int argc, char* argv[]) {
     if (0 != filesystemDevice) {
         serialDevice->writeln("Found root file system");
     }
-    // guess we're done...
-    //  syscall_exit();
-    // here we mount a disk, I presume, and start reading files.
-    // we likely end up starting a console for the console user to log into
+
+    //    struct fs_node* root_node = filesystemDevice->getRootNode();
+    //    struct fs_node*  term_node = filesystemDevice->
+
     return 0;
 }

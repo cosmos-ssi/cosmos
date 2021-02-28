@@ -15,6 +15,7 @@
 #include <device/mouse/mouse_device.hpp>
 #include <device/nic/nic_device.hpp>
 #include <device/null/null_device.hpp>
+#include <device/partition_table/partition_table_device.hpp>
 #include <device/rand/rand_device.hpp>
 #include <device/rtc/rtc_device.hpp>
 #include <device/serial/serial_device.hpp>
