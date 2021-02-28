@@ -29,7 +29,7 @@ struct object {
     /*
      * the type (SERIAL, VGA etc)
      */
-    enum object_type_id objectype;
+    uint16_t objectype;
     /*
      * init function
      */

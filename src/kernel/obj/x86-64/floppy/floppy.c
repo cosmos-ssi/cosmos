@@ -231,7 +231,7 @@ void floppy_register_device(uint64_t port, uint8_t type, bool master) {
      */
     struct object* objectinstance = object_new_object();
     objectinstance->init = &floppy_obj_init;
-    objectinstance->objectype = FLOPPY;
+    objectinstance->objectype = OBJECT_TYPE_FLOPPY;
     objectmgr_set_object_description(objectinstance, "Floppy");
     /*
      * the device api

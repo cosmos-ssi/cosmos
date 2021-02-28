@@ -68,7 +68,7 @@ void speaker_objectmgr_register_objects() {
      */
     struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "Speaker");
-    objectinstance->objectype = SPEAKER;
+    objectinstance->objectype = OBJECT_TYPE_SPEAKER;
     objectinstance->init = &speaker_obj_init;
     /*
      * device api

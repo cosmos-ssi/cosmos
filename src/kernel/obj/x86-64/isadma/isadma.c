@@ -427,7 +427,7 @@ void isadma_objectmgr_register_objects() {
      */
     struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "8237 ISA DMA");
-    objectinstance->objectype = ISADMA;
+    objectinstance->objectype = OBJECT_TYPE_ISADMA;
     objectinstance->init = &isadma_obj_init;
     objectinstance->uninit = &isadma_obj_uninit;
     objectmgr_register_object(objectinstance);

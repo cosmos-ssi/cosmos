@@ -246,7 +246,7 @@ struct object* guid_pt_attach(struct object* block_device) {
     objectinstance->init = &guid_pt_init;
     objectinstance->uninit = &guid_pt_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = PARTITION_TABLE;
+    objectinstance->objectype = OBJECT_TYPE_PARTITION_TABLE;
     objectmgr_set_object_description(objectinstance, "GUID partition table");
     /*
      * the device api

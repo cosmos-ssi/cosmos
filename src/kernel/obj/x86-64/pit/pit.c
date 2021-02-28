@@ -77,7 +77,7 @@ void pit_objectmgr_register_objects() {
      */
     struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "8253/8254 PIT");
-    objectinstance->objectype = PIT;
+    objectinstance->objectype = OBJECT_TYPE_PIT;
     objectinstance->init = &pit_init;
     /*
      * device api

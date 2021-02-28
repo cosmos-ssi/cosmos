@@ -61,7 +61,7 @@ void pic_objectmgr_register_objects() {
      */
     struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "8259 PIC");
-    objectinstance->objectype = PIC;
+    objectinstance->objectype = OBJECT_TYPE_PIC;
     objectinstance->init = &pic_obj_init;
     objectmgr_register_object(objectinstance);
 

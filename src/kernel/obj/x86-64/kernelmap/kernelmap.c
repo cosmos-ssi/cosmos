@@ -62,7 +62,7 @@ void kernelmap_objectmgr_register_objects() {
      */
     struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "Kernel map");
-    objectinstance->objectype = KERNELMAP;
+    objectinstance->objectype = OBJECT_TYPE_KERNELMAP;
     objectinstance->init = &kernelmap_obj_init;
     /*
      * api

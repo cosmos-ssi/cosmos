@@ -39,10 +39,10 @@ struct object* objectmgr_find_object(const uint8_t* name);
 
 // find objects by the object description
 typedef void (*objectSearchCallback)(struct object* obj);
-void objectmgr_find_objects_by_description(enum object_type_id dt, const uint8_t* description, objectSearchCallback cb);
+void objectmgr_find_objects_by_description(uint16_t dt, const uint8_t* description, objectSearchCallback cb);
 
 // find objects by object_type
-void objectmgr_find_objects_by_object_type(enum object_type_id dt, objectSearchCallback cb);
+void objectmgr_find_objects_by_object_type(uint16_t dt, objectSearchCallback cb);
 
 // attach a object (non-fixed objects... like RAM disks and SWAP)
 uint8_t objectmgr_attach_object(struct object* obj);

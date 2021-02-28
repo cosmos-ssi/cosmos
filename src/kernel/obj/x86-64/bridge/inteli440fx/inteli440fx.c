@@ -40,7 +40,7 @@ void i440fx_search_cb(struct pci_device* dev) {
     struct object* objectinstance = object_new_object();
     objectinstance->init = &i440fx_init;
     objectinstance->pci = dev;
-    objectinstance->objectype = BRIDGE;
+    objectinstance->objectype = OBJECT_TYPE_BRIDGE;
     objectmgr_set_object_description(objectinstance, "Intel i440FX PCI Bridge");
     /*
      * device data

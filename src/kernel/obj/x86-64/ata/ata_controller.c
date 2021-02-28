@@ -126,7 +126,7 @@ void ata_search_cb(struct pci_device* dev) {
     struct object* objectinstance = object_new_object();
     objectinstance->init = &obj_init_ata;
     objectinstance->pci = dev;
-    objectinstance->objectype = ATA;
+    objectinstance->objectype = OBJECT_TYPE_ATA;
     objectmgr_set_object_description(objectinstance, "ATA");
     /*
      * device data

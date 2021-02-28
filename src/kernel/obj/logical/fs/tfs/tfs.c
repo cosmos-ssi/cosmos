@@ -159,7 +159,7 @@ struct object* tfs_attach(struct object* partition_objice) {
     objectinstance->init = &tfs_init;
     objectinstance->uninit = &tfs_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = FILESYSTEM;
+    objectinstance->objectype = OBJECT_TYPE_FILESYSTEM;
     objectmgr_set_object_description(objectinstance, "Trivial File System");
     /*
      * the device api

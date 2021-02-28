@@ -190,7 +190,7 @@ struct object* sfs_attach(struct object* partition_objice) {
     objectinstance->init = &sfs_init;
     objectinstance->uninit = &sfs_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = FILESYSTEM;
+    objectinstance->objectype = OBJECT_TYPE_FILESYSTEM;
     objectmgr_set_object_description(objectinstance, "Simple File System");
     /*
      * the device api

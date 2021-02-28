@@ -136,7 +136,7 @@ void rtc_objectmgr_register_objects() {
      */
     struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "RTC");
-    objectinstance->objectype = RTC;
+    objectinstance->objectype = OBJECT_TYPE_RTC;
     objectinstance->init = &rtc_obj_init;
     /*
      * device api

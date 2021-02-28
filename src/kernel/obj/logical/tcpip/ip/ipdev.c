@@ -55,7 +55,7 @@ void ip_write(struct object* obj, uint8_t* data, uint16_t size) {
 
 struct object* ip_attach(struct object* ethernet_device) {
     ASSERT_NOT_NULL(ethernet_device);
-    ASSERT(ethernet_device->objectype == ETHERNET);
+    ASSERT(ethernet_device->objectype == OBJECT_TYPE_ETHERNET);
 
     /*
      * register device
@@ -64,7 +64,7 @@ struct object* ip_attach(struct object* ethernet_device) {
     objectinstance->init = &ip_init;
     objectinstance->uninit = &ip_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = IP;
+    objectinstance->objectype = OBJECT_TYPE_IP;
     objectmgr_set_object_description(objectinstance, "Internet Protocol");
     /*
      * the device api

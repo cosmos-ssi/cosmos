@@ -43,7 +43,7 @@ void fsutil_detach_partition_tables(struct object* block_obj) {
 
 void fsutil_attach_partitions(struct object* partition_table_obj) {
     ASSERT_NOT_NULL(partition_table_obj);
-    ASSERT(partition_table_obj->objectype == PARTITION_TABLE);
+    ASSERT(partition_table_obj->objectype == OBJECT_TYPE_PARTITION_TABLE);
 
     /*
      * mount partition devices
@@ -60,12 +60,12 @@ void fsutil_attach_partitions(struct object* partition_table_obj) {
 
 void fsutil_detach_partitions(struct object* partition_table_obj) {
     ASSERT_NOT_NULL(partition_table_obj);
-    ASSERT(partition_table_obj->objectype == PARTITION_TABLE);
+    ASSERT(partition_table_obj->objectype == OBJECT_TYPE_PARTITION_TABLE);
 }
 
 void fsutil_attach_fs(struct object* partition_obj) {
     ASSERT_NOT_NULL(partition_obj);
-    ASSERT(partition_obj->objectype == PARTITION);
+    ASSERT(partition_obj->objectype == OBJECT_TYPE_PARTITION);
 
     if (0 == fat_attach(partition_obj)) {
         tfs_attach(partition_obj);
@@ -74,5 +74,5 @@ void fsutil_attach_fs(struct object* partition_obj) {
 
 void fsutil_detach_fs(struct object* partition_obj) {
     ASSERT_NOT_NULL(partition_obj);
-    ASSERT(partition_obj->objectype == PARTITION);
+    ASSERT(partition_obj->objectype == OBJECT_TYPE_PARTITION);
 }
