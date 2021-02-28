@@ -10,8 +10,7 @@
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/objectinterface/objectinterface_bda.h>
 #include <sys/string/string.h>
 #include <sys/x86-64/mm/pagetables.h>
 
@@ -51,11 +50,11 @@ struct fadt* acpi_get_fadt() {
 /*
  * perform device instance specific init here
  */
-uint8_t acpi_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+uint8_t acpi_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
     //  uint64_t ebda_address = bda_get_ebda_address();
 
-    kprintf("Init %s (%s)\n", dev->description, dev->name);
+    kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
 
@@ -63,12 +62,12 @@ void acpi_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "ACPI");
-    deviceinstance->devicetype = ACPI;
-    deviceinstance->init = &acpi_obj_init;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "ACPI");
+    objectinstance->objectype = ACPI;
+    objectinstance->init = &acpi_obj_init;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

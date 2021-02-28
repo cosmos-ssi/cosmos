@@ -45,53 +45,53 @@ void objectmgr_init() {
     objectregistry_init();
 }
 
-int8_t* createDeviceName(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->devicetype);
+int8_t* createDeviceName(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->objectype);
     int8_t nn[32];
     int8_t* ret = kmalloc(MAX_DEVICE_NAME_LENGTH);
-    ASSERT_NOT_NULL(object_type_names[dev->devicetype]);
-    strncpy(ret, object_type_names[dev->devicetype], MAX_DEVICE_NAME_LENGTH);
-    uitoa3(dev->type_index, nn, 32, 10);
+    ASSERT_NOT_NULL(object_type_names[obj->objectype]);
+    strncpy(ret, object_type_names[obj->objectype], MAX_DEVICE_NAME_LENGTH);
+    uitoa3(obj->type_index, nn, 32, 10);
     ret = strncat(ret, nn, MAX_DEVICE_NAME_LENGTH);
     return ret;
 }
 
-void objectmgr_register_object(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->description);
-    ASSERT_NOT_NULL(dev->devicetype);
-    ASSERT_NOT_NULL(dev->init);
+void objectmgr_register_object(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->description);
+    ASSERT_NOT_NULL(obj->objectype);
+    ASSERT_NOT_NULL(obj->init);
     /*
      * set index
      */
-    dev->type_index = objectregistry_devicecount_type(dev->devicetype);
+    obj->type_index = objectregistry_devicecount_type(obj->objectype);
     /*
      * create name
      */
-    dev->name = createDeviceName(dev);
+    obj->name = createDeviceName(obj);
     /*
      * register
      */
-    objectregistry_registerdevice(dev);
+    objectregistry_registerdevice(obj);
 }
 
-void objectmgr_unregister_object(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+void objectmgr_unregister_object(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
     /*
      * unregister
      */
-    objectregistry_unregisterdevice(dev);
+    objectregistry_unregisterdevice(obj);
 }
 
 uint16_t objectmgr_object_count() {
     return objectregistry_devicecount();
 }
 
-void obj_initIterator(struct object* dev) {
-    if (0 != dev) {
-        if (0 == dev->init(dev)) {
-            kprintf("Failed to Initialize %s\n", dev->name);
+void obj_initIterator(struct object* obj) {
+    if (0 != obj) {
+        if (0 == obj->init(obj)) {
+            kprintf("Failed to Initialize %s\n", obj->name);
         }
     } else {
         PANIC("um. why is there a null device?");
@@ -171,22 +171,22 @@ struct object* objectmgr_new_object() {
     ret->object_data = 0;
     ret->name = 0;
     ret->type_index = 0;
-    ret->devicetype = 0;
+    ret->objectype = 0;
     ret->api = 0;
     ret->pci = 0;
     ret->reference_count = 0;
     return ret;
 }
 
-void objectmgr_set_object_description(struct object* dev, const uint8_t* description) {
-    ASSERT_NOT_NULL(dev);
+void objectmgr_set_object_description(struct object* obj, const uint8_t* description) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(description);
     ASSERT(strlen(description) < OBJECT_MAX_DESCRIPTION);
     ASSERT(strlen(description) > 0);
 
-    strncpy(dev->description, description, OBJECT_MAX_DESCRIPTION);
+    strncpy(obj->description, description, OBJECT_MAX_DESCRIPTION);
 
-    //    kprintf("%s\n", dev->description);
+    //    kprintf("%s\n", obj->description);
 }
 
 struct object* objectmgr_find_object(const uint8_t* name) {
@@ -194,17 +194,17 @@ struct object* objectmgr_find_object(const uint8_t* name) {
     return objectregistry_find_device(name);
 }
 
-void objectmgr_find_objects_by_description(device_type dt, const uint8_t* description, deviceSearchCallback cb) {
+void objectmgr_find_objects_by_description(object_type dt, const uint8_t* description, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(description);
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
     objectregistry_find_devices_by_description(dt, description, cb);
 }
 
-void objectmgr_find_objects_by_device_type(device_type dt, deviceSearchCallback cb) {
+void objectmgr_find_objects_by_device_type(object_type dt, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
-    objectregistry_find_devices_by_devicetype(dt, cb);
+    objectregistry_find_devices_by_objectype(dt, cb);
 }
 
 #ifdef TARGET_PLATFORM_i386
@@ -270,22 +270,22 @@ void objectmgr_register_objects() {
 #endif
 
 // attach a device (non-fixed devices... like RAM disks and SWAP)
-uint8_t objectmgr_attach_object(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+uint8_t objectmgr_attach_object(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
 
     /*
      * register
      */
-    objectmgr_register_object(dev);
+    objectmgr_register_object(obj);
     /*
      * init
      */
-    uint8_t ret = dev->init(dev);
+    uint8_t ret = obj->init(obj);
     /*
     * unregister if we need to
     */
     if (0 == ret) {
-        objectmgr_unregister_object(dev);
+        objectmgr_unregister_object(obj);
     }
     /*
     * done
@@ -294,19 +294,19 @@ uint8_t objectmgr_attach_object(struct object* dev) {
 }
 
 // detach a device (non-fixed devices... like RAM disks and SWAP)
-uint8_t objectmgr_detach_object(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+uint8_t objectmgr_detach_object(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
     /*
      * unregister
      */
-    objectmgr_unregister_object(dev);
+    objectmgr_unregister_object(obj);
     /*
      * uninit
      */
-    if (0 != dev->uninit) {
-        if (0 != dev->uninit(dev)) {
+    if (0 != obj->uninit) {
+        if (0 != obj->uninit(obj)) {
             // free the device struct
-            kfree(dev);
+            kfree(obj);
 
             // good!
             return 1;
@@ -321,26 +321,26 @@ uint8_t objectmgr_detach_object(struct object* dev) {
 /*
 * increment device reference count
 */
-uint8_t objectmgr_increment_object_refcount(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    //    kprintf("Increasing ref count on %s\n", dev->name);
-    dev->reference_count += 1;
-    return dev->reference_count;
+uint8_t objectmgr_increment_object_refcount(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    //    kprintf("Increasing ref count on %s\n", obj->name);
+    obj->reference_count += 1;
+    return obj->reference_count;
 }
 /*
 * decrease device reference count
 */
-uint8_t objectmgr_decrement_object_refcount(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    //   kprintf("Decreasing ref count on %s\n", dev->name);
-    ASSERT(dev->reference_count > 0);
-    dev->reference_count -= 1;
-    return dev->reference_count;
+uint8_t objectmgr_decrement_object_refcount(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    //   kprintf("Decreasing ref count on %s\n", obj->name);
+    ASSERT(obj->reference_count > 0);
+    obj->reference_count -= 1;
+    return obj->reference_count;
 }
 
-void objectmgr_dump_objects_iterator(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("%s Refcount %llu\n", dev->name, dev->reference_count);
+void objectmgr_dump_objects_iterator(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("%s Refcount %llu\n", obj->name, obj->reference_count);
 }
 
 void objectmgr_dump_objects() {

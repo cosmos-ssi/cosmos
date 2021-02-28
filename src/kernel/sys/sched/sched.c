@@ -14,7 +14,7 @@ void sched_switch(linkedlist* task) {
 
     proc_obj = TASK_DATA(task)->obj;
 
-    switch (object_type(proc_obj)) {
+    switch (object_type_(proc_obj)) {
         case OBJECT_PROCESS:
             break;
         default:
@@ -23,7 +23,7 @@ void sched_switch(linkedlist* task) {
 
     body_obj = OBJECT_DATA(proc_obj, object_process_t)->body;
 
-    switch (object_type(body_obj)) {
+    switch (object_type_(body_obj)) {
         case OBJECT_KERNEL_WORK:
             OBJECT_DATA(body_obj, object_kernel_work_t)->work_func(OBJECT_DATA(body_obj, object_kernel_work_t)->arg);
             break;

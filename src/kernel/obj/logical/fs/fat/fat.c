@@ -10,9 +10,8 @@
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_filesystem.h>
+#include <sys/objectinterface/objectinterface_block.h>
+#include <sys/objectinterface/objectinterface_filesystem.h>
 #include <sys/string/mem.h>
 #include <types.h>
 
@@ -108,7 +107,7 @@ struct fat_fs_parameters {
 };
 
 struct fat_objectdata {
-    struct object* partition_device;
+    struct object* partition_objice;
 } __attribute__((packed));
 
 void fat_dump_fat_fs_parameters(struct fat_fs_parameters* param) {
@@ -136,17 +135,17 @@ void fat_dump_fat_extBS_16(struct fat_extBS_16* ebs) {
     //   debug_show_memblock((uint8_t*)ebs, sizeof(struct fat_extBS_16));
 }
 
-void fat_read_fs_parameters(struct object* dev, struct fat_fs_parameters* param) {
-    ASSERT_NOT_NULL(dev);
+void fat_read_fs_parameters(struct object* obj, struct fat_fs_parameters* param) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(param);
 
-    param->sector_size = blockutil_get_sector_size(dev);
-    param->total_size = blockutil_get_total_size(dev);
+    param->sector_size = blockutil_get_sector_size(obj);
+    param->total_size = blockutil_get_total_size(obj);
 
     uint8_t* buffer = kmalloc(param->sector_size);
     memset(buffer, 0, param->sector_size);
 
-    blockutil_read(dev, buffer, param->sector_size, 0, 0);
+    blockutil_read(obj, buffer, param->sector_size, 0, 0);
 
     struct fat_BS* fat_boot = (struct fat_BS*)buffer;
     //   struct fat_extBS_16* fat_boot_ext_16 = (struct fat_extBS_16*)&(fat_boot->extended_section);
@@ -180,10 +179,10 @@ void fat_read_fs_parameters(struct object* dev, struct fat_fs_parameters* param)
     kfree(buffer);
 }
 
-void fat_format(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    //   struct fat_objectdata* object_data = (struct fat_objectdata*)dev->object_data;
+void fat_format(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    //   struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
 }
 
 /*
@@ -193,7 +192,7 @@ uint64_t fat_first_sector_of_cluster(uint32_t cluster, struct fat_fs_parameters*
     return ((cluster - 2) * fs_parameters->sectors_per_cluster) + fs_parameters->first_data_sector;
 }
 
-uint32_t fat_fat12_next_cluster(struct object* dev, uint32_t current_cluster, struct fat_fs_parameters* fs_parameters) {
+uint32_t fat_fat12_next_cluster(struct object* obj, uint32_t current_cluster, struct fat_fs_parameters* fs_parameters) {
     uint8_t FAT_table[fs_parameters->sector_size];
     uint32_t fat_offset = current_cluster + (current_cluster / 2);  // multiply by 1.5
     kprintf("fat_offset %llu\n", fat_offset);
@@ -204,7 +203,7 @@ uint32_t fat_fat12_next_cluster(struct object* dev, uint32_t current_cluster, st
     uint32_t ent_offset = fat_offset % fs_parameters->sector_size;
 
     memset((uint8_t*)&FAT_table, 0, fs_parameters->sector_size);
-    blockutil_read(dev, (uint8_t*)&FAT_table, fs_parameters->sector_size, fat_sector, 0);
+    blockutil_read(obj, (uint8_t*)&FAT_table, fs_parameters->sector_size, fat_sector, 0);
 
     unsigned short table_value = *(unsigned short*)&FAT_table[ent_offset];
 
@@ -216,25 +215,25 @@ uint32_t fat_fat12_next_cluster(struct object* dev, uint32_t current_cluster, st
     return table_value;
 }
 
-uint32_t fat_fat16_next_cluster(struct object* dev, uint32_t current_cluster, struct fat_fs_parameters* fs_parameters) {
+uint32_t fat_fat16_next_cluster(struct object* obj, uint32_t current_cluster, struct fat_fs_parameters* fs_parameters) {
     uint8_t FAT_table[fs_parameters->sector_size];
     uint32_t fat_offset = current_cluster * 2;
     uint32_t fat_sector = fs_parameters->first_fat_sector + (fat_offset / fs_parameters->sector_size);
     uint32_t ent_offset = fat_offset % fs_parameters->sector_size;
 
     memset((uint8_t*)&FAT_table, 0, fs_parameters->sector_size);
-    blockutil_read(dev, (uint8_t*)&FAT_table, fs_parameters->sector_size, fat_sector, 0);
+    blockutil_read(obj, (uint8_t*)&FAT_table, fs_parameters->sector_size, fat_sector, 0);
 
     return *(unsigned short*)&FAT_table[ent_offset];
 }
 /*
-struct fs_directory_listing* fat_list_dir(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+struct fs_directory_listing* fat_list_dir(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
 
     struct fs_directory_listing* ret = fs_directory_listing_new();
 
     struct fat_fs_parameters fs_parameters;
-    fat_read_fs_parameters(dev, &fs_parameters);
+    fat_read_fs_parameters(obj, &fs_parameters);
 
     if ((fs_parameters.type == FAT12) || (fs_parameters.type == FAT16)) {
         uint32_t current_sector = fs_parameters.first_root_dir_sector;
@@ -246,7 +245,7 @@ struct fs_directory_listing* fat_list_dir(struct object* dev) {
             memset(buffer, 0, fs_parameters.sector_size);
 
             // read first sector of root dir
-            blockutil_read_sector(dev, current_sector, buffer, 1);
+            blockutil_read_sector(obj, current_sector, buffer, 1);
 
             // loop entries
             for (uint16_t i = 0; i < fs_parameters.sector_size; i = i + sizeof(struct fat_dir)) {
@@ -287,7 +286,7 @@ struct fs_directory_listing* fat_list_dir(struct object* dev) {
 */
 // if (fs_parameters.type==FAT12){
 // 	current_sector = current_sector +1;
-// 	uint64_t next_cluster = fat_fat12_next_cluster(dev, current_cluster, &fs_parameters);
+// 	uint64_t next_cluster = fat_fat12_next_cluster(obj, current_cluster, &fs_parameters);
 // 	kprintf("next cluster %llu\n",next_cluster);
 // 	current_sector = fat_first_sector_of_cluster(1, &fs_parameters);
 // 	kprintf("next sector %llu\n",current_sector);
@@ -301,85 +300,86 @@ struct fs_directory_listing* fat_list_dir(struct object* dev) {
 /*
  * perform device instance specific init here
  */
-uint8_t fat_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct fat_objectdata* object_data = (struct fat_objectdata*)dev->object_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
+uint8_t fat_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
+    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
     return 1;
 }
 
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t fat_uninit(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct fat_objectdata* object_data = (struct fat_objectdata*)dev->object_data;
-    kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
-    kfree(dev->api);
-    kfree(dev->object_data);
+uint8_t fat_uninit(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
+    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
+    kfree(obj->api);
+    kfree(obj->object_data);
     return 1;
 }
 
-struct object* fat_attach(struct object* partition_device) {
-    ASSERT_NOT_NULL(partition_device);
+struct object* fat_attach(struct object* partition_objice) {
+    ASSERT_NOT_NULL(partition_objice);
     // basically the device needs to implement deviceapi_block
-    ASSERT(1 == blockutil_is_block_device(partition_device));
+    ASSERT(1 == blockutil_is_block_object(partition_objice));
 
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &fat_init;
-    deviceinstance->uninit = &fat_uninit;
-    deviceinstance->pci = 0;
-    deviceinstance->devicetype = FILESYSTEM;
-    objectmgr_set_object_description(deviceinstance, "FAT File System");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &fat_init;
+    objectinstance->uninit = &fat_uninit;
+    objectinstance->pci = 0;
+    objectinstance->objectype = FILESYSTEM;
+    objectmgr_set_object_description(objectinstance, "FAT File System");
     /*
      * the device api
      */
-    struct objecttype_filesystem* api = (struct objecttype_filesystem*)kmalloc(sizeof(struct objecttype_filesystem));
-    memzero((uint8_t*)api, sizeof(struct objecttype_filesystem));
+    struct objectinterface_filesystem* api =
+        (struct objectinterface_filesystem*)kmalloc(sizeof(struct objectinterface_filesystem));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_filesystem));
     //  api->format = &fat_format;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * device data
      */
     struct fat_objectdata* object_data = (struct fat_objectdata*)kmalloc(sizeof(struct fat_objectdata));
-    object_data->partition_device = partition_device;
-    deviceinstance->object_data = object_data;
+    object_data->partition_objice = partition_objice;
+    objectinstance->object_data = object_data;
 
     /*
      * register
      */
-    if (0 != objectmgr_attach_object(deviceinstance)) {
+    if (0 != objectmgr_attach_object(objectinstance)) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_object_refcount(partition_device);
+        objectmgr_increment_object_refcount(partition_objice);
         /*
         * return device
         */
-        return deviceinstance;
+        return objectinstance;
     } else {
         kfree(object_data);
         kfree(api);
-        kfree(deviceinstance);
+        kfree(objectinstance);
         return 0;
     }
 }
 
-void fat_detach(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct fat_objectdata* object_data = (struct fat_objectdata*)dev->object_data;
+void fat_detach(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(object_data->partition_device);
+    objectmgr_decrement_object_refcount(object_data->partition_objice);
     /*
     * detach
     */
-    objectmgr_detach_object(dev);
+    objectmgr_detach_object(obj);
 }

@@ -12,9 +12,7 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_parallel.h>
+#include <sys/objectinterface/objectinterface_parallel.h>
 #include <sys/sleep/sleep.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
@@ -41,10 +39,10 @@ void parallel_irq_handler(stack_frame* frame) {
 /*
  * wait until ready
  */
-void parallel_device_ready(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct parallel_objectdata* object_data = (struct parallel_objectdata*)(dev->object_data);
+void parallel_device_ready(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct parallel_objectdata* object_data = (struct parallel_objectdata*)(obj->object_data);
     while (!(asm_in_b(object_data->address + PARALLEL_DEVICE_REGISTER_STATUS) & 0x80)) {
         sleep_wait(10);
     }
@@ -53,12 +51,12 @@ void parallel_device_ready(struct object* dev) {
 /*
  * perform device instance specific init here
  */
-uint8_t parallel_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct parallel_objectdata* object_data = (struct parallel_objectdata*)(dev->object_data);
-    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", dev->description, object_data->irq, object_data->address,
-            dev->name);
+uint8_t parallel_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct parallel_objectdata* object_data = (struct parallel_objectdata*)(obj->object_data);
+    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", obj->description, object_data->irq, object_data->address,
+            obj->name);
     interrupt_router_register_interrupt_handler(object_data->irq, &parallel_irq_handler);
     /*
      * reset
@@ -67,16 +65,16 @@ uint8_t parallel_obj_init(struct object* dev) {
     return 1;
 }
 
-void parallel_write(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
+void parallel_write(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
     ASSERT_NOT_NULL(data);
-    struct parallel_objectdata* object_data = (struct parallel_objectdata*)(dev->object_data);
+    struct parallel_objectdata* object_data = (struct parallel_objectdata*)(obj->object_data);
     for (uint16_t i = 0; i < size; i++) {
         /*
          * wait for ready
          */
-        parallel_device_ready(dev);
+        parallel_device_ready(obj);
         /*
          * write byte
          */
@@ -95,27 +93,28 @@ void parallel_objectmgr_register_object(uint64_t base, uint8_t irq) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "Parallel Port");
-    deviceinstance->devicetype = PARALLEL;
-    deviceinstance->init = &parallel_obj_init;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "Parallel Port");
+    objectinstance->objectype = PARALLEL;
+    objectinstance->init = &parallel_obj_init;
     /*
      * device api
      */
-    struct objecttype_parallel* api = (struct objecttype_parallel*)kmalloc(sizeof(struct objecttype_parallel));
+    struct objectinterface_parallel* api =
+        (struct objectinterface_parallel*)kmalloc(sizeof(struct objectinterface_parallel));
     api->write = &parallel_write;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * device data
      */
     struct parallel_objectdata* object_data = (struct parallel_objectdata*)kmalloc(sizeof(struct parallel_objectdata));
     object_data->address = base;
     object_data->irq = irq;
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }
 
 void parallel_objectmgr_register_objects() {

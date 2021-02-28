@@ -95,9 +95,9 @@ void ata_extract_identity(const char* identity, struct ata_device* dev) {
     dev->model = ata_detect_extract_string(identity, 40, ATA_IDENTIFY_OFFSET_MODEL);
     dev->serial = ata_detect_extract_string(identity, 20, ATA_IDENTIFY_OFFSET_SERIAL);
 
-    //	kprintf("Size: %llu\n", dev->size);
-    //	kprintf("Removable: %llu\n", dev->removable);
-    //	kprintf("Bytes_per_sector: %llu\n", dev->bytes_per_sector);
-    //	kprintf("Model: %s\n", dev->model);
-    //	kprintf("Serial: %s\n", dev->serial);
+    //	kprintf("Size: %llu\n", obj->size);
+    //	kprintf("Removable: %llu\n", obj->removable);
+    //	kprintf("Bytes_per_sector: %llu\n", obj->bytes_per_sector);
+    //	kprintf("Model: %s\n", obj->model);
+    //	kprintf("Serial: %s\n", obj->serial);
 }

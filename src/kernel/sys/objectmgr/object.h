@@ -14,9 +14,9 @@
 struct object;
 
 // return 1 if successful, 0 if failed to unit
-typedef uint8_t (*obj_init)(struct object* dev);
+typedef uint8_t (*obj_init)(struct object* obj);
 // return 1 is successful, 0 if failed to uninit, including if device refcount>0
-typedef uint8_t (*obj_uninit)(struct object* dev);
+typedef uint8_t (*obj_uninit)(struct object* obj);
 
 typedef enum object_type {
     NONE = 0x00,
@@ -64,10 +64,10 @@ typedef enum object_type {
     VFS = 0x2A,              // vfs0, objecttype_filesytem
     BGA = 0x2B,              // bga0, objecttype_bga
     KERNELMAP = 0x2C         // kernelmap0, objecttype_kernelmap
-} device_type;
+} object_type;
 
 /*
- * array of names, indexed by device_type
+ * array of names, indexed by object_type
  */
 extern int8_t* object_type_names[];
 
@@ -81,7 +81,7 @@ struct object {
     /*
      * the type (SERIAL, VGA etc)
      */
-    enum object_type devicetype;
+    enum object_type objectype;
     /*
      * init function
      */

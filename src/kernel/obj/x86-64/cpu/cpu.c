@@ -9,19 +9,16 @@
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_cpu.h>
-#include <types.h>
+#include <sys/objectinterface/objectinterface_cpu.h>
 
 void cpu_manufacturer_id(uint8_t* cpuid);
 
 /*
  * perform device instance specific init here
  */
-uint8_t cpu_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Init %s (%s)\n", dev->description, dev->name);
+uint8_t cpu_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
 
@@ -70,20 +67,20 @@ void cpu_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "CPU");
-    deviceinstance->devicetype = CPU;
-    deviceinstance->init = &cpu_obj_init;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "CPU");
+    objectinstance->objectype = CPU;
+    objectinstance->init = &cpu_obj_init;
     /*
      * device api
      */
-    struct objecttype_cpu* api = (struct objecttype_cpu*)kmalloc(sizeof(struct objecttype_cpu));
+    struct objectinterface_cpu* api = (struct objectinterface_cpu*)kmalloc(sizeof(struct objectinterface_cpu));
     api->features = &cpu_get_features;
     api->apic = &cpu_has_apic;
     api->manufacturer = &cpu_manufacturer_id;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

@@ -11,17 +11,15 @@
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
-struct object;
-
-struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, struct object* dev, const uint8_t* name,
+struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, struct object* obj, const uint8_t* name,
                                             uint64_t id, void* node_data) {
 
-    ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(name);
     struct filesystem_node* ret = (struct filesystem_node*)kmalloc(sizeof(struct filesystem_node));
     memzero((uint8_t*)ret, sizeof(struct filesystem_node));
     ret->type = type;
-    ret->filesystem_device = dev;
+    ret->filesystem_obj = obj;
     strncpy(ret->name, name, FILESYSTEM_MAX_NAME);
     ret->id = id;
     ret->node_data = node_data;

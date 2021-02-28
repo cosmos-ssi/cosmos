@@ -8,8 +8,7 @@
 #ifndef _NODE_UTIL_H
 #define _NODE_UTIL_H
 
-#include <stdint.h>
-#include <sys/objecttype/objecttype_filesystem.h>
+#include <sys/objectinterface/objectinterface_filesystem.h>
 
 struct object;
 

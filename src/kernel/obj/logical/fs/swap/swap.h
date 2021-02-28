@@ -11,6 +11,6 @@
 struct object;
 
 struct object* swap_attach(struct object* block_device);
-void swap_detach(struct object* dev);
+void swap_detach(struct object* obj);
 
 #endif

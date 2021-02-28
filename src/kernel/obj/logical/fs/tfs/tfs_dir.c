@@ -16,8 +16,8 @@ struct object;
 /*
  * returns file block, or zero
  */
-uint64_t tfs_dir_find_file(struct object* dev, uint8_t* filename) {
-    ASSERT_NOT_NULL(dev);
+uint64_t tfs_dir_find_file(struct object* obj, uint8_t* filename) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(filename);
     ASSERT(strlen(filename) < TFS_FILENAME_SIZE);
     return 0;
@@ -26,21 +26,21 @@ uint64_t tfs_dir_find_file(struct object* dev, uint8_t* filename) {
 /*
  * returns file block, or zero
  */
-uint64_t tfs_dir_add_file(struct object* dev, uint8_t* filename) {
-    ASSERT_NOT_NULL(dev);
+uint64_t tfs_dir_add_file(struct object* obj, uint8_t* filename) {
+    ASSERT_NOT_NULL(obj);
     ASSERT(strlen(filename) < TFS_FILENAME_SIZE);
     ASSERT_NOT_NULL(filename);
     return 0;
 }
 
-void tfs_dir_iterate_files(struct object* dev, tfs_file_iterator file_iterator) {
+void tfs_dir_iterate_files(struct object* obj, tfs_file_iterator file_iterator) {
     ASSERT_NOT_NULL(file_iterator);
-    ASSERT_NOT_NULL(dev);
+    ASSERT_NOT_NULL(obj);
     /*
      * get the superblock
      */
     struct tfs_superblock_block superblock;
-    tfs_read_superblock(dev, &superblock);
+    tfs_read_superblock(obj, &superblock);
     ASSERT(superblock.magic == 0x00444653);
     kprintf("Superblock blocks_size %llu blocks_count %llu\n", superblock.blocks_size, superblock.blocks_count);
     /*
@@ -53,14 +53,14 @@ void tfs_dir_iterate_files(struct object* dev, tfs_file_iterator file_iterator) 
          * get the root dir
          */
         struct tfs_dir_block root_dir;
-        tfs_read_dir_block(dev, &root_dir, block);
+        tfs_read_dir_block(obj, &root_dir, block);
         for (uint32_t i = 0; i < TFS_FILES_PER_DIR_BLOCK; i++) {
             uint64_t file_block_block = root_dir.files[i];
             /*
              * get the file for that one
              */
             struct tfs_file_block file_block;
-            tfs_read_file_block(dev, &file_block, file_block_block);
+            tfs_read_file_block(obj, &file_block, file_block_block);
             /*
              * callback
              */
@@ -77,8 +77,8 @@ void tfs_dir_iterate_files(struct object* dev, tfs_file_iterator file_iterator) 
     }
 }
 
-void tfs_dir_remove_file(struct object* dev, uint8_t* filename) {
-    ASSERT_NOT_NULL(dev);
+void tfs_dir_remove_file(struct object* obj, uint8_t* filename) {
+    ASSERT_NOT_NULL(obj);
     ASSERT(strlen(filename) < TFS_FILENAME_SIZE);
     ASSERT_NOT_NULL(filename);
 }

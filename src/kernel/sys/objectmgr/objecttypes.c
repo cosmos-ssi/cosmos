@@ -22,7 +22,7 @@ void objecttypes_init() {
     }
 }
 
-struct arraylist* objecttypes_get_objectlist(device_type dt) {
+struct arraylist* objecttypes_get_objectlist(object_type dt) {
     ASSERT_NOT_NULL(types);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         return (struct arraylist*)array_get(types, dt);
@@ -32,7 +32,7 @@ struct arraylist* objecttypes_get_objectlist(device_type dt) {
     return 0;
 }
 
-void objecttypes_set_objectlist(device_type dt, struct arraylist* lst) {
+void objecttypes_set_objectlist(object_type dt, struct arraylist* lst) {
     ASSERT_NOT_NULL(types);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         array_set(types, dt, lst);

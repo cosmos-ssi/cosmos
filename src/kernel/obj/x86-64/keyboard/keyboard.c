@@ -13,11 +13,7 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_keyboard.h>
-#include <sys/panic/panic.h>
-#include <sys/x86-64/idt/irq.h>
+#include <sys/objectinterface/objectinterface_keyboard.h>
 #include <types.h>
 
 #define KB_IRQ_NUMBER 1
@@ -174,16 +170,16 @@ void keyboard_send_command_queue() {}
 /*
  * perform device instance specific init here
  */
-uint8_t keyboard_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    //  struct pci_device* pci_dev = (struct pci_device*)dev->object_data;
-    kprintf("Init %s at IRQ %llu (%s)\n", dev->description, KB_IRQ_NUMBER, dev->name);
+uint8_t keyboard_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    //  struct pci_device* pci_dev = (struct pci_device*)obj->object_data;
+    kprintf("Init %s at IRQ %llu (%s)\n", obj->description, KB_IRQ_NUMBER, obj->name);
     interrupt_router_register_interrupt_handler(KB_IRQ_NUMBER, &keyboard_irq_read);
     return 1;
 }
 
-key_action_t* keyboard_read(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+key_action_t* keyboard_read(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
     PANIC("Keyboard read not implemented yet");
     return 0;
 }
@@ -197,18 +193,19 @@ void keyboard_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &keyboard_obj_init;
-    deviceinstance->devicetype = KEYBOARD;
-    objectmgr_set_object_description(deviceinstance, "PS2 Keyboard");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &keyboard_obj_init;
+    objectinstance->objectype = KEYBOARD;
+    objectmgr_set_object_description(objectinstance, "PS2 Keyboard");
     /*
      * the device api
      */
-    struct objecttype_keyboard* api = (struct objecttype_keyboard*)kmalloc(sizeof(struct objecttype_keyboard));
+    struct objectinterface_keyboard* api =
+        (struct objectinterface_keyboard*)kmalloc(sizeof(struct objectinterface_keyboard));
     api->read = &keyboard_read;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

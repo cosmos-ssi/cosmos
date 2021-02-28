@@ -16,7 +16,7 @@
 struct object;
 
 typedef struct ata_disk_objectdata {
-    struct object* device;
+    struct object* object;
     struct ata_controller* controller;
     uint8_t channel;
     uint8_t disk;
@@ -26,6 +26,6 @@ typedef struct ata_disk_objectdata {
  * a disk only needs one function; a registration called by the controller
  */
 void ata_register_disk(struct object* controllerDevice, uint8_t channel, uint8_t disk);
-uint16_t ata_sector_size(struct object* dev);
+uint16_t ata_sector_size(struct object* obj);
 
 #endif

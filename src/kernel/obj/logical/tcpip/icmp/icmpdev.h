@@ -13,6 +13,6 @@
 struct object;
 
 struct object* icmp_attach(struct object* ethernet_device);
-void icmp_detach(struct object* dev);
+void icmp_detach(struct object* obj);
 
 #endif

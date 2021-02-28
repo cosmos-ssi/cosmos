@@ -34,7 +34,7 @@ object_handle_t object_create(object_types_t type, void* object_data) {
     return object_table_next_idx++;
 }
 
-object_types_t object_type(object_handle_t obj) {
+object_types_t object_type_(object_handle_t obj) {
     object_t* o;
 
     o = object_table_get(obj);

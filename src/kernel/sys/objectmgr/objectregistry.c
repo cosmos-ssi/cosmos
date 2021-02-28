@@ -7,9 +7,11 @@
 
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
+#include <sys/fs/fs_facade.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/objectinterface/objectinterface_filesystem.h>
 #include <sys/objectmgr/objectregistry.h>
 #include <sys/objectmgr/objecttypes.h>
-#include <sys/panic/panic.h>
 #include <sys/string/string.h>
 
 void objectregistry_init() {
@@ -22,34 +24,34 @@ void objectregistry_init() {
 /*
 * register a device
 */
-void objectregistry_registerdevice(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->devicetype);
+void objectregistry_registerdevice(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->objectype);
 
     /*
     * get the list for the device type
     */
-    struct arraylist* lst = objecttypes_get_objectlist(dev->devicetype);
+    struct arraylist* lst = objecttypes_get_objectlist(obj->objectype);
     if (0 == lst) {
         lst = arraylist_new();
-        objecttypes_set_objectlist(dev->devicetype, lst);
+        objecttypes_set_objectlist(obj->objectype, lst);
     }
     /*
     * add to the list
     */
-    arraylist_add(lst, dev);
+    arraylist_add(lst, obj);
 }
 
 /*
 * unregister a device
 */
-void objectregistry_unregisterdevice(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->devicetype);
+void objectregistry_unregisterdevice(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->objectype);
     /*
     * get the list for the device type
     */
-    struct arraylist* lst = objecttypes_get_objectlist(dev->devicetype);
+    struct arraylist* lst = objecttypes_get_objectlist(obj->objectype);
     ASSERT_NOT_NULL(lst);
     /*
     * find the device
@@ -57,7 +59,7 @@ void objectregistry_unregisterdevice(struct object* dev) {
     for (uint32_t i = 0; i < arraylist_count(lst); i++) {
         struct object* d = (struct object*)arraylist_get(lst, i);
         ASSERT_NOT_NULL(d);
-        if (0 == strcmp(d->name, dev->name)) {
+        if (0 == strcmp(d->name, obj->name)) {
             /*
             * remove the device
             */
@@ -78,7 +80,7 @@ uint16_t objectregistry_devicecount() {
     return ret;
 }
 
-uint16_t objectregistry_devicecount_type(device_type dt) {
+uint16_t objectregistry_devicecount_type(object_type dt) {
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
@@ -91,7 +93,7 @@ uint16_t objectregistry_devicecount_type(device_type dt) {
     return 0;
 }
 
-struct object* objectregistry_get_device(device_type dt, uint16_t idx) {
+struct object* objectregistry_get_device(object_type dt, uint16_t idx) {
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
@@ -111,9 +113,9 @@ void objectregistry_iterate(device_iterator deviceIterator) {
             struct arraylist* lst = objecttypes_get_objectlist(i);
             if (0 != lst) {
                 for (uint32_t j = 0; j < arraylist_count(lst); j++) {
-                    struct object* dev = (struct object*)arraylist_get(lst, j);
-                    if (0 != dev) {
-                        (*deviceIterator)(dev);
+                    struct object* obj = (struct object*)arraylist_get(lst, j);
+                    if (0 != obj) {
+                        (*deviceIterator)(obj);
                     } else {
                         PANIC("null dev in objectregistry_iterate");
                     }
@@ -125,15 +127,15 @@ void objectregistry_iterate(device_iterator deviceIterator) {
     }
 }
 
-void objectregistry_iterate_type(device_type dt, device_iterator deviceIterator) {
+void objectregistry_iterate_type(object_type dt, device_iterator deviceIterator) {
     ASSERT_NOT_NULL(deviceIterator);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
-                struct object* dev = (struct object*)arraylist_get(lst, j);
-                if (0 != dev) {
-                    (*deviceIterator)(dev);
+                struct object* obj = (struct object*)arraylist_get(lst, j);
+                if (0 != obj) {
+                    (*deviceIterator)(obj);
                 } else {
                     PANIC("null dev in objectregistry_iterate");
                 }
@@ -144,17 +146,17 @@ void objectregistry_iterate_type(device_type dt, device_iterator deviceIterator)
     }
 }
 
-void objectregistry_find_devices_by_description(device_type dt, const int8_t* description, deviceSearchCallback cb) {
+void objectregistry_find_devices_by_description(object_type dt, const int8_t* description, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(description);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
-                struct object* dev = (struct object*)arraylist_get(lst, j);
-                if (0 != dev) {
-                    if (strcmp(dev->description, description) == 0) {
-                        (*cb)(dev);
+                struct object* obj = (struct object*)arraylist_get(lst, j);
+                if (0 != obj) {
+                    if (strcmp(obj->description, description) == 0) {
+                        (*cb)(obj);
                     }
                 } else {
                     PANIC("null dev in objectregistry_iterate");
@@ -166,15 +168,15 @@ void objectregistry_find_devices_by_description(device_type dt, const int8_t* de
     }
 }
 
-void objectregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallback cb) {
+void objectregistry_find_devices_by_objectype(object_type dt, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
-                struct object* dev = (struct object*)arraylist_get(lst, j);
-                if (0 != dev) {
-                    (*cb)(dev);
+                struct object* obj = (struct object*)arraylist_get(lst, j);
+                if (0 != obj) {
+                    (*cb)(obj);
                 } else {
                     PANIC("null dev in objectregistry_iterate");
                 }
@@ -194,10 +196,10 @@ struct object* objectregistry_find_device(const int8_t* name) {
         struct arraylist* lst = objecttypes_get_objectlist(i);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
-                struct object* dev = (struct object*)arraylist_get(lst, j);
-                if (0 != dev) {
-                    if (0 == strcmp(name, dev->name)) {
-                        return dev;
+                struct object* obj = (struct object*)arraylist_get(lst, j);
+                if (0 != obj) {
+                    if (0 == strcmp(name, obj->name)) {
+                        return obj;
                     }
                 } else {
                     PANIC("null dev in objectregistry_find_device");

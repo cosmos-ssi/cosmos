@@ -7,9 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_rand.h>
+#include <sys/objectinterface/objectinterface_rand.h>
 #include <tests/obj/test_rand.h>
 #include <types.h>
 
@@ -18,7 +16,7 @@ void test_rand() {
 
     struct object* rand = objectmgr_find_object("rand0");
     if (0 != rand) {
-        struct objecttype_rand* rand_api = (struct objecttype_rand*)rand->api;
+        struct objectinterface_rand* rand_api = (struct objectinterface_rand*)rand->api;
         uint64_t last = 0;
         for (uint64_t i = 0; i < 100; i++) {
             uint64_t r = (*rand_api->read)(rand);

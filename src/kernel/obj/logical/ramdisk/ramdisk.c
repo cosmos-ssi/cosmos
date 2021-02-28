@@ -9,9 +9,7 @@
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_block.h>
+#include <sys/objectinterface/objectinterface_block.h>
 #include <sys/string/mem.h>
 #include <types.h>
 
@@ -28,12 +26,12 @@ struct ramdisk_objectdata {
 /*
  * perform device instance specific init here
  */
-uint8_t ramdisk_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)dev->object_data;
-    kprintf("Init %s of size %llu MB at %#hX (%s)\n", dev->description, (object_data->size) / 1024, object_data->data,
-            dev->name);
+uint8_t ramdisk_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)obj->object_data;
+    kprintf("Init %s of size %llu MB at %#hX (%s)\n", obj->description, (object_data->size) / 1024, object_data->data,
+            obj->name);
     memset(object_data->data, 0, object_data->size);
     return 1;
 }
@@ -41,14 +39,14 @@ uint8_t ramdisk_init(struct object* dev) {
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t ramdisk_uninit(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)dev->object_data;
-    kprintf("Uninit %s (%s)\n", dev->description, dev->name);
+uint8_t ramdisk_uninit(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)obj->object_data;
+    kprintf("Uninit %s (%s)\n", obj->description, obj->name);
     kfree(object_data->data);
     kfree(object_data);
-    kfree(dev->api);
+    kfree(obj->api);
     return 1;
 }
 
@@ -56,13 +54,13 @@ uint8_t* ramdisk_calc_address(struct ramdisk_objectdata* object_data, uint32_t s
     return (uint8_t*)(uint64_t)((object_data->data) + (sector * object_data->sector_size));
 }
 
-uint32_t ramdisk_read(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
-    ASSERT_NOT_NULL(dev);
+uint32_t ramdisk_read(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
 
-    ASSERT_NOT_NULL(dev->object_data);
-    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)dev->object_data;
+    ASSERT_NOT_NULL(obj->object_data);
+    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)obj->object_data;
 
     // don't start off the end of the RAM
     ASSERT(start_lba < object_data->sector_count);
@@ -81,13 +79,13 @@ uint32_t ramdisk_read(struct object* dev, uint8_t* data, uint32_t data_size, uin
     return data_size;
 }
 
-uint32_t ramdisk_write(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
-    ASSERT_NOT_NULL(dev);
+uint32_t ramdisk_write(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
 
-    ASSERT_NOT_NULL(dev->object_data);
-    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)dev->object_data;
+    ASSERT_NOT_NULL(obj->object_data);
+    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)obj->object_data;
 
     // don't start off the end of the RAM
     ASSERT(start_lba < object_data->sector_count);
@@ -106,17 +104,17 @@ uint32_t ramdisk_write(struct object* dev, uint8_t* data, uint32_t data_size, ui
     return data_size;
 }
 
-uint16_t ramdisk_sector_size(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)dev->object_data;
+uint16_t ramdisk_sector_size(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)obj->object_data;
 
     return object_data->sector_size;
 }
-uint32_t ramdisk_total_size(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)dev->object_data;
+uint32_t ramdisk_total_size(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct ramdisk_objectdata* object_data = (struct ramdisk_objectdata*)obj->object_data;
 
     return object_data->size;
 }
@@ -125,12 +123,12 @@ struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &ramdisk_init;
-    deviceinstance->uninit = &ramdisk_uninit;
-    deviceinstance->pci = 0;
-    deviceinstance->devicetype = RAMDISK;
-    objectmgr_set_object_description(deviceinstance, "RAM disk");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &ramdisk_init;
+    objectinstance->uninit = &ramdisk_uninit;
+    objectinstance->pci = 0;
+    objectinstance->objectype = RAMDISK;
+    objectmgr_set_object_description(objectinstance, "RAM disk");
     /*
      * device data
      */
@@ -140,34 +138,34 @@ struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     object_data->sector_count = sector_count;
     object_data->data = kmalloc(object_data->size);
     memzero(object_data->data, object_data->size);
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * the device api
      */
-    struct objecttype_block* api = (struct objecttype_block*)kmalloc(sizeof(struct objecttype_block));
-    memzero((uint8_t*)api, sizeof(struct objecttype_block));
+    struct objectinterface_block* api = (struct objectinterface_block*)kmalloc(sizeof(struct objectinterface_block));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_block));
     api->write = &ramdisk_write;
     api->read = &ramdisk_read;
     api->sector_size = &ramdisk_sector_size;
     api->total_size = &ramdisk_total_size;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * register
      */
-    if (0 != objectmgr_attach_object(deviceinstance)) {
+    if (0 != objectmgr_attach_object(objectinstance)) {
         /*
         * return device
         */
-        return deviceinstance;
+        return objectinstance;
     } else {
         kfree(object_data);
         kfree(api);
-        kfree(deviceinstance);
+        kfree(objectinstance);
         return 0;
     }
 }
 
-void ramdisk_detach(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    objectmgr_detach_object(dev);
+void ramdisk_detach(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    objectmgr_detach_object(obj);
 }

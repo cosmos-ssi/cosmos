@@ -7,10 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_ip.h>
+#include <sys/objectinterface/objectinterface_ip.h>
 #include <sys/string/mem.h>
 #include <types.h>
 
@@ -21,69 +18,69 @@ struct icmp_objectdata {
 /*
  * perform device instance specific init here
  */
-uint8_t icmp_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct icmp_objectdata* object_data = (struct icmp_objectdata*)dev->object_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, object_data->ethernet_device->name, dev->name);
+uint8_t icmp_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct icmp_objectdata* object_data = (struct icmp_objectdata*)obj->object_data;
+    kprintf("Init %s on %s (%s)\n", obj->description, object_data->ethernet_device->name, obj->name);
     return 1;
 }
 
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t icmp_uninit(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Uninit %s (%s)\n", dev->description, dev->name);
-    kfree(dev->api);
-    kfree(dev->object_data);
+uint8_t icmp_uninit(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Uninit %s (%s)\n", obj->description, obj->name);
+    kfree(obj->api);
+    kfree(obj->object_data);
 
     return 1;
 }
 
-void icmp_read(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    //  struct icmp_objectdata* object_data = (struct icmp_objectdata*)dev->object_data;
+void icmp_read(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    //  struct icmp_objectdata* object_data = (struct icmp_objectdata*)obj->object_data;
 }
-void icmp_write(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    //   struct icmp_objectdata* object_data = (struct icmp_objectdata*)dev->object_data;
+void icmp_write(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    //   struct icmp_objectdata* object_data = (struct icmp_objectdata*)obj->object_data;
 }
 
 struct object* icmp_attach(struct object* ethernet_device) {
     ASSERT_NOT_NULL(ethernet_device);
-    ASSERT(ethernet_device->devicetype == ETHERNET);
+    ASSERT(ethernet_device->objectype == ETHERNET);
 
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &icmp_init;
-    deviceinstance->uninit = &icmp_uninit;
-    deviceinstance->pci = 0;
-    deviceinstance->devicetype = ICMP;
-    objectmgr_set_object_description(deviceinstance, "Internet Control Message Protocol");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &icmp_init;
+    objectinstance->uninit = &icmp_uninit;
+    objectinstance->pci = 0;
+    objectinstance->objectype = ICMP;
+    objectmgr_set_object_description(objectinstance, "Internet Control Message Protocol");
     /*
      * the device api
      */
-    struct objecttype_ip* api = (struct objecttype_ip*)kmalloc(sizeof(struct objecttype_ip));
-    memzero((uint8_t*)api, sizeof(struct objecttype_ip));
+    struct objectinterface_ip* api = (struct objectinterface_ip*)kmalloc(sizeof(struct objectinterface_ip));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_ip));
     api->read = &icmp_read;
     api->write = &icmp_write;
 
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * device data
      */
     struct icmp_objectdata* object_data = (struct icmp_objectdata*)kmalloc(sizeof(struct icmp_objectdata));
     object_data->ethernet_device = ethernet_device;
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * register
      */
-    if (0 != objectmgr_attach_object(deviceinstance)) {
+    if (0 != objectmgr_attach_object(objectinstance)) {
         /*
         * increase ref count of underlying device
         */
@@ -91,19 +88,19 @@ struct object* icmp_attach(struct object* ethernet_device) {
         /*
         * return device
         */
-        return deviceinstance;
+        return objectinstance;
     } else {
         kfree(api);
         kfree(object_data);
-        kfree(deviceinstance);
+        kfree(objectinstance);
         return 0;
     }
 }
 
-void icmp_detach(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct icmp_objectdata* object_data = (struct icmp_objectdata*)dev->object_data;
+void icmp_detach(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct icmp_objectdata* object_data = (struct icmp_objectdata*)obj->object_data;
     /*
     * decrease ref count of underlying device
     */
@@ -111,5 +108,5 @@ void icmp_detach(struct object* dev) {
     /*
     * detach
     */
-    objectmgr_detach_object(dev);
+    objectmgr_detach_object(obj);
 }

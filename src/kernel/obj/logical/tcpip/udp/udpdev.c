@@ -7,10 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_tcp.h>
+#include <sys/objectinterface/objectinterface_tcp.h>
 #include <sys/string/mem.h>
 #include <types.h>
 
@@ -21,69 +18,69 @@ struct udp_objectdata {
 /*
  * perform device instance specific init here
  */
-uint8_t udp_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct udp_objectdata* object_data = (struct udp_objectdata*)dev->object_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, object_data->ip_device->name, dev->name);
+uint8_t udp_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct udp_objectdata* object_data = (struct udp_objectdata*)obj->object_data;
+    kprintf("Init %s on %s (%s)\n", obj->description, object_data->ip_device->name, obj->name);
     return 1;
 }
 
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t udp_uninit(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Uninit %s (%s)\n", dev->description, dev->name);
-    kfree(dev->api);
-    kfree(dev->object_data);
+uint8_t udp_uninit(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Uninit %s (%s)\n", obj->description, obj->name);
+    kfree(obj->api);
+    kfree(obj->object_data);
 
     return 1;
 }
 
-void udp_read(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    //  struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
+void udp_read(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    //  struct ip_objectdata* object_data = (struct ip_objectdata*)obj->object_data;
 }
-void udp_write(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    //   struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
+void udp_write(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    //   struct ip_objectdata* object_data = (struct ip_objectdata*)obj->object_data;
 }
 
 struct object* udp_attach(struct object* ip_device) {
     ASSERT_NOT_NULL(ip_device);
-    ASSERT(ip_device->devicetype == IP);
+    ASSERT(ip_device->objectype == IP);
 
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &udp_init;
-    deviceinstance->uninit = &udp_uninit;
-    deviceinstance->pci = 0;
-    deviceinstance->devicetype = UDP;
-    objectmgr_set_object_description(deviceinstance, "User Datagram Protocol");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &udp_init;
+    objectinstance->uninit = &udp_uninit;
+    objectinstance->pci = 0;
+    objectinstance->objectype = UDP;
+    objectmgr_set_object_description(objectinstance, "User Datagram Protocol");
     /*
      * the device api
      */
-    struct objecttype_tcp* api = (struct objecttype_tcp*)kmalloc(sizeof(struct objecttype_tcp));
-    memzero((uint8_t*)api, sizeof(struct objecttype_tcp));
+    struct objectinterface_tcp* api = (struct objectinterface_tcp*)kmalloc(sizeof(struct objectinterface_tcp));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_tcp));
     api->read = &udp_read;
     api->write = &udp_write;
 
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * device data
      */
     struct udp_objectdata* object_data = (struct udp_objectdata*)kmalloc(sizeof(struct udp_objectdata));
     object_data->ip_device = ip_device;
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * register
      */
-    if (0 != objectmgr_attach_object(deviceinstance)) {
+    if (0 != objectmgr_attach_object(objectinstance)) {
         /*
         * increase ref count of underlying device
         */
@@ -91,19 +88,19 @@ struct object* udp_attach(struct object* ip_device) {
         /*
         * return device
         */
-        return deviceinstance;
+        return objectinstance;
     } else {
         kfree(api);
         kfree(object_data);
-        kfree(deviceinstance);
+        kfree(objectinstance);
         return 0;
     }
 }
 
-void udp_detach(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct udp_objectdata* object_data = (struct udp_objectdata*)dev->object_data;
+void udp_detach(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct udp_objectdata* object_data = (struct udp_objectdata*)obj->object_data;
     /*
     * decrease ref count of underlying device
     */
@@ -111,5 +108,5 @@ void udp_detach(struct object* dev) {
     /*
     * detach
     */
-    objectmgr_detach_object(dev);
+    objectmgr_detach_object(obj);
 }

@@ -15,10 +15,10 @@
 struct object* objectmgr_new_object();
 
 // register a device
-void objectmgr_register_object(struct object* dev);
+void objectmgr_register_object(struct object* obj);
 
 // unregister a device
-void objectmgr_unregister_object(struct object* dev);
+void objectmgr_unregister_object(struct object* obj);
 
 // init the device registry
 void objectmgr_init();
@@ -33,34 +33,34 @@ uint16_t objectmgr_object_count();
 void objectmgr_init_objects();
 
 // set description
-void objectmgr_set_object_description(struct object* dev, const uint8_t* description);
+void objectmgr_set_object_description(struct object* obj, const uint8_t* description);
 
 // find a device ie ("rtc0")
 struct object* objectmgr_find_object(const uint8_t* name);
 
 // find devices by the device description
-typedef void (*deviceSearchCallback)(struct object* dev);
-void objectmgr_find_objects_by_description(device_type dt, const uint8_t* description, deviceSearchCallback cb);
+typedef void (*deviceSearchCallback)(struct object* obj);
+void objectmgr_find_objects_by_description(object_type dt, const uint8_t* description, deviceSearchCallback cb);
 
 // find devices by device_type
-void objectmgr_find_objects_by_device_type(device_type dt, deviceSearchCallback cb);
+void objectmgr_find_objects_by_device_type(object_type dt, deviceSearchCallback cb);
 
 // attach a device (non-fixed devices... like RAM disks and SWAP)
-uint8_t objectmgr_attach_object(struct object* dev);
+uint8_t objectmgr_attach_object(struct object* obj);
 
 // detach a device (non-fixed devices... like RAM disks and SWAP)
 // be aware, this has the effect of deleting the dev struct!
-uint8_t objectmgr_detach_object(struct object* dev);
+uint8_t objectmgr_detach_object(struct object* obj);
 
 /*
 * increment device reference count
 */
-uint8_t objectmgr_increment_object_refcount(struct object* dev);
+uint8_t objectmgr_increment_object_refcount(struct object* obj);
 
 /*
 * decrease device reference count
 */
-uint8_t objectmgr_decrement_object_refcount(struct object* dev);
+uint8_t objectmgr_decrement_object_refcount(struct object* obj);
 
 /*
 * dump all devices to console

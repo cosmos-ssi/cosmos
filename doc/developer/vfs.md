@@ -4,7 +4,7 @@
 CosmOS has a hierarchical file system, similar to POSIX. 
 
 ```java
-struct objecttype_filesystem {
+struct objectinterface_filesystem {
     filesystem_get_root_node_function root;
     filesystem_read_function read;
     filesystem_write_function write;
@@ -24,7 +24,7 @@ struct filesystem_node {
     /* 
     * owning device
     */
-    struct object* filesystem_device;
+    struct object* filesystem_obj;
     /*
     * id
     */

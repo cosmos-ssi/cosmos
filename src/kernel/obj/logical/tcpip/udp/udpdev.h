@@ -13,6 +13,6 @@
 struct object;
 
 struct object* udp_attach(struct object* ip_device);
-void udp_detach(struct object* dev);
+void udp_detach(struct object* obj);
 
 #endif

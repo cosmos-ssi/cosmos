@@ -8,9 +8,7 @@
 #include <obj/logical/tcpip/arp/arpdev.h>
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_arp.h>
+#include <sys/objectinterface/objectinterface_arp.h>
 #include <sys/string/mem.h>
 #include <tests/obj/test_arp.h>
 #include <types.h>
@@ -20,7 +18,7 @@ void test_arp() {
 
     struct object* arp = objectmgr_find_object(devicename);
     if (0 != arp) {
-        struct objecttype_arp* arp_api = (struct objecttype_arp*)arp->api;
+        struct objectinterface_arp* arp_api = (struct objectinterface_arp*)arp->api;
 
         struct arp arp_request;
         arp_packet_init(&arp_request, ARP_REQUEST);

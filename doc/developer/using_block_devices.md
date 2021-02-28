@@ -16,13 +16,13 @@ Example code to read from block device:
 
 ```java
     uint32_t s = strlen(testdata);
-    uint32_t written = blockutil_write(dev, testdata, s + 1, 0);
+    uint32_t written = blockutil_write(obj, testdata, s + 1, 0);
 ````
 
 Example code to write from block devices.
 
 ```java
     uint8_t buffer[s + 1];
-    uint32_t read = blockutil_read(dev, (uint8_t*)buffer, s + 1, 0);
+    uint32_t read = blockutil_read(obj, (uint8_t*)buffer, s + 1, 0);
 ```
 

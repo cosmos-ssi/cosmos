@@ -11,11 +11,7 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_mouse.h>
-#include <sys/x86-64/idt/irq.h>
-#include <types.h>
+#include <sys/objectinterface/objectinterface_mouse.h>
 
 #define MOUSE_IRQ_NUMBER 12
 
@@ -108,9 +104,9 @@ uint8_t mouse_read() {
 /*
  * perform device instance specific init here
  */
-uint8_t mouse_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Init %s at IRQ %llu (%s)\n", dev->description, MOUSE_IRQ_NUMBER, dev->name);
+uint8_t mouse_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Init %s at IRQ %llu (%s)\n", obj->description, MOUSE_IRQ_NUMBER, obj->name);
     interrupt_router_register_interrupt_handler(MOUSE_IRQ_NUMBER, &mouse_irq_read);
 
     // alloc struct
@@ -141,8 +137,8 @@ uint8_t mouse_obj_init(struct object* dev) {
     return 1;
 }
 
-struct mouse_status* ps2mouse_status(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+struct mouse_status* ps2mouse_status(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(current_mouse_status);
     return current_mouse_status;
 }
@@ -154,18 +150,18 @@ void mouse_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &mouse_obj_init;
-    deviceinstance->devicetype = MOUSE;
-    objectmgr_set_object_description(deviceinstance, "PS2 Mouse");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &mouse_obj_init;
+    objectinstance->objectype = MOUSE;
+    objectmgr_set_object_description(objectinstance, "PS2 Mouse");
     /*
      * device api
      */
-    struct objecttype_mouse* api = (struct objecttype_mouse*)kmalloc(sizeof(struct objecttype_mouse));
+    struct objectinterface_mouse* api = (struct objectinterface_mouse*)kmalloc(sizeof(struct objectinterface_mouse));
     api->status = &ps2mouse_status;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

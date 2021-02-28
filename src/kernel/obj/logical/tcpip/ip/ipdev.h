@@ -8,13 +8,13 @@
 #ifndef _IPDEV_H
 #define _IPDEV_H
 
-#include <sys/objecttype/objecttype_ip.h>
+#include <sys/objectinterface/objectinterface_ip.h>
 #include <types.h>
 
 struct object;
 
 struct object* ip_attach(struct object* ethernet_device);
-void ip_detach(struct object* dev);
+void ip_detach(struct object* obj);
 
 uint16_t ip_checksum(uint16_t* addr, int count);
 

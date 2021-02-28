@@ -7,35 +7,34 @@
 
 #include <sys/debug/assert.h>
 #include <sys/fs/fs_facade.h>
-#include <sys/kprintf/kprintf.h>
+#include <sys/objectinterface/objectinterface_filesystem.h>
 #include <sys/objectmgr/object.h>
-#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
-struct filesystem_node* fsfacade_get_fs_rootnode(struct object* filesystem_device) {
-    ASSERT_NOT_NULL(filesystem_device);
-    ASSERT_NOT_NULL(filesystem_device->object_data);
-    struct objecttype_filesystem* fs_api = (struct objecttype_filesystem*)filesystem_device->api;
+struct filesystem_node* fsfacade_get_fs_rootnode(struct object* filesystem_obj) {
+    ASSERT_NOT_NULL(filesystem_obj);
+    ASSERT_NOT_NULL(filesystem_obj->object_data);
+    struct objectinterface_filesystem* fs_api = (struct objectinterface_filesystem*)filesystem_obj->api;
     ASSERT_NOT_NULL(fs_api->root);
-    return (*fs_api->root)(filesystem_device);
+    return (*fs_api->root)(filesystem_obj);
 }
 
 void fsfacade_dump_node(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
 
     kprintf("Name: %s\n", fs_node->name);
     kprintf("ID: %#llX\n", fs_node->id);
-    kprintf("Device: %s\n", fs_node->filesystem_device->name);
+    kprintf("Object: %s\n", fs_node->filesystem_obj->name);
     kprintf("Type: %#llX\n", fs_node->type);
     kprintf("Node Data: %#llX\n", fs_node->node_data);
 }
 
 void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traverse_function f, uint32_t depth) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
 
     ASSERT_NOT_NULL(f);
 
@@ -62,8 +61,8 @@ void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traver
  */
 void fsfacade_traverse(struct filesystem_node* fs_node, fsfacade_traverse_function f) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
 
     ASSERT_NOT_NULL(f);
     fsfacade_traverse_internal(fs_node, f, 0);
@@ -71,8 +70,8 @@ void fsfacade_traverse(struct filesystem_node* fs_node, fsfacade_traverse_functi
 
 void vfs_dump_traverse_function(struct filesystem_node* fs_node, uint32_t depth) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
 
     for (int32_t i = 0; i < depth; i++) {
         kprintf(" ");
@@ -87,10 +86,10 @@ void fsfacade_dump(struct filesystem_node* fs_node) {
 
 void fsfacade_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
     ASSERT_NOT_NULL(dir);
-    struct objecttype_filesystem* fs_api = (struct objecttype_filesystem*)fs_node->filesystem_device->api;
+    struct objectinterface_filesystem* fs_api = (struct objectinterface_filesystem*)fs_node->filesystem_obj->api;
     if (0 != fs_api->list) {
         (*fs_api->list)(fs_node, dir);
 
@@ -102,9 +101,9 @@ void fsfacade_list_directory(struct filesystem_node* fs_node, struct filesystem_
 
 struct filesystem_node* fsfacade_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
-    struct objecttype_filesystem* fs_api = (struct objecttype_filesystem*)fs_node->filesystem_device->api;
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
+    struct objectinterface_filesystem* fs_api = (struct objectinterface_filesystem*)fs_node->filesystem_obj->api;
 
     //  kprintf("fsfacade_find_node_by_id id %llu of parent %s\n", id, fs_node->name);
     if (0 != fs_api->find_id) {
@@ -115,9 +114,9 @@ struct filesystem_node* fsfacade_find_node_by_id(struct filesystem_node* fs_node
 
 uint64_t fsfacade_size(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
-    struct objecttype_filesystem* fs_api = (struct objecttype_filesystem*)fs_node->filesystem_device->api;
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
+    struct objectinterface_filesystem* fs_api = (struct objectinterface_filesystem*)fs_node->filesystem_obj->api;
     if (0 != fs_api->size) {
         return (*fs_api->size)(fs_node);
     }
@@ -126,8 +125,8 @@ uint64_t fsfacade_size(struct filesystem_node* fs_node) {
 
 struct filesystem_node* fsfacade_find_node_by_name(struct filesystem_node* fs_node, char* name) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
     ASSERT_NOT_NULL(name);
 
     struct filesystem_directory dir;
@@ -148,12 +147,12 @@ struct filesystem_node* fsfacade_find_node_by_name(struct filesystem_node* fs_no
 
 uint32_t fsfacade_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     //  kprintf("fsfacade_read node %s size %llu\n", fs_node->name, data_size);
-    struct objecttype_filesystem* fs_api = (struct objecttype_filesystem*)fs_node->filesystem_device->api;
+    struct objectinterface_filesystem* fs_api = (struct objectinterface_filesystem*)fs_node->filesystem_obj->api;
     if (0 != fs_api->read) {
         return (*fs_api->read)(fs_node, data, data_size);
     }
@@ -162,12 +161,12 @@ uint32_t fsfacade_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t 
 
 uint32_t fsfacade_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->api);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
 
-    struct objecttype_filesystem* fs_api = (struct objecttype_filesystem*)fs_node->filesystem_device->api;
+    struct objectinterface_filesystem* fs_api = (struct objectinterface_filesystem*)fs_node->filesystem_obj->api;
     if (0 != fs_api->write) {
         return (*fs_api->write)(fs_node, data, data_size);
     }

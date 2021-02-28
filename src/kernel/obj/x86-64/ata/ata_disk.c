@@ -13,9 +13,7 @@
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_block.h>
+#include <sys/objectinterface/objectinterface_block.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 
@@ -31,12 +29,12 @@ void calculate_ida_lba_register_values(uint32_t lba, uint8_t* registers) {
     registers[5] = 0;
 }
 
-uint32_t ata_rw(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba, bool read) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
+uint32_t ata_rw(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t start_lba, bool read) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
     ASSERT_NOT_NULL(data);
-    struct ata_disk_objectdata* diskdata = (struct ata_disk_objectdata*)dev->object_data;
-    struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
+    struct ata_disk_objectdata* diskdata = (struct ata_disk_objectdata*)obj->object_data;
+    struct ata_device* disk = ata_get_disk(diskdata->object, diskdata->channel, diskdata->disk);
     uint16_t sector_size = disk->bytes_per_sector;
 
     //	kprintf("channel %llu \n", diskdata->channel);
@@ -129,57 +127,57 @@ uint32_t ata_rw(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t 
     return data_size;
 }
 
-uint32_t ata_read(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
-    ASSERT_NOT_NULL(dev);
+uint32_t ata_read(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     //    kprintf("ata_read %llu\n", data_size);
-    return ata_rw(dev, data, data_size, start_lba, true);
+    return ata_rw(obj, data, data_size, start_lba, true);
 }
 
-uint32_t ata_write(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
-    ASSERT_NOT_NULL(dev);
+uint32_t ata_write(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     //    kprintf("ata_write %llu\n", data_size);
 
-    return ata_rw(dev, data, data_size, start_lba, false);
+    return ata_rw(obj, data, data_size, start_lba, false);
 }
 
-uint16_t ata_sector_size(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct ata_disk_objectdata* diskdata = (struct ata_disk_objectdata*)dev->object_data;
-    struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
+uint16_t ata_sector_size(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct ata_disk_objectdata* diskdata = (struct ata_disk_objectdata*)obj->object_data;
+    struct ata_device* disk = ata_get_disk(diskdata->object, diskdata->channel, diskdata->disk);
     ASSERT_NOT_NULL(disk);
     return disk->bytes_per_sector;
 }
 
-uint32_t ata_total_size(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct ata_disk_objectdata* diskdata = (struct ata_disk_objectdata*)dev->object_data;
-    struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
+uint32_t ata_total_size(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct ata_disk_objectdata* diskdata = (struct ata_disk_objectdata*)obj->object_data;
+    struct ata_device* disk = ata_get_disk(diskdata->object, diskdata->channel, diskdata->disk);
     ASSERT_NOT_NULL(disk);
     return disk->size;
 }
 
-uint8_t obj_init_ata_disk(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct ata_disk_objectdata* disk = (struct ata_disk_objectdata*)dev->object_data;
-    struct ata_device* dsk = ata_get_disk(disk->device, disk->channel, disk->disk);
+uint8_t obj_init_ata_disk(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct ata_disk_objectdata* disk = (struct ata_disk_objectdata*)obj->object_data;
+    struct ata_device* dsk = ata_get_disk(disk->object, disk->channel, disk->disk);
     ASSERT_NOT_NULL(dsk);
 
-    kprintf("Init %s serial '%s' on controller %s of size %llu (%s)\n", dev->description, dsk->serial,
-            disk->device->name, dsk->size, dev->name);
+    kprintf("Init %s serial '%s' on controller %s of size %llu (%s)\n", obj->description, dsk->serial,
+            disk->object->name, dsk->size, obj->name);
 
     // mount partition_index tables
-    fsutil_attach_partition_tables(dev);
+    fsutil_attach_partition_tables(obj);
     return 1;
 }
 
-uint8_t obj_uninit_ata_disk(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    fsutil_detach_partition_tables(dev);
+uint8_t obj_uninit_ata_disk(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    fsutil_detach_partition_tables(obj);
     return 1;
 }
 
@@ -187,32 +185,32 @@ void ata_register_disk(struct object* controllerDevice, uint8_t channel, uint8_t
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &obj_init_ata_disk;
-    deviceinstance->uninit = &obj_uninit_ata_disk;
-    deviceinstance->devicetype = DISK;
-    objectmgr_set_object_description(deviceinstance, "ATA Disk");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &obj_init_ata_disk;
+    objectinstance->uninit = &obj_uninit_ata_disk;
+    objectinstance->objectype = DISK;
+    objectmgr_set_object_description(objectinstance, "ATA Disk");
     /*
      * device data
      */
     struct ata_disk_objectdata* object_data = (struct ata_disk_objectdata*)kmalloc(sizeof(struct ata_disk_objectdata));
     object_data->controller = controllerDevice->object_data;
     object_data->channel = channel;
-    object_data->device = controllerDevice;
+    object_data->object = controllerDevice;
     object_data->disk = disk;
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * the device api
      */
-    struct objecttype_block* api = (struct objecttype_block*)kmalloc(sizeof(struct objecttype_block));
-    memzero((uint8_t*)api, sizeof(struct objecttype_block));
+    struct objectinterface_block* api = (struct objectinterface_block*)kmalloc(sizeof(struct objectinterface_block));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_block));
     api->write = &ata_write;
     api->read = &ata_read;
     api->sector_size = &ata_sector_size;
     api->total_size = &ata_total_size;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

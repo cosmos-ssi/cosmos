@@ -9,10 +9,7 @@
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_kernelmap.h>
-#include <types.h>
+#include <sys/objectinterface/objectinterface_kernelmap.h>
 
 // defined in cosmos.ld
 extern uint64_t _text_start;
@@ -36,14 +33,14 @@ uint64_t debug_end = (uint64_t)&debug_end;
 /*
  * perform device instance specific init here
  */
-uint8_t kernelmap_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Init %s (%s)\n", dev->description, dev->name);
+uint8_t kernelmap_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
 
-void kernelmap_read(struct object* dev, struct kernelmap* km) {
-    ASSERT_NOT_NULL(dev);
+void kernelmap_read(struct object* obj, struct kernelmap* km) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(km);
     km->text_start = text_start;
     km->text_end = text_end;
@@ -59,18 +56,19 @@ void kernelmap_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "Kernel map");
-    deviceinstance->devicetype = KERNELMAP;
-    deviceinstance->init = &kernelmap_obj_init;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "Kernel map");
+    objectinstance->objectype = KERNELMAP;
+    objectinstance->init = &kernelmap_obj_init;
     /*
      * api
      */
-    struct objecttype_kernelmap* api = (struct objecttype_kernelmap*)kmalloc(sizeof(struct objecttype_kernelmap));
+    struct objectinterface_kernelmap* api =
+        (struct objectinterface_kernelmap*)kmalloc(sizeof(struct objectinterface_kernelmap));
     api->read = &kernelmap_read;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

@@ -11,11 +11,7 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_pit.h>
-#include <sys/x86-64/idt/irq.h>
-#include <types.h>
+#include <sys/objectinterface/objectinterface_pit.h>
 
 // https://wiki.osdev.org/Programmable_Interval_Timer
 // http://www.osdever.net/bkerndev/Docs/pit.htm
@@ -51,15 +47,15 @@ void pit_handle_irq(stack_frame* frame) {
  *  or 0 (which translates to 65536), which gives an output frequency of
  *  18.2065 Hz (or an IRQ every 54.9254 ms)"
  */
-uint8_t pit_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Init %s at IRQ %llu (%s)\n", dev->description, PIT_IRQ, dev->name);
+uint8_t pit_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Init %s at IRQ %llu (%s)\n", obj->description, PIT_IRQ, obj->name);
     interrupt_router_register_interrupt_handler(PIT_IRQ, &pit_handle_irq);
     return 1;
 }
 
-uint64_t pit_tickcount(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+uint64_t pit_tickcount(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
     return tickcount;
 }
 
@@ -74,19 +70,19 @@ void pit_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "8253/8254 PIT");
-    deviceinstance->devicetype = PIT;
-    deviceinstance->init = &pit_init;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "8253/8254 PIT");
+    objectinstance->objectype = PIT;
+    objectinstance->init = &pit_init;
     /*
      * device api
      */
-    struct objecttype_pit* api = (struct objecttype_pit*)kmalloc(sizeof(struct objecttype_pit));
+    struct objectinterface_pit* api = (struct objectinterface_pit*)kmalloc(sizeof(struct objectinterface_pit));
     api->tickcount = &pit_tickcount;
     api->subscribe = &pit_subscribe;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

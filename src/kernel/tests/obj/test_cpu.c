@@ -6,9 +6,7 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/objecttype/objecttype_cpu.h>
+#include <sys/objectinterface/objectinterface_cpu.h>
 #include <tests/obj/test_cpu.h>
 #include <types.h>
 
@@ -16,7 +14,7 @@ void show_cpu_data() {
     // get the CPU
     struct object* cpu = objectmgr_find_object("cpu0");
     if (0 != cpu) {
-        struct objecttype_cpu* cpu_api = (struct objecttype_cpu*)cpu->api;
+        struct objectinterface_cpu* cpu_api = (struct objectinterface_cpu*)cpu->api;
         /*
          * show all CPU features
          */

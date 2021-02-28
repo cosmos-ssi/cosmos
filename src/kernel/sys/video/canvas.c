@@ -15,17 +15,17 @@
 #include <sys/video/rgb.h>
 #include <sys/video/video_util.h>
 
-struct canvas* canvas_new(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+struct canvas* canvas_new(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
     struct canvas* ret = (struct canvas*)kmalloc(sizeof(struct canvas));
     /*
     * useful state data
     */
-    ret->buffer_size = video_util_get_buffersize(dev);
+    ret->buffer_size = video_util_get_buffersize(obj);
     kprintf("Canvas buffer size %#llX\n", ret->buffer_size);
-    video_get_resolution(dev, &(ret->resolution));
+    video_get_resolution(obj, &(ret->resolution));
     ret->buffer = kmalloc(ret->buffer_size);
-    ret->dev = dev;
+    ret->obj = obj;
     ret->bytes_per_pixel = ret->resolution.color_depth / 8;
     return ret;
 }
@@ -57,14 +57,14 @@ void canvas_dump(struct canvas* cvs) {
 void canvas_blt(struct canvas* cvs) {
     ASSERT_NOT_NULL(cvs);
     ASSERT_NOT_NULL(cvs->buffer);
-    ASSERT_NOT_NULL(cvs->dev);
-    video_util_blt(cvs->dev, cvs->buffer, cvs->buffer_size);
+    ASSERT_NOT_NULL(cvs->obj);
+    video_util_blt(cvs->obj, cvs->buffer, cvs->buffer_size);
 }
 
 void canvas_clear(struct canvas* cvs, uint32_t rgb) {
     ASSERT_NOT_NULL(cvs);
     ASSERT_NOT_NULL(cvs->buffer);
-    ASSERT_NOT_NULL(cvs->dev);
+    ASSERT_NOT_NULL(cvs->obj);
     ASSERT_NOT_NULL(cvs->resolution.width);
     ASSERT_NOT_NULL(cvs->resolution.height);
     ASSERT_NOT_NULL(cvs->buffer_size);

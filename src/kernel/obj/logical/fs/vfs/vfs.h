@@ -14,7 +14,7 @@ struct filesystem_node;
 struct object;
 
 struct object* vfs_attach(uint8_t* name);
-void vfs_detach(struct object* dev);
+void vfs_detach(struct object* obj);
 
 void vfs_add_child(struct object* vfs_device, struct filesystem_node* child_node);
 void vfs_remove_child(struct object* vfs_device, uint64_t id);

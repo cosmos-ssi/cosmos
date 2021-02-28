@@ -27,9 +27,9 @@ The below code creates a partition table device for an MBR partition table on di
 ```java
 	struct object* dsk = objectmgr_find_object("disk0");
 	if (0 != dsk) {
-		struct object* dev = mbr_pt_attach(dsk);
-		struct objecttype_part_table* api = (struct objecttype_part_table*)dev->api;
-		mbr_pt_detach(dev);
+		struct object* obj = mbr_pt_attach(dsk);
+		struct objectinterface_part_table* api = (struct objectinterface_part_table*)obj->api;
+		mbr_pt_detach(obj);
 	} else {
 		kprintf("Unable to find disk0\n", devicename);
 	}
@@ -40,7 +40,7 @@ Now that CosmOS knows about the partitions, we can mount filesystems on them. Th
 ```java
 	struct object* part = objectmgr_find_object("part0");
 	if (0 != part) {
-		struct object* dev = fat_attach(part);
+		struct object* obj = fat_attach(part);
 		fat_detach(part);
 	} else {
 		kprintf("Unable to find part0\n", devicename);
