@@ -10,8 +10,8 @@
 #include <obj/x86-64/pci_ehci/pci_ehci.h>
 #include <sys/debug/assert.h>
 #include <sys/interrupt_router/interrupt_router.h>
-#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>

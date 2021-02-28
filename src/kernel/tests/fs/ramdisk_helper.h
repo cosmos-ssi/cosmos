@@ -13,8 +13,6 @@ struct object;
 #define RAMDISK_SECTOR_SIZE 512
 #define RAMDISK_TOTAL_SECTORS 1000
 
-#include <sys/obj/objectmgr/objectmgr.h>
-
 void ramdisk_helper_remove_rd(struct object* rd);
 struct object* ramdisk_helper_create_rd();
 #endif

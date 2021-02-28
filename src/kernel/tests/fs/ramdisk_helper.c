@@ -7,6 +7,7 @@
 
 #include <obj/logical/ramdisk/ramdisk.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <tests/fs/ramdisk_helper.h>
 

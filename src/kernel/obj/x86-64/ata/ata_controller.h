@@ -10,8 +10,6 @@
 
 #include <obj/x86-64/ata/ata.h>
 #include <obj/x86-64/ata/ata_dma.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <types.h>
 
 struct object;

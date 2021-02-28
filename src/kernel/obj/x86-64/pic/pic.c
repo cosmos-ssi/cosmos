@@ -9,6 +9,7 @@
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 
 // I/O ports
