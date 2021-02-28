@@ -12,6 +12,8 @@
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
 
+#define LOAD_BASE_VIRTUAL 0
+
 typedef uint8_t fpu_reg[10];
 
 typedef uint64_t xmm_reg[2];

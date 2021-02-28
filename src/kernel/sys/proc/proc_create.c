@@ -15,6 +15,7 @@
 #include <sys/x86-64/mm/pagetables.h>
 
 pttentry proc_obtain_cr3();
+void proc_map_image(pttentry cr3, object_handle_t exe_obj);
 
 pid_t proc_create() {
     proc_info_t* proc_info;
@@ -32,7 +33,28 @@ pid_t proc_create() {
     return proc_info->pid;
 }
 
+void proc_map_image(pttentry cr3, object_handle_t exe_obj) {
+    // Map the process image in the pages specified in the executable object,
+    // into the PML4 table specified by cr3.
+
+    object_executable_t* obj;
+    uint64_t i;
+    void* vaddr = LOAD_BASE_VIRTUAL;
+
+    obj = OBJECT_DATA(exe_obj, object_executable_t);
+
+    for (i = 0; i < obj->page_count; i++) {
+    }
+
+    vaddr++;
+
+    return;
+}
+
 pttentry proc_obtain_cr3() {
+    // Find a page to put our PML4 table in, and return a value suitable for
+    // loading into cr3.
+
     uint64_t cr3_page;
     pttentry proc_cr3;
 
@@ -46,8 +68,10 @@ pttentry proc_obtain_cr3() {
 }
 
 void setup_user_process(pid_t pid, object_handle_t exe_obj) {
+    // do ALL the things!
 
     proc_table_get(pid)->cr3 = proc_obtain_cr3();
+    proc_map_image(proc_table_get(pid)->cr3, exe_obj);
 
     return;
 }
