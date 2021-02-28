@@ -25,8 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: nasm
-        run: sudo apt install nasm
+      - name: install-prereqs
+        run: sudo apt install -y wget make nasm patch clang-format build-essential binutils gcc-10 git iwyu curl
 
       - name: lint
         run: cd src;make lint
@@ -45,17 +45,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: make
-        run: brew install make
-
-      - name: gcc
-        run: brew install x86_64-elf-gcc
-
-      - name: nasm
-        run: brew install nasm
-
-      - name: clang-format
-        run: brew install clang-format
+      - name: install-prereqs
+        run: brew install make x86_64-elf-gcc nasm clang-format wget git iwyu curl
 
       - name: lint
         run: cd src;make lint
