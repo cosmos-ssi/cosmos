@@ -10,8 +10,8 @@
 
 dtable proc_table;
 
-void proc_table_add(proc_info_t* proc_info, pid_t pid) {
-    dtable_set(proc_table, pid, (void*)proc_info);
+void proc_table_add(proc_info_t* proc_info) {
+    dtable_set(proc_table, proc_info->pid, (void*)proc_info);
 
     return;
 }

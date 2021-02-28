@@ -22,6 +22,8 @@ pid_t proc_create() {
     spinlock_acquire(&proc_table_lock);
     proc_info->pid = get_next_pid();
 
+    proc_table_add(proc_info);
+
     spinlock_release(&proc_table_lock);
     return proc_info->pid;
 }

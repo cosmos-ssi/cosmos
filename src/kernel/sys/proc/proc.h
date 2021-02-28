@@ -84,5 +84,6 @@ void setup_user_process(pid_t pid);
 void proc_init();
 
 // proc_table.c
+void proc_table_add(proc_info_t* proc_info);
 
 #endif
