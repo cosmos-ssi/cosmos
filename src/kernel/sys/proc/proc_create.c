@@ -36,5 +36,7 @@ void setup_user_process(pid_t pid) {
     ASSERT_NOT_NULL(cr3_page);
     proc_cr3 = cr3_page * PAGE_SIZE;  // we don't need to set any flags
 
+    proc_table_get(pid)->cr3 = proc_cr3;
+
     return;
 }
