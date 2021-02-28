@@ -7,7 +7,8 @@
 
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/fs/file_util.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kmalloc/kmalloc.h>

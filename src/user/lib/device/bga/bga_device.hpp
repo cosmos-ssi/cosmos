@@ -13,8 +13,8 @@
 
 class BGADevice : public Device {
   public:
-    void getResolution(struct deviceapi_resolution* resolution);
-    void setResolution(struct deviceapi_resolution* resolution);
+    void getResolution(struct objecttype_resolution* resolution);
+    void setResolution(struct objecttype_resolution* resolution);
     uint32_t getBuffersize();
     void blt(uint8_t* buffer, uint32_t buffer_size);
 };

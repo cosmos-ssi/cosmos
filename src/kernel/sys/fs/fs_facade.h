@@ -14,9 +14,9 @@
 
 struct filesystem_node;
 struct filesystem_directory;
-struct device;
+struct object;
 
-struct filesystem_node* fsfacade_get_fs_rootnode(struct device* filesystem_device);
+struct filesystem_node* fsfacade_get_fs_rootnode(struct object* filesystem_device);
 
 typedef void (*fsfacade_traverse_function)(struct filesystem_node* fs_node, uint32_t depth);
 

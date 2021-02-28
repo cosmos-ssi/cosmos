@@ -25,10 +25,10 @@ The below code creates a partition table device for an MBR partition table on di
 - creating multiple part devices such as `part0`, `part1`, `part2` for each partition.
 
 ```java
-	struct device* dsk = devicemgr_find_device("disk0");
+	struct object* dsk = objectmgr_find_object("disk0");
 	if (0 != dsk) {
-		struct device* dev = mbr_pt_attach(dsk);
-		struct deviceapi_part_table* api = (struct deviceapi_part_table*)dev->api;
+		struct object* dev = mbr_pt_attach(dsk);
+		struct objecttype_part_table* api = (struct objecttype_part_table*)dev->api;
 		mbr_pt_detach(dev);
 	} else {
 		kprintf("Unable to find disk0\n", devicename);
@@ -38,9 +38,9 @@ The below code creates a partition table device for an MBR partition table on di
 Now that CosmOS knows about the partitions, we can mount filesystems on them. This code creates a FAT device such as `fat0' on 'part0'.
 
 ```java
-	struct device* part = devicemgr_find_device("part0");
+	struct object* part = objectmgr_find_object("part0");
 	if (0 != part) {
-		struct device* dev = fat_attach(part);
+		struct object* dev = fat_attach(part);
 		fat_detach(part);
 	} else {
 		kprintf("Unable to find part0\n", devicename);
@@ -50,7 +50,7 @@ Now that CosmOS knows about the partitions, we can mount filesystems on them. Th
 The device API's that each device type expose are:
 
 - ata (none yet)
-- disk [Block Device](../../src/kernel/sys/deviceapi/deviceapi_block.h)
-- pt [Partition Table](../../src/kernel/sys/deviceapi/deviceapi_part_table.h)
-- part [Block Device](../../src/kernel/sys/deviceapi/deviceapi_block.h)
-- filesystem [File System](../../src/kernel/sys/deviceapi/deviceapi_filesystem.h)
+- disk [Block Device](../../src/kernel/sys/objecttype/objecttype_block.h)
+- pt [Partition Table](../../src/kernel/sys/objecttype/objecttype_part_table.h)
+- part [Block Device](../../src/kernel/sys/objecttype/objecttype_block.h)
+- filesystem [File System](../../src/kernel/sys/objecttype/objecttype_filesystem.h)

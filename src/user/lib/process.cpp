@@ -5,16 +5,23 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <memory.hpp>
 #include <process.hpp>
 
-void Process::sleep(uint64_t ms) {
+#define PROCESS_DEFAULT_MEMORY 1024 * 100  // 100k. I am a generous person.
 
+Process::Process() {
+    void* memory = Memory::malloc(PROCESS_DEFAULT_MEMORY);
+    this->heap = new Heap();
+    this->heap->add((uint64_t)memory, PROCESS_DEFAULT_MEMORY, 1024);
 }
 
-uint64_t Process::pid(){
+void Process::sleep(uint64_t ms) {}
+
+uint64_t Process::pid() {
     return 0;
 }
 
-Process* Process::fork(){
+Process* Process::fork() {
     return 0;
 }

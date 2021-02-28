@@ -6,37 +6,38 @@
 // ****************************************************************
 
 #include <cosmos_logical_devs.h>
-#include <dev/logical/console/serial_console.h>
-#include <dev/logical/console/vga_console.h>
-#include <dev/logical/ethernet/ethernet.h>
-#include <dev/logical/fs/devfs/devfs.h>
-#include <dev/logical/fs/initrd/initrd.h>
-#include <dev/logical/fs/vfs/vfs.h>
-#include <dev/logical/null/null.h>
-#include <dev/logical/ramdisk/ramdisk.h>
-#include <dev/logical/rand/rand.h>
-#include <dev/logical/tcpip/arp/arpdev.h>
-#include <dev/logical/tcpip/icmp/icmpdev.h>
-#include <dev/logical/tcpip/ip/ipdev.h>
-#include <dev/logical/tcpip/tcp/tcpdev.h>
-#include <dev/logical/tcpip/udp/udpdev.h>
-#include <dev/logical/tick/tick.h>
-#include <sys/deviceapi/deviceapi_console.h>
-#include <sys/deviceapi/deviceapi_cpu.h>
-#include <sys/deviceapi/deviceapi_dsp.h>
-#include <sys/deviceapi/deviceapi_pit.h>
-#include <sys/deviceapi/deviceapi_rtc.h>
-#include <sys/deviceapi/deviceapi_serial.h>
-#include <sys/deviceapi/deviceapi_speaker.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <obj/logical/console/serial_console.h>
+#include <obj/logical/console/vga_console.h>
+#include <obj/logical/ethernet/ethernet.h>
+#include <obj/logical/fs/devfs/devfs.h>
+#include <obj/logical/fs/initrd/initrd.h>
+#include <obj/logical/fs/vfs/vfs.h>
+#include <obj/logical/null/null.h>
+#include <obj/logical/ramdisk/ramdisk.h>
+#include <obj/logical/rand/rand.h>
+#include <obj/logical/tcpip/arp/arpdev.h>
+#include <obj/logical/tcpip/icmp/icmpdev.h>
+#include <obj/logical/tcpip/ip/ipdev.h>
+#include <obj/logical/tcpip/tcp/tcpdev.h>
+#include <obj/logical/tcpip/udp/udpdev.h>
+#include <obj/logical/tick/tick.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_console.h>
+#include <sys/objecttype/objecttype_cpu.h>
+#include <sys/objecttype/objecttype_dsp.h>
+#include <sys/objecttype/objecttype_pit.h>
+#include <sys/objecttype/objecttype_rtc.h>
+#include <sys/objecttype/objecttype_serial.h>
+#include <sys/objecttype/objecttype_speaker.h>
 
 void attach_logical_devices() {
     /*
     * console
     */
-    struct device* serial = devicemgr_find_device("serial0");
+    struct object* serial = objectmgr_find_object("serial0");
     if (0 != serial) {
         // this makes "console1"
         serial_console_attach(serial);
@@ -60,19 +61,19 @@ void attach_logical_devices() {
     /*
     * tick device
     */
-    struct device* pit = devicemgr_find_device("pit0");
+    struct object* pit = objectmgr_find_object("pit0");
     if (0 != pit) {
         tick_attach(pit);
     }
     /*
     * tcp/ip
     */
-    struct device* vnic = devicemgr_find_device("vnic0");
+    struct object* vnic = objectmgr_find_object("vnic0");
     if (0 != vnic) {
-        struct device* eth = ethernet_attach(vnic);
+        struct object* eth = ethernet_attach(vnic);
         arp_attach(eth);
         icmp_attach(eth);
-        struct device* ip_dev = ip_attach(eth);
+        struct object* ip_dev = ip_attach(eth);
         tcp_attach(ip_dev);
         udp_attach(ip_dev);
 
@@ -83,8 +84,8 @@ void attach_logical_devices() {
     * initrd
     */
     uint8_t devicename[] = {INITRD_DISK};
-    struct device* initrd_dev = 0;
-    struct device* dsk = devicemgr_find_device(devicename);
+    struct object* initrd_dev = 0;
+    struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
         initrd_dev = initrd_attach(dsk, initrd_lba());
 
@@ -94,8 +95,8 @@ void attach_logical_devices() {
     /*
     * vfs
     */
-    struct device* rootfs_dev = vfs_attach("/");
-    //   struct device* devfs_dev = devfs_attach();
+    struct object* rootfs_dev = vfs_attach("/");
+    //   struct object* devfs_dev = devfs_attach();
     //   struct filesystem_node* fsnode_devfs = fsfacade_get_fs_rootnode(devfs_dev);
     struct filesystem_node* fsnode_initrd = fsfacade_get_fs_rootnode(initrd_dev);
     // vfs_add_child(rootfs_dev, fsnode_devfs);

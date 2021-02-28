@@ -5,19 +5,20 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/ramdisk/ramdisk.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <obj/logical/ramdisk/ramdisk.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <tests/fs/ramdisk_helper.h>
 
 /*
 * make a ram disk
 */
-struct device* ramdisk_helper_create_rd() {
+struct object* ramdisk_helper_create_rd() {
     // attach the ramdisk
-    struct device* ramdisk_device = ramdisk_attach(RAMDISK_SECTOR_SIZE, RAMDISK_TOTAL_SECTORS);
+    struct object* ramdisk_device = ramdisk_attach(RAMDISK_SECTOR_SIZE, RAMDISK_TOTAL_SECTORS);
 
-    struct device* ramdisk = devicemgr_find_device(ramdisk_device->name);
+    struct object* ramdisk = objectmgr_find_object(ramdisk_device->name);
     if (0 != ramdisk) {
         return ramdisk;
     } else {
@@ -29,6 +30,6 @@ struct device* ramdisk_helper_create_rd() {
 /*
 * remove the ram disk
 */
-void ramdisk_helper_remove_rd(struct device* rd) {
+void ramdisk_helper_remove_rd(struct object* rd) {
     ramdisk_detach(rd);
 }

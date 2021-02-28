@@ -24,7 +24,7 @@ struct fs_node {
     /* 
     * owning device
     */
-    struct device* filesystem_device;
+    struct object* filesystem_device;
     /*
     * id
     */
