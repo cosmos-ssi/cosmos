@@ -5,11 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/x86-64/idt/exceptions.h>
 #include <sys/x86-64/idt/idt.h>
-#include <sys/x86-64/idt/irq.h>
 #include <types.h>
 
 #define IDT_SIZE 256

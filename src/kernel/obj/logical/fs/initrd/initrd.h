@@ -14,6 +14,8 @@
 
 #include <types.h>
 
+struct object;
+
 #define INITRD_NAME_SIZE 64
 #define INITRD_MAX_FILES 64
 

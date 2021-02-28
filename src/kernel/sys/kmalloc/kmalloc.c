@@ -8,6 +8,7 @@
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/panic/panic.h>
 #include <types.h>
 
 #define MALLOC_MAGIC_0 'C'

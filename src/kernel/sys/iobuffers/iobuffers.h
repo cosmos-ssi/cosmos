@@ -8,7 +8,6 @@
 #ifndef _IOBUFFERS_H
 #define _IOBUFFERS_H
 
-#include <sys/x86-64/mm/mm.h>
 #include <types.h>
 
 #define IOBUFFERS_ALIGNMENT 0x10000   // 64k

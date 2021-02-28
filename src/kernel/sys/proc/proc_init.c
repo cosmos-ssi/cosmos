@@ -5,12 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/asm/asm.h>
 #include <sys/collection/dtable/dtable.h>
-#include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
+#include <types.h>
 
 uint64_t next_pid;
 

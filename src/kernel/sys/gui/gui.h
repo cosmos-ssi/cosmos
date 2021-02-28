@@ -15,12 +15,6 @@
 
 extern struct gui_state_data* gui_state;
 
-struct canvas;
-struct psf1_font;
-struct arraylist;
-struct window;
-struct bmp;
-
 struct gui_state_data {
     uint32_t background_color;
     struct canvas* canvas;

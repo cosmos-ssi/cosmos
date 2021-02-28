@@ -6,14 +6,14 @@
 // ****************************************************************
 
 #include <obj/logical/fs/swap/swap.h>
-#include <obj/logical/ramdisk/ramdisk.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_swap.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <tests/fs/ramdisk_helper.h>
+#include <types.h>
 
 const uint8_t SWAP_TEST_STRING[] = "We were very tired and we were very merry";
 

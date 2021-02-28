@@ -8,8 +8,6 @@
 #ifndef _CFS_H
 #define _CFS_H
 
-#include <types.h>
-
 struct object;
 
 struct object* cfs_attach(struct object* partition_objice);

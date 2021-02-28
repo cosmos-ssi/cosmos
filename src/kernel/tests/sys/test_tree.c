@@ -9,6 +9,7 @@
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>
+#include <types.h>
 
 char G_A[] = {"A"};
 char G_B[] = {"BB"};

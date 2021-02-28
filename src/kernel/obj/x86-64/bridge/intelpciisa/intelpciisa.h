@@ -8,8 +8,6 @@
 #ifndef _INTELPCIISA_H
 #define _INTELPCIISA_H
 
-#include <types.h>
-
 void pciisa_bridge_register();
 
 #endif

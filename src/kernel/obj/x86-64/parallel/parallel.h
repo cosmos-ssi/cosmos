@@ -8,8 +8,6 @@
 #ifndef _PARALLEL_H
 #define _PARALLEL_H
 
-#include <types.h>
-
 void parallel_objectmgr_register_objects();
 
 #endif

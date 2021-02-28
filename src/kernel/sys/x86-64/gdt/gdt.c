@@ -6,7 +6,9 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/x86-64/gdt/gdt.h>
+#include <types.h>
 
 // https://github.com/hach-que/Kernel
 

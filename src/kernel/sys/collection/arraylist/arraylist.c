@@ -5,9 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/collection/array/array.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/panic/panic.h>
 #include <sys/string/string.h>
 
 #define EXPAND_SIZE 64

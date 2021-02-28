@@ -10,9 +10,9 @@ CRUFT_FILES=$(shell find . -type f \( -name "dump.dat" -o \
 									  -name "qemu.log" \))
 
 all: subsystems
-.PHONY: clean
+.PHONY: clean header-check header-fix
 
-bootimage: subsystems
+bootimage: header-check lint subsystems blank-disk
 	# make a file
 	#$(DD) if=/dev/zero of=$(BOOTIMAGE) bs=32768 count=129024
 	test -f $(BOOTIMAGE) || $(DD) if=/dev/zero of=$(BOOTIMAGE) bs=32768 count=129024 
@@ -28,7 +28,7 @@ bootimage: subsystems
 	# write initrd fs at offset of 10MB
 	$(DD) if=$(INITRD) of=$(BOOTIMAGE) conv=notrunc bs=512 seek=20480
 
-subsystems: lint boot-subsystem kernel-subsystem utils user-subsystem blank-disk
+subsystems: boot-subsystem kernel-subsystem utils user-subsystem
 	
 blank-disk:
 	$(DD) if=/dev/zero of=$(BLANK_DISK) bs=1024 count=10240
@@ -70,3 +70,13 @@ qemu-debug: bootimage
 
 lint:
 	clang-format -n --Werror -style=file $(SRC_FILES)
+
+header-check:
+	./util/iwyu_map_check.sh kernel kernel/iwyu_mapping.imp
+	cd kernel && $(MAKE) -k "CC=iwyu -Xiwyu --mapping_file=iwyu_mapping.imp -resource-dir . -isystem. -I." all 2>&1 > /dev/null | \
+	fix_include --noreorder --comments --nosafe_headers --dry_run
+
+header-fix:
+	./util/iwyu_map_check.sh kernel kernel/iwyu_mapping.imp
+	cd kernel && $(MAKE) -k "CC=iwyu -Xiwyu --mapping_file=iwyu_mapping.imp -resource-dir . -isystem. -I." all 2>&1 > /dev/null | \
+	fix_include --reorder --nocomments --nosafe_headers

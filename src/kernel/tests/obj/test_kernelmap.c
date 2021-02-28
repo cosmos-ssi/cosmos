@@ -5,12 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/x86-64/kernelmap/kernelmap.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <tests/obj/test_kernelmap.h>
 
 void test_kernelmap() {

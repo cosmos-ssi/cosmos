@@ -6,13 +6,15 @@
 // ****************************************************************
 
 #include <obj/x86-64/bridge/inteli440fx/inteli440fx.h>
-#include <obj/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
+#include <obj/x86-64/pci/devicetree.h>
+#include <obj/x86-64/pci/pci_device.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
-#include <sys/interrupt_router/interrupt_router.h>
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
+#include <types.h>
 
 struct intel440fx_deviceddata {
     uint64_t base;

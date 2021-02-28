@@ -8,8 +8,6 @@
 #ifndef _VBLOCK_H
 #define _VBLOCK_H
 
-#include <types.h>
-
 void vblock_objectmgr_register_objects();
 
 #endif

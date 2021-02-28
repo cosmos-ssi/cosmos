@@ -8,7 +8,7 @@
 #ifndef _LIST_H
 #define _LIST_H
 
-#include <sys/collection/array/array.h>
+#include <types.h>
 
 /**
  *  a simple list based on an array.  The array is automatically expanded as required to contain all the list items

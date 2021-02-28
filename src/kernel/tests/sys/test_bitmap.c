@@ -7,9 +7,7 @@
 
 #include <sys/collection/bitmap/bitmap.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/string/string.h>
 #include <tests/sys/test_bitmap.h>
 
 void test_bitmap() {

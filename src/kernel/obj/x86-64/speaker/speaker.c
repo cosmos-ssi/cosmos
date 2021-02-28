@@ -6,13 +6,16 @@
  *****************************************************************/
 
 #include <obj/x86-64/speaker/speaker.h>
-#include <sys/asm/asm.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_speaker.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/sleep/sleep.h>
+#include <types.h>
 
 // https://wiki.osdev.org/PC_Speaker
 

@@ -9,7 +9,9 @@
 // using them instead of dtables directly should simplify matters if we ever
 // change the underlying representation of the table
 
+#include <sys/collection/dtable/dtable.h>
 #include <sys/objects/objects.h>
+#include <types.h>
 
 dtable object_table;
 uint64_t object_table_next_idx;

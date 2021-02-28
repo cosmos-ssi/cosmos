@@ -6,27 +6,25 @@
  *****************************************************************/
 
 #include <cosmos_logical_objs.h>
-#include <obj/logical/console/vga_console.h>
 #include <obj/logical/fs/initrd/initrd.h>
-#include <sys/asm/asm.h>
+#include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/gui/gui.h>
 #include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
-#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_console.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
-#include <sys/syscall/syscall.h>
-#include <sys/video/video_util.h>
-#include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/idt/idt.h>
+#include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/syscall/syscall.h>
 #include <tests/tests.h>
 #include <types.h>

@@ -8,7 +8,5 @@
 #ifndef __TEST_SMBIOS_H
 #define __TEST_SMBIOS_H
 
-#include <types.h>
-
 void test_smbios();
 #endif

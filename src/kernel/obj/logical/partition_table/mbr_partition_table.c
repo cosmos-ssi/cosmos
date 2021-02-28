@@ -11,12 +11,14 @@
 
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/fs_util.h>
-#include <obj/logical/partition/partition.h>
 #include <obj/logical/partition_table/mbr_partition_table.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_part_table.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 

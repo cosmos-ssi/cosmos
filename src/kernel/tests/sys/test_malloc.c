@@ -9,6 +9,7 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/sys/test_malloc.h>
+#include <types.h>
 
 #define TEST_MALLOC_LOOPS 1000
 #define TEST_MALLOC_INCREMENT 10

@@ -6,10 +6,12 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_rand.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <tests/obj/test_rand.h>
+#include <types.h>
 
 void test_rand() {
     kprintf("Testing rand\n");

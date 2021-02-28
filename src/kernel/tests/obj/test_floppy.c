@@ -7,8 +7,11 @@
 
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_floppy.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <tests/obj/test_floppy.h>
+#include <types.h>
 
 void floppyread() {
     // get the floppy

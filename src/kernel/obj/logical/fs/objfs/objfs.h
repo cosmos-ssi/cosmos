@@ -8,7 +8,7 @@
 #ifndef _OBJFS_H
 #define _OBJFS_H
 
-#include <types.h>
+struct object;
 
 struct object* objfs_attach();
 void objfs_detach(struct object* obj);

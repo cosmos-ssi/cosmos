@@ -8,7 +8,7 @@
 #ifndef _CPM_H
 #define _CPM_H
 
-#include <types.h>
+struct object;
 
 struct object* cpm_attach(struct object* partition_objice);
 void cpm_detach(struct object* obj);

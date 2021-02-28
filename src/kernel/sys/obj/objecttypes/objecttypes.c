@@ -7,7 +7,6 @@
 
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/obj/objecttypes/objecttypes.h>
 
 struct arraylist* types;

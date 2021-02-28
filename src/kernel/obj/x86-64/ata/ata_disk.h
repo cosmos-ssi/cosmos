@@ -11,10 +11,9 @@
 #ifndef _ATA_DISK_H
 #define _ATA_DISK_H
 
-#include <obj/x86-64/ata/ata_controller.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <types.h>
+
+struct object;
 
 typedef struct ata_disk_objectdata {
     struct object* object;

@@ -8,7 +8,6 @@
 #include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
 
 struct linkedlist* linkedlist_new() {
     struct linkedlist* ret = kmalloc(sizeof(struct linkedlist));
