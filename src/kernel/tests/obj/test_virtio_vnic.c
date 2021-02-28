@@ -26,7 +26,7 @@ void test_virtio_vnic() {
     }
 
     struct objecttype_nic* nic_api = (struct objecttype_nic*)dev->api;
-    struct vnic_devicedata* object_data = (struct vnic_devicedata*)dev->object_data;
+    struct vnic_objectdata* object_data = (struct vnic_objectdata*)dev->object_data;
 
     // status
     uint8_t txq[] = {"TXQ: "};

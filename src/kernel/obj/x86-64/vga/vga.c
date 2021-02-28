@@ -32,7 +32,7 @@ struct vga_mode_params {
     uint16_t y_height;
 };
 
-struct vga_devicedata {
+struct vga_objectdata {
     enum vga_video_mode video_active_mode;
     struct vga_mode_params vga_modes[VIDEO_MODE_MAX];
 };
@@ -43,7 +43,7 @@ struct vga_devicedata {
 uint8_t vga_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct vga_devicedata* object_data = (struct vga_devicedata*)dev->object_data;
+    struct vga_objectdata* object_data = (struct vga_objectdata*)dev->object_data;
 
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX (%s)\n", dev->description, dev->pci->irq, dev->pci->vendor_id,
             dev->pci->device_id, dev->name);
@@ -57,7 +57,7 @@ uint8_t vga_obj_init(struct object* dev) {
 uint8_t vga_device_set_mode(struct object* dev, enum vga_video_mode mode) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    //   struct vga_devicedata* object_data = (struct vga_devicedata*)dev->object_data;
+    //   struct vga_objectdata* object_data = (struct vga_objectdata*)dev->object_data;
 
     ASSERT_NOT_NULL(dev);
     if (mode == VIDEO_MODE_TEXT) {
@@ -71,7 +71,7 @@ uint8_t vga_device_set_mode(struct object* dev, enum vga_video_mode mode) {
 void vga_device_scroll_text(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct vga_devicedata* object_data = (struct vga_devicedata*)dev->object_data;
+    struct vga_objectdata* object_data = (struct vga_objectdata*)dev->object_data;
 
     uint16_t i;
     uint16_t row_size;
@@ -112,7 +112,7 @@ uint8_t vga_device_write_text(struct object* dev, const char* txt, uint8_t start
                               enum vga_text_color fg_color, enum vga_text_color bg_color) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct vga_devicedata* object_data = (struct vga_devicedata*)dev->object_data;
+    struct vga_objectdata* object_data = (struct vga_objectdata*)dev->object_data;
 
     // ignore attrib for now, but I went ahead and put it in the API to minimize breaking things when I add support for it
     char* startpoint;
@@ -148,7 +148,7 @@ uint8_t vga_device_write_text(struct object* dev, const char* txt, uint8_t start
 uint8_t vga_device_query_resolution(struct object* dev, uint16_t* x, uint16_t* y) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct vga_devicedata* object_data = (struct vga_devicedata*)dev->object_data;
+    struct vga_objectdata* object_data = (struct vga_objectdata*)dev->object_data;
 
     *x = object_data->vga_modes[object_data->video_active_mode].x_width;
     *y = object_data->vga_modes[object_data->video_active_mode].y_height;
@@ -178,7 +178,7 @@ void vga_search_cb(struct pci_device* dev) {
     /*
      * device data
      */
-    struct vga_devicedata* object_data = (struct vga_devicedata*)kmalloc(sizeof(struct vga_devicedata));
+    struct vga_objectdata* object_data = (struct vga_objectdata*)kmalloc(sizeof(struct vga_objectdata));
     object_data->video_active_mode = 0;
     deviceinstance->object_data = object_data;
 }

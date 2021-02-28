@@ -129,7 +129,7 @@
  */
 uint8_t net_mac_pci[6];
 
-struct ne2000pci_devicedata {
+struct ne2000pci_objectdata {
     uint64_t base;
 } __attribute__((packed));
 
@@ -144,7 +144,7 @@ void ne2000pci_irq_handler(stack_frame* frame) {
  */
 uint8_t ne2000_pci_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct ne2000pci_devicedata* object_data = (struct ne2000pci_devicedata*)dev->object_data;
+    struct ne2000pci_objectdata* object_data = (struct ne2000pci_objectdata*)dev->object_data;
     object_data->base = pci_calcbar(dev->pci);
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
             dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
@@ -186,8 +186,8 @@ void ne2000_pci_search_cb(struct pci_device* dev) {
     /*
      * the object_data
      */
-    struct ne2000pci_devicedata* object_data =
-        (struct ne2000pci_devicedata*)kmalloc(sizeof(struct ne2000pci_devicedata));
+    struct ne2000pci_objectdata* object_data =
+        (struct ne2000pci_objectdata*)kmalloc(sizeof(struct ne2000pci_objectdata));
     object_data->base = 0;
     deviceinstance->object_data = object_data;
     /*

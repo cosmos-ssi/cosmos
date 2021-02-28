@@ -10,7 +10,7 @@
 #include <sys/objecttype/objecttype_tcp.h>
 #include <sys/string/mem.h>
 
-struct udp_devicedata {
+struct udp_objectdata {
     struct object* ip_device;
 } __attribute__((packed));
 
@@ -20,7 +20,7 @@ struct udp_devicedata {
 uint8_t udp_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct udp_devicedata* object_data = (struct udp_devicedata*)dev->object_data;
+    struct udp_objectdata* object_data = (struct udp_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->ip_device->name, dev->name);
     return 1;
 }
@@ -40,12 +40,12 @@ uint8_t udp_uninit(struct object* dev) {
 void udp_read(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    //  struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
+    //  struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
 }
 void udp_write(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    //   struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
+    //   struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
 }
 
 struct object* udp_attach(struct object* ip_device) {
@@ -73,7 +73,7 @@ struct object* udp_attach(struct object* ip_device) {
     /*
      * device data
      */
-    struct udp_devicedata* object_data = (struct udp_devicedata*)kmalloc(sizeof(struct udp_devicedata));
+    struct udp_objectdata* object_data = (struct udp_objectdata*)kmalloc(sizeof(struct udp_objectdata));
     object_data->ip_device = ip_device;
     deviceinstance->object_data = object_data;
     /*
@@ -99,7 +99,7 @@ struct object* udp_attach(struct object* ip_device) {
 void udp_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct udp_devicedata* object_data = (struct udp_devicedata*)dev->object_data;
+    struct udp_objectdata* object_data = (struct udp_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

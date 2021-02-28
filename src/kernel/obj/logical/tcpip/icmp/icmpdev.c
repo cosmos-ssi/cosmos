@@ -10,7 +10,7 @@
 #include <sys/objecttype/objecttype_ip.h>
 #include <sys/string/mem.h>
 
-struct icmp_devicedata {
+struct icmp_objectdata {
     struct object* ethernet_device;
 } __attribute__((packed));
 
@@ -20,7 +20,7 @@ struct icmp_devicedata {
 uint8_t icmp_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct icmp_devicedata* object_data = (struct icmp_devicedata*)dev->object_data;
+    struct icmp_objectdata* object_data = (struct icmp_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->ethernet_device->name, dev->name);
     return 1;
 }
@@ -40,12 +40,12 @@ uint8_t icmp_uninit(struct object* dev) {
 void icmp_read(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    //  struct icmp_devicedata* object_data = (struct icmp_devicedata*)dev->object_data;
+    //  struct icmp_objectdata* object_data = (struct icmp_objectdata*)dev->object_data;
 }
 void icmp_write(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    //   struct icmp_devicedata* object_data = (struct icmp_devicedata*)dev->object_data;
+    //   struct icmp_objectdata* object_data = (struct icmp_objectdata*)dev->object_data;
 }
 
 struct object* icmp_attach(struct object* ethernet_device) {
@@ -73,7 +73,7 @@ struct object* icmp_attach(struct object* ethernet_device) {
     /*
      * device data
      */
-    struct icmp_devicedata* object_data = (struct icmp_devicedata*)kmalloc(sizeof(struct icmp_devicedata));
+    struct icmp_objectdata* object_data = (struct icmp_objectdata*)kmalloc(sizeof(struct icmp_objectdata));
     object_data->ethernet_device = ethernet_device;
     deviceinstance->object_data = object_data;
     /*
@@ -99,7 +99,7 @@ struct object* icmp_attach(struct object* ethernet_device) {
 void icmp_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct icmp_devicedata* object_data = (struct icmp_devicedata*)dev->object_data;
+    struct icmp_objectdata* object_data = (struct icmp_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

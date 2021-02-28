@@ -15,7 +15,7 @@
 
 #define CONSOLE_TAB_WIDTH 5
 
-struct vga_console_devicedata {
+struct vga_console_objectdata {
     struct object* vga_device;
     uint16_t vga_console_x_width;
     uint16_t vga_console_y_height;
@@ -29,7 +29,7 @@ struct vga_console_devicedata {
 uint8_t vga_console_dev_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct vga_console_devicedata* object_data = (struct vga_console_devicedata*)dev->object_data;
+    struct vga_console_objectdata* object_data = (struct vga_console_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->vga_device->name, dev->name);
 
     object_data->vga_console_xpos = 0;
@@ -50,7 +50,7 @@ uint8_t vga_console_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
 
-    struct vga_console_devicedata* object_data = (struct vga_console_devicedata*)dev->object_data;
+    struct vga_console_objectdata* object_data = (struct vga_console_objectdata*)dev->object_data;
     kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->vga_device->name, dev->name);
     kfree(dev->api);
     kfree(dev->object_data);
@@ -60,7 +60,7 @@ uint8_t vga_console_uninit(struct object* dev) {
 uint8_t vga_console_dev_setpos(struct object* dev, uint8_t x, uint8_t y) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct vga_console_devicedata* object_data = (struct vga_console_devicedata*)dev->object_data;
+    struct vga_console_objectdata* object_data = (struct vga_console_objectdata*)dev->object_data;
     struct objecttype_vga* vga_api = (struct objecttype_vga*)object_data->vga_device->api;
     ASSERT_NOT_NULL(vga_api);
 
@@ -78,7 +78,7 @@ uint8_t vga_console_dev_setpos(struct object* dev, uint8_t x, uint8_t y) {
 void vga_console_dev_write(struct object* dev, const char* c) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct vga_console_devicedata* object_data = (struct vga_console_devicedata*)dev->object_data;
+    struct vga_console_objectdata* object_data = (struct vga_console_objectdata*)dev->object_data;
     struct objecttype_vga* vga_api = (struct objecttype_vga*)object_data->vga_device->api;
     ASSERT_NOT_NULL(vga_api);
 
@@ -157,8 +157,8 @@ struct object* vga_console_attach(struct object* vga_device) {
     /*
      * device data
      */
-    struct vga_console_devicedata* object_data =
-        (struct vga_console_devicedata*)kmalloc(sizeof(struct vga_console_devicedata));
+    struct vga_console_objectdata* object_data =
+        (struct vga_console_objectdata*)kmalloc(sizeof(struct vga_console_objectdata));
     object_data->vga_device = vga_device;
     deviceinstance->object_data = object_data;
     /*
@@ -184,7 +184,7 @@ struct object* vga_console_attach(struct object* vga_device) {
 void vga_console_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct vga_console_devicedata* object_data = (struct vga_console_devicedata*)dev->object_data;
+    struct vga_console_objectdata* object_data = (struct vga_console_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

@@ -33,7 +33,7 @@ struct initrd_header {
     struct initrd_file_header headers[INITRD_MAX_FILES];
 };
 
-struct initrd_devicedata {
+struct initrd_objectdata {
     struct object* partition_device;
     uint32_t lba;
     struct initrd_header header;
@@ -47,7 +47,7 @@ struct initrd_devicedata {
 uint8_t initrd_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct initrd_devicedata* object_data = (struct initrd_devicedata*)dev->object_data;
+    struct initrd_objectdata* object_data = (struct initrd_objectdata*)dev->object_data;
     /*
     * read the header
     */
@@ -64,7 +64,7 @@ uint8_t initrd_init(struct object* dev) {
 uint8_t initrd_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct initrd_devicedata* object_data = (struct initrd_devicedata*)dev->object_data;
+    struct initrd_objectdata* object_data = (struct initrd_objectdata*)dev->object_data;
     kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     kfree(dev->api);
     node_cache_delete(object_data->nc);
@@ -76,7 +76,7 @@ uint8_t initrd_uninit(struct object* dev) {
 struct filesystem_node* initrd_get_root_node(struct object* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(filesystem_device->object_data);
-    struct initrd_devicedata* object_data = (struct initrd_devicedata*)filesystem_device->object_data;
+    struct initrd_objectdata* object_data = (struct initrd_objectdata*)filesystem_device->object_data;
     return object_data->root_node;
 }
 
@@ -89,7 +89,7 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
-    struct initrd_devicedata* object_data = (struct initrd_devicedata*)fs_node->filesystem_device->object_data;
+    struct initrd_objectdata* object_data = (struct initrd_objectdata*)fs_node->filesystem_device->object_data;
     if (fs_node == object_data->root_node) {
         /*
         * cant read or write root node
@@ -165,7 +165,7 @@ struct filesystem_node* initrd_find_node_by_id(struct filesystem_node* fs_node, 
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
-    struct initrd_devicedata* object_data = (struct initrd_devicedata*)fs_node->filesystem_device->object_data;
+    struct initrd_objectdata* object_data = (struct initrd_objectdata*)fs_node->filesystem_device->object_data;
     if (fs_node == object_data->root_node) {
         /*
         * root node
@@ -190,7 +190,7 @@ void initrd_list_directory(struct filesystem_node* fs_node, struct filesystem_di
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
     ASSERT_NOT_NULL(dir);
-    struct initrd_devicedata* object_data = (struct initrd_devicedata*)fs_node->filesystem_device->object_data;
+    struct initrd_objectdata* object_data = (struct initrd_objectdata*)fs_node->filesystem_device->object_data;
     if (fs_node == object_data->root_node) {
         /*
         * root node
@@ -210,7 +210,7 @@ uint64_t initrd_size(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
-    struct initrd_devicedata* object_data = (struct initrd_devicedata*)fs_node->filesystem_device->object_data;
+    struct initrd_objectdata* object_data = (struct initrd_objectdata*)fs_node->filesystem_device->object_data;
     if (fs_node == object_data->root_node) {
         /*
         * cant read or write root node
@@ -251,7 +251,7 @@ struct object* initrd_attach(struct object* partition_device, uint32_t lba) {
     /*
      * device data
      */
-    struct initrd_devicedata* object_data = (struct initrd_devicedata*)kmalloc(sizeof(struct initrd_devicedata));
+    struct initrd_objectdata* object_data = (struct initrd_objectdata*)kmalloc(sizeof(struct initrd_objectdata));
     object_data->root_node = filesystem_node_new(folder, deviceinstance, "initrd", 0, 0);
     object_data->lba = lba;
     object_data->partition_device = partition_device;
@@ -282,7 +282,7 @@ struct object* initrd_attach(struct object* partition_device, uint32_t lba) {
 void initrd_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct initrd_devicedata* object_data = (struct initrd_devicedata*)dev->object_data;
+    struct initrd_objectdata* object_data = (struct initrd_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

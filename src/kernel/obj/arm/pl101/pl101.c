@@ -29,7 +29,7 @@
  */
 void serial_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    //    struct serial_devicedata* object_data = (struct serial_devicedata*) dev->object_data;
+    //    struct serial_objectdata* object_data = (struct serial_objectdata*) dev->object_data;
     //    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n",dev->description, object_data->irq, object_data->address, dev->name);
     //    interrupt_router_register_interrupt_handler(object_data->irq, &serial_irq_handler);
     //    serial_init_port(object_data->address);
@@ -39,7 +39,7 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * ISA serial port specific data
      */
-    //   struct serial_devicedata* object_data = kmalloc(sizeof(struct serial_devicedata));
+    //   struct serial_objectdata* object_data = kmalloc(sizeof(struct serial_objectdata));
     //   object_data->irq=irq;
     //   object_data->address=base;
     //   object_data->buffer = ringbuffer_new();

@@ -16,7 +16,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_bda.h>
 
-struct smbios_devicedata {
+struct smbios_objectdata {
     uint64_t base;
 };
 
@@ -46,7 +46,7 @@ uint64_t smbios_find() {
 struct smbios_entry_point* smbios_get_smbios_entry_point(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct smbios_devicedata* object_data = (struct smbios_devicedata*)dev->object_data;
+    struct smbios_objectdata* object_data = (struct smbios_objectdata*)dev->object_data;
     return (struct smbios_entry_point*)object_data->base;
 }
 
@@ -56,7 +56,7 @@ struct smbios_entry_point* smbios_get_smbios_entry_point(struct object* dev) {
 uint8_t smbios_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct smbios_devicedata* object_data = (struct smbios_devicedata*)dev->object_data;
+    struct smbios_objectdata* object_data = (struct smbios_objectdata*)dev->object_data;
     object_data->base = smbios_find();
     if (0 != object_data->base) {
         kprintf("Init %s (%s) at Base %#hX\n", dev->description, dev->name, object_data->base);
@@ -78,7 +78,7 @@ void smbios_objectmgr_register_objects() {
     /*
      * device data
      */
-    struct smbios_devicedata* object_data = (struct smbios_devicedata*)kmalloc(sizeof(struct smbios_devicedata));
+    struct smbios_objectdata* object_data = (struct smbios_objectdata*)kmalloc(sizeof(struct smbios_objectdata));
     object_data->base = 0;
     deviceinstance->object_data = object_data;
     /*

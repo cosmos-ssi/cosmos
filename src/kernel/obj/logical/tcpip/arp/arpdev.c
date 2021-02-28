@@ -12,7 +12,7 @@
 #include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 
-struct arp_devicedata {
+struct arp_objectdata {
     struct object* ethernet_device;
 } __attribute__((packed));
 
@@ -22,7 +22,7 @@ struct arp_devicedata {
 uint8_t arp_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct arp_devicedata* object_data = (struct arp_devicedata*)dev->object_data;
+    struct arp_objectdata* object_data = (struct arp_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->ethernet_device->name, dev->name);
     return 1;
 }
@@ -46,7 +46,7 @@ void arp_request(struct object* dev, struct arp* request, struct arp* response) 
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
     // get our device data for this device
-    //   struct arp_devicedata* object_data = (struct arp_devicedata*)dev->object_data;
+    //   struct arp_objectdata* object_data = (struct arp_objectdata*)dev->object_data;
     // get the api for the underlying ethernet device
     //   struct objecttype_ethernet* ether_api = (struct objecttype_ethernet*)object_data->ethernet_device->api;
     PANIC("Um, what HW addresses do I put in here?");
@@ -79,7 +79,7 @@ struct object* arp_attach(struct object* ethernet_device) {
     /*
      * device data
      */
-    struct arp_devicedata* object_data = (struct arp_devicedata*)kmalloc(sizeof(struct arp_devicedata));
+    struct arp_objectdata* object_data = (struct arp_objectdata*)kmalloc(sizeof(struct arp_objectdata));
     object_data->ethernet_device = ethernet_device;
     deviceinstance->object_data = object_data;
     /*
@@ -105,7 +105,7 @@ struct object* arp_attach(struct object* ethernet_device) {
 void arp_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct arp_devicedata* object_data = (struct arp_devicedata*)dev->object_data;
+    struct arp_objectdata* object_data = (struct arp_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

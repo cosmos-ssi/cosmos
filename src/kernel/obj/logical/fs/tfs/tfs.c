@@ -19,7 +19,7 @@
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
-struct tfs_devicedata {
+struct tfs_objectdata {
     struct object* partition_device;
 } __attribute__((packed));
 
@@ -29,7 +29,7 @@ struct tfs_devicedata {
 void tfs_format(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
+    struct tfs_objectdata* object_data = (struct tfs_objectdata*)dev->object_data;
 
     /*
      * figure out how many map blocks we need
@@ -92,7 +92,7 @@ void tfs_read(struct object* dev, const uint8_t* name, const uint8_t* data, uint
     ASSERT_NOT_NULL(data);
     ASSERT(strlen(name) < TFS_FILENAME_SIZE);
     ASSERT_NOT_NULL(dev->object_data);
-    //   struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
+    //   struct tfs_objectdata* object_data = (struct tfs_objectdata*)dev->object_data;
 }
 
 void tfs_write(struct object* dev, const uint8_t* name, const uint8_t* data, uint32_t size) {
@@ -101,7 +101,7 @@ void tfs_write(struct object* dev, const uint8_t* name, const uint8_t* data, uin
     ASSERT_NOT_NULL(data);
     ASSERT(strlen(name) < TFS_FILENAME_SIZE);
     ASSERT_NOT_NULL(dev->object_data);
-    //  struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
+    //  struct tfs_objectdata* object_data = (struct tfs_objectdata*)dev->object_data;
 
     kprintf("write file: %s of length %llu\n", name, size);
     /*
@@ -123,7 +123,7 @@ void tfs_write(struct object* dev, const uint8_t* name, const uint8_t* data, uin
 uint8_t tfs_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
+    struct tfs_objectdata* object_data = (struct tfs_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     return 1;
 }
@@ -135,7 +135,7 @@ uint8_t tfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
 
-    struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
+    struct tfs_objectdata* object_data = (struct tfs_objectdata*)dev->object_data;
     kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     kfree(dev->api);
     kfree(dev->object_data);
@@ -169,7 +169,7 @@ struct object* tfs_attach(struct object* partition_device) {
     /*
      * device data
      */
-    struct tfs_devicedata* object_data = (struct tfs_devicedata*)kmalloc(sizeof(struct tfs_devicedata));
+    struct tfs_objectdata* object_data = (struct tfs_objectdata*)kmalloc(sizeof(struct tfs_objectdata));
     object_data->partition_device = partition_device;
     deviceinstance->object_data = object_data;
 
@@ -196,7 +196,7 @@ struct object* tfs_attach(struct object* partition_device) {
 void tfs_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
+    struct tfs_objectdata* object_data = (struct tfs_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

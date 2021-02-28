@@ -11,7 +11,7 @@
 #include <sys/objecttype/objecttype_tick.h>
 #include <sys/string/mem.h>
 
-struct tick_devicedata {
+struct tick_objectdata {
     struct object* pit_device;
 } __attribute__((packed));
 
@@ -21,7 +21,7 @@ struct tick_devicedata {
 uint8_t tick_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct tick_devicedata* object_data = (struct tick_devicedata*)dev->object_data;
+    struct tick_objectdata* object_data = (struct tick_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->pit_device->name, dev->name);
     return 1;
 }
@@ -41,7 +41,7 @@ uint8_t tick_uninit(struct object* dev) {
 uint64_t tick_read(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct tick_devicedata* object_data = (struct tick_devicedata*)dev->object_data;
+    struct tick_objectdata* object_data = (struct tick_objectdata*)dev->object_data;
 
     struct objecttype_pit* api = (struct objecttype_pit*)object_data->pit_device->api;
     return (*api->tickcount)(object_data->pit_device);
@@ -69,7 +69,7 @@ struct object* tick_attach(struct object* pit_device) {
     /*
      * device data
      */
-    struct tick_devicedata* object_data = (struct tick_devicedata*)kmalloc(sizeof(struct tick_devicedata));
+    struct tick_objectdata* object_data = (struct tick_objectdata*)kmalloc(sizeof(struct tick_objectdata));
     object_data->pit_device = pit_device;
     deviceinstance->object_data = object_data;
     /*
@@ -94,7 +94,7 @@ struct object* tick_attach(struct object* pit_device) {
 void tick_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct tick_devicedata* object_data = (struct tick_devicedata*)dev->object_data;
+    struct tick_objectdata* object_data = (struct tick_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

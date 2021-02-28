@@ -69,7 +69,7 @@ struct cfs_blockmap {
     uint8_t map[512 - 64];  // 448 bytes of bitmap, mapping 448*8=3584 sectors
 } __attribute__((packed));
 
-struct cfs_devicedata {
+struct cfs_objectdata {
     struct object* partition_device;
 } __attribute__((packed));
 
@@ -127,7 +127,7 @@ void cfs_read_blockmap(struct object* dev, struct cfs_blockmap* blockmap, uint32
  */
 void cfs_format(struct object* dev) {
     ASSERT_NOT_NULL(dev->object_data);
-    struct cfs_devicedata* object_data = (struct cfs_devicedata*)dev->object_data;
+    struct cfs_objectdata* object_data = (struct cfs_objectdata*)dev->object_data;
 
     uint32_t total_sectors_blockmap = cfs_total_sectormap_sectors(object_data->partition_device);
     // kprintf("Blockmap sectors %llu\n",total_sectors_blockmap);
@@ -158,7 +158,7 @@ void cfs_format(struct object* dev) {
 uint8_t cfs_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct cfs_devicedata* object_data = (struct cfs_devicedata*)dev->object_data;
+    struct cfs_objectdata* object_data = (struct cfs_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     return 1;
 }
@@ -169,7 +169,7 @@ uint8_t cfs_init(struct object* dev) {
 uint8_t cfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct cfs_devicedata* object_data = (struct cfs_devicedata*)dev->object_data;
+    struct cfs_objectdata* object_data = (struct cfs_objectdata*)dev->object_data;
 
     kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     kfree(dev->api);
@@ -200,7 +200,7 @@ struct object* cfs_attach(struct object* partition_device) {
     /*
      * device data
      */
-    struct cfs_devicedata* object_data = (struct cfs_devicedata*)kmalloc(sizeof(struct cfs_devicedata));
+    struct cfs_objectdata* object_data = (struct cfs_objectdata*)kmalloc(sizeof(struct cfs_objectdata));
     object_data->partition_device = partition_device;
     deviceinstance->object_data = object_data;
     /*
@@ -226,7 +226,7 @@ struct object* cfs_attach(struct object* partition_device) {
 void cfs_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct cfs_devicedata* object_data = (struct cfs_devicedata*)dev->object_data;
+    struct cfs_objectdata* object_data = (struct cfs_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

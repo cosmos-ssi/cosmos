@@ -26,7 +26,7 @@
 
 // https://wiki.osdev.org/Parallel_port
 
-struct parallel_devicedata {
+struct parallel_objectdata {
     uint16_t address;
     uint16_t irq;
 } __attribute__((packed));
@@ -41,7 +41,7 @@ void parallel_irq_handler(stack_frame* frame) {
 void parallel_device_ready(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct parallel_devicedata* object_data = (struct parallel_devicedata*)(dev->object_data);
+    struct parallel_objectdata* object_data = (struct parallel_objectdata*)(dev->object_data);
     while (!(asm_in_b(object_data->address + PARALLEL_DEVICE_REGISTER_STATUS) & 0x80)) {
         sleep_wait(10);
     }
@@ -53,7 +53,7 @@ void parallel_device_ready(struct object* dev) {
 uint8_t parallel_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct parallel_devicedata* object_data = (struct parallel_devicedata*)(dev->object_data);
+    struct parallel_objectdata* object_data = (struct parallel_objectdata*)(dev->object_data);
     kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", dev->description, object_data->irq, object_data->address,
             dev->name);
     interrupt_router_register_interrupt_handler(object_data->irq, &parallel_irq_handler);
@@ -68,7 +68,7 @@ void parallel_write(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
     ASSERT_NOT_NULL(data);
-    struct parallel_devicedata* object_data = (struct parallel_devicedata*)(dev->object_data);
+    struct parallel_objectdata* object_data = (struct parallel_objectdata*)(dev->object_data);
     for (uint16_t i = 0; i < size; i++) {
         /*
          * wait for ready
@@ -105,7 +105,7 @@ void parallel_objectmgr_register_object(uint64_t base, uint8_t irq) {
     /*
      * device data
      */
-    struct parallel_devicedata* object_data = (struct parallel_devicedata*)kmalloc(sizeof(struct parallel_devicedata));
+    struct parallel_objectdata* object_data = (struct parallel_objectdata*)kmalloc(sizeof(struct parallel_objectdata));
     object_data->address = base;
     object_data->irq = irq;
     deviceinstance->object_data = object_data;

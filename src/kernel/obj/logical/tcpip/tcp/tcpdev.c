@@ -10,7 +10,7 @@
 #include <sys/objecttype/objecttype_tcp.h>
 #include <sys/string/mem.h>
 
-struct tcp_devicedata {
+struct tcp_objectdata {
     struct object* ip_device;
 } __attribute__((packed));
 
@@ -20,7 +20,7 @@ struct tcp_devicedata {
 uint8_t tcp_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct tcp_devicedata* object_data = (struct tcp_devicedata*)dev->object_data;
+    struct tcp_objectdata* object_data = (struct tcp_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->ip_device->name, dev->name);
     return 1;
 }
@@ -40,12 +40,12 @@ uint8_t tcp_uninit(struct object* dev) {
 void tcp_read(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    //  struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
+    //  struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
 }
 void tcp_write(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    //   struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
+    //   struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
 }
 
 struct object* tcp_attach(struct object* ip_device) {
@@ -73,7 +73,7 @@ struct object* tcp_attach(struct object* ip_device) {
     /*
      * device data
      */
-    struct tcp_devicedata* object_data = (struct tcp_devicedata*)kmalloc(sizeof(struct tcp_devicedata));
+    struct tcp_objectdata* object_data = (struct tcp_objectdata*)kmalloc(sizeof(struct tcp_objectdata));
     object_data->ip_device = ip_device;
     deviceinstance->object_data = object_data;
     /*
@@ -99,7 +99,7 @@ struct object* tcp_attach(struct object* ip_device) {
 void tcp_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct tcp_devicedata* object_data = (struct tcp_devicedata*)dev->object_data;
+    struct tcp_objectdata* object_data = (struct tcp_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

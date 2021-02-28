@@ -55,7 +55,7 @@
 /*
  * vblock instance specific data
  */
-struct vblock_devicedata {
+struct vblock_objectdata {
     uint64_t base;
     uint32_t sectorLength;
     uint32_t totalSectors;
@@ -92,7 +92,7 @@ uint8_t vblock_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
 
-    struct vblock_devicedata* object_data = (struct vblock_devicedata*)dev->object_data;
+    struct vblock_objectdata* object_data = (struct vblock_objectdata*)dev->object_data;
     interrupt_router_register_interrupt_handler(dev->pci->irq, &vblock_irq_handler);
     object_data->base = pci_calcbar(dev->pci);
 
@@ -157,7 +157,7 @@ uint32_t vblockutil_read(struct object* dev, uint8_t* data, uint32_t data_size, 
     ASSERT_NOT_NULL(data_size);
 
     ASSERT_NOT_NULL(dev->object_data);
-    struct vblock_devicedata* object_data = (struct vblock_devicedata*)dev->object_data;
+    struct vblock_objectdata* object_data = (struct vblock_objectdata*)dev->object_data;
 
     /*
      * drop a message
@@ -205,14 +205,14 @@ uint32_t vblockutil_write(struct object* dev, uint8_t* data, uint32_t data_size,
 uint16_t vblock_sector_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct vblock_devicedata* object_data = (struct vblock_devicedata*)dev->object_data;
+    struct vblock_objectdata* object_data = (struct vblock_objectdata*)dev->object_data;
     return object_data->sectorLength;
 }
 
 uint32_t vblock_total_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct vblock_devicedata* object_data = (struct vblock_devicedata*)dev->object_data;
+    struct vblock_objectdata* object_data = (struct vblock_objectdata*)dev->object_data;
     return object_data->totalSectors * object_data->sectorLength;
 }
 
@@ -229,7 +229,7 @@ void vblock_search_cb(struct pci_device* dev) {
     /*
      * device data
      */
-    struct vblock_devicedata* object_data = (struct vblock_devicedata*)kmalloc(sizeof(struct vblock_devicedata));
+    struct vblock_objectdata* object_data = (struct vblock_objectdata*)kmalloc(sizeof(struct vblock_objectdata));
     deviceinstance->object_data = object_data;
     /*
      * the device api

@@ -16,7 +16,7 @@
 #include <sys/string/mem.h>
 #include <types.h>
 
-struct swap_devicedata {
+struct swap_objectdata {
     struct object* block_device;
     uint16_t block_size;  // block size of the underlying physical device
 };
@@ -27,7 +27,7 @@ struct swap_devicedata {
 uint8_t swap_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct swap_devicedata* object_data = (struct swap_devicedata*)dev->object_data;
+    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->block_device->name, dev->name);
     return 1;
 }
@@ -38,7 +38,7 @@ uint8_t swap_init(struct object* dev) {
 uint8_t swap_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct swap_devicedata* object_data = (struct swap_devicedata*)dev->object_data;
+    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
     kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->block_device->name, dev->name);
     kfree(dev->api);
     kfree(dev->object_data);
@@ -48,28 +48,28 @@ uint8_t swap_uninit(struct object* dev) {
 uint16_t swap_block_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct swap_devicedata* object_data = (struct swap_devicedata*)dev->object_data;
+    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
     return blockutil_get_sector_size(object_data->block_device);
 }
 
 void swap_read(struct object* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct swap_devicedata* object_data = (struct swap_devicedata*)dev->object_data;
+    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
     blockutil_read(object_data->block_device, data, swap_block_size(dev), block, 0);
 }
 
 void swap_write(struct object* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct swap_devicedata* object_data = (struct swap_devicedata*)dev->object_data;
+    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
     blockutil_write(object_data->block_device, data, swap_block_size(dev), block, 0);
 }
 
 uint16_t swap_block_count(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct swap_devicedata* object_data = (struct swap_devicedata*)dev->object_data;
+    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
     return blockutil_get_sector_count(object_data->block_device);
 }
 
@@ -98,7 +98,7 @@ struct object* swap_attach(struct object* block_device) {
     /*
      * device data
      */
-    struct swap_devicedata* object_data = (struct swap_devicedata*)kmalloc(sizeof(struct swap_devicedata));
+    struct swap_objectdata* object_data = (struct swap_objectdata*)kmalloc(sizeof(struct swap_objectdata));
     object_data->block_device = block_device;
     object_data->block_size = blockutil_get_sector_size(block_device);
     deviceinstance->object_data = object_data;
@@ -126,7 +126,7 @@ struct object* swap_attach(struct object* block_device) {
 void swap_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct swap_devicedata* object_data = (struct swap_devicedata*)dev->object_data;
+    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

@@ -19,7 +19,7 @@
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
-struct devfs_devicedata {
+struct devfs_objectdata {
     struct filesystem_node* root_node;
     struct node_cache* nc;
 };
@@ -52,7 +52,7 @@ uint64_t devfs_device_number(uint64_t node_id) {
 uint8_t devfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s  (%s)\n", dev->description, dev->name);
-    struct devfs_devicedata* object_data = (struct devfs_devicedata*)dev->object_data;
+    struct devfs_objectdata* object_data = (struct devfs_objectdata*)dev->object_data;
     kfree(dev->api);
     kfree(object_data->root_node);
     node_cache_delete(object_data->nc);
@@ -63,7 +63,7 @@ uint8_t devfs_uninit(struct object* dev) {
 struct filesystem_node* devfs_get_root_node(struct object* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(filesystem_device->object_data);
-    struct devfs_devicedata* object_data = (struct devfs_devicedata*)filesystem_device->object_data;
+    struct devfs_objectdata* object_data = (struct devfs_objectdata*)filesystem_device->object_data;
     return object_data->root_node;
 }
 
@@ -112,7 +112,7 @@ struct filesystem_node* devfs_find_node_by_id(struct filesystem_node* fs_node, u
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
-    struct devfs_devicedata* object_data = (struct devfs_devicedata*)fs_node->filesystem_device->object_data;
+    struct devfs_objectdata* object_data = (struct devfs_objectdata*)fs_node->filesystem_device->object_data;
     //  kprintf("finding %#llX in %s\n", id, fs_node->name);
 
     /*
@@ -143,7 +143,7 @@ void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
     ASSERT_NOT_NULL(dir);
-    struct devfs_devicedata* object_data = (struct devfs_devicedata*)fs_node->filesystem_device->object_data;
+    struct devfs_objectdata* object_data = (struct devfs_objectdata*)fs_node->filesystem_device->object_data;
     if (fs_node == object_data->root_node) {
         /*
         * root node
@@ -241,7 +241,7 @@ struct object* devfs_attach() {
     /*
      * device data
      */
-    struct devfs_devicedata* object_data = (struct devfs_devicedata*)kmalloc(sizeof(struct devfs_devicedata));
+    struct devfs_objectdata* object_data = (struct devfs_objectdata*)kmalloc(sizeof(struct devfs_objectdata));
     object_data->root_node = filesystem_node_new(folder, deviceinstance, "dev", 0, 0);
     object_data->nc = node_cache_new();
     deviceinstance->object_data = object_data;

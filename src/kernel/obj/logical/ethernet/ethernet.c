@@ -11,7 +11,7 @@
 #include <sys/objecttype/objecttype_nic.h>
 #include <sys/string/mem.h>
 
-struct ethernet_devicedata {
+struct ethernet_objectdata {
     struct object* nic_device;
 } __attribute__((packed));
 
@@ -21,7 +21,7 @@ struct ethernet_devicedata {
 uint8_t ethernet_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct ethernet_devicedata* object_data = (struct ethernet_devicedata*)dev->object_data;
+    struct ethernet_objectdata* object_data = (struct ethernet_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->nic_device->name, dev->name);
     return 1;
 }
@@ -42,7 +42,7 @@ void ethernet_read(struct object* dev, struct eth_hdr* eth, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
     ASSERT_NOT_NULL(eth);
-    struct ethernet_devicedata* object_data = (struct ethernet_devicedata*)dev->object_data;
+    struct ethernet_objectdata* object_data = (struct ethernet_objectdata*)dev->object_data;
     struct objecttype_nic* nic_api = (struct objecttype_nic*)object_data->nic_device->api;
     nic_api->read(object_data->nic_device, (uint8_t*)eth, size);
 }
@@ -51,7 +51,7 @@ void ethernet_write(struct object* dev, struct eth_hdr* eth, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
     ASSERT_NOT_NULL(eth);
-    struct ethernet_devicedata* object_data = (struct ethernet_devicedata*)dev->object_data;
+    struct ethernet_objectdata* object_data = (struct ethernet_objectdata*)dev->object_data;
     struct objecttype_nic* nic_api = (struct objecttype_nic*)object_data->nic_device->api;
     nic_api->write(object_data->nic_device, (uint8_t*)eth, size);
 }
@@ -79,7 +79,7 @@ struct object* ethernet_attach(struct object* nic_device) {
     /*
      * device data
      */
-    struct ethernet_devicedata* object_data = (struct ethernet_devicedata*)kmalloc(sizeof(struct ethernet_devicedata));
+    struct ethernet_objectdata* object_data = (struct ethernet_objectdata*)kmalloc(sizeof(struct ethernet_objectdata));
     object_data->nic_device = nic_device;
     deviceinstance->object_data = object_data;
     /*
@@ -105,7 +105,7 @@ struct object* ethernet_attach(struct object* nic_device) {
 void ethernet_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct ethernet_devicedata* object_data = (struct ethernet_devicedata*)dev->object_data;
+    struct ethernet_objectdata* object_data = (struct ethernet_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

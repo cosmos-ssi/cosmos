@@ -13,7 +13,7 @@
 #include <sys/objecttype/objecttype_serial.h>
 #include <sys/string/mem.h>
 
-struct serial_console_devicedata {
+struct serial_console_objectdata {
     struct object* serial_device;
 };
 
@@ -23,7 +23,7 @@ struct serial_console_devicedata {
 uint8_t serial_console_dev_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct serial_console_devicedata* object_data = (struct serial_console_devicedata*)dev->object_data;
+    struct serial_console_objectdata* object_data = (struct serial_console_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->serial_device->name, dev->name);
     return 1;
 }
@@ -35,7 +35,7 @@ uint8_t serial_console_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
 
-    struct serial_console_devicedata* object_data = (struct serial_console_devicedata*)dev->object_data;
+    struct serial_console_objectdata* object_data = (struct serial_console_objectdata*)dev->object_data;
     kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->serial_device->name, dev->name);
     kfree(dev->api);
     kfree(dev->object_data);
@@ -50,7 +50,7 @@ uint8_t serial_console_setpos(struct object* dev, uint8_t x, uint8_t y) {
 void serial_console_dev_write(struct object* dev, const char* s) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct serial_console_devicedata* object_data = (struct serial_console_devicedata*)dev->object_data;
+    struct serial_console_objectdata* object_data = (struct serial_console_objectdata*)dev->object_data;
 
     struct objecttype_serial* serial_api = (struct objecttype_serial*)object_data->serial_device->api;
     (*serial_api->write)(object_data->serial_device, s);
@@ -79,8 +79,8 @@ struct object* serial_console_attach(struct object* serial_device) {
     /*
      * device data
      */
-    struct serial_console_devicedata* object_data =
-        (struct serial_console_devicedata*)kmalloc(sizeof(struct serial_console_devicedata));
+    struct serial_console_objectdata* object_data =
+        (struct serial_console_objectdata*)kmalloc(sizeof(struct serial_console_objectdata));
     object_data->serial_device = serial_device;
     deviceinstance->object_data = object_data;
     /*
@@ -106,7 +106,7 @@ struct object* serial_console_attach(struct object* serial_device) {
 void serial_console_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct serial_console_devicedata* object_data = (struct serial_console_devicedata*)dev->object_data;
+    struct serial_console_objectdata* object_data = (struct serial_console_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

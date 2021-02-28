@@ -15,7 +15,7 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
 
-struct usbcontroller_devicedata {
+struct usbcontroller_objectdata {
     uint64_t base;
 } __attribute__((packed));
 
@@ -24,7 +24,7 @@ struct usbcontroller_devicedata {
  */
 uint8_t usb_ehci_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct usbcontroller_devicedata* object_data = (struct usbcontroller_devicedata*)dev->object_data;
+    struct usbcontroller_objectdata* object_data = (struct usbcontroller_objectdata*)dev->object_data;
     object_data->base = pci_calcbar(dev->pci);
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
             dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
@@ -44,8 +44,8 @@ void usb_ehci_search_cb(struct pci_device* dev) {
     /*
      * the object_data
      */
-    struct usbcontroller_devicedata* object_data =
-        (struct usbcontroller_devicedata*)kmalloc(sizeof(struct usbcontroller_devicedata));
+    struct usbcontroller_objectdata* object_data =
+        (struct usbcontroller_objectdata*)kmalloc(sizeof(struct usbcontroller_objectdata));
     object_data->base = 0;
     deviceinstance->object_data = object_data;
     /*

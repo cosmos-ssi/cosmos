@@ -10,7 +10,7 @@
 #include <sys/objecttype/objecttype_ip.h>
 #include <sys/string/mem.h>
 
-struct ip_devicedata {
+struct ip_objectdata {
     struct object* ethernet_device;
 } __attribute__((packed));
 
@@ -20,7 +20,7 @@ struct ip_devicedata {
 uint8_t ip_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
+    struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->ethernet_device->name, dev->name);
     return 1;
 }
@@ -40,12 +40,12 @@ uint8_t ip_uninit(struct object* dev) {
 void ip_read(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    //  struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
+    //  struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
 }
 void ip_write(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    //   struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
+    //   struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
 }
 
 struct object* ip_attach(struct object* ethernet_device) {
@@ -73,7 +73,7 @@ struct object* ip_attach(struct object* ethernet_device) {
     /*
      * device data
      */
-    struct ip_devicedata* object_data = (struct ip_devicedata*)kmalloc(sizeof(struct ip_devicedata));
+    struct ip_objectdata* object_data = (struct ip_objectdata*)kmalloc(sizeof(struct ip_objectdata));
     object_data->ethernet_device = ethernet_device;
     deviceinstance->object_data = object_data;
     /*
@@ -99,7 +99,7 @@ struct object* ip_attach(struct object* ethernet_device) {
 void ip_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
+    struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

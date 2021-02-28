@@ -25,7 +25,7 @@
 
 // https://www.sdcard.org/downloads/pls/
 
-struct sdhci_devicedata {
+struct sdhci_objectdata {
     uint64_t base;
 } __attribute__((packed));
 
@@ -39,7 +39,7 @@ void sdhci_irq_handler(stack_frame* frame) {
  */
 uint8_t sdhci_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct sdhci_devicedata* object_data = (struct sdhci_devicedata*)dev->object_data;
+    struct sdhci_objectdata* object_data = (struct sdhci_objectdata*)dev->object_data;
     object_data->base = (uint64_t)CONV_PHYS_ADDR(pci_calcbar(dev->pci));
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
             dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
@@ -75,7 +75,7 @@ void sdhci_pci_search_cb(struct pci_device* dev) {
     /*
      * the object_data
      */
-    struct sdhci_devicedata* object_data = (struct sdhci_devicedata*)kmalloc(sizeof(struct sdhci_devicedata));
+    struct sdhci_objectdata* object_data = (struct sdhci_objectdata*)kmalloc(sizeof(struct sdhci_objectdata));
     object_data->base = 0;
     deviceinstance->object_data = object_data;
     /**

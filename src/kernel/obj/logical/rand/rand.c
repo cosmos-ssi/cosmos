@@ -12,7 +12,7 @@
 
 uint64_t RAND_MAX = (1 << 31);
 
-struct rand_devicedata {
+struct rand_objectdata {
     uint64_t last;
 } __attribute__((packed));
 
@@ -43,7 +43,7 @@ uint8_t rand_uninit(struct object* dev) {
 uint64_t rand_read(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct rand_devicedata* object_data = (struct rand_devicedata*)dev->object_data;
+    struct rand_objectdata* object_data = (struct rand_objectdata*)dev->object_data;
     object_data->last = (object_data->last * 214013 + 2531011) & RAND_MAX >> 16;
     return object_data->last;
 }
@@ -68,7 +68,7 @@ struct object* rand_attach() {
     /*
      * device data
      */
-    struct rand_devicedata* object_data = (struct rand_devicedata*)kmalloc(sizeof(struct rand_devicedata));
+    struct rand_objectdata* object_data = (struct rand_objectdata*)kmalloc(sizeof(struct rand_objectdata));
     object_data->last = 7;
     deviceinstance->object_data = object_data;
     /*

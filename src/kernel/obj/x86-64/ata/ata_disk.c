@@ -33,7 +33,7 @@ uint32_t ata_rw(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t 
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
     ASSERT_NOT_NULL(data);
-    struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->object_data;
+    struct ata_disk_objectdata* diskdata = (struct ata_disk_objectdata*)dev->object_data;
     struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
     uint16_t sector_size = disk->bytes_per_sector;
 
@@ -146,7 +146,7 @@ uint32_t ata_write(struct object* dev, uint8_t* data, uint32_t data_size, uint32
 
 uint16_t ata_sector_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->object_data;
+    struct ata_disk_objectdata* diskdata = (struct ata_disk_objectdata*)dev->object_data;
     struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
     ASSERT_NOT_NULL(disk);
     return disk->bytes_per_sector;
@@ -154,7 +154,7 @@ uint16_t ata_sector_size(struct object* dev) {
 
 uint32_t ata_total_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct ata_disk_devicedata* diskdata = (struct ata_disk_devicedata*)dev->object_data;
+    struct ata_disk_objectdata* diskdata = (struct ata_disk_objectdata*)dev->object_data;
     struct ata_device* disk = ata_get_disk(diskdata->device, diskdata->channel, diskdata->disk);
     ASSERT_NOT_NULL(disk);
     return disk->size;
@@ -163,7 +163,7 @@ uint32_t ata_total_size(struct object* dev) {
 uint8_t obj_init_ata_disk(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct ata_disk_devicedata* disk = (struct ata_disk_devicedata*)dev->object_data;
+    struct ata_disk_objectdata* disk = (struct ata_disk_objectdata*)dev->object_data;
     struct ata_device* dsk = ata_get_disk(disk->device, disk->channel, disk->disk);
     ASSERT_NOT_NULL(dsk);
 
@@ -193,7 +193,7 @@ void ata_register_disk(struct object* controllerDevice, uint8_t channel, uint8_t
     /*
      * device data
      */
-    struct ata_disk_devicedata* object_data = (struct ata_disk_devicedata*)kmalloc(sizeof(struct ata_disk_devicedata));
+    struct ata_disk_objectdata* object_data = (struct ata_disk_objectdata*)kmalloc(sizeof(struct ata_disk_objectdata));
     object_data->controller = controllerDevice->object_data;
     object_data->channel = channel;
     object_data->device = controllerDevice;

@@ -39,7 +39,7 @@ struct cpm_dir {
     struct cpm_file_entry files[CPM_MAX_FILES];
 } __attribute__((packed));
 
-struct cpm_devicedata {
+struct cpm_objectdata {
     struct object* partition_device;
     uint16_t block_device_sector_size;
     uint8_t sectors_needed_for_dir;
@@ -49,7 +49,7 @@ struct cpm_devicedata {
 void cpm_format(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct cpm_devicedata* object_data = (struct cpm_devicedata*)dev->object_data;
+    struct cpm_objectdata* object_data = (struct cpm_objectdata*)dev->object_data;
 
     /*
     * make the dir entry
@@ -75,7 +75,7 @@ void cpm_format(struct object* dev) {
 void cpm_read_dir(struct object* dev, struct cpm_dir* dir) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct cpm_devicedata* object_data = (struct cpm_devicedata*)dev->object_data;
+    struct cpm_objectdata* object_data = (struct cpm_objectdata*)dev->object_data;
 
     uint8_t* buffer = kmalloc(object_data->byte_size_dir);
     memset(buffer, 0, object_data->byte_size_dir);
@@ -95,7 +95,7 @@ void cpm_read_dir(struct object* dev, struct cpm_dir* dir) {
 uint8_t cpm_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct cpm_devicedata* object_data = (struct cpm_devicedata*)dev->object_data;
+    struct cpm_objectdata* object_data = (struct cpm_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     return 1;
 }
@@ -106,7 +106,7 @@ uint8_t cpm_init(struct object* dev) {
 uint8_t cpm_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct cpm_devicedata* object_data = (struct cpm_devicedata*)dev->object_data;
+    struct cpm_objectdata* object_data = (struct cpm_objectdata*)dev->object_data;
     kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     kfree(dev->api);
     kfree(dev->object_data);
@@ -136,7 +136,7 @@ struct object* cpm_attach(struct object* partition_device) {
     /*
      * device data
      */
-    struct cpm_devicedata* object_data = (struct cpm_devicedata*)kmalloc(sizeof(struct cpm_devicedata));
+    struct cpm_objectdata* object_data = (struct cpm_objectdata*)kmalloc(sizeof(struct cpm_objectdata));
     object_data->partition_device = partition_device;
     object_data->block_device_sector_size = blockutil_get_sector_size(object_data->partition_device);
     // blocks needed for dir
@@ -171,7 +171,7 @@ struct object* cpm_attach(struct object* partition_device) {
 void cpm_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct cpm_devicedata* object_data = (struct cpm_devicedata*)dev->object_data;
+    struct cpm_objectdata* object_data = (struct cpm_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

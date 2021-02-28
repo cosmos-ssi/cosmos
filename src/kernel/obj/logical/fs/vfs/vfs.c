@@ -19,7 +19,7 @@
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
-struct vfs_devicedata {
+struct vfs_objectdata {
     struct arraylist* children;
     struct filesystem_node* root_node;
 };
@@ -39,7 +39,7 @@ uint8_t vfs_init(struct object* dev) {
 uint8_t vfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s  (%s)\n", dev->description, dev->name);
-    struct vfs_devicedata* object_data = (struct vfs_devicedata*)dev->object_data;
+    struct vfs_objectdata* object_data = (struct vfs_objectdata*)dev->object_data;
 
     kfree(dev->api);
     kfree(object_data->root_node);
@@ -51,7 +51,7 @@ uint8_t vfs_uninit(struct object* dev) {
 struct filesystem_node* vfs_get_root_node(struct object* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
     ASSERT_NOT_NULL(filesystem_device->object_data);
-    struct vfs_devicedata* object_data = (struct vfs_devicedata*)filesystem_device->object_data;
+    struct vfs_objectdata* object_data = (struct vfs_objectdata*)filesystem_device->object_data;
     return object_data->root_node;
 }
 
@@ -100,7 +100,7 @@ struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uin
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
-    struct vfs_devicedata* object_data = (struct vfs_devicedata*)fs_node->filesystem_device->object_data;
+    struct vfs_objectdata* object_data = (struct vfs_objectdata*)fs_node->filesystem_device->object_data;
     //  kprintf("vfs_find_node_by_id node id %llu of node %s\n", id, fs_node->name);
     if (fs_node == object_data->root_node) {
         /*
@@ -132,7 +132,7 @@ void vfs_list_directory(struct filesystem_node* fs_node, struct filesystem_direc
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
     ASSERT_NOT_NULL(dir);
-    struct vfs_devicedata* object_data = (struct vfs_devicedata*)fs_node->filesystem_device->object_data;
+    struct vfs_objectdata* object_data = (struct vfs_objectdata*)fs_node->filesystem_device->object_data;
     if (fs_node == object_data->root_node) {
         /*
         * root node
@@ -192,7 +192,7 @@ struct object* vfs_attach(uint8_t* name) {
     /*
      * device data
      */
-    struct vfs_devicedata* object_data = (struct vfs_devicedata*)kmalloc(sizeof(struct vfs_devicedata));
+    struct vfs_objectdata* object_data = (struct vfs_objectdata*)kmalloc(sizeof(struct vfs_objectdata));
     object_data->root_node = filesystem_node_new(folder, deviceinstance, name, 0, 0);
     object_data->children = arraylist_new();
     deviceinstance->object_data = object_data;
@@ -226,7 +226,7 @@ void vfs_add_child(struct object* vfs_device, struct filesystem_node* child_node
     ASSERT_NOT_NULL(vfs_device);
     ASSERT_NOT_NULL(vfs_device->object_data);
     ASSERT_NOT_NULL(child_node);
-    struct vfs_devicedata* object_data = (struct vfs_devicedata*)vfs_device->object_data;
+    struct vfs_objectdata* object_data = (struct vfs_objectdata*)vfs_device->object_data;
     ASSERT_NOT_NULL(object_data);
     ASSERT_NOT_NULL(object_data->children);
     // the node id will be it's position in teh array

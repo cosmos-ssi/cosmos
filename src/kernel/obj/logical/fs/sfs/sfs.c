@@ -106,7 +106,7 @@ struct sfs_continuation_entry {
     uint8_t name[64];
 } __attribute__((packed));
 
-struct sfs_devicedata {
+struct sfs_objectdata {
     struct object* partition_device;
 } __attribute__((packed));
 
@@ -129,7 +129,7 @@ void sfs_read_superblock(struct object* dev, struct sfs_superblock* superblock) 
 void sfs_format(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct sfs_devicedata* object_data = (struct sfs_devicedata*)dev->object_data;
+    struct sfs_objectdata* object_data = (struct sfs_objectdata*)dev->object_data;
 
     // device parameters
     //    uint64_t total_size = blockutil_get_total_size(object_data->block_device);
@@ -160,7 +160,7 @@ void sfs_format(struct object* dev) {
 uint8_t sfs_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct sfs_devicedata* object_data = (struct sfs_devicedata*)dev->object_data;
+    struct sfs_objectdata* object_data = (struct sfs_objectdata*)dev->object_data;
     kprintf("Init %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     return 1;
 }
@@ -172,7 +172,7 @@ uint8_t sfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
 
-    struct sfs_devicedata* object_data = (struct sfs_devicedata*)dev->object_data;
+    struct sfs_objectdata* object_data = (struct sfs_objectdata*)dev->object_data;
     kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     kfree(dev->api);
     kfree(dev->object_data);
@@ -201,7 +201,7 @@ struct object* sfs_attach(struct object* partition_device) {
     /*
      * device data
      */
-    struct sfs_devicedata* object_data = (struct sfs_devicedata*)kmalloc(sizeof(struct sfs_devicedata));
+    struct sfs_objectdata* object_data = (struct sfs_objectdata*)kmalloc(sizeof(struct sfs_objectdata));
     object_data->partition_device = partition_device;
     deviceinstance->object_data = object_data;
 
@@ -229,7 +229,7 @@ struct object* sfs_attach(struct object* partition_device) {
 void sfs_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    struct sfs_devicedata* object_data = (struct sfs_devicedata*)dev->object_data;
+    struct sfs_objectdata* object_data = (struct sfs_objectdata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */

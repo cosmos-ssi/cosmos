@@ -95,7 +95,7 @@
 /*
  * device parameters for an sb16
  */
-struct floppy_devicedata {
+struct floppy_objectdata {
     uint32_t port;
     // 360 KB, 720 KB, etc
     uint8_t type;
@@ -171,7 +171,7 @@ void command(uint8_t commandByte) {
  */
 uint8_t floppy_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    //   struct floppy_devicedata* object_data = (struct floppy_devicedata*)dev->object_data;
+    //   struct floppy_objectdata* object_data = (struct floppy_objectdata*)dev->object_data;
     kprintf("Init %s at IRQ %llu (%s)\n", dev->description, FLOPPY_IRQ_NUMBER, dev->name);
     //	printDriveType(object_data->type);
     interrupt_router_register_interrupt_handler(FLOPPY_IRQ_NUMBER, &floppy_irq_read);
@@ -240,7 +240,7 @@ void floppy_register_device(uint64_t port, uint8_t type, bool master) {
     /*
      * device data
      */
-    struct floppy_devicedata* object_data = (struct floppy_devicedata*)kmalloc(sizeof(struct floppy_devicedata));
+    struct floppy_objectdata* object_data = (struct floppy_objectdata*)kmalloc(sizeof(struct floppy_objectdata));
     object_data->port = port;
     object_data->type = type;
     object_data->master = master;

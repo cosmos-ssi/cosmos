@@ -12,7 +12,7 @@
 
 #include <types.h>
 
-struct rtl8139_devicedata {
+struct rtl8139_objectdata {
     uint8_t mac[6];
     uint64_t base;
     uint16_t irq;

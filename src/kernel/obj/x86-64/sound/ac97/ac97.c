@@ -38,7 +38,7 @@
 #define AC97_GENERAL_PURPOSE 0x20
 #define AC97_3D_CONTROL 0x22
 
-struct ac97_devicedata {
+struct ac97_objectdata {
     uint64_t base;
 } __attribute__((packed));
 
@@ -51,7 +51,7 @@ void ac97_handle_irq(stack_frame* frame) {
  */
 uint8_t obj_initAC97(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct ac97_devicedata* object_data = (struct ac97_devicedata*)dev->object_data;
+    struct ac97_objectdata* object_data = (struct ac97_objectdata*)dev->object_data;
     object_data->base = pci_calcbar(dev->pci);
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
             dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
@@ -77,7 +77,7 @@ void AC97PCISearchCB(struct pci_device* dev) {
     /*
      * the object_data
      */
-    struct ac97_devicedata* object_data = (struct ac97_devicedata*)kmalloc(sizeof(struct ac97_devicedata));
+    struct ac97_objectdata* object_data = (struct ac97_objectdata*)kmalloc(sizeof(struct ac97_objectdata));
     object_data->base = 0;
     deviceinstance->object_data = object_data;
     /*

@@ -21,7 +21,7 @@
 
 #define SERIAL_DESCRIPTION "RS232"
 
-struct serial_devicedata {
+struct serial_objectdata {
     uint8_t irq;
     uint16_t address;
     struct ringbuffer* buffer;
@@ -45,7 +45,7 @@ void serial_write_char(const uint8_t c) {
 void serial_irq_handler_for_device(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->object_data);
-    //    struct serial_devicedata* object_data = (struct serial_devicedata*)dev->object_data;
+    //    struct serial_objectdata* object_data = (struct serial_objectdata*)dev->object_data;
 
     // TODO figure out if it was THIS dev that made the interrupt and respond accordingly (like by putting the data into the ringbuffer)
     struct rs232_16550* comport = (struct rs232_16550*)COM1_ADDRESS;
@@ -91,7 +91,7 @@ void serial_init_port(uint64_t portAddress) {
  */
 uint8_t serial_obj_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct serial_devicedata* object_data = (struct serial_devicedata*)dev->object_data;
+    struct serial_objectdata* object_data = (struct serial_objectdata*)dev->object_data;
     kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", dev->description, object_data->irq, object_data->address,
             dev->name);
     interrupt_router_register_interrupt_handler(object_data->irq, &serial_irq_handler);
@@ -108,7 +108,7 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * ISA serial port specific data
      */
-    struct serial_devicedata* object_data = kmalloc(sizeof(struct serial_devicedata));
+    struct serial_objectdata* object_data = kmalloc(sizeof(struct serial_objectdata));
     object_data->irq = irq;
     object_data->address = base;
     object_data->buffer = ringbuffer_new(SERIAL_RINGBUFFER_SIZE);

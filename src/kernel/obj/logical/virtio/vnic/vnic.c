@@ -100,7 +100,7 @@ void print_link_status() {
 }
 
 uint8_t vnic_initialize_device(struct object* dev) {
-    struct vnic_devicedata* object_data = (struct vnic_devicedata*)dev->object_data;
+    struct vnic_objectdata* object_data = (struct vnic_objectdata*)dev->object_data;
 
     // get the I/O port
     object_data->base = pci_calcbar(dev->pci);
@@ -212,7 +212,7 @@ void vnic_irq_handler(stack_frame* frame) {
     }
 
     // get device data
-    struct vnic_devicedata* object_data = (struct vnic_devicedata*)dev->object_data;
+    struct vnic_objectdata* object_data = (struct vnic_objectdata*)dev->object_data;
 
     // check for used send queues (meaning the device confirmed receipt)
     while (object_data->send_queue->used.idx != object_data->send_queue->last_seen_used) {
@@ -263,7 +263,7 @@ void vnic_tx(struct object* dev, uint8_t* data, uint16_t size) {
     memcpy((uint8_t*)((uint8_t*)netBuffer + sizeof(virtio_net_hdr)), (uint8_t*)data, size);
 
     // get the device data
-    struct vnic_devicedata* object_data = (struct vnic_devicedata*)dev->object_data;
+    struct vnic_objectdata* object_data = (struct vnic_objectdata*)dev->object_data;
 
     // load a descriptor with our buffer
     struct virtq_descriptor* desc = virtq_descriptor_new((uint8_t*)netBuffer, bufferSize, false);
@@ -301,7 +301,7 @@ void objectmgr_register_pci_vnic(struct pci_device* dev) {
     deviceinstance->api = api;
 
     // reserve for device-specific data
-    struct vnic_devicedata* object_data = (struct vnic_devicedata*)kmalloc(sizeof(struct vnic_devicedata));
+    struct vnic_objectdata* object_data = (struct vnic_objectdata*)kmalloc(sizeof(struct vnic_objectdata));
     deviceinstance->object_data = object_data;
 
     // register

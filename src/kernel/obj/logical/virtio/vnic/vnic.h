@@ -79,7 +79,7 @@ typedef struct virtio_net_hdr {
     uint16_t num_buffers;  // num_buffer is not part of struct if VIRTIO_NET_F_MRG_RXBUF isn't negotiated
 } virtio_net_hdr;
 
-struct vnic_devicedata {
+struct vnic_objectdata {
     uint64_t base;
     struct virtq* send_queue;
     struct virtq* receive_queue;

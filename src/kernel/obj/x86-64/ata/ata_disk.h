@@ -16,12 +16,12 @@
 
 #include <types.h>
 
-typedef struct ata_disk_devicedata {
+typedef struct ata_disk_objectdata {
     struct object* device;
     struct ata_controller* controller;
     uint8_t channel;
     uint8_t disk;
-} __attribute__((packed)) ata_disk_devicedata;
+} __attribute__((packed)) ata_disk_objectdata;
 
 /*
  * a disk only needs one function; a registration called by the controller
