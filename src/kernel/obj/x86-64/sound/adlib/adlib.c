@@ -11,6 +11,7 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_dsp.h>
+#include <sys/x86-64/idt/irq.h>
 
 // http://shipbrook.net/jeff/sb.html
 

@@ -7,7 +7,6 @@
 
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
-#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/panic/panic.h>
 
 object_handle_t object_presentation_create(filesystem_node_t* node) {

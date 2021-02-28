@@ -6,12 +6,12 @@
 // ****************************************************************
 
 #include <obj/logical/console/serial_console.h>
-#include <stdint.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objectinterface/objectinterface_console.h>
 #include <sys/objectinterface/objectinterface_serial.h>
 #include <sys/string/mem.h>
+#include <types.h>
 
 struct serial_console_objectdata {
     struct object* serial_device;

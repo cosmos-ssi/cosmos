@@ -20,7 +20,6 @@
 #include <obj/logical/tcpip/tcp/tcpdev.h>
 #include <obj/logical/tcpip/udp/udpdev.h>
 #include <obj/logical/tick/tick.h>
-#include <stdint.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_console.h>
@@ -30,6 +29,7 @@
 #include <sys/objectinterface/objectinterface_rtc.h>
 #include <sys/objectinterface/objectinterface_serial.h>
 #include <sys/objectinterface/objectinterface_speaker.h>
+#include <types.h>
 
 void attach_logical_objects() {
     /*

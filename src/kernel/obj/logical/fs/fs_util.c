@@ -12,9 +12,9 @@
 #include <obj/logical/partition/partition.h>
 #include <obj/logical/partition_table/guid_partition_table.h>
 #include <obj/logical/partition_table/mbr_partition_table.h>
-#include <stdint.h>
 #include <sys/debug/assert.h>
 #include <sys/objectmgr/objectmgr.h>
+#include <types.h>
 
 #include <sys/objectinterface/objectinterface_part_table.h>
 

@@ -8,10 +8,12 @@
 #include <obj/logical/fs/node_cache.h>
 #include <obj/logical/fs/node_util.h>
 #include <obj/logical/fs/objfs/objfs.h>
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_filesystem.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objectmgr/objecttypes.h>
 #include <sys/string/mem.h>
 #include <types.h>

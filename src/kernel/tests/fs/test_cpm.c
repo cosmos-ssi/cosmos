@@ -8,6 +8,7 @@
 #include <obj/logical/fs/cpm/cpm.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectinterface/objectinterface_filesystem.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <tests/fs/test_cfs.h>
 
 void test_cpm() {
