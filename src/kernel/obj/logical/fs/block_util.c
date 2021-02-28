@@ -9,6 +9,7 @@
 #include <sys/debug/assert.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_block.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
 
 uint32_t blockutil_get_sector_count(struct object* obj) {

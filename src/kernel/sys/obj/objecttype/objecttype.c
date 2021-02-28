@@ -5,9 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <stdint.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/string/string.h>
 

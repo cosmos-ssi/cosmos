@@ -7,6 +7,7 @@
 
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectregistry/objectregistry.h>
 #include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/panic/panic.h>

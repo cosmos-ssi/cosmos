@@ -9,6 +9,7 @@
 #include <sys/debug/assert.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_part_table.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/panic/panic.h>
 
 uint32_t partition_table_util_write_sectors(struct object* partition_table_objice, uint8_t partition_index,

@@ -17,6 +17,7 @@
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_bga.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>

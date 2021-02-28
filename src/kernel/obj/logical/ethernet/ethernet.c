@@ -12,6 +12,7 @@
 #include <sys/obj/objectinterface/objectinterface_ethernet.h>
 #include <sys/obj/objectinterface/objectinterface_nic.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
 #include <types.h>
 

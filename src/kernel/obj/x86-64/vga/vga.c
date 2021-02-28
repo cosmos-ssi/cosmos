@@ -15,6 +15,7 @@
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_vga.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <types.h>
 
 // CRT control I/O ports

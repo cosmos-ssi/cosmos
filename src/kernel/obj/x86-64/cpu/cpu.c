@@ -12,6 +12,7 @@
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_cpu.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <types.h>
 
 void cpu_manufacturer_id(uint8_t* cpuid);

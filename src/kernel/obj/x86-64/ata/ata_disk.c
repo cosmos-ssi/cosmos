@@ -16,6 +16,7 @@
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_block.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 

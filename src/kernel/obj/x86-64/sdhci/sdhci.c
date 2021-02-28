@@ -14,6 +14,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/x86-64/idt/irq.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>

@@ -8,10 +8,10 @@
 #ifndef _OBJECTMGR_H
 #define _OBJECTMGR_H
 
-#include <sys/obj/object/object.h>
 #include <sys/obj/objecttype/objectype.h>
-
 #include <types.h>
+
+struct object;
 
 // new device, allocated on the kernel heap
 struct object* objectmgr_new_object();

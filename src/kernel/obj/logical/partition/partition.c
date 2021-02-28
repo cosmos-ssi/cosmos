@@ -15,6 +15,7 @@
 #include <sys/obj/objectinterface/objectinterface_block.h>
 #include <sys/obj/objectinterface/objectinterface_part_table.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
 
 struct partition_objectdata {

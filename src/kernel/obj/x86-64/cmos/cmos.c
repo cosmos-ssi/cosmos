@@ -12,6 +12,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 
 void cmos_write_register(uint8_t reg, uint8_t val) {
     uint8_t pv;
