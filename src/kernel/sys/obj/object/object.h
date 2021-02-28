@@ -58,6 +58,10 @@ struct object {
     * and decremented when a device detaches from this device
     */
     uint8_t reference_count;
+    /*
+    * handle. every instance has a unique handle
+    */
+    uint64_t handle;
 };
 
 // new device, allocated on the kernel heap
