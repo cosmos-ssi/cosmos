@@ -18,8 +18,8 @@ void objectregistry_init();
 void objectregistry_registerobject(struct object* obj);
 void objectregistry_unregisterobject(struct object* obj);
 
-uint16_t objectregistry_objectcount();
-uint16_t objectregistry_objectcount_type(enum object_type_id dt);
+uint32_t objectregistry_objectcount();
+uint32_t objectregistry_objectcount_type(enum object_type_id dt);
 struct object* objectregistry_get_object(enum object_type_id dt, uint16_t idx);
 
 typedef void (*object_iterator)(struct object* obj);
