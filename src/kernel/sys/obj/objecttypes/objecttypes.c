@@ -8,6 +8,7 @@
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/obj/objecttypes/objecttypes.h>
+#include <sys/panic/panic.h>
 
 struct arraylist* types;
 
@@ -37,4 +38,14 @@ struct object_type* objecttypes_get(uint32_t i) {
     ASSERT_NOT_NULL(types);
     ASSERT(i < arraylist_count(types));
     return (struct object_type*)arraylist_get(types, i);
+}
+
+void objecttypes_add(struct object_type* ot) {
+    ASSERT_NOT_NULL(types);
+    ASSERT_NOT_NULL(ot);
+    if (0 == objecttypes_find(ot->id)) {
+        arraylist_add(types, ot);
+    } else {
+        PANIC("Duplicate object type");
+    }
 }
