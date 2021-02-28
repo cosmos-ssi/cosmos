@@ -13,14 +13,14 @@
 
 struct tree {
     void* value;
-    uint32_t key;
+    uint64_t key;
     struct tree* left;
     struct tree* right;
 };
 
 struct tree* tree_new();
 void tree_delete(struct tree* t);
-void tree_insert(struct tree* t, uint32_t key, void* value);
-void* tree_search(struct tree* t, uint32_t key);
+void tree_insert(struct tree* t, uint64_t key, void* value);
+void* tree_search(struct tree* t, uint64_t key);
 
 #endif

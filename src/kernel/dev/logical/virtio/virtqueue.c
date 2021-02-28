@@ -9,14 +9,16 @@
 #include <sys/debug/assert.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
+#include <sys/x86-64/mm/pagetables.h>
 
 /*
  * create virtq
  */
 struct virtq* virtq_new(uint16_t size) {
     // virtqueue must be aligned on a 4096-byte boundary
-    struct virtq* ret = (struct virtq*)iobuffers_request_buffer(sizeof(struct virtq));
+    struct virtq* ret = (struct virtq*)iobuffers_request_buffer(sizeof(struct virtq));  // 32-bit identity mapped
     /*
      * size
      */
@@ -58,6 +60,26 @@ struct virtq* virtq_new(uint16_t size) {
     * last_seen_used
     */
     ret->last_seen_used = -1;
+}
+
+/*
+ * print virtq
+ */
+void virtq_print(uint8_t qname[], struct virtq* queue) {
+    kprintf(qname);
+    kprintf("availidx: %u, usedidx: %u, lastidx: %u | ", queue->avail.idx, queue->used.idx, queue->last_seen_used);
+    kprintf("nextempty: %u, ", find_first_empty_slot(queue));
+    kprintf("status: ");
+    if (0 != queue->descriptors) {
+        for (uint16_t i = 0; i < queue->size; i++) {
+            if (0 == (queue->descriptors)[i]) {
+                kprintf("N");
+            } else {
+                kprintf("Y");
+            }
+        }
+        kprintf("\n");
+    }
 }
 
 /*
@@ -146,10 +168,13 @@ struct virtq_descriptor* virtq_dequeue_descriptor(struct virtq* queue) {
 /*
  * new descriptor
  */
-struct virtq_descriptor* virtq_descriptor_new(void* buffer, uint32_t len, bool writable) {
+struct virtq_descriptor* virtq_descriptor_new(uint8_t* buffer, uint32_t len, bool writable) {
     ASSERT_NOT_NULL(buffer);
     struct virtq_descriptor* ret = kmalloc(sizeof(struct virtq_descriptor));
-    ret->addr = buffer;
+
+    // buffer address must be guest-physical
+    ret->addr = (uint64_t)CONV_DMAP_ADDR(buffer);
+
     if (writable) {
         ret->flags = VIRTQ_DESC_F_DEVICE_WRITE_ONLY;
     } else {
@@ -166,7 +191,7 @@ struct virtq_descriptor* virtq_descriptor_new(void* buffer, uint32_t len, bool w
 void virtq_descriptor_delete(struct virtq_descriptor* descriptor) {
     ASSERT_NOT_NULL(descriptor);
     if (0 != descriptor->addr) {
-        kfree(descriptor->addr);
+        kfree((uint8_t*)descriptor->addr);
     } else {
         PANIC("virtq_descriptor address should not be zero");
     }

@@ -7,6 +7,8 @@
 
 #include <sys/asm/misc.h>
 #include <sys/collection/dtable/dtable.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
 #include <types.h>
@@ -14,16 +16,8 @@
 uint64_t next_pid;
 
 void proc_init() {
-    proc_info_t* kernelproc;
-
     proc_table = dtable_init();
-
-    kernelproc = new_proc_info(0, asm_cr3_read());
-    if (!dtable_set(proc_table, 0, (void*)kernelproc)) {
-        PANIC("Unable to add kernel process to table!");
-    }
-
-    next_pid = 1;
+    next_pid = 0;
 
     return;
 }

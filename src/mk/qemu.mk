@@ -18,15 +18,18 @@ QEMUARGS=                                                 \
   -drive file=img/gpt_fat.img,index=2,format=raw          \
   -drive file=img/blank.img,index=3,format=raw          \
   -device sdhci-pci                                     \
-  -nic user,model=virtio-net-pci                         \
+  -device virtio-net-pci,netdev=net0                   \
+  -netdev user,id=net0,hostfwd=tcp::8080-:80             \
+  -object filter-dump,id=f1,netdev=net0,file=net0.dat     \
   -serial stdio                                           \
   -audiodev coreaudio,id=audio0                           \
   -device adlib,audiodev=audio0                          \
   -monitor telnet::45454,server,nowait                    \
-  -D qemu.log
+  -D qemu.log                                               \
+  -d guest_errors,trace:*net*,trace:*virtio*,trace:*eth*,trace:*pci*,trace:*ioapic*   \
+  -vga std
 
   # -object filter-dump,id=f1,netdev=virtio,file=dump.dat      \
-
  #  -device usb-ehci                                        \
 
 #  -drive if=virtio,file=img/hda.img,format=raw                \

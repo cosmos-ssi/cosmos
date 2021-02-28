@@ -21,6 +21,8 @@ typedef uint64_t pid_t;
 typedef struct proc_info {
     pid_t pid;
     pttentry cr3;
+    uint64_t cpu;
+    uint64_t core;
     proc_register rax;
     proc_register rbx;
     proc_register rcx;
@@ -68,8 +70,14 @@ typedef struct proc_info {
 extern dtable proc_table;
 extern uint64_t next_pid;
 
-// proc_info.c
-proc_info_t* new_proc_info(pid_t pid, pttentry cr3);
+// kernel_idle.c
+void* kernel_idle(void* arg);
+
+// pid.c
+pid_t get_next_pid();
+
+// proc_create.c
+pid_t proc_create();
 
 // proc_init.c
 void proc_init();

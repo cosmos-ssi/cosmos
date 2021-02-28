@@ -103,8 +103,6 @@ void map_page_at(uint64_t page, void* vaddr, pttentry pml4_entry, bool user) {
 
     add_pt_page(vaddr_page_base, page, pt_entry, user);
 
-    asm_cr3_reload();
-
     spinlock_release(&page_table_lock);
 
     return;

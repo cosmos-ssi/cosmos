@@ -5,4 +5,4 @@
 # See the file "LICENSE" in the source distribution for details  *
 # ****************************************************************
 
-COMMON_CFLAGS=-c -m64 -mno-red-zone -ffreestanding -Werror -Wuninitialized -Wunused-variable -Wreturn-type -Wparentheses -fPIC -O0 -g3 -gdwarf
+COMMON_CFLAGS=-c -m64 -mno-red-zone -ffreestanding -Werror -Wuninitialized -Wunused-variable -Wreturn-type -Wparentheses

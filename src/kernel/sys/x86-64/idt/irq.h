@@ -13,10 +13,19 @@
 typedef struct stack_frame {
     uint64_t rip;
     uint64_t cs;
-    uint64_t fflags;
+    uint64_t rflags;
     uint64_t rsp;
     uint64_t ss;
 } __attribute__((packed)) stack_frame;
+
+typedef struct stack_frame_error {
+    uint64_t error;
+    uint64_t rip;
+    uint64_t cs;
+    uint64_t rflags;
+    uint64_t rsp;
+    uint64_t ss;
+} __attribute__((packed)) stack_frame_error;
 
 void irq0_handler(stack_frame* frame);
 void irq1_handler(stack_frame* frame);

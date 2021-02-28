@@ -11,10 +11,10 @@
 #include <sys/x86-64/mm/mm.h>
 #include <types.h>
 
-void isrPFE_handler(stack_frame* frame, uint64_t error) {
+void isrPFE_handler(stack_frame_error* frame) {
     ASSERT_NOT_NULL(frame);
 
-    page_fault_handler(error, asm_cr2_read(), asm_cr3_read());
+    page_fault_handler(frame->error, asm_cr2_read(), asm_cr3_read());
 
     return;
 }

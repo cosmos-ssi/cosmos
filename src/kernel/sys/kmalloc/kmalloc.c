@@ -174,25 +174,32 @@ void kfree(void* ptr) {
 
 void* kmalloc(uint64_t size) {
     ASSERT(0 != size);
+    ASSERT_NOT_NULL(brk);
+
     kmalloc_block* cur_block = 0;
 
     // align size to KMALLOC_ALIGN_BYTES
     if (size % KMALLOC_ALIGN_BYTES) {
         size += (KMALLOC_ALIGN_BYTES - (size % KMALLOC_ALIGN_BYTES));
     }
+    ASSERT(size > 0);
 
     // check the block list
     if (!kmalloc_block_list) {
         if ((uint64_t)brk % KMALLOC_ALIGN_BYTES) {
             cur_block = (kmalloc_block*)(brk + (KMALLOC_ALIGN_BYTES - ((uint64_t)brk % KMALLOC_ALIGN_BYTES)));
+            ASSERT_NOT_NULL(cur_block);
         } else {
             cur_block = (kmalloc_block*)brk;
+            ASSERT_NOT_NULL(cur_block);
         }
         kmalloc_block_list = cur_block;
         cur_block = new_kmalloc_block(0, size);
+        ASSERT_NOT_NULL(cur_block);
         ASSERT(cur_block->used == true);
     } else {
         cur_block = find_avail_kmalloc_block_list(size);
+        ASSERT_NOT_NULL(cur_block);
         ASSERT(cur_block->used == true);
     }
 
@@ -214,12 +221,14 @@ void kmalloc_init() {
 
 kmalloc_block* new_kmalloc_block(kmalloc_block* last, uint64_t size) {
     ASSERT(0 != size);
+    ASSERT_NOT_NULL(brk);
     /*
      * last can be null here
      */
     kmalloc_block* new = 0;
 
     if ((UINT64_T_MAX - (sizeof(kmalloc_block) + size - 1)) < (uint64_t)brk) {  // out of address space
+        kprintf("Out of address space\n");
         return 0;
     }
 

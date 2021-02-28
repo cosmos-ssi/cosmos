@@ -56,14 +56,14 @@ void swap_read(struct device* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
-    blockutil_read(device_data->block_device, data, swap_block_size(dev), block);
+    blockutil_read(device_data->block_device, data, swap_block_size(dev), block, 0);
 }
 
 void swap_write(struct device* dev, uint8_t* data, uint32_t block) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->device_data);
     struct swap_devicedata* device_data = (struct swap_devicedata*)dev->device_data;
-    blockutil_write(device_data->block_device, data, swap_block_size(dev), block);
+    blockutil_write(device_data->block_device, data, swap_block_size(dev), block, 0);
 }
 
 uint16_t swap_block_count(struct device* dev) {

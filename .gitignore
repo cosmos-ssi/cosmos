@@ -68,8 +68,8 @@ dkms.conf
 **/initrd.img
 
 # generated binaries
-/src/user/cosmos_init
-/src/util/mkinitrd/mkinitrd
+src/user/cosmos_init
+src/util/mkinitrd/mkinitrd
 
 # OS x resources
 **/*.DS_Store
@@ -77,5 +77,9 @@ dkms.conf
 .vscode
 **/dump.dat
 **/qemu.log
+**/net0.dat
 user/cosmos_init
 util/mkinitrd/mkinitrd
+src/user/init/cosmos_init
+/src/user/apps/term/term
+/src/user/apps/init/init

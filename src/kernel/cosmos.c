@@ -10,9 +10,11 @@
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_console.h>
+#include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/fs/fs_facade.h>
+#include <sys/gui/gui.h>
 #include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
@@ -21,6 +23,9 @@
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
+#include <sys/syscall/syscall.h>
+#include <sys/video/video_util.h>
+#include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/idt/idt.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/syscall/syscall.h>
@@ -31,6 +36,7 @@ void dev_tests();
 void load_init_binary();
 void dump_vfs();
 void video_write(const uint8_t* s);
+filesystem_node_t* load_test_binary();
 
 void CosmOS() {
     /*
@@ -127,12 +133,9 @@ void CosmOS() {
     dev_tests();
 
     // show the vfs
-    kprintf("***** Devices *****\n");
+    // kprintf("***** Devices *****\n");
     //  devicemgr_dump_devices();
 
-    kprintf("\n");
-    kprintf("***** VFS *****\n");
-    kprintf("\n");
     dump_vfs();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
@@ -142,12 +145,46 @@ void CosmOS() {
 
     load_init_binary();
 
-    while (1) {
-        asm_hlt();
-    }
+    gui_init();
+    gui_draw();
+
+    object_handle_t idle_kernel_work;
+    object_handle_t idle_process;
+    object_handle_t idle_task;
+
+    idle_kernel_work = object_kernel_work_create(&kernel_idle, NULL);
+    idle_process = object_process_create(idle_kernel_work);
+    idle_task = object_task_create(idle_process);
+
+    object_handle_t test_exe_obj;
+    test_exe_obj = object_executable_create_from_presentation(object_presentation_create(load_test_binary()));
+
+    sched_switch(task_select());
+}
+
+filesystem_node_t* load_test_binary() {
+    device_t* vfs_dev;
+    filesystem_node_t *vfs_node, *initrd_node, *file_node;
+
+    vfs_dev = devicemgr_find_device("vfs0");
+    ASSERT_NOT_NULL(vfs_dev);
+
+    vfs_node = fsfacade_get_fs_rootnode(vfs_dev);
+    ASSERT_NOT_NULL(vfs_node);
+
+    initrd_node = fsfacade_find_node_by_name(vfs_node, "initrd");
+    ASSERT_NOT_NULL(initrd_node);
+
+    file_node = fsfacade_find_node_by_name(initrd_node, "test.bin");
+    ASSERT_NOT_NULL(file_node);
+
+    return file_node;
 }
 
 void dump_vfs() {
+    kprintf("\n");
+    kprintf("***** VFS *****\n");
+    kprintf("\n");
     struct device* vfs_dev = devicemgr_find_device("vfs0");
     ASSERT_NOT_NULL(vfs_dev);
     struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(vfs_dev);
@@ -160,7 +197,7 @@ void dump_vfs() {
 * load the init binary from the initrd fs
 */
 void load_init_binary() {
-    uint8_t init_binary_name[] = {"cosmos_init"};
+    uint8_t init_binary_name[] = {"init"};
     init_load(INITRD_DISK, init_binary_name);
     kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, INITRD_DISK);
 }
@@ -201,4 +238,5 @@ void dev_tests() {
     // test_initrd();
     //  test_acpi();
     // test_virtio_virtqueue();
+    // test_virtio_vnic();
 }

@@ -247,7 +247,7 @@ void* setup_direct_map(int_15_map* phys_map, uint8_t num_blocks) {
          */
         if (!pml4[idx]) {
             // Clear the page table we're about to point to in PML4 and set up
-            memset(CONV_PHYS_ADDR(cur_phys_loc), 0, PAGE_SIZE);
+            memset(PTT_ADJUST_BASE(cur_phys_loc), 0, PAGE_SIZE);
             pml4[idx] = ptt_entry_create(cur_phys_loc, true, true, false);
             cur_phys_loc = adjust_cur_phys_loc(cur_phys_loc, dmap_start);
         }
@@ -261,7 +261,7 @@ void* setup_direct_map(int_15_map* phys_map, uint8_t num_blocks) {
          */
 
         if (!pdp[idx]) {
-            memset(CONV_PHYS_ADDR(cur_phys_loc), 0, PAGE_SIZE);
+            memset(PTT_ADJUST_BASE(cur_phys_loc), 0, PAGE_SIZE);
             pdp[idx] = ptt_entry_create(cur_phys_loc, true, true, false);
             cur_phys_loc = adjust_cur_phys_loc(cur_phys_loc, dmap_start);
         }
@@ -270,7 +270,7 @@ void* setup_direct_map(int_15_map* phys_map, uint8_t num_blocks) {
         idx = vaddr_ptt_index(active_virt_loc, PD);
 
         if (!pd[idx]) {
-            memset(CONV_PHYS_ADDR(cur_phys_loc), 0, PAGE_SIZE);
+            memset(PTT_ADJUST_BASE(cur_phys_loc), 0, PAGE_SIZE);
             pd[idx] = ptt_entry_create(cur_phys_loc, true, true, false);
             cur_phys_loc = adjust_cur_phys_loc(cur_phys_loc, dmap_start);
         }
@@ -306,7 +306,7 @@ void* setup_direct_map(int_15_map* phys_map, uint8_t num_blocks) {
          */
         if (!pml4[idx]) {
             // Clear the page table we're about to point to in PML4 and set up
-            memset(CONV_PHYS_ADDR(cur_phys_loc), 0, PAGE_SIZE);
+            memset(PTT_ADJUST_BASE(cur_phys_loc), 0, PAGE_SIZE);
             pml4[idx] = ptt_entry_create(cur_phys_loc, true, true, false);
             cur_phys_loc = adjust_cur_phys_loc(cur_phys_loc, dmap_start);
         }
@@ -320,7 +320,7 @@ void* setup_direct_map(int_15_map* phys_map, uint8_t num_blocks) {
          */
 
         if (!pdp[idx]) {
-            memset(CONV_PHYS_ADDR(cur_phys_loc), 0, PAGE_SIZE);
+            memset(PTT_ADJUST_BASE(cur_phys_loc), 0, PAGE_SIZE);
             pdp[idx] = ptt_entry_create(cur_phys_loc, true, true, false);
             cur_phys_loc = adjust_cur_phys_loc(cur_phys_loc, dmap_start);
         }
@@ -329,7 +329,7 @@ void* setup_direct_map(int_15_map* phys_map, uint8_t num_blocks) {
         idx = vaddr_ptt_index(active_virt_loc, PD);
 
         if (!pd[idx]) {
-            memset(CONV_PHYS_ADDR(cur_phys_loc), 0, PAGE_SIZE);
+            memset(PTT_ADJUST_BASE(cur_phys_loc), 0, PAGE_SIZE);
             pd[idx] = ptt_entry_create(cur_phys_loc, true, true, false);
             cur_phys_loc = adjust_cur_phys_loc(cur_phys_loc, dmap_start);
         }
@@ -345,7 +345,7 @@ void* setup_direct_map(int_15_map* phys_map, uint8_t num_blocks) {
     }
 
     // Return the first address after the direct-map page tables
-    return CONV_PHYS_ADDR(cur_phys_loc);
+    return PTT_ADJUST_BASE(cur_phys_loc);
 }
 
 uint64_t size_pd(uint64_t space) {

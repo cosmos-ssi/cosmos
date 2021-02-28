@@ -5,6 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/asm/asm.h>
 #include <sys/asm/misc.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/mm/pagetables.h>
@@ -18,6 +19,8 @@ void page_fault_handler(uint64_t error, void* cr2, pttentry cr3) {
         page = slab_allocate(1, PDT_INUSE);
 
         map_page_at(page, cr2, asm_cr3_read(), false);
+
+        asm_cr3_reload();
     }
 
     return;

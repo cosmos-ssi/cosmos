@@ -141,6 +141,7 @@ void devicemgr_init_devices() {
     deviceregistry_iterate_type(RTC, device_initIterator);
     deviceregistry_iterate_type(KEYBOARD, device_initIterator);
     deviceregistry_iterate_type(VGA, device_initIterator);
+    deviceregistry_iterate_type(BGA, device_initIterator);
     deviceregistry_iterate_type(USB, device_initIterator);
     deviceregistry_iterate_type(NIC, device_initIterator);
     deviceregistry_iterate_type(BRIDGE, device_initIterator);
@@ -156,6 +157,7 @@ void devicemgr_init_devices() {
     //  deviceregistry_iterate_type(RAMDISK, device_initIterator);
     deviceregistry_iterate_type(PARALLEL, device_initIterator);
     //  deviceregistry_iterate_type(SWAP, device_initIterator);
+    deviceregistry_iterate_type(KERNELMAP, device_initIterator);
 }
 
 struct device* devicemgr_new_device() {
@@ -235,7 +237,8 @@ void devicemgr_register_devices() {
     //   swap_devicemgr_register_devices();
     rtc_devicemgr_register_devices();
     keyboard_devicemgr_register_devices();
-    vga_devicemgr_register_devices();
+    //  vga_devicemgr_register_devices();
+    bga_devicemgr_register_devices();
     usb_ehci_devicemgr_register_devices();
     network_devicemgr_register_devices();
     bridge_devicemgr_register_devices();
@@ -253,6 +256,7 @@ void devicemgr_register_devices() {
     bda_devicemgr_register_devices();
     acpi_devicemgr_register_devices();
     smbios_devicemgr_register_devices();
+    kernelmap_devicemgr_register_devices();
 }
 
 #else

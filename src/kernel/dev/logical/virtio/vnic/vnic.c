@@ -18,22 +18,19 @@
 #include <sys/devicemgr/device.h>
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/interrupt_router/interrupt_router.h>
+#include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/string/mem.h>
+#include <sys/string/string.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 
 uint16_t vnet_base_port;
 uint8_t mac_addr[6];
 
-void vnic_irq_handler(stack_frame* frame) {
-    ASSERT_NOT_NULL(frame);
-    kprintf("#");
-}
-
-inline uint32_t vnic_read_register(uint16_t reg) {
+inline uint32_t vnic_read_register(uint32_t reg) {
     // if 4-byte register
     if (reg < VIRTIO_QUEUE_SIZE) {
         return asm_in_d(vnet_base_port + reg);
@@ -46,7 +43,7 @@ inline uint32_t vnic_read_register(uint16_t reg) {
     }
 }
 
-inline void vnic_write_register(uint16_t reg, uint32_t data) {
+inline void vnic_write_register(uint32_t reg, uint32_t data) {
     // if 4-byte register
     if (reg < VIRTIO_QUEUE_SIZE) {
         asm_out_d(vnet_base_port + reg, data);
@@ -83,15 +80,30 @@ void vnic_init_virtqueue(struct virtq** virtqueue, uint16_t queueIndex) {
     // The API takes a 32 bit pointer, but we have a 64 bit pointer, so ... some conversions
     uint32_t q_shifted = (uint64_t)q >> 12;
 
-    kprintf("  Queue Address(%u): %#hX, shifted %#hX\n", queueIndex, q, q_shifted);
+    kprintf("  Queue Address(%u): %#hX\n", queueIndex, q);
 
     // Write addresses (divided by 4096) to address registers
     vnic_write_register(VIRTIO_QUEUE_ADDRESS, q_shifted);
 }
 
+uint8_t get_link_status() {
+    uint32_t device_status = vnic_read_register(VIRTIO_DEVICE_STATUS);
+    return ((device_status & VIRTIO_NET_S_LINK_UP) == VIRTIO_NET_S_LINK_UP);
+}
+
+void print_link_status() {
+    uint8_t link_status = get_link_status();
+    kprintf("   link status: %lu - ", link_status);
+
+    if (0 != link_status) {
+        kprintf("UP\n");
+    } else {
+        kprintf("DOWN\n");
+    }
+}
+
 uint8_t vnic_initialize_device(struct device* dev) {
     struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
-    uint8_t device_status;
 
     // get the I/O port
     device_data->base = pci_calcbar(dev->pci);
@@ -100,8 +112,7 @@ uint8_t vnic_initialize_device(struct device* dev) {
     kprintf("Initializing virtio-net driver... Base address: %#hX\n", vnet_base_port);
 
     // get starting device status
-    device_status = (uint8_t)vnic_read_register(VIRTIO_DEVICE_STATUS);
-    kprintf("   device status is %hX\n", device_status);
+    print_link_status();
 
     // Reset the virtio-network device
     vnic_write_register(VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_RESET_DEVICE);
@@ -151,7 +162,7 @@ uint8_t vnic_initialize_device(struct device* dev) {
     vnic_init_virtqueue(&(device_data->send_queue), VIRTQ_NET_TRANSMIT_INDEX);
 
     // Setup the receive queue
-    vnic_setup_receive_buffers(device_data->receive_queue);
+    vnic_setup_receive_buffers(device_data->receive_queue, 16);
 
     // Setup an interrupt handler for this device
     interrupt_router_register_interrupt_handler(dev->pci->irq, &vnic_irq_handler);
@@ -159,7 +170,8 @@ uint8_t vnic_initialize_device(struct device* dev) {
             dev->pci->vendor_id, dev->pci->device_id, device_data->base, dev->name);
 
     // Tell the device it's initialized
-    vnic_write_register(VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_DRIVER_READY);
+    vnic_write_register(VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_DEVICE_ACKNOWLEGED | VIRTIO_STATUS_DRIVER_LOADED |
+                                                  VIRTIO_STATUS_FEATURES_OK | VIRTIO_STATUS_DRIVER_READY);
 
     // Remind the device that it has receive buffers.
     vnic_write_register(VIRTIO_QUEUE_NOTIFY, VIRTQ_NET_RECEIVE_INDEX);
@@ -169,18 +181,16 @@ uint8_t vnic_initialize_device(struct device* dev) {
     // DHCP_Send_Discovery(mac_addr);
 
     // get ending device status
-    device_status = (uint8_t)vnic_read_register(VIRTIO_DEVICE_STATUS);
-    kprintf("   device status is %hX\n", device_status);
-
+    print_link_status();
     kprintf("   virtio-net driver initialized.\n");
     return 1;
 }
 
-void vnic_setup_receive_buffers(struct virtq* receiveQueue) {
+void vnic_setup_receive_buffers(struct virtq* receiveQueue, uint8_t count) {
     const uint16_t bufferSize = 1526;  // as per virtio specs
 
     // Allocate and add 16 buffers to receive queue
-    for (uint16_t i = 0; i < 16; ++i) {
+    for (uint16_t i = 0; i < count; ++i) {
         uint8_t* buffer = kmalloc(bufferSize);
         struct virtq_descriptor* desc = virtq_descriptor_new(buffer, bufferSize, true);
 
@@ -190,17 +200,82 @@ void vnic_setup_receive_buffers(struct virtq* receiveQueue) {
     vnic_write_register(VIRTIO_QUEUE_NOTIFY, VIRTQ_NET_RECEIVE_INDEX);
 }
 
-void vnic_ethernet_read(struct device* dev, uint8_t* data, uint16_t size) {
+// the hardware raises an IRQ each time a TX frame is acknowledged, or an RX frame is ready for us.
+void vnic_irq_handler(stack_frame* frame) {
+    ASSERT_NOT_NULL(frame);
+    kprintf("#");
+
+    // get virtual device
+    uint8_t devicename[] = {"nic0"};
+
+    struct device* dev = devicemgr_find_device(devicename);
+    if (0 == dev) {
+        kprintf("Unable to find %s\n", devicename);
+        return;
+    }
+
+    // get device data
+    struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
+
+    // check for used send queues (meaning the device confirmed receipt)
+    while (device_data->send_queue->used.idx != device_data->send_queue->last_seen_used) {
+        kprintf("irqh: Packet sent successfully");
+        struct virtq_descriptor* desc = virtq_dequeue_descriptor(device_data->send_queue);
+        virtq_descriptor_delete(desc);
+    }
+
+    // see if the receive queue has been used
+    while (device_data->receive_queue->used.idx != device_data->receive_queue->last_seen_used) {
+        kprintf("irqh: Packet received successfully");
+
+        // get the descriptor
+        struct virtq_descriptor* desc = virtq_dequeue_descriptor(device_data->receive_queue);
+
+        // TODO: something with the data
+
+        // delete the descriptor
+        virtq_descriptor_delete(desc);
+
+        // restock receive queue buffer
+        vnic_setup_receive_buffers(device_data->receive_queue, 1);
+    }
+
+    // EOI sent to the PIC by the interrupt handler
+}
+
+void vnic_rx(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
     PANIC("vnic read not implemented yet");
 }
 
-void vnic_ethernet_write(struct device* dev, uint8_t* data, uint16_t size) {
+void vnic_tx(struct device* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(data);
 
-    PANIC("vnic write not implemented yet");
+    kprintf("vnic_tx sending data\n");
+
+    // Allocate a buffer for the packet & header
+    uint32_t bufferSize = size + sizeof(virtio_net_hdr);
+    virtio_net_hdr* netBuffer = iobuffers_request_buffer(bufferSize);
+
+    // Set the header (basic for now - all zeros)
+    memzero((uint8_t*)netBuffer, sizeof(virtio_net_hdr));
+
+    // Copy packet to buffer
+    memcpy((uint8_t*)((uint8_t*)netBuffer + sizeof(virtio_net_hdr)), (uint8_t*)data, size);
+
+    // get the device data
+    struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
+
+    // load a descriptor with our buffer
+    struct virtq_descriptor* desc = virtq_descriptor_new((uint8_t*)netBuffer, bufferSize, false);
+
+    // queue it up
+    virtq_enqueue_descriptor(device_data->send_queue, desc);
+
+    // tell the device we're ready to send
+    vnic_write_register(VIRTIO_QUEUE_NOTIFY, VIRTQ_NET_TRANSMIT_INDEX);
 }
 
 // As part of PCI discovery, devicemgr calls this to register us as an instance of type VNIC.
@@ -224,8 +299,8 @@ void devicemgr_register_pci_vnic(struct pci_device* dev) {
     // define an api
     struct deviceapi_nic* api = (struct deviceapi_nic*)kmalloc(sizeof(struct deviceapi_nic));
     memzero((uint8_t*)api, sizeof(struct deviceapi_nic));
-    api->write = &vnic_ethernet_write;
-    api->read = &vnic_ethernet_read;
+    api->write = &vnic_tx;
+    api->read = &vnic_rx;
     deviceinstance->api = api;
 
     // reserve for device-specific data

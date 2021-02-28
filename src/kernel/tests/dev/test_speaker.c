@@ -10,10 +10,9 @@
 #include <sys/devicemgr/devicemgr.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/sleep/sleep.h>
-#include <sys/sound/notes.h>
 #include <tests/dev/test_speaker.h>
 
-void BeethovensFifth() {
+/* void BeethovensFifth() {
     // get the speaker
     struct device* speaker = devicemgr_find_device("speaker0");
     if (0 != speaker) {
@@ -40,7 +39,7 @@ void BeethovensFifth() {
     } else {
         kprintf("Unable to find speaker0\n");
     }
-}
+} */
 
 void chirp() {
     // get the speaker

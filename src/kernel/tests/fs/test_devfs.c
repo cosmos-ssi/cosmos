@@ -14,9 +14,9 @@
 void test_devfs() {
     kprintf("Testing devfs\n");
 
-    struct device* devfs_device = devicemgr_find_device("devfs0");
-    ASSERT_NOT_NULL(devfs_device);
+    //   struct device* devfs_device = devicemgr_find_device("devfs0");
+    //   ASSERT_NOT_NULL(devfs_device);
 
-    struct filesystem_node* fsnode = fsfacade_get_fs_rootnode(devfs_device);
-    ASSERT_NOT_NULL(fsnode);
+    //    struct filesystem_node* fsnode = fsfacade_get_fs_rootnode(devfs_device);
+    //  ASSERT_NOT_NULL(fsnode);
 }

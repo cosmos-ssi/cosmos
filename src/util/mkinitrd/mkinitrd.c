@@ -7,6 +7,7 @@
 
 // http://www.jamesmolloy.co.uk/tutorial_html/8.-The%20VFS%20and%20the%20initrd.html
 
+#include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -90,33 +91,61 @@ void addfiles(struct initrd_fs_header* fs_header, struct filenames* fns, unsigne
     free(data);
 }
 
-void fillnames(int count, char** argv, struct filenames* fns) {
-    for (int i = 0; i < count; i++) {
-        char* n = argv[i + 1];
-        strcpy((fns->names[i].longname), n);
-        char* c = strrchr(n, '/');
-        if (0 == c) {
-            strcpy((fns->names[i].shortname), n);
-        } else {
-            strcpy((fns->names[i].shortname), c + 1);
+void addfile(struct filenames* fns, char* fn) {
+    strcpy((fns->names[fns->count].longname), fn);
+    char* c = strrchr(fn, '/');
+    if (0 == c) {
+        strcpy((fns->names[fns->count].shortname), fn);
+    } else {
+        strcpy((fns->names[fns->count].shortname), c + 1);
+    }
+    fns->count = fns->count + 1;
+}
+
+void fillnames(char* dirname, struct filenames* fns) {
+    struct dirent* dir;
+    DIR* d = opendir(dirname);
+    if (0 != d) {
+        while ((dir = readdir(d)) != 0) {
+            if ((0 != strcmp(dir->d_name, "..")) && (0 != strcmp(dir->d_name, "."))) {
+                char fn[1024];
+                strcpy(fn, dirname);
+                //                strcat(fn, "/");
+                strcat(fn, dir->d_name);
+                //     printf("%s\n", fn);
+                addfile(fns, fn);
+            }
         }
+        closedir(d);
     }
 }
 
 int main(int argc, char** argv) {
     printf("CosmOS mkinitrd\n");
-    int nheaders = (argc - 1);
     /*
-    * figure out the names
+    * fn list
     */
     struct filenames fns;
-    fillnames(nheaders, argv, &fns);
+    fns.count = 0;
+    /*
+    * walk args
+    */
+    int nargs = argc - 1;
+    for (int i = 1; i <= nargs; i++) {
+        char* a = argv[i];
+        if (a[strlen(a) - 1] == '/') {
+            fillnames(a, &fns);
+        } else {
+            addfile(&fns, a);
+        }
+    }
+    //
     /*
     * make the fs header
     */
     struct initrd_fs_header fs_header;
     memset(&fs_header, 0, sizeof(struct initrd_fs_header));
-    fs_header.nheaders = nheaders;
+    fs_header.nheaders = fns.count;
     printf("Size of filesystem header: %lu\n", sizeof(struct initrd_fs_header));
     printf("Size of initrd file header: %lu\n", sizeof(struct initrd_file_header));
 

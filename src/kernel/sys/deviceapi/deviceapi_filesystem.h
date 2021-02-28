@@ -17,7 +17,7 @@ struct device;
 
 enum filesystem_node_type { folder, file, device };
 
-struct filesystem_node {
+typedef struct filesystem_node {
     /*
     * type
     */
@@ -38,7 +38,7 @@ struct filesystem_node {
     * node_specific data
     */
     void* node_data;
-};
+} filesystem_node_t;
 
 struct filesystem_directory {
     uint64_t count;
@@ -63,7 +63,7 @@ typedef void (*filesystem_close_function)(struct filesystem_node* fs_node);
 /*
 * find a node by id
 */
-typedef struct filesystem_node* (*filesystem_find_node_by_id_function)(struct filesystem_node* fs_node, uint32_t id);
+typedef struct filesystem_node* (*filesystem_find_node_by_id_function)(struct filesystem_node* fs_node, uint64_t id);
 /*
 * get directory list.  fills struct. 
 */

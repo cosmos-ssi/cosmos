@@ -18,6 +18,8 @@ CosmOS requires:
 
 `brew install x86_64-elf-gcc`
 
+`brew install x86_64-elf-gdb`
+
 `brew install nasm`
 
 `brew install qemu`

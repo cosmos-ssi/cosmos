@@ -16,11 +16,12 @@ TARGET_PLATFORM=TARGET_PLATFORM_i386
 
 # cc (GCC tool chain)
 CC=clang
-CFLAGS=$(COMMON_CFLAGS) -D$(COMPILE_PLATFORM) -D$(TARGET_PLATFORM)
+KERNEL_CFLAGS=$(COMMON_CFLAGS) -D$(COMPILE_PLATFORM) -D$(TARGET_PLATFORM)
 
 # ld
 LD=x86_64-elf-ld 
-LDFLAGS=-m elf_x86_64 -T $(LINKER_SCRIPT) -Map $(MAPFILE) -nostdlib --no-relax
+KERNEL_LDFLAGS=-m elf_x86_64 -T $(LINKER_SCRIPT) -Map $(MAPFILE) -nostdlib --no-relax
+USER_LDFLAGS=-m elf_x86_64 -nostdlib --no-relax
 
 # objcopy
 OBJCOPY=x86_64-elf-objcopy

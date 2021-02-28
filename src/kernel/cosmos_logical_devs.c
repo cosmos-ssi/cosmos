@@ -88,9 +88,9 @@ void attach_logical_devices() {
     * vfs
     */
     struct device* rootfs_dev = vfs_attach("/");
-    struct device* devfs_dev = devfs_attach();
-    struct filesystem_node* fsnode_devfs = fsfacade_get_fs_rootnode(devfs_dev);
+    //   struct device* devfs_dev = devfs_attach();
+    //   struct filesystem_node* fsnode_devfs = fsfacade_get_fs_rootnode(devfs_dev);
     struct filesystem_node* fsnode_initrd = fsfacade_get_fs_rootnode(initrd_dev);
-    vfs_add_child(rootfs_dev, fsnode_devfs);
+    // vfs_add_child(rootfs_dev, fsnode_devfs);
     vfs_add_child(rootfs_dev, fsnode_initrd);
 }

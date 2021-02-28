@@ -5,20 +5,30 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/sched/sched.h>
 #include <types.h>
 
-uint64_t** current_task;
+#include <sys/kprintf/kprintf.h>
+
+linkedlist*** task_list;
+linkedlist*** current_task;
 
 void sched_init() {
     /*
-     * Initialize current_task array.  Right now we only support a single
+     * Initialize task_list array.  Right now we only support a single
      * processor, so this is simpler than it will become in the future.
      */
 
-    current_task = (uint64_t**)kmalloc(sizeof(uint64_t));
-    current_task[0] = (uint64_t*)kmalloc(sizeof(uint64_t));
+    task_list = (linkedlist***)kmalloc(sizeof(linkedlist**));
+
+    task_list[0] = (linkedlist**)kmalloc(sizeof(linkedlist*));
+    task_list[0][0] = 0;
+
+    current_task = (linkedlist***)kmalloc(sizeof(linkedlist**));
+    current_task[0] = (linkedlist**)kmalloc(sizeof(linkedlist*));
+
     current_task[0][0] = 0;
 
     return;

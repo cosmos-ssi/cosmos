@@ -21,6 +21,17 @@ struct filesystem_node* fsfacade_get_fs_rootnode(struct device* filesystem_devic
     return (*fs_api->root)(filesystem_device);
 }
 
+void fsfacade_dump_node(struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_device);
+
+    kprintf("Name: %s\n", fs_node->name);
+    kprintf("ID: %#llX\n", fs_node->id);
+    kprintf("Device: %s\n", fs_node->filesystem_device->name);
+    kprintf("Type: %#llX\n", fs_node->type);
+    kprintf("Node Data: %#llX\n", fs_node->node_data);
+}
+
 void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traverse_function f, uint32_t depth) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
@@ -37,7 +48,9 @@ void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traver
 
     if (dir.count > 0) {
         for (uint32_t i = 0; i < dir.count; i++) {
+            kprintf("dir node i %llu id %#llX\n", i, dir.ids[i]);
             struct filesystem_node* child = fsfacade_find_node_by_id(fs_node, dir.ids[i]);
+            fsfacade_dump_node(child);
             ASSERT_NOT_NULL(child);
             fsfacade_traverse_internal(child, f, depth + 1);
         }
@@ -64,7 +77,7 @@ void vfs_dump_traverse_function(struct filesystem_node* fs_node, uint32_t depth)
     for (int32_t i = 0; i < depth; i++) {
         kprintf(" ");
     }
-    kprintf("%s %llu\n", fs_node->name, fs_node->id);
+    kprintf("%s %#llX\n", fs_node->name, fs_node->id);
 }
 
 void fsfacade_dump(struct filesystem_node* fs_node) {
@@ -80,10 +93,14 @@ void fsfacade_list_directory(struct filesystem_node* fs_node, struct filesystem_
     struct deviceapi_filesystem* fs_api = (struct deviceapi_filesystem*)fs_node->filesystem_device->api;
     if (0 != fs_api->list) {
         (*fs_api->list)(fs_node, dir);
+
+        //     for (uint32_t i = 0; i < dir->count; i++) {
+        //         kprintf("i %#llX, id %#llX\n", i, dir->ids[i]);
+        //     }
     }
 }
 
-struct filesystem_node* fsfacade_find_node_by_id(struct filesystem_node* fs_node, uint32_t id) {
+struct filesystem_node* fsfacade_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
     ASSERT_NOT_NULL(fs_node->filesystem_device->api);
@@ -135,6 +152,7 @@ uint32_t fsfacade_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t 
     ASSERT_NOT_NULL(fs_node->filesystem_device->api);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
+    //  kprintf("fsfacade_read node %s size %llu\n", fs_node->name, data_size);
     struct deviceapi_filesystem* fs_api = (struct deviceapi_filesystem*)fs_node->filesystem_device->api;
     if (0 != fs_api->read) {
         return (*fs_api->read)(fs_node, data, data_size);

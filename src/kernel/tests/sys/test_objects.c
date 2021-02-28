@@ -16,37 +16,11 @@
 #include <types.h>
 
 void test_objects() {
-    device_t* disk;
+    /*device_t* disk;
     device_t* initrd;
-    uint8_t idx;
+    uint8_t idx;*/
 
     kprintf("Testing objects\n");
-
-    disk = devicemgr_find_device("disk0");
-    ASSERT_NOT_NULL(disk);
-
-    initrd = initrd_attach(disk, initrd_lba());
-    ASSERT_NOT_NULL(initrd);
-
-    struct filesystem_node* fs_root_node = fsfacade_get_fs_rootnode(initrd);
-    ASSERT_NOT_NULL(fs_root_node);
-    struct filesystem_node* fs_file_node = fsfacade_find_node_by_name(fs_root_node, "test.bin");
-    ASSERT_NOT_NULL(fs_file_node);
-
-    idx = fs_file_node->id;
-    kprintf("Index: %hu\n", idx);
-
-    object_handle_t pres_handle;
-
-    pres_handle = object_create_presentation(disk, idx, "test.bin");
-    object_handle_t exe_handle = object_create_executable_from_presentation(pres_handle);
-
-    kprintf("pres_handle, exe_handle: %llu, %llu\n", pres_handle, exe_handle);
-
-    object_executable_t* obj_exe = object_get_data(exe_handle);
-    kprintf("page start, len: %llX %llX\n", (uint64_t)obj_exe->page_base, (uint64_t)obj_exe->page_count);
-
-    initrd_detach(initrd);
 
     return;
 }
