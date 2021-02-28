@@ -126,7 +126,7 @@ struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &ramdisk_init;
     objectinstance->uninit = &ramdisk_uninit;
     objectinstance->pci = 0;

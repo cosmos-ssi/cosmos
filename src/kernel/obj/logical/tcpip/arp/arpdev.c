@@ -63,7 +63,7 @@ struct object* arp_attach(struct object* ethernet_device) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &arp_init;
     objectinstance->uninit = &arp_uninit;
     objectinstance->pci = 0;

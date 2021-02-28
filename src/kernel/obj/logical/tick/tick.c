@@ -53,7 +53,7 @@ struct object* tick_attach(struct object* pit_device) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &tick_init;
     objectinstance->uninit = &tick_uninit;
     objectinstance->pci = 0;

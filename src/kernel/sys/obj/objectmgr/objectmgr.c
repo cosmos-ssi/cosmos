@@ -139,22 +139,6 @@ void objectmgr_init_objects() {
     objectregistry_iterate_type(KERNELMAP, obj_initIterator);
 }
 
-struct object* objectmgr_new_object() {
-    struct object* ret = (struct object*)kmalloc(sizeof(struct object));
-    for (uint16_t i = 0; i < OBJECT_MAX_DESCRIPTION; i++) {
-        ret->description[i] = 0;
-    }
-    ret->init = 0;
-    ret->object_data = 0;
-    ret->name = 0;
-    ret->type_index = 0;
-    ret->objectype = 0;
-    ret->api = 0;
-    ret->pci = 0;
-    ret->reference_count = 0;
-    return ret;
-}
-
 void objectmgr_set_object_description(struct object* obj, const uint8_t* description) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(description);

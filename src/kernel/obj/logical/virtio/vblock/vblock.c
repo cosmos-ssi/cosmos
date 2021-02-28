@@ -221,7 +221,7 @@ void vblock_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &vblock_init;
     objectinstance->pci = dev;
     objectinstance->objectype = VBLOCK;

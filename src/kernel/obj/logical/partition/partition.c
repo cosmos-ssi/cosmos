@@ -96,7 +96,7 @@ struct object* partition_attach(struct object* partition_table_objice, uint8_t p
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &partition_init;
     objectinstance->uninit = &partition_uninit;
     objectinstance->pci = 0;

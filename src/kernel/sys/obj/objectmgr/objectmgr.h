@@ -13,9 +13,6 @@
 
 #include <types.h>
 
-// new device, allocated on the kernel heap
-struct object* objectmgr_new_object();
-
 // register a device
 void objectmgr_register_object(struct object* obj);
 

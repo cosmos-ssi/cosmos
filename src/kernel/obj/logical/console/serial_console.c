@@ -62,7 +62,7 @@ struct object* serial_console_attach(struct object* serial_device) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &serial_console_dev_init;
     objectinstance->uninit = &serial_console_uninit;
     objectinstance->pci = 0;

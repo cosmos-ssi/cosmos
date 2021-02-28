@@ -228,7 +228,7 @@ struct object* initrd_attach(struct object* partition_objice, uint32_t lba) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &initrd_init;
     objectinstance->uninit = &initrd_uninit;
     objectinstance->pci = 0;

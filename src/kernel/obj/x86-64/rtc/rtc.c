@@ -130,7 +130,7 @@ void rtc_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "RTC");
     objectinstance->objectype = RTC;
     objectinstance->init = &rtc_obj_init;

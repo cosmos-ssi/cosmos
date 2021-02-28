@@ -92,7 +92,7 @@ void parallel_objectmgr_register_object(uint64_t base, uint8_t irq) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "Parallel Port");
     objectinstance->objectype = PARALLEL;
     objectinstance->init = &parallel_obj_init;

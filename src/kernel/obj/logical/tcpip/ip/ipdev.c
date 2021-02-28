@@ -55,7 +55,7 @@ struct object* ip_attach(struct object* ethernet_device) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &ip_init;
     objectinstance->uninit = &ip_uninit;
     objectinstance->pci = 0;

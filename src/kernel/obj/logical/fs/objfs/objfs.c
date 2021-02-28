@@ -216,7 +216,7 @@ struct object* objfs_attach() {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &objfs_init;
     objectinstance->uninit = &objfs_uninit;
     objectinstance->pci = 0;

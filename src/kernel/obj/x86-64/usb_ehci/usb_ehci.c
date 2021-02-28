@@ -36,7 +36,7 @@ void usb_ehci_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &usb_ehci_obj_init;
     objectinstance->pci = dev;
     objectinstance->objectype = USB;

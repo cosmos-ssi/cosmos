@@ -140,7 +140,7 @@ struct object* vga_console_attach(struct object* vga_device) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &vga_console_dev_init;
     objectinstance->uninit = &vga_console_uninit;
     objectinstance->pci = 0;

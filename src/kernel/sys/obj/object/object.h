@@ -63,4 +63,6 @@ struct object {
     uint8_t reference_count;
 };
 
+// new device, allocated on the kernel heap
+struct object* object_new_object();
 #endif

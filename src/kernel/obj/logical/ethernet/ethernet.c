@@ -62,7 +62,7 @@ struct object* ethernet_attach(struct object* nic_device) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &ethernet_init;
     objectinstance->uninit = &ethernet_uninit;
     objectinstance->pci = 0;

@@ -55,7 +55,7 @@ struct object* icmp_attach(struct object* ethernet_device) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &icmp_init;
     objectinstance->uninit = &icmp_uninit;
     objectinstance->pci = 0;

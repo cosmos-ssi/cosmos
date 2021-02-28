@@ -168,7 +168,7 @@ struct object* vfs_attach(uint8_t* name) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &vfs_init;
     objectinstance->uninit = &vfs_uninit;
     objectinstance->pci = 0;
