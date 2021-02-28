@@ -76,9 +76,11 @@ void* kernel_idle(void* arg);
 // pid.c
 pid_t get_next_pid();
 
+#include <sys/objects/objects.h>
+
 // proc_create.c
 pid_t proc_create();
-void setup_user_process(pid_t pid);
+void setup_user_process(pid_t pid, object_handle_t exe_obj);
 
 // proc_init.c
 void proc_init();

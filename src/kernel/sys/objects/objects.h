@@ -18,7 +18,6 @@
 #include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
-#include <sys/proc/proc.h>
 #include <types.h>
 
 // given a handle, retrieve object from table and return its data member
@@ -68,6 +67,8 @@ typedef struct object_presentation_t {
      */
     filesystem_node_t* node;
 } object_presentation_t;
+
+#include <sys/proc/proc.h>
 
 typedef struct object_process_t {
     pid_t pid;

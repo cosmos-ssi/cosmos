@@ -7,6 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/string/mem.h>
 #include <sys/sync/sync.h>
@@ -28,7 +29,7 @@ pid_t proc_create() {
     return proc_info->pid;
 }
 
-void setup_user_process(pid_t pid) {
+void setup_user_process(pid_t pid, object_handle_t exe_obj) {
     uint64_t cr3_page;
     pttentry proc_cr3;
 

@@ -24,7 +24,7 @@ object_handle_t object_process_create(object_handle_t exe) {
         case OBJECT_KERNEL_WORK:
             break;
         case OBJECT_EXECUTABLE:
-            setup_user_process(obj->pid);
+            setup_user_process(obj->pid, exe);
             break;
         default:
             PANIC("Invalid object type!");
