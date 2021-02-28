@@ -163,7 +163,7 @@ void objectmgr_find_objects_by_description(enum object_type_id dt, const uint8_t
     objectregistry_find_objects_by_description(dt, description, cb);
 }
 
-void objectmgr_find_objects_by_device_type(enum object_type_id dt, objectSearchCallback cb) {
+void objectmgr_find_objects_by_object_type(enum object_type_id dt, objectSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
     objectregistry_find_objects_by_objectype(dt, cb);

@@ -13,56 +13,56 @@
 
 #include <types.h>
 
-// register a device
+// register a object
 void objectmgr_register_object(struct object* obj);
 
-// unregister a device
+// unregister a object
 void objectmgr_unregister_object(struct object* obj);
 
-// init the device registry
+// init the object registry
 void objectmgr_init();
 
-// register all the devices
+// register all the objects
 void objectmgr_register_objects();
 
-// count of device instances
+// count of object instances
 uint16_t objectmgr_object_count();
 
-// init all devices
+// init all objects
 void objectmgr_init_objects();
 
 // set description
 void objectmgr_set_object_description(struct object* obj, const uint8_t* description);
 
-// find a device ie ("rtc0")
+// find a object ie ("rtc0")
 struct object* objectmgr_find_object(const uint8_t* name);
 
-// find devices by the device description
+// find objects by the object description
 typedef void (*objectSearchCallback)(struct object* obj);
 void objectmgr_find_objects_by_description(enum object_type_id dt, const uint8_t* description, objectSearchCallback cb);
 
-// find devices by device_type
-void objectmgr_find_objects_by_device_type(enum object_type_id dt, objectSearchCallback cb);
+// find objects by object_type
+void objectmgr_find_objects_by_object_type(enum object_type_id dt, objectSearchCallback cb);
 
-// attach a device (non-fixed devices... like RAM disks and SWAP)
+// attach a object (non-fixed objects... like RAM disks and SWAP)
 uint8_t objectmgr_attach_object(struct object* obj);
 
-// detach a device (non-fixed devices... like RAM disks and SWAP)
+// detach a object (non-fixed objects... like RAM disks and SWAP)
 // be aware, this has the effect of deleting the dev struct!
 uint8_t objectmgr_detach_object(struct object* obj);
 
 /*
-* increment device reference count
+* increment object reference count
 */
 uint8_t objectmgr_increment_object_refcount(struct object* obj);
 
 /*
-* decrease device reference count
+* decrease object reference count
 */
 uint8_t objectmgr_decrement_object_refcount(struct object* obj);
 
 /*
-* dump all devices to console
+* dump all objects to console
 */
 void objectmgr_dump_objects();
 #endif
