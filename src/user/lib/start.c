@@ -11,12 +11,12 @@
 // "main" exported by the userland application
 extern int main(int argc, char* argv[]);
 
-// this is the entry point 
+// this is the entry point
 /*
 *
 */
 int _start() {
-    int ret = main(0,0);
+    int ret = main(0, 0);
     // call exit() syscall here
     return ret;
 }
