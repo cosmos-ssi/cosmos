@@ -84,7 +84,7 @@ extern uint64_t object_table_next_idx;
 
 // object.c
 object_handle_t object_create(object_types_t type, void* object_data);
-object_types_t object_type(object_handle_t obj);
+object_types_t object_type_(object_handle_t obj);
 
 // object_executable.c
 object_handle_t object_executable_create_from_presentation(object_handle_t pres);

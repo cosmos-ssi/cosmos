@@ -80,7 +80,7 @@ uint16_t objectregistry_devicecount() {
     return ret;
 }
 
-uint16_t objectregistry_devicecount_type(device_type dt) {
+uint16_t objectregistry_devicecount_type(object_type dt) {
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
@@ -93,7 +93,7 @@ uint16_t objectregistry_devicecount_type(device_type dt) {
     return 0;
 }
 
-struct object* objectregistry_get_device(device_type dt, uint16_t idx) {
+struct object* objectregistry_get_device(object_type dt, uint16_t idx) {
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
@@ -127,7 +127,7 @@ void objectregistry_iterate(device_iterator deviceIterator) {
     }
 }
 
-void objectregistry_iterate_type(device_type dt, device_iterator deviceIterator) {
+void objectregistry_iterate_type(object_type dt, device_iterator deviceIterator) {
     ASSERT_NOT_NULL(deviceIterator);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);
@@ -146,7 +146,7 @@ void objectregistry_iterate_type(device_type dt, device_iterator deviceIterator)
     }
 }
 
-void objectregistry_find_devices_by_description(device_type dt, const int8_t* description, deviceSearchCallback cb) {
+void objectregistry_find_devices_by_description(object_type dt, const int8_t* description, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(description);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
@@ -168,7 +168,7 @@ void objectregistry_find_devices_by_description(device_type dt, const int8_t* de
     }
 }
 
-void objectregistry_find_devices_by_objectype(device_type dt, deviceSearchCallback cb) {
+void objectregistry_find_devices_by_objectype(object_type dt, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);

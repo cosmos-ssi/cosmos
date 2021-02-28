@@ -170,14 +170,14 @@ struct object* objectmgr_find_object(const uint8_t* name) {
     return objectregistry_find_device(name);
 }
 
-void objectmgr_find_objects_by_description(device_type dt, const uint8_t* description, deviceSearchCallback cb) {
+void objectmgr_find_objects_by_description(object_type dt, const uint8_t* description, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(description);
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
     objectregistry_find_devices_by_description(dt, description, cb);
 }
 
-void objectmgr_find_objects_by_device_type(device_type dt, deviceSearchCallback cb) {
+void objectmgr_find_objects_by_device_type(object_type dt, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
     objectregistry_find_devices_by_objectype(dt, cb);
