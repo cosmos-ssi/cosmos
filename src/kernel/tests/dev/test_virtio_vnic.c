@@ -5,9 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/virtio/virtio.h>
-#include <dev/logical/virtio/virtqueue.h>
-#include <dev/logical/virtio/vnic/vnic.h>
+#include <obj/logical/virtio/virtio.h>
+#include <obj/logical/virtio/virtqueue.h>
+#include <obj/logical/virtio/vnic/vnic.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>

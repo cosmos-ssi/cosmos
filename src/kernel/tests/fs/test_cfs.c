@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/fs/cfs/cfs.h>
+#include <obj/logical/fs/cfs/cfs.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objecttype/objecttype_block.h>
 #include <tests/fs/test_cfs.h>

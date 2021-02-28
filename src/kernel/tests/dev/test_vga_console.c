@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/console/vga_console.h>
+#include <obj/logical/console/vga_console.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/objectmgr/objectmgr.h>

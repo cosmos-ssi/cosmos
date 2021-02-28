@@ -6,21 +6,21 @@
 // ****************************************************************
 
 #include <cosmos_logical_devs.h>
-#include <dev/logical/console/serial_console.h>
-#include <dev/logical/console/vga_console.h>
-#include <dev/logical/ethernet/ethernet.h>
-#include <dev/logical/fs/devfs/devfs.h>
-#include <dev/logical/fs/initrd/initrd.h>
-#include <dev/logical/fs/vfs/vfs.h>
-#include <dev/logical/null/null.h>
-#include <dev/logical/ramdisk/ramdisk.h>
-#include <dev/logical/rand/rand.h>
-#include <dev/logical/tcpip/arp/arpdev.h>
-#include <dev/logical/tcpip/icmp/icmpdev.h>
-#include <dev/logical/tcpip/ip/ipdev.h>
-#include <dev/logical/tcpip/tcp/tcpdev.h>
-#include <dev/logical/tcpip/udp/udpdev.h>
-#include <dev/logical/tick/tick.h>
+#include <obj/logical/console/serial_console.h>
+#include <obj/logical/console/vga_console.h>
+#include <obj/logical/ethernet/ethernet.h>
+#include <obj/logical/fs/devfs/devfs.h>
+#include <obj/logical/fs/initrd/initrd.h>
+#include <obj/logical/fs/vfs/vfs.h>
+#include <obj/logical/null/null.h>
+#include <obj/logical/ramdisk/ramdisk.h>
+#include <obj/logical/rand/rand.h>
+#include <obj/logical/tcpip/arp/arpdev.h>
+#include <obj/logical/tcpip/icmp/icmpdev.h>
+#include <obj/logical/tcpip/ip/ipdev.h>
+#include <obj/logical/tcpip/tcp/tcpdev.h>
+#include <obj/logical/tcpip/udp/udpdev.h>
+#include <obj/logical/tick/tick.h>
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/fs/fs_facade.h>

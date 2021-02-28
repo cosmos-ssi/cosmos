@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/dev.h>
+#include <obj/dev.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/objectmgr/objectmgr.h>

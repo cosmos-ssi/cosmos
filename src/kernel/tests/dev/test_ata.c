@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/x86-64/ata/ata_dma.h>
+#include <obj/x86-64/ata/ata_dma.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>

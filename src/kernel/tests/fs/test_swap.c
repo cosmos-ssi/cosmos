@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/fs/swap/swap.h>
-#include <dev/logical/ramdisk/ramdisk.h>
+#include <obj/logical/fs/swap/swap.h>
+#include <obj/logical/ramdisk/ramdisk.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>

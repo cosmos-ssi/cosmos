@@ -6,8 +6,8 @@
  *****************************************************************/
 
 #include <cosmos_logical_devs.h>
-#include <dev/logical/console/vga_console.h>
-#include <dev/logical/fs/initrd/initrd.h>
+#include <obj/logical/console/vga_console.h>
+#include <obj/logical/fs/initrd/initrd.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/fs/fs_facade.h>

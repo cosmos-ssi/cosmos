@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/partition_table/guid_partition_table.h>
+#include <obj/logical/partition_table/guid_partition_table.h>
 #include <sys/debug/assert.h>
 #include <sys/objectmgr/objectmgr.h>
 

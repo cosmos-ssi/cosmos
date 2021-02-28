@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/fs/vfs/vfs.h>
+#include <obj/logical/fs/vfs/vfs.h>
 #include <sys/debug/assert.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/objectmgr/object.h>

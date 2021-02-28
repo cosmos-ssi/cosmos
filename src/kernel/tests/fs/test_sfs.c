@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/fs/sfs/sfs.h>
+#include <obj/logical/fs/sfs/sfs.h>
 #include <sys/debug/debug.h>
 #include <sys/objectmgr/objectmgr.h>
 
