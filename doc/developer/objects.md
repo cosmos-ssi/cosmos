@@ -3,13 +3,13 @@ The CosmOS strategy for detecting an initializing devices is below
 
 # DeviceManager
 
-the CosmOS device manager at `/devicemgr/devicemgr.h` contains a database of physical devices (PCI, non-PCI, etc).
+the CosmOS device manager at `/objectmgr/objectmgr.h` contains a database of objects, some of which are physical devices (PCI, non-PCI, etc).
 
 # Registration
 
-* Call the "register" function for each device type. For example `network_objectmgr_register_objects()` registers the network devices.
+* Call the "register" function for each object type. For example `network_objectmgr_register_objects()` registers the network device objects.
 
-* The device type register function for the type calls register functions for each driver. For example
+* The object type register function for the type calls register functions for each driver. For example
 
 ```java
 void network_objectmgr_register_objects() {

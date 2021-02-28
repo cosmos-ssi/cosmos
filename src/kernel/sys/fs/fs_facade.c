@@ -27,7 +27,7 @@ void fsfacade_dump_node(struct filesystem_node* fs_node) {
 
     kprintf("Name: %s\n", fs_node->name);
     kprintf("ID: %#llX\n", fs_node->id);
-    kprintf("Device: %s\n", fs_node->filesystem_obj->name);
+    kprintf("Object: %s\n", fs_node->filesystem_obj->name);
     kprintf("Type: %#llX\n", fs_node->type);
     kprintf("Node Data: %#llX\n", fs_node->node_data);
 }
