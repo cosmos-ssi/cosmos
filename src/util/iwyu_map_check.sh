@@ -1,6 +1,10 @@
 #/bin/bash
 # Check the iwyu_mapping.imp file against codebase to identify symbols we may want to define for IWYU
 
+# we scrape the iwyu source for hard-coded symbols.
+# pin to the clang version that ships with our build env
+IWYU_SOURCE_URL=https://raw.githubusercontent.com/include-what-you-use/include-what-you-use/clang_10/iwyu_include_picker.cc
+
 if [ $# -lt 2 ]; then
     echo "iwyu_map_check.sh"
     echo "Compare your source code to your iwyu_mapping.imp file, and highlight any symbols that we may want to define."
@@ -31,7 +35,7 @@ _errors=$(mktemp)
 grep -oP "(?<=\[\").*?(?=\")" $MAPPING_FILE > $_defined_already
 
 # extract the hard-coded symbols and includes from IWYU source that we haven't already defined, and save as $_not_defined_yet
-curl -s https://raw.githubusercontent.com/include-what-you-use/include-what-you-use/master/iwyu_include_picker.cc > $_source
+curl -s $IWYU_SOURCE_URL > $_source
 sed -n '/IncludeMapEntry libc_symbol_map/,/};/{p;/^};/q}' $_source > $_sym_tmp
 sed -n '/IncludeMapEntry libc_include_map/,/};/{p;/^};/q}' $_source > $_inc_tmp
 egrep -v "(//)" $_sym_tmp $_inc_tmp | grep -oP "(?<=\{ \")(.*?)(?=\")" | grep -v -Fwf $_defined_already | uniq > $_not_defined_yet
