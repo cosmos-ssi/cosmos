@@ -78,7 +78,7 @@ uint16_t objectregistry_objectcount() {
     return ret;
 }
 
-uint16_t objectregistry_objectcount_type(object_type dt) {
+uint16_t objectregistry_objectcount_type(enum object_type_id dt) {
     if ((dt >= 0) && (dt < MAX_OBJECT_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
@@ -91,7 +91,7 @@ uint16_t objectregistry_objectcount_type(object_type dt) {
     return 0;
 }
 
-struct object* objectregistry_get_object(object_type dt, uint16_t idx) {
+struct object* objectregistry_get_object(enum object_type_id dt, uint16_t idx) {
     if ((dt >= 0) && (dt < MAX_OBJECT_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
@@ -125,7 +125,7 @@ void objectregistry_iterate(object_iterator objectIterator) {
     }
 }
 
-void objectregistry_iterate_type(object_type dt, object_iterator objectIterator) {
+void objectregistry_iterate_type(enum object_type_id dt, object_iterator objectIterator) {
     ASSERT_NOT_NULL(objectIterator);
     if ((dt >= 0) && (dt < MAX_OBJECT_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);
@@ -144,7 +144,8 @@ void objectregistry_iterate_type(object_type dt, object_iterator objectIterator)
     }
 }
 
-void objectregistry_find_objects_by_description(object_type dt, const int8_t* description, objectSearchCallback cb) {
+void objectregistry_find_objects_by_description(enum object_type_id dt, const int8_t* description,
+                                                objectSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(description);
     if ((dt >= 0) && (dt < MAX_OBJECT_TYPES)) {
@@ -166,7 +167,7 @@ void objectregistry_find_objects_by_description(object_type dt, const int8_t* de
     }
 }
 
-void objectregistry_find_objects_by_objectype(object_type dt, objectSearchCallback cb) {
+void objectregistry_find_objects_by_objectype(enum object_type_id dt, objectSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     if ((dt >= 0) && (dt < MAX_OBJECT_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);

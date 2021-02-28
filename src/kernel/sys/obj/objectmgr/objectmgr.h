@@ -9,6 +9,8 @@
 #define _OBJECTMGR_H
 
 #include <sys/obj/object/object.h>
+#include <sys/obj/objecttype/objectype.h>
+
 #include <types.h>
 
 // new device, allocated on the kernel heap
@@ -40,10 +42,10 @@ struct object* objectmgr_find_object(const uint8_t* name);
 
 // find devices by the device description
 typedef void (*objectSearchCallback)(struct object* obj);
-void objectmgr_find_objects_by_description(object_type dt, const uint8_t* description, objectSearchCallback cb);
+void objectmgr_find_objects_by_description(enum object_type_id dt, const uint8_t* description, objectSearchCallback cb);
 
 // find devices by device_type
-void objectmgr_find_objects_by_device_type(object_type dt, objectSearchCallback cb);
+void objectmgr_find_objects_by_device_type(enum object_type_id dt, objectSearchCallback cb);
 
 // attach a device (non-fixed devices... like RAM disks and SWAP)
 uint8_t objectmgr_attach_object(struct object* obj);

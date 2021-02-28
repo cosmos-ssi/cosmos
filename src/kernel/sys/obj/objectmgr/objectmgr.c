@@ -194,14 +194,15 @@ struct object* objectmgr_find_object(const uint8_t* name) {
     return objectregistry_find_object(name);
 }
 
-void objectmgr_find_objects_by_description(object_type dt, const uint8_t* description, objectSearchCallback cb) {
+void objectmgr_find_objects_by_description(enum object_type_id dt, const uint8_t* description,
+                                           objectSearchCallback cb) {
     ASSERT_NOT_NULL(description);
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
     objectregistry_find_objects_by_description(dt, description, cb);
 }
 
-void objectmgr_find_objects_by_device_type(object_type dt, objectSearchCallback cb) {
+void objectmgr_find_objects_by_device_type(enum object_type_id dt, objectSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
     objectregistry_find_objects_by_objectype(dt, cb);
