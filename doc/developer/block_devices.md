@@ -50,7 +50,7 @@ Now that CosmOS knows about the partitions, we can mount filesystems on them. Th
 The device API's that each device type expose are:
 
 - ata (none yet)
-- disk [Block Device](../../src/kernel/sys/objecttype/objecttype_block.h)
-- pt [Partition Table](../../src/kernel/sys/objecttype/objecttype_part_table.h)
-- part [Block Device](../../src/kernel/sys/objecttype/objecttype_block.h)
-- filesystem [File System](../../src/kernel/sys/objecttype/objecttype_filesystem.h)
+- disk [Block Device](../../src/kernel/sys/objectinterface/objectinterface_block.h)
+- pt [Partition Table](../../src/kernel/sys/objectinterface/objectinterface_part_table.h)
+- part [Block Device](../../src/kernel/sys/objectinterface/objectinterface_block.h)
+- filesystem [File System](../../src/kernel/sys/objectinterface/objectinterface_filesystem.h)
