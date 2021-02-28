@@ -6,14 +6,14 @@
 // ****************************************************************
 
 #include <obj/logical/tcpip/arp/arpdev.h>
-#include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_arp.h>
 #include <sys/string/mem.h>
-#include <sys/string/string.h>
 #include <tests/obj/test_arp.h>
+#include <types.h>
 
 void test_arp() {
     uint8_t devicename[] = {"arp0"};

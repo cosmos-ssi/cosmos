@@ -6,8 +6,9 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_speaker.h>
-#include <sys/sleep/sleep.h>
 #include <tests/obj/test_speaker.h>
 
 /* void BeethovensFifth() {

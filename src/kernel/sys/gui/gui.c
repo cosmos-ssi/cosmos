@@ -7,17 +7,14 @@
 
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/gui/gui.h>
 #include <sys/gui/window.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/string/mem.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/video/bmp.h>
 #include <sys/video/canvas.h>
 #include <sys/video/psf.h>
-#include <sys/video/video_util.h>
 
 struct gui_state_data* gui_state;
 

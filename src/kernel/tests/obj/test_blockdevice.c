@@ -7,12 +7,13 @@
 
 #include <obj/logical/fs/block_util.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
 #include <sys/objecttype/objecttype_block.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <tests/obj/test_blockdevice.h>
+#include <types.h>
 
 uint8_t* testdata = "We were very tired, we were very merry, \
 We had gone back and forth all night on the ferry. \

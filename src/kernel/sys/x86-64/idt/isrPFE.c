@@ -9,7 +9,6 @@
 #include <sys/debug/assert.h>
 #include <sys/x86-64/idt/irq.h>
 #include <sys/x86-64/mm/mm.h>
-#include <types.h>
 
 void isrPFE_handler(stack_frame_error* frame) {
     ASSERT_NOT_NULL(frame);

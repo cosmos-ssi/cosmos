@@ -5,6 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/debug/assert.h>
 #include <sys/sched/sched.h>
 

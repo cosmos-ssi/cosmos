@@ -6,14 +6,9 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/fs/file_util.h>
-#include <sys/fs/fs_facade.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/string/mem.h>
-#include <sys/string/string.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/video/psf.h>
 
 const uint8_t PSF1_MAGIC[2] = {0x36, 0x04};

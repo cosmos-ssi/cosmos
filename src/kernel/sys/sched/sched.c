@@ -7,7 +7,6 @@
 
 #include <sys/objects/objects.h>
 #include <sys/panic/panic.h>
-#include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 
 void sched_switch(linkedlist* task) {

@@ -5,9 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
-#include <types.h>
 
 void sched_terminate(pid_t pid) {
     linkedlist* task;

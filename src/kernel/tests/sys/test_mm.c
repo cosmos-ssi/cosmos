@@ -7,7 +7,6 @@
 
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/x86-64/mm/mm.h>
 #include <tests/sys/test_mm.h>
 #include <types.h>
 

@@ -6,12 +6,11 @@
 // ****************************************************************
 
 #include <obj/logical/console/serial_console.h>
-#include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_console.h>
+#include <types.h>
 
 void test_serial_console_dev() {
     uint8_t devicename[] = {"serial0"};

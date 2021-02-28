@@ -8,8 +8,6 @@
 #ifndef _ADLIB_H
 #define _ADLIB_H
 
-#include <types.h>
-
 void adlib_objectmgr_register_objects();
 
 #endif

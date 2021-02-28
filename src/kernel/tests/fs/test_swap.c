@@ -6,10 +6,9 @@
 // ****************************************************************
 
 #include <obj/logical/fs/swap/swap.h>
-#include <obj/logical/ramdisk/ramdisk.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
 #include <sys/objecttype/objecttype_swap.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>

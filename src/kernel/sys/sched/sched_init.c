@@ -8,9 +8,6 @@
 #include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/sched/sched.h>
-#include <types.h>
-
-#include <sys/kprintf/kprintf.h>
 
 linkedlist*** task_list;
 linkedlist*** current_task;

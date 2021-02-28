@@ -9,6 +9,7 @@
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/interrupt_router/interrupt_router.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <types.h>
 

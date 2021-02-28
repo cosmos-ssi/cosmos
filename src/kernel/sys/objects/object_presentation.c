@@ -5,14 +5,10 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <obj/logical/fs/initrd/initrd.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
+#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/panic/panic.h>
-#include <sys/string/string.h>
-#include <types.h>
 
 object_handle_t object_presentation_create(filesystem_node_t* node) {
     object_presentation_t* obj_data;

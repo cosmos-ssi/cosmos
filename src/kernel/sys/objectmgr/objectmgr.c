@@ -5,15 +5,39 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/obj.h>
-#include <sys/collection/arraylist/arraylist.h>
+#include <obj/logical/virtio/virtio.h>
+#include <obj/x86-64/acpi/acpi.h>
+#include <obj/x86-64/ata/ata_controller.h>
+#include <obj/x86-64/bda/bda.h>
+#include <obj/x86-64/bga/bga.h>
+#include <obj/x86-64/bridge/bridge.h>
+#include <obj/x86-64/cmos/cmos.h>
+#include <obj/x86-64/cpu/cpu.h>
+#include <obj/x86-64/isadma/isadma.h>
+#include <obj/x86-64/kernelmap/kernelmap.h>
+#include <obj/x86-64/keyboard/keyboard.h>
+#include <obj/x86-64/mouse/mouse.h>
+#include <obj/x86-64/network/network.h>
+#include <obj/x86-64/parallel/parallel.h>
+#include <obj/x86-64/pci/pci.h>
+#include <obj/x86-64/pci_ehci/pci_ehci.h>
+#include <obj/x86-64/pic/pic.h>
+#include <obj/x86-64/pit/pit.h>
+#include <obj/x86-64/rtc/rtc.h>
+#include <obj/x86-64/sdhci/sdhci.h>
+#include <obj/x86-64/serial/serial.h>
+#include <obj/x86-64/smbios/smbios.h>
+#include <obj/x86-64/sound/sound.h>
+#include <obj/x86-64/speaker/speaker.h>
+#include <obj/x86-64/usb_ehci/usb_ehci.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objectmgr/objectregistry.h>
+#include <sys/panic/panic.h>
 #include <sys/string/string.h>
+#include <types.h>
 
 #define MAX_DEVICE_NAME_LENGTH 128
 

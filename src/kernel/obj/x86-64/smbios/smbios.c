@@ -8,13 +8,11 @@
 // https://wiki.osdev.org/System_Management_BIOS
 
 #include <obj/x86-64/smbios/smbios.h>
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
-
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_bda.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 
 struct smbios_objectdata {
     uint64_t base;

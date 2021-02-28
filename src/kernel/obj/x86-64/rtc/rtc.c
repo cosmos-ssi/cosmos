@@ -7,14 +7,15 @@
 
 #include <obj/x86-64/cmos/cmos.h>
 #include <obj/x86-64/rtc/rtc.h>
-#include <sys/asm/asm.h>
+#include <sys/asm/io.h>
+#include <sys/asm/misc.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_rtc.h>
 #include <sys/sleep/sleep.h>
 #include <sys/x86-64/idt/irq.h>

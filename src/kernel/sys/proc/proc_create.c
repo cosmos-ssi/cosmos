@@ -7,12 +7,9 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objects/objects.h>
-#include <sys/panic/panic.h>
 #include <sys/proc/proc.h>
 #include <sys/string/mem.h>
 #include <sys/sync/sync.h>
-#include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
 
 pid_t proc_create() {

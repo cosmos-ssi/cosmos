@@ -8,8 +8,6 @@
 #ifndef _SDHCI_H
 #define _SDHCI_H
 
-#include <types.h>
-
 void sdhci_objectmgr_register_objects();
 
 #endif

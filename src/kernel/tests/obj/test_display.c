@@ -6,6 +6,8 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_vga.h>
 #include <tests/obj/test_display.h>
 

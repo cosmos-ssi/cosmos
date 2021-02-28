@@ -6,11 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <sys/video/bmp.h>
 #include <sys/video/canvas.h>

@@ -7,7 +7,6 @@
 
 #include <sys/collection/dtable/dtable.h>
 #include <sys/objects/objects.h>
-#include <types.h>
 
 void object_init() {
     object_table = dtable_init();

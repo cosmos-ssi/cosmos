@@ -9,10 +9,8 @@
 #include <obj/logical/virtio/virtqueue.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/string/mem.h>
-#include <sys/string/string.h>
 #include <tests/obj/test_virtio_virtqueue.h>
+#include <types.h>
 
 void test_virtio_virtqueue() {
     // make the queue

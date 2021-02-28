@@ -6,10 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/kmalloc/kmalloc.h>
 #include <sys/objectmgr/object.h>
 #include <sys/objecttype/objecttype_bga.h>
-#include <sys/string/mem.h>
 #include <sys/video/video_util.h>
 
 void video_get_resolution(struct object* dev, struct objecttype_resolution* resolution) {

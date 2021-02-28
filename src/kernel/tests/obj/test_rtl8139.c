@@ -5,10 +5,10 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_nic.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <tests/obj/test_rtl8139.h>
+#include <types.h>
 
 void test_rtl8139() {
     uint8_t devicename[] = {"nic0"};

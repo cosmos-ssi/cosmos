@@ -4,9 +4,6 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/x86-64/sound/ac97/ac97.h>
-#include <obj/x86-64/sound/adlib/adlib.h>
-#include <obj/x86-64/sound/sb16/sb16.h>
 #include <obj/x86-64/sound/sound.h>
 
 void sound_objectmgr_register_objects() {

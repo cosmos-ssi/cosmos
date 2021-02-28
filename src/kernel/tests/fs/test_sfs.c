@@ -6,10 +6,8 @@
 // ****************************************************************
 
 #include <obj/logical/fs/sfs/sfs.h>
-#include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <tests/fs/test_sfs.h>
 #include <types.h>
 

@@ -8,9 +8,7 @@
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
-#include <sys/x86-64/idt/exceptions.h>
 #include <sys/x86-64/idt/irq.h>
-#include <types.h>
 
 void isrGPF_handler(stack_frame_error* frame) {
     ASSERT_NOT_NULL(frame);

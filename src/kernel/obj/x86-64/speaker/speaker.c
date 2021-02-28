@@ -6,11 +6,12 @@
  *****************************************************************/
 
 #include <obj/x86-64/speaker/speaker.h>
-#include <sys/asm/asm.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
-
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_speaker.h>
 #include <sys/sleep/sleep.h>
 #include <types.h>

@@ -7,8 +7,11 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_null.h>
 #include <tests/obj/test_null.h>
+#include <types.h>
 
 void test_null() {
     kprintf("Testing null\n");

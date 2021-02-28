@@ -7,13 +7,10 @@
 
 #include <obj/logical/fs/initrd/initrd.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_filesystem.h>
-#include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <tests/fs/test_initrd.h>
 #include <types.h>

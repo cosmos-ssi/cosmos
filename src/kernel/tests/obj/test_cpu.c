@@ -6,8 +6,11 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_cpu.h>
 #include <tests/obj/test_cpu.h>
+#include <types.h>
 
 void show_cpu_data() {
     // get the CPU

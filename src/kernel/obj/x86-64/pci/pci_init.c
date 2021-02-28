@@ -5,9 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <obj/x86-64/pci/devicetree.h>
 #include <obj/x86-64/pci/pci.h>
-#include <sys/kmalloc/kmalloc.h>
+#include <obj/x86-64/pci/pci_device.h>
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/kprintf/kprintf.h>
 
 void pci_init() {

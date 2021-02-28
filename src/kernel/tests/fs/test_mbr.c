@@ -6,9 +6,9 @@
 // ****************************************************************
 
 #include <obj/logical/partition_table/mbr_partition_table.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectmgr/object.h>
+#include <sys/objectmgr/objectmgr.h>
 #include <sys/objecttype/objecttype_part_table.h>
 #include <tests/fs/test_mbr.h>
 #include <types.h>

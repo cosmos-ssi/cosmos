@@ -8,7 +8,9 @@
 #ifndef _OBJECTREGISTRY_H
 #define _OBJECTREGISTRY_H
 
+#include <sys/objectmgr/object.h>
 #include <sys/objectmgr/objectmgr.h>
+#include <types.h>
 
 void objectregistry_init();
 void objectregistry_registerdevice(struct object* dev);

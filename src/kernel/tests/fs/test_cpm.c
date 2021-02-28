@@ -6,11 +6,9 @@
 // ****************************************************************
 
 #include <obj/logical/fs/cpm/cpm.h>
-#include <sys/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_filesystem.h>
-#include <tests/fs/test_cfs.h>
+#include <sys/objectmgr/objectmgr.h>
+#include <types.h>
 
 void test_cpm() {
     uint8_t devicename[] = {"disk3"};  // blank.img
