@@ -78,6 +78,7 @@ pid_t get_next_pid();
 
 // proc_create.c
 pid_t proc_create();
+void setup_user_process(pid_t pid);
 
 // proc_init.c
 void proc_init();

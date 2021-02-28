@@ -25,3 +25,7 @@ pid_t proc_create() {
     spinlock_release(&proc_table_lock);
     return proc_info->pid;
 }
+
+void setup_user_process(pid_t pid) {
+    return;
+}
