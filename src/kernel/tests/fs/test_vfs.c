@@ -6,17 +6,18 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/deviceapi/deviceapi_filesystem.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/string/string.h>
 #include <tests/fs/test_devfs.h>
 
 void test_vfs() {
     kprintf("Testing vfs\n");
 
-    struct device* vfsdev_device = devicemgr_find_device("vfs0");
+    struct object* vfsdev_device = objectmgr_find_object("vfs0");
     ASSERT_NOT_NULL(vfsdev_device);
 
     struct filesystem_node* fsnode = fsfacade_get_fs_rootnode(vfsdev_device);

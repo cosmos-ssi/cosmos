@@ -5,9 +5,10 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <dev/logical/partition_table/guid_partition_table.h>
+#include <obj/logical/partition_table/guid_partition_table.h>
 #include <sys/debug/assert.h>
-#include <sys/devicemgr/devicemgr.h>
+#include <sys/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>
 #include <tests/fs/test_gpt.h>
@@ -15,9 +16,9 @@
 void test_gpt_attach() {
     uint8_t devicename[] = {"disk1"};
 
-    struct device* dsk = devicemgr_find_device(devicename);
+    struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct device* dev = guid_pt_attach(dsk);
+        struct object* dev = guid_pt_attach(dsk);
         guid_pt_detach(dev);
     } else {
         kprintf("Unable to find %s\n", devicename);
