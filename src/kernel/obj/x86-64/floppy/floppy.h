@@ -8,8 +8,6 @@
 #ifndef _FLOPPY_H
 #define _FLOPPY_H
 
-#include <types.h>
-
 void floppy_objectmgr_register_objects();
 
 #endif

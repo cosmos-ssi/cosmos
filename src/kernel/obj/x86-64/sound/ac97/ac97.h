@@ -8,8 +8,6 @@
 #ifndef _AC97_H
 #define _AC97_H
 
-#include <types.h>
-
 void ac97_objectmgr_register_objects();
 
 #endif

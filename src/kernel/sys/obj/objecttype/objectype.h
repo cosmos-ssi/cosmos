@@ -5,22 +5,14 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _OBJECT_H
-#define _OBJECT_H
+#ifndef _OBJECTTYPE_H
+#define _OBJECTTYPE_H
+
 #include <types.h>
 
-#define OBJECT_MAX_DESCRIPTION 64
+#define OBJECT_TYPE_MAX_NAME 64
 
-// forward declare these
-struct pci_device;
-struct object;
-
-// return 1 if successful, 0 if failed to unit
-typedef uint8_t (*obj_init)(struct object* obj);
-// return 1 is successful, 0 if failed to uninit, including if device refcount>0
-typedef uint8_t (*obj_uninit)(struct object* obj);
-
-typedef enum object_type {
+enum object_type_id {
     NONE = 0x00,
     SERIAL = 0x01,           // serial0, objecttype_serial
     VGA = 0x02,              // vga0, objecttype_vga
@@ -66,53 +58,13 @@ typedef enum object_type {
     VFS = 0x2A,              // vfs0, objecttype_filesytem
     BGA = 0x2B,              // bga0, objecttype_bga
     KERNELMAP = 0x2C         // kernelmap0, objecttype_kernelmap
-} object_type;
-
-/*
- * array of names, indexed by object_type
- */
-extern int8_t* object_type_names[];
-
-struct object {
-    /*
-     * the combination of name (from object_type_names) and index
-     * create the device name.  ie "serial0".
-     */
-    int8_t* name;
-    uint8_t type_index;
-    /*
-     * the type (SERIAL, VGA etc)
-     */
-    enum object_type objectype;
-    /*
-     * init function
-     */
-    obj_init init;
-    /*
-     * un-init function
-     */
-    obj_uninit uninit;
-    /*
-     * human readable description provided by the driver
-     */
-    uint8_t description[OBJECT_MAX_DESCRIPTION];
-    /*
-     * object-specific data
-     */
-    void* object_data;
-    /*
-     * For PCI devices, this is a struct pci_device*.
-     */
-    struct pci_device* pci;
-    /*
-     * pointer to the type-specific API struct
-     */
-    void* api;
-    /*
-    * reference count.  incremented when a device attaches to this device
-    * and decremented when a device detaches from this device
-    */
-    uint8_t reference_count;
 };
+
+struct object_type {
+    uint8_t name[OBJECT_TYPE_MAX_NAME];
+    enum object_type_id id;
+};
+
+struct object_type* objecttype_new(uint8_t* name, enum object_type_id id);
 
 #endif

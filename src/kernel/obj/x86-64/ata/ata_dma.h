@@ -8,8 +8,9 @@
 #ifndef _ATA_DMA_H
 #define _ATA_DMA_H
 
-#include <sys/obj/objectinterface/objectinterface_block.h>
 #include <types.h>
+
+struct object;
 
 // Base physical address and size of ATA DMA buffer area
 #define ATA_DMA_BUF_AREA_BASE 0x200000

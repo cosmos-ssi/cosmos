@@ -8,9 +8,9 @@
 #ifndef _RTL8139_IO_H
 #define _RTL8139_IO_H
 
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <types.h>
+
+struct object;
 
 struct rtl8139_objectdata {
     uint8_t mac[6];

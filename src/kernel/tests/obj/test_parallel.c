@@ -6,8 +6,11 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_parallel.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <tests/obj/test_parallel.h>
+#include <types.h>
 
 void test_parallel() {
     uint8_t devicename[] = {"par0"};

@@ -8,8 +8,9 @@
 #ifndef _SPLIT_STRING_H
 #define _SPLIT_STRING_H
 
-#include <sys/collection/arraylist/arraylist.h>
 #include <types.h>
+
+struct arraylist;
 
 void split_string(uint8_t* str, uint8_t* delim, struct arraylist* al);
 void delete_string_list(struct arraylist* al);

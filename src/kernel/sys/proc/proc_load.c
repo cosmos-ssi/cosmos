@@ -6,7 +6,6 @@
  *****************************************************************/
 
 #include <sys/objects/objects.h>
-#include <sys/proc/proc.h>
 
 void proc_load(obj_executable_t executable) {
     return;

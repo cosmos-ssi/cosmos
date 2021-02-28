@@ -6,7 +6,7 @@
  *****************************************************************/
 
 #include <sys/debug/assert.h>
-#include <sys/kprintf/kprintf.h>
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/x86-64/mm/mm.h>
 #include <types.h>
 

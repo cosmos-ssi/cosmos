@@ -7,9 +7,14 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_pit.h>
 #include <sys/obj/objectinterface/objectinterface_tick.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
+#include <types.h>
 
 struct tick_objectdata {
     struct object* pit_device;

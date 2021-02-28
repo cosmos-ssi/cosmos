@@ -8,8 +8,6 @@
 #ifndef _PCI_EHCI_H
 #define _PCI_EHCI_H
 
-#include <types.h>
-
 void pci_ehci_objectmgr_register_objects();
 
 #endif

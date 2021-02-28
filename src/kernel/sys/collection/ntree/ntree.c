@@ -6,6 +6,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/collection/ntree/ntree.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>

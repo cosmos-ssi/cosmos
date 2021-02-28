@@ -5,9 +5,12 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <obj/x86-64/pci/devicetree.h>
 #include <obj/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
+#include <obj/x86-64/pci/pci_device.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
+#include <sys/panic/panic.h>
 #include <types.h>
 
 uint32_t pci_get_bar_base(uint32_t bar) {

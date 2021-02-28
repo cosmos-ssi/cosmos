@@ -5,11 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/logical/fs/vfs/vfs.h>
 #include <sys/debug/assert.h>
 #include <sys/fs/fs_facade.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
-#include <sys/obj/objectmgr/object.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 

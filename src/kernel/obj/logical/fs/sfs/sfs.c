@@ -8,13 +8,14 @@
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/sfs/sfs.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/objectinterface/objectinterface_block.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
+#include <types.h>
 
 #define SFS_VOLUME_IDENTIFIER 0x01
 #define SFS_STARTING_MARKER 0x02

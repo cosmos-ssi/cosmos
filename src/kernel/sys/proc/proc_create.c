@@ -13,6 +13,7 @@
 #include <sys/string/mem.h>
 #include <sys/sync/sync.h>
 #include <sys/x86-64/mm/pagetables.h>
+#include <types.h>
 
 pttentry proc_obtain_cr3();
 void proc_map_image(pttentry cr3, object_handle_t exe_obj);

@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/obj/objectmgr/object.h>
+#include <sys/obj/object/object.h>
 
 int8_t* object_type_names[] = {"None",   "serial", "vga",   "rtc",    "keyboard", "nic",  "bridge",   "usb",
                                "ata",    "pic",    "mouse", "floppy", "speaker",  "pit",  "dsp",      "cmos",

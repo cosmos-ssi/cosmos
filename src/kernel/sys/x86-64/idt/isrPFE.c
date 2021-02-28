@@ -7,10 +7,8 @@
 
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
-#include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/x86-64/idt/exceptions.h>
-#include <types.h>
+#include <sys/x86-64/idt/irq.h>
+#include <sys/x86-64/mm/mm.h>
 
 void isrPFE_handler(stack_frame_error* frame) {
     ASSERT_NOT_NULL(frame);

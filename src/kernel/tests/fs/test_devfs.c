@@ -5,12 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
-#include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/string/string.h>
 #include <tests/fs/test_devfs.h>
 
 void test_devfs() {

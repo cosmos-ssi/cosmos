@@ -5,8 +5,10 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objects/objects.h>
+#include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 
 object_handle_t object_task_create(object_handle_t proc) {

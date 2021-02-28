@@ -8,8 +8,6 @@
 #ifndef _KERNELMAP_H
 #define _KERNELMAP_H
 
-#include <types.h>
-
 void kernelmap_objectmgr_register_objects();
 
 #endif

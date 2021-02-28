@@ -5,10 +5,11 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <obj/x86-64/pci/devicetree.h>
 #include <obj/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
+#include <obj/x86-64/pci/pci_device.h>
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <types.h>
 

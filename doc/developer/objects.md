@@ -23,11 +23,11 @@ Each device driver's register function finds all instance of the specific device
 Device's on the PCI bus can use the PCI search functions to find device instances
 
 ```
-void pci_objectmgr_search_device(pci_class,pci_subclass, vendor_id, device_id, pcideviceSearchCallback cb);
-void pci_objectmgr_search_objectype(pci_class,pci_subclass, pcideviceSearchCallback cb);
+void pci_objectmgr_search_device(pci_class,pci_subclass, vendor_id, device_id, pciobjectSearchCallback cb);
+void pci_objectmgr_search_objectype(pci_class,pci_subclass, pciobjectSearchCallback cb);
 ```
 
-The callback function `typedef void (*deviceSearchCallback)(struct pci_device* dev);` is called once for each device instance found in the PCI database.
+The callback function `typedef void (*objectSearchCallback)(struct pci_device* dev);` is called once for each device instance found in the PCI database.
 
 Non-PCI bus devices such as Keyboard, RTC, and RS-232 will need to use hard-coded configuration.
 

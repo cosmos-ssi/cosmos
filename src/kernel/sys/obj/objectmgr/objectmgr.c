@@ -5,15 +5,40 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/obj.h>
-#include <sys/collection/arraylist/arraylist.h>
+#include <obj/logical/virtio/virtio.h>
+#include <obj/x86-64/acpi/acpi.h>
+#include <obj/x86-64/ata/ata_controller.h>
+#include <obj/x86-64/bda/bda.h>
+#include <obj/x86-64/bga/bga.h>
+#include <obj/x86-64/bridge/bridge.h>
+#include <obj/x86-64/cmos/cmos.h>
+#include <obj/x86-64/cpu/cpu.h>
+#include <obj/x86-64/isadma/isadma.h>
+#include <obj/x86-64/kernelmap/kernelmap.h>
+#include <obj/x86-64/keyboard/keyboard.h>
+#include <obj/x86-64/mouse/mouse.h>
+#include <obj/x86-64/network/network.h>
+#include <obj/x86-64/parallel/parallel.h>
+#include <obj/x86-64/pci/pci.h>
+#include <obj/x86-64/pci_ehci/pci_ehci.h>
+#include <obj/x86-64/pic/pic.h>
+#include <obj/x86-64/pit/pit.h>
+#include <obj/x86-64/rtc/rtc.h>
+#include <obj/x86-64/sdhci/sdhci.h>
+#include <obj/x86-64/serial/serial.h>
+#include <obj/x86-64/smbios/smbios.h>
+#include <obj/x86-64/sound/sound.h>
+#include <obj/x86-64/speaker/speaker.h>
+#include <obj/x86-64/usb_ehci/usb_ehci.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/objectmgr/objectregistry.h>
+#include <sys/obj/object/object.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objectregistry/objectregistry.h>
+#include <sys/panic/panic.h>
 #include <sys/string/string.h>
+#include <types.h>
 
 #define MAX_DEVICE_NAME_LENGTH 128
 
@@ -41,7 +66,7 @@ void objectmgr_register_object(struct object* obj) {
     /*
      * set index
      */
-    obj->type_index = objectregistry_devicecount_type(obj->objectype);
+    obj->type_index = objectregistry_objectcount_type(obj->objectype);
     /*
      * create name
      */
@@ -49,7 +74,7 @@ void objectmgr_register_object(struct object* obj) {
     /*
      * register
      */
-    objectregistry_registerdevice(obj);
+    objectregistry_registerobject(obj);
 }
 
 void objectmgr_unregister_object(struct object* obj) {
@@ -57,11 +82,11 @@ void objectmgr_unregister_object(struct object* obj) {
     /*
      * unregister
      */
-    objectregistry_unregisterdevice(obj);
+    objectregistry_unregisterobject(obj);
 }
 
 uint16_t objectmgr_object_count() {
-    return objectregistry_devicecount();
+    return objectregistry_objectcount();
 }
 
 void obj_initIterator(struct object* obj) {
@@ -167,20 +192,21 @@ void objectmgr_set_object_description(struct object* obj, const uint8_t* descrip
 
 struct object* objectmgr_find_object(const uint8_t* name) {
     ASSERT_NOT_NULL(name);
-    return objectregistry_find_device(name);
+    return objectregistry_find_object(name);
 }
 
-void objectmgr_find_objects_by_description(object_type dt, const uint8_t* description, deviceSearchCallback cb) {
+void objectmgr_find_objects_by_description(enum object_type_id dt, const uint8_t* description,
+                                           objectSearchCallback cb) {
     ASSERT_NOT_NULL(description);
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
-    objectregistry_find_devices_by_description(dt, description, cb);
+    objectregistry_find_objects_by_description(dt, description, cb);
 }
 
-void objectmgr_find_objects_by_device_type(object_type dt, deviceSearchCallback cb) {
+void objectmgr_find_objects_by_device_type(enum object_type_id dt, objectSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
-    objectregistry_find_devices_by_objectype(dt, cb);
+    objectregistry_find_objects_by_objectype(dt, cb);
 }
 
 #ifdef TARGET_PLATFORM_i386
