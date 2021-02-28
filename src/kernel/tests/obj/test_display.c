@@ -10,6 +10,7 @@
 #include <sys/objectmgr/object.h>
 #include <sys/objectmgr/objectmgr.h>
 #include <tests/obj/test_display.h>
+#include <types.h>
 
 void test_display() {
     // get the display
