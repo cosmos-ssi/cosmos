@@ -7,7 +7,7 @@
 
 #include <obj/logical/fs/tfs/tfs.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_block.h>
+#include <sys/objectinterface/objectinterface_block.h>
 #include <sys/string/string.h>
 #include <tests/fs/test_tfs.h>
 

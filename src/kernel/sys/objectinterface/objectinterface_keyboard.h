@@ -29,7 +29,7 @@ typedef struct key_action_t {
 
 typedef key_action_t* (*keyboard_read_key)(struct object* obj);
 
-struct objecttype_keyboard {
+struct objectinterface_keyboard {
     keyboard_read_key read;
 };
 

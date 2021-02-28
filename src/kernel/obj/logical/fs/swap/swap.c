@@ -12,7 +12,7 @@
 
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_swap.h>
+#include <sys/objectinterface/objectinterface_swap.h>
 #include <sys/string/mem.h>
 #include <types.h>
 
@@ -88,8 +88,8 @@ struct object* swap_attach(struct object* block_device) {
     /*
      * the device api
      */
-    struct objecttype_swap* api = (struct objecttype_swap*)kmalloc(sizeof(struct objecttype_swap));
-    memzero((uint8_t*)api, sizeof(struct objecttype_swap));
+    struct objectinterface_swap* api = (struct objectinterface_swap*)kmalloc(sizeof(struct objectinterface_swap));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_swap));
     api->write = &swap_write;
     api->read = &swap_read;
     api->block_count = &swap_block_count;

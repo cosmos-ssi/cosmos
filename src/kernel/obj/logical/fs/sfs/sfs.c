@@ -12,8 +12,8 @@
 
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_block.h>
-#include <sys/objecttype/objecttype_filesystem.h>
+#include <sys/objectinterface/objectinterface_block.h>
+#include <sys/objectinterface/objectinterface_filesystem.h>
 #include <sys/string/mem.h>
 
 #define SFS_VOLUME_IDENTIFIER 0x01
@@ -194,8 +194,9 @@ struct object* sfs_attach(struct object* partition_objice) {
     /*
      * the device api
      */
-    struct objecttype_filesystem* api = (struct objecttype_filesystem*)kmalloc(sizeof(struct objecttype_filesystem));
-    memzero((uint8_t*)api, sizeof(struct objecttype_filesystem));
+    struct objectinterface_filesystem* api =
+        (struct objectinterface_filesystem*)kmalloc(sizeof(struct objectinterface_filesystem));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_filesystem));
     //  api->format = &sfs_format;
     objectinstance->api = api;
     /*

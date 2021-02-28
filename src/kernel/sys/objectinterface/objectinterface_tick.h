@@ -5,21 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all console devices will implement (vga and serial)
+ * this file defines the interface that all tick devices will implement
  */
-#ifndef _OBJECTTYPE_CONSOLE_H
-#define _OBJECTTYPE_CONSOLE_H
+#ifndef _OBJECTTYPE_TICK_H
+#define _OBJECTTYPE_TICK_H
 
 #include <sys/objectmgr/objectmgr.h>
 
 #include <types.h>
 
-typedef uint8_t (*console_setpos_function)(struct object* obj, uint8_t x, uint8_t y);
-typedef void (*console_write_function)(struct object* obj, const char* s);
+typedef uint64_t (*tick_read_function)(struct object* obj);
 
-struct objecttype_console {
-    console_setpos_function setpos;
-    console_write_function write;
+struct objectinterface_tick {
+    tick_read_function read;
 };
 
 #endif

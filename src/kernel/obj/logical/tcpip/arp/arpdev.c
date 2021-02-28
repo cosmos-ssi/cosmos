@@ -7,8 +7,8 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objecttype/objecttype_arp.h>
-#include <sys/objecttype/objecttype_ethernet.h>
+#include <sys/objectinterface/objectinterface_arp.h>
+#include <sys/objectinterface/objectinterface_ethernet.h>
 #include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 
@@ -48,7 +48,7 @@ void arp_request(struct object* obj, struct arp* request, struct arp* response) 
     // get our device data for this device
     //   struct arp_objectdata* object_data = (struct arp_objectdata*)obj->object_data;
     // get the api for the underlying ethernet device
-    //   struct objecttype_ethernet* ether_api = (struct objecttype_ethernet*)object_data->ethernet_device->api;
+    //   struct objectinterface_ethernet* ether_api = (struct objectinterface_ethernet*)object_data->ethernet_device->api;
     PANIC("Um, what HW addresses do I put in here?");
     // send
     //  (*ether_api->write)(object_data->ethernet_device, (uint8_t*)request, sizeof(struct arp));
@@ -72,8 +72,8 @@ struct object* arp_attach(struct object* ethernet_device) {
     /*
      * the device api
      */
-    struct objecttype_arp* api = (struct objecttype_arp*)kmalloc(sizeof(struct objecttype_arp));
-    memzero((uint8_t*)api, sizeof(struct objecttype_arp));
+    struct objectinterface_arp* api = (struct objectinterface_arp*)kmalloc(sizeof(struct objectinterface_arp));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_arp));
     api->request = &arp_request;
     objectinstance->api = api;
     /*

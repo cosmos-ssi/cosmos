@@ -32,7 +32,7 @@ struct ip_header {
 typedef void (*ip_read_function)(struct object* obj, uint8_t* data, uint16_t size);
 typedef void (*ip_write_function)(struct object* obj, uint8_t* data, uint16_t size);
 
-struct objecttype_ip {
+struct objectinterface_ip {
     ip_read_function read;
     ip_write_function write;
 };

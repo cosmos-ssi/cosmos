@@ -12,7 +12,7 @@
 #include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_nic.h>
+#include <sys/objectinterface/objectinterface_nic.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <tests/obj/test_virtio_vnic.h>
@@ -25,7 +25,7 @@ void test_virtio_vnic() {
         PANIC("nic0 not found");
     }
 
-    struct objecttype_nic* nic_api = (struct objecttype_nic*)obj->api;
+    struct objectinterface_nic* nic_api = (struct objectinterface_nic*)obj->api;
     struct vnic_objectdata* object_data = (struct vnic_objectdata*)obj->object_data;
 
     // status

@@ -11,7 +11,7 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_cpu.h>
+#include <sys/objectinterface/objectinterface_cpu.h>
 
 void cpu_manufacturer_id(uint8_t* cpuid);
 
@@ -76,7 +76,7 @@ void cpu_objectmgr_register_objects() {
     /*
      * device api
      */
-    struct objecttype_cpu* api = (struct objecttype_cpu*)kmalloc(sizeof(struct objecttype_cpu));
+    struct objectinterface_cpu* api = (struct objectinterface_cpu*)kmalloc(sizeof(struct objectinterface_cpu));
     api->features = &cpu_get_features;
     api->apic = &cpu_has_apic;
     api->manufacturer = &cpu_manufacturer_id;

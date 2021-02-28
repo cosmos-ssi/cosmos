@@ -5,19 +5,21 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all parallel port devices will implement
+ * this file defines the interface that all TCP devices will implement
  */
-#ifndef _OBJECTTYPE_PARALLEL_H
-#define _OBJECTTYPE_PARALLEL_H
+#ifndef _OBJECTTYPE_TCP_H
+#define _OBJECTTYPE_TCP_H
 
 #include <sys/objectmgr/objectmgr.h>
 
 #include <types.h>
 
-typedef void (*parallel_write_function)(struct object* obj, uint8_t* data, uint16_t size);
+typedef void (*tcp_read_function)(struct object* obj, uint8_t* data, uint16_t size);
+typedef void (*tcp_write_function)(struct object* obj, uint8_t* data, uint16_t size);
 
-struct objecttype_parallel {
-    parallel_write_function write;
+struct objectinterface_tcp {
+    tcp_read_function read;
+    tcp_write_function write;
 };
 
 #endif

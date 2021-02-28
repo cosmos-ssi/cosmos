@@ -7,7 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objecttype/objecttype_ip.h>
+#include <sys/objectinterface/objectinterface_ip.h>
 #include <sys/string/mem.h>
 
 struct icmp_objectdata {
@@ -64,8 +64,8 @@ struct object* icmp_attach(struct object* ethernet_device) {
     /*
      * the device api
      */
-    struct objecttype_ip* api = (struct objecttype_ip*)kmalloc(sizeof(struct objecttype_ip));
-    memzero((uint8_t*)api, sizeof(struct objecttype_ip));
+    struct objectinterface_ip* api = (struct objectinterface_ip*)kmalloc(sizeof(struct objectinterface_ip));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_ip));
     api->read = &icmp_read;
     api->write = &icmp_write;
 

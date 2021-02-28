@@ -5,26 +5,15 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all mouse devices will implement
+ * this file defines the interface that all BIOS Data Area devices will implement
  */
-#ifndef _OBJECTTYPE_MOUSE_H
-#define _OBJECTTYPE_MOUSE_H
+#ifndef _OBJECTTYPE_BDA_H
+#define _OBJECTTYPE_BDA_H
 
 #include <sys/objectmgr/objectmgr.h>
 
 #include <types.h>
 
-struct mouse_status {
-    uint8_t mouse_cycle;
-    int8_t mouse_byte[3];
-    int8_t mouse_x;
-    int8_t mouse_y;
-};
-
-typedef struct mouse_status* (*mouse_status_function)(struct object* obj);
-
-struct objecttype_mouse {
-    mouse_status_function status;
-};
+struct objectinterface_bda {};
 
 #endif

@@ -11,7 +11,7 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_console.h>
+#include <sys/objectinterface/objectinterface_console.h>
 
 void test_vga_console_dev() {
     uint8_t devicename[] = {"vga0"};
@@ -24,7 +24,7 @@ void test_vga_console_dev() {
         // attach the console
         struct object* console_device = vga_console_attach(vga);
 
-        struct objecttype_console* console_api = (struct objecttype_console*)console_device->api;
+        struct objectinterface_console* console_api = (struct objectinterface_console*)console_device->api;
 
         (*console_api->write)(console_device, "Console test\n");
 

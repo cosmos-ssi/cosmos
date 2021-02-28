@@ -14,7 +14,7 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_mouse.h>
+#include <sys/objectinterface/objectinterface_mouse.h>
 
 #define MOUSE_IRQ_NUMBER 12
 
@@ -160,7 +160,7 @@ void mouse_objectmgr_register_objects() {
     /*
      * device api
      */
-    struct objecttype_mouse* api = (struct objecttype_mouse*)kmalloc(sizeof(struct objecttype_mouse));
+    struct objectinterface_mouse* api = (struct objectinterface_mouse*)kmalloc(sizeof(struct objectinterface_mouse));
     api->status = &ps2mouse_status;
     objectinstance->api = api;
     /*

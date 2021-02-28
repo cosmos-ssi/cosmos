@@ -13,7 +13,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_nic.h>
+#include <sys/objectinterface/objectinterface_nic.h>
 
 void e1000_irq_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
@@ -55,7 +55,7 @@ void e1000_search_cb(struct pci_device* dev) {
     /*
      * the device api
      */
-    struct objecttype_nic* api = (struct objecttype_nic*)kmalloc(sizeof(struct objecttype_nic));
+    struct objectinterface_nic* api = (struct objectinterface_nic*)kmalloc(sizeof(struct objectinterface_nic));
     api->write = &e1000_ethernet_read;
     api->read = &e1000_ethernet_write;
     objectinstance->api = api;

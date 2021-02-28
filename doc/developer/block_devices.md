@@ -28,7 +28,7 @@ The below code creates a partition table device for an MBR partition table on di
 	struct object* dsk = objectmgr_find_object("disk0");
 	if (0 != dsk) {
 		struct object* obj = mbr_pt_attach(dsk);
-		struct objecttype_part_table* api = (struct objecttype_part_table*)obj->api;
+		struct objectinterface_part_table* api = (struct objectinterface_part_table*)obj->api;
 		mbr_pt_detach(obj);
 	} else {
 		kprintf("Unable to find disk0\n", devicename);

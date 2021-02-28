@@ -9,7 +9,7 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_filesystem.h>
+#include <sys/objectinterface/objectinterface_filesystem.h>
 #include <tests/fs/test_cfs.h>
 
 void test_cpm() {
@@ -20,7 +20,7 @@ void test_cpm() {
         struct object* obj = cpm_attach(dsk);
 
         // format to CPM
-        //   struct objecttype_filesystem* api = (struct objecttype_filesystem*)obj->api;
+        //   struct objectinterface_filesystem* api = (struct objectinterface_filesystem*)obj->api;
         //  (*api->format)(obj);
 
         // detach

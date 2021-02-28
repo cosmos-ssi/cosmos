@@ -13,7 +13,7 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_bda.h>
+#include <sys/objectinterface/objectinterface_bda.h>
 #include <sys/string/string.h>
 
 uint32_t rsdt_other_sdt_entries(struct acpi_sdt_header* h) {

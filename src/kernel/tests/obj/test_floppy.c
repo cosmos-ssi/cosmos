@@ -7,14 +7,14 @@
 
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_floppy.h>
+#include <sys/objectinterface/objectinterface_floppy.h>
 #include <tests/obj/test_floppy.h>
 
 void floppyread() {
     // get the floppy
     struct object* floppy = objectmgr_find_object("floppy0");
     if (0 != floppy) {
-        struct objecttype_floppy* floppy_api = (struct objecttype_floppy*)floppy->api;
+        struct objectinterface_floppy* floppy_api = (struct objectinterface_floppy*)floppy->api;
 
         uint8_t data[256];
         (*floppy_api->read)(floppy, 0, data, 255);

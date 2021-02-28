@@ -11,7 +11,7 @@
 
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_block.h>
+#include <sys/objectinterface/objectinterface_block.h>
 #include <sys/string/mem.h>
 
 uint32_t blockutil_get_sector_count(struct object* obj) {
@@ -29,7 +29,7 @@ uint32_t blockutil_get_sector_size(struct object* obj) {
     ASSERT_NOT_NULL(obj->api);
     ASSERT(1 == blockutil_is_block_object(obj));
 
-    struct objecttype_block* block_api = (struct objecttype_block*)obj->api;
+    struct objectinterface_block* block_api = (struct objectinterface_block*)obj->api;
     ASSERT_NOT_NULL(block_api);
     ASSERT_NOT_NULL(block_api->sector_size);
 
@@ -41,7 +41,7 @@ uint32_t blockutil_get_total_size(struct object* obj) {
     ASSERT_NOT_NULL(obj->api);
     ASSERT(1 == blockutil_is_block_object(obj));
 
-    struct objecttype_block* block_api = (struct objecttype_block*)obj->api;
+    struct objectinterface_block* block_api = (struct objectinterface_block*)obj->api;
     ASSERT_NOT_NULL(block_api);
     ASSERT_NOT_NULL(block_api->total_size);
 
@@ -83,7 +83,7 @@ uint32_t blockutil_write(struct object* obj, uint8_t* data, uint32_t data_size, 
     ASSERT((start_lba + total_sectors) < sector_count);
 
     // get the api
-    struct objecttype_block* block_api = (struct objecttype_block*)obj->api;
+    struct objectinterface_block* block_api = (struct objectinterface_block*)obj->api;
     ASSERT_NOT_NULL(block_api);
     if (0 != block_api->write) {
 
@@ -153,7 +153,7 @@ uint32_t blockutil_read(struct object* obj, uint8_t* data, uint32_t data_size, u
     ASSERT((start_lba + total_sectors) < sector_count);
 
     // get the api
-    struct objecttype_block* block_api = (struct objecttype_block*)obj->api;
+    struct objectinterface_block* block_api = (struct objectinterface_block*)obj->api;
     ASSERT_NOT_NULL(block_api);
     ASSERT_NOT_NULL(block_api->read);
 

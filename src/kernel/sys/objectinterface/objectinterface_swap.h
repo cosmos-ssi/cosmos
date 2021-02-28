@@ -19,7 +19,7 @@ typedef void (*swap_write_function)(struct object* obj, uint8_t* data, uint32_t 
 typedef uint16_t (*swap_block_size_function)(struct object* obj);
 typedef uint16_t (*swap_block_count_function)(struct object* obj);
 
-struct objecttype_swap {
+struct objectinterface_swap {
     swap_read_function read;
     swap_write_function write;
     swap_block_size_function block_size;

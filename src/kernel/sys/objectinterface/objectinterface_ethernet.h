@@ -26,7 +26,7 @@ struct eth_hdr {
 typedef void (*ethernet_read_function)(struct object* obj, struct eth_hdr* eth, uint16_t size);
 typedef void (*ethernet_write_function)(struct object* obj, struct eth_hdr* eth, uint16_t size);
 
-struct objecttype_ethernet {
+struct objectinterface_ethernet {
     ethernet_read_function read;
     ethernet_write_function write;
 };

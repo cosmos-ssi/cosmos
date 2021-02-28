@@ -9,7 +9,7 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_part_table.h>
+#include <sys/objectinterface/objectinterface_part_table.h>
 #include <tests/fs/test_mbr.h>
 
 void test_mbr() {
@@ -19,7 +19,7 @@ void test_mbr() {
     if (0 != dsk) {
         struct object* obj = mbr_pt_attach(dsk);
 
-        struct objecttype_part_table* api = (struct objecttype_part_table*)obj->api;
+        struct objectinterface_part_table* api = (struct objectinterface_part_table*)obj->api;
 
         uint8_t number_partitions = (*api->partitions)(obj);
         kprintf("number_partitions %llu\n", number_partitions);

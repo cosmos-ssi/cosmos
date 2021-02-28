@@ -15,7 +15,7 @@
 #include <sys/debug/assert.h>
 #include <sys/objectmgr/objectmgr.h>
 
-#include <sys/objecttype/objecttype_part_table.h>
+#include <sys/objectinterface/objectinterface_part_table.h>
 
 void fsutil_attach_partition_tables(struct object* block_obj) {
     ASSERT_NOT_NULL(block_obj);
@@ -46,7 +46,7 @@ void fsutil_attach_partitions(struct object* partition_table_obj) {
     /*
      * mount partition devices
      */
-    struct objecttype_part_table* api = (struct objecttype_part_table*)partition_table_obj->api;
+    struct objectinterface_part_table* api = (struct objectinterface_part_table*)partition_table_obj->api;
     uint32_t num_partitions = (*api->partitions)(partition_table_obj);
     for (uint32_t i = 0; i < num_partitions; i++) {
         uint32_t sector_count = (*api->sectors)(partition_table_obj, i);

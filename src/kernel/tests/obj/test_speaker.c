@@ -6,7 +6,7 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_speaker.h>
+#include <sys/objectinterface/objectinterface_speaker.h>
 #include <sys/sleep/sleep.h>
 #include <tests/obj/test_speaker.h>
 
@@ -14,7 +14,7 @@
     // get the speaker
     struct object* speaker = objectmgr_find_object("speaker0");
     if (0 != speaker) {
-        struct objecttype_speaker* speaker_api = (struct objecttype_speaker*)speaker->api;
+        struct objectinterface_speaker* speaker_api = (struct objectinterface_speaker*)speaker->api;
         speaker_beep_function beep_func = speaker_api->beep;
         //	(*beep_func)(speaker, 4000, 50);
         (*beep_func)(speaker, NOTE_G5, 200);
@@ -43,7 +43,7 @@ void chirp() {
     // get the speaker
     struct object* speaker = objectmgr_find_object("speaker0");
     if (0 != speaker) {
-        struct objecttype_speaker* speaker_api = (struct objecttype_speaker*)speaker->api;
+        struct objectinterface_speaker* speaker_api = (struct objectinterface_speaker*)speaker->api;
         speaker_beep_function beep_func = speaker_api->beep;
         (*beep_func)(speaker, 4000, 50);
     } else {

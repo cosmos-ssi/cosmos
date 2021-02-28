@@ -11,7 +11,7 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_cmos.h>
+#include <sys/objectinterface/objectinterface_cmos.h>
 
 void cmos_write_register(uint8_t reg, uint8_t val) {
     uint8_t pv;
@@ -60,7 +60,7 @@ void cmos_objectmgr_register_objects() {
     /*
      * api
      */
-    //    struct objecttype_cmos* api = (struct objecttype_cmos*)kmalloc(sizeof(struct objecttype_cmos));
+    //    struct objectinterface_cmos* api = (struct objectinterface_cmos*)kmalloc(sizeof(struct objectinterface_cmos));
     //    objectinstance->api = api;
     /*
      * register

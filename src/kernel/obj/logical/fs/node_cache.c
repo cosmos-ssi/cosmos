@@ -9,7 +9,7 @@
 #include <sys/collection/tree/tree.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objecttype/objecttype_filesystem.h>
+#include <sys/objectinterface/objectinterface_filesystem.h>
 #include <sys/panic/panic.h>
 
 struct node_cache* node_cache_new() {

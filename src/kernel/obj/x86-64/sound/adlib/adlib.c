@@ -13,7 +13,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_dsp.h>
+#include <sys/objectinterface/objectinterface_dsp.h>
 
 // http://shipbrook.net/jeff/sb.html
 
@@ -71,7 +71,7 @@ void adlib_objectmgr_register_objects() {
     /*
      * device api
      */
-    struct objecttype_dsp* api = (struct objecttype_dsp*)kmalloc(sizeof(struct objecttype_dsp));
+    struct objectinterface_dsp* api = (struct objectinterface_dsp*)kmalloc(sizeof(struct objectinterface_dsp));
     objectinstance->api = api;
     /*
      * register

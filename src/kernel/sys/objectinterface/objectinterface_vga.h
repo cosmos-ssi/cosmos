@@ -42,7 +42,7 @@ typedef uint8_t (*vga_write_text_function)(struct object* obj, const char* txt, 
                                            uint8_t attrib, enum vga_text_color fg_color, enum vga_text_color bg_color);
 typedef uint8_t (*vga_query_resolution_function)(struct object* obj, uint16_t* x, uint16_t* y);
 
-struct objecttype_vga {
+struct objectinterface_vga {
     vga_set_mode_function set_mode;
     vga_scroll_text_function scroll_text;
     vga_write_text_function write_text;

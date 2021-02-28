@@ -7,7 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objecttype/objecttype_null.h>
+#include <sys/objectinterface/objectinterface_null.h>
 #include <sys/string/mem.h>
 
 /*
@@ -47,8 +47,8 @@ struct object* null_attach() {
     /*
      * the device api
      */
-    struct objecttype_null* api = (struct objecttype_null*)kmalloc(sizeof(struct objecttype_null));
-    memzero((uint8_t*)api, sizeof(struct objecttype_null));
+    struct objectinterface_null* api = (struct objectinterface_null*)kmalloc(sizeof(struct objectinterface_null));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_null));
     api->read = &null_read;
     objectinstance->api = api;
     /*

@@ -5,19 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all Serial devices will implement
+ * this file defines the interface that all rand devices will implement
  */
-#ifndef _OBJECTTYPE_SERIAL_H
-#define _OBJECTTYPE_SERIAL_H
+#ifndef _OBJECTTYPE_RAND_H
+#define _OBJECTTYPE_RAND_H
 
 #include <sys/objectmgr/objectmgr.h>
 
 #include <types.h>
 
-typedef void (*serial_write_function)(struct object* obj, const int8_t* c);
+typedef uint64_t (*rand_read_function)(struct object* obj);
 
-struct objecttype_serial {
-    serial_write_function write;
+struct objectinterface_rand {
+    rand_read_function read;
 };
 
 #endif

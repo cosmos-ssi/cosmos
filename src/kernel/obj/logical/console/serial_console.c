@@ -9,8 +9,8 @@
 #include <obj/x86-64/serial/serial.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objecttype/objecttype_console.h>
-#include <sys/objecttype/objecttype_serial.h>
+#include <sys/objectinterface/objectinterface_console.h>
+#include <sys/objectinterface/objectinterface_serial.h>
 #include <sys/string/mem.h>
 
 struct serial_console_objectdata {
@@ -52,7 +52,7 @@ void serial_console_dev_write(struct object* obj, const char* s) {
     ASSERT_NOT_NULL(obj->object_data);
     struct serial_console_objectdata* object_data = (struct serial_console_objectdata*)obj->object_data;
 
-    struct objecttype_serial* serial_api = (struct objecttype_serial*)object_data->serial_device->api;
+    struct objectinterface_serial* serial_api = (struct objectinterface_serial*)object_data->serial_device->api;
     (*serial_api->write)(object_data->serial_device, s);
 }
 
@@ -71,8 +71,9 @@ struct object* serial_console_attach(struct object* serial_device) {
     /*
      * the device api
      */
-    struct objecttype_console* api = (struct objecttype_console*)kmalloc(sizeof(struct objecttype_console));
-    memzero((uint8_t*)api, sizeof(struct objecttype_console));
+    struct objectinterface_console* api =
+        (struct objectinterface_console*)kmalloc(sizeof(struct objectinterface_console));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_console));
     api->setpos = &serial_console_setpos;
     api->write = &serial_console_dev_write;
     objectinstance->api = api;

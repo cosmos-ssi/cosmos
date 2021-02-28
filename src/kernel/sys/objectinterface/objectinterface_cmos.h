@@ -5,19 +5,15 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all rand devices will implement
+ * this file defines the interface that all BIOS Data Area devices will implement
  */
-#ifndef _OBJECTTYPE_RAND_H
-#define _OBJECTTYPE_RAND_H
+#ifndef _OBJECTTYPE_CMOS_H
+#define _OBJECTTYPE_CMOS_H
 
 #include <sys/objectmgr/objectmgr.h>
 
 #include <types.h>
 
-typedef uint64_t (*rand_read_function)(struct object* obj);
-
-struct objecttype_rand {
-    rand_read_function read;
-};
+struct objectinterface_cmos {};
 
 #endif

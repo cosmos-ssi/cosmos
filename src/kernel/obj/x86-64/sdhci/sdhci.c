@@ -13,7 +13,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_block.h>
+#include <sys/objectinterface/objectinterface_block.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 
@@ -69,8 +69,8 @@ void sdhci_pci_search_cb(struct pci_device* dev) {
     /*
      * device api
      */
-    //   struct objecttype_block* api = (struct objecttype_block*)kmalloc(sizeof(struct objecttype_block));
-    //   memzero((uint8_t*)api, sizeof(struct objecttype_block));
+    //   struct objectinterface_block* api = (struct objectinterface_block*)kmalloc(sizeof(struct objectinterface_block));
+    //   memzero((uint8_t*)api, sizeof(struct objectinterface_block));
     //   objectinstance->api = api;
     /*
      * the object_data

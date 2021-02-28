@@ -14,7 +14,7 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_bda.h>
+#include <sys/objectinterface/objectinterface_bda.h>
 
 struct smbios_objectdata {
     uint64_t base;

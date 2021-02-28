@@ -5,21 +5,26 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all NIC devices will implement
+ * this file defines the interface that all mouse devices will implement
  */
-#ifndef _OBJECTTYPE_NIC_H
-#define _OBJECTTYPE_NIC_H
+#ifndef _OBJECTTYPE_MOUSE_H
+#define _OBJECTTYPE_MOUSE_H
 
 #include <sys/objectmgr/objectmgr.h>
 
 #include <types.h>
 
-typedef void (*nic_read_function)(struct object* obj, uint8_t* data, uint16_t size);
-typedef void (*nic_write_function)(struct object* obj, uint8_t* data, uint16_t size);
+struct mouse_status {
+    uint8_t mouse_cycle;
+    int8_t mouse_byte[3];
+    int8_t mouse_x;
+    int8_t mouse_y;
+};
 
-struct objecttype_nic {
-    nic_read_function read;
-    nic_write_function write;
+typedef struct mouse_status* (*mouse_status_function)(struct object* obj);
+
+struct objectinterface_mouse {
+    mouse_status_function status;
 };
 
 #endif

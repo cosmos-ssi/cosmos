@@ -18,7 +18,7 @@ typedef void (*floppy_read_sector_function)(struct object* obj, uint32_t lba, ui
 typedef void (*floppy_write_sector_function)(struct object* obj, uint32_t lba, uint8_t* data, uint16_t size);
 typedef void (*floppy_reset_function)(struct object* obj);
 
-struct objecttype_floppy {
+struct objectinterface_floppy {
     floppy_read_sector_function read;
     floppy_write_sector_function write;
     floppy_reset_function reset;

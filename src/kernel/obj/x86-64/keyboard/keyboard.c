@@ -14,7 +14,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_keyboard.h>
+#include <sys/objectinterface/objectinterface_keyboard.h>
 #include <types.h>
 
 #define KB_IRQ_NUMBER 1
@@ -201,7 +201,8 @@ void keyboard_objectmgr_register_objects() {
     /*
      * the device api
      */
-    struct objecttype_keyboard* api = (struct objecttype_keyboard*)kmalloc(sizeof(struct objecttype_keyboard));
+    struct objectinterface_keyboard* api =
+        (struct objectinterface_keyboard*)kmalloc(sizeof(struct objectinterface_keyboard));
     api->read = &keyboard_read;
     objectinstance->api = api;
     /*

@@ -10,7 +10,7 @@
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_swap.h>
+#include <sys/objectinterface/objectinterface_swap.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <tests/fs/ramdisk_helper.h>
@@ -28,7 +28,7 @@ void test_swap() {
     struct object* swap_device = swap_attach(rd);
     ASSERT_NOT_NULL(swap_device);
 
-    struct objecttype_swap* swap_api = (struct objecttype_swap*)swap_device->api;
+    struct objectinterface_swap* swap_api = (struct objectinterface_swap*)swap_device->api;
     ASSERT_NOT_NULL(swap_api);
 
     uint16_t block_size = (*swap_api->block_size)(swap_device);

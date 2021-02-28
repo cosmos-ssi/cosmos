@@ -25,13 +25,13 @@
 
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_console.h>
-#include <sys/objecttype/objecttype_cpu.h>
-#include <sys/objecttype/objecttype_dsp.h>
-#include <sys/objecttype/objecttype_pit.h>
-#include <sys/objecttype/objecttype_rtc.h>
-#include <sys/objecttype/objecttype_serial.h>
-#include <sys/objecttype/objecttype_speaker.h>
+#include <sys/objectinterface/objectinterface_console.h>
+#include <sys/objectinterface/objectinterface_cpu.h>
+#include <sys/objectinterface/objectinterface_dsp.h>
+#include <sys/objectinterface/objectinterface_pit.h>
+#include <sys/objectinterface/objectinterface_rtc.h>
+#include <sys/objectinterface/objectinterface_serial.h>
+#include <sys/objectinterface/objectinterface_speaker.h>
 
 void attach_logical_objects() {
     /*

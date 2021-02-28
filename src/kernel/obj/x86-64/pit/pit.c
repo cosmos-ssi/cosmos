@@ -13,7 +13,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_pit.h>
+#include <sys/objectinterface/objectinterface_pit.h>
 
 // https://wiki.osdev.org/Programmable_Interval_Timer
 // http://www.osdever.net/bkerndev/Docs/pit.htm
@@ -79,7 +79,7 @@ void pit_objectmgr_register_objects() {
     /*
      * device api
      */
-    struct objecttype_pit* api = (struct objecttype_pit*)kmalloc(sizeof(struct objecttype_pit));
+    struct objectinterface_pit* api = (struct objectinterface_pit*)kmalloc(sizeof(struct objectinterface_pit));
     api->tickcount = &pit_tickcount;
     api->subscribe = &pit_subscribe;
     objectinstance->api = api;

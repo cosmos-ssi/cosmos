@@ -14,7 +14,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_floppy.h>
+#include <sys/objectinterface/objectinterface_floppy.h>
 #include <sys/sleep/sleep.h>
 
 #define FLOPPY_IRQ_NUMBER 6
@@ -232,7 +232,7 @@ void floppy_register_device(uint64_t port, uint8_t type, bool master) {
     /*
      * the device api
      */
-    struct objecttype_floppy* api = (struct objecttype_floppy*)kmalloc(sizeof(struct objecttype_floppy));
+    struct objectinterface_floppy* api = (struct objectinterface_floppy*)kmalloc(sizeof(struct objectinterface_floppy));
     api->write = &floppy_read;
     api->read = &floppy_write;
     api->reset = &floppy_reset;

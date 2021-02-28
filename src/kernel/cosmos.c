@@ -17,9 +17,9 @@
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectinterface/objectinterface_console.h>
+#include <sys/objectinterface/objectinterface_filesystem.h>
 #include <sys/objects/objects.h>
-#include <sys/objecttype/objecttype_console.h>
-#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
@@ -206,7 +206,7 @@ void load_init_binary() {
  */
 void video_write(const uint8_t* s) {
     struct object* vga_console = objectmgr_find_object("console0");
-    struct objecttype_console* console0_api = (struct objecttype_console*)vga_console->api;
+    struct objectinterface_console* console0_api = (struct objectinterface_console*)vga_console->api;
     (*console0_api->write)(vga_console, s);
 }
 

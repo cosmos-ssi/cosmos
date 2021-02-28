@@ -7,8 +7,8 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objecttype/objecttype_pit.h>
-#include <sys/objecttype/objecttype_tick.h>
+#include <sys/objectinterface/objectinterface_pit.h>
+#include <sys/objectinterface/objectinterface_tick.h>
 #include <sys/string/mem.h>
 
 struct tick_objectdata {
@@ -43,7 +43,7 @@ uint64_t tick_read(struct object* obj) {
     ASSERT_NOT_NULL(obj->object_data);
     struct tick_objectdata* object_data = (struct tick_objectdata*)obj->object_data;
 
-    struct objecttype_pit* api = (struct objecttype_pit*)object_data->pit_device->api;
+    struct objectinterface_pit* api = (struct objectinterface_pit*)object_data->pit_device->api;
     return (*api->tickcount)(object_data->pit_device);
 }
 
@@ -62,8 +62,8 @@ struct object* tick_attach(struct object* pit_device) {
     /*
      * the device api
      */
-    struct objecttype_tick* api = (struct objecttype_tick*)kmalloc(sizeof(struct objecttype_tick));
-    memzero((uint8_t*)api, sizeof(struct objecttype_tick));
+    struct objectinterface_tick* api = (struct objectinterface_tick*)kmalloc(sizeof(struct objectinterface_tick));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_tick));
     api->read = &tick_read;
     objectinstance->api = api;
     /*

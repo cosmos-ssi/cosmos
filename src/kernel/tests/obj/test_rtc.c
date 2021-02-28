@@ -7,14 +7,14 @@
 
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_rtc.h>
+#include <sys/objectinterface/objectinterface_rtc.h>
 #include <tests/obj/test_rtc.h>
 
 void test_rtc() {
     // get the time, b/c we can
     struct object* rtc = objectmgr_find_object("rtc0");
     if (0 != rtc) {
-        struct objecttype_rtc* rtc_api = (struct objecttype_rtc*)rtc->api;
+        struct objectinterface_rtc* rtc_api = (struct objectinterface_rtc*)rtc->api;
         rtc_time_function time_func = rtc_api->rtc_time;
         rtc_time_t daTime = (*time_func)(rtc);
         kprintf("Hour: %llu Minute: %llu Second: %llu\n", daTime.hour, daTime.minute, daTime.second);

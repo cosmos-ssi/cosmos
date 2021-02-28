@@ -35,7 +35,7 @@ typedef uint32_t (*part_write_sectors_function)(struct object* obj, uint8_t part
 // return 1 if we are ok to detach this device
 typedef uint8_t (*part_table_detachable_function)(struct object* obj);
 
-struct objecttype_part_table {
+struct objectinterface_part_table {
     part_table_total_partitions_function partitions;
     part_table_get_partition_lba_function lba;
     part_table_get_partition_type_function type;

@@ -13,7 +13,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_serial.h>
+#include <sys/objectinterface/objectinterface_serial.h>
 
 // void serial_irq_handler(stack_frame *frame){
 //	ASSERT_NOT_NULL(frame);
@@ -54,7 +54,7 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * the device api
      */
-    //    struct objecttype_serial* api = (struct objecttype_serial*) kmalloc(sizeof(struct objecttype_serial));
+    //    struct objectinterface_serial* api = (struct objectinterface_serial*) kmalloc(sizeof(struct objectinterface_serial));
     //  api->write = &serial_write;
     //  objectinstance->api = api;
     /*

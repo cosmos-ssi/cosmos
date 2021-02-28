@@ -5,19 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all null devices will implement
+ * this file defines the interface that all speaker devices will implement
  */
-#ifndef _OBJECTTYPE_NULL_H
-#define _OBJECTTYPE_NULL_H
+#ifndef _OBJECTTYPE_SPEAKER_H
+#define _OBJECTTYPE_SPEAKER_H
 
 #include <sys/objectmgr/objectmgr.h>
 
 #include <types.h>
 
-typedef uint8_t (*null_read_function)(struct object* obj);
+typedef void (*speaker_beep_function)(struct object* obj, uint32_t frequency, uint32_t milliseconds);
 
-struct objecttype_null {
-    null_read_function read;
+struct objectinterface_speaker {
+    speaker_beep_function beep;
 };
 
 #endif

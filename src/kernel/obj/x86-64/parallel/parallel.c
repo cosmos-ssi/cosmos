@@ -13,7 +13,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_parallel.h>
+#include <sys/objectinterface/objectinterface_parallel.h>
 #include <sys/sleep/sleep.h>
 
 #define PARALLEL_DEVICE_LTP1_IRQ 7
@@ -99,7 +99,8 @@ void parallel_objectmgr_register_object(uint64_t base, uint8_t irq) {
     /*
      * device api
      */
-    struct objecttype_parallel* api = (struct objecttype_parallel*)kmalloc(sizeof(struct objecttype_parallel));
+    struct objectinterface_parallel* api =
+        (struct objectinterface_parallel*)kmalloc(sizeof(struct objectinterface_parallel));
     api->write = &parallel_write;
     objectinstance->api = api;
     /*

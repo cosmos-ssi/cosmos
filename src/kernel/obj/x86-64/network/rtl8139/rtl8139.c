@@ -19,7 +19,7 @@
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_nic.h>
+#include <sys/objectinterface/objectinterface_nic.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 
@@ -250,7 +250,7 @@ void rtl8139_search_cb(struct pci_device* dev) {
     /*
      * the device api
      */
-    struct objecttype_nic* api = (struct objecttype_nic*)kmalloc(sizeof(struct objecttype_nic));
+    struct objectinterface_nic* api = (struct objectinterface_nic*)kmalloc(sizeof(struct objectinterface_nic));
     api->write = &rtl8139_ethernet_read;
     api->read = &rtl8139_ethernet_write;
     objectinstance->api = api;

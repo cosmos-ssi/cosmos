@@ -103,7 +103,7 @@ It is not generally encouraged to include header files in the subdirectory /kern
 	// query the device manager for the device serial0
 	struct object* serial0 = objectmgr_find_object("serial0");
 	// get the serial device api for the device
-	struct objecttype_serial* serial_api = (struct objecttype_serial*) serial0->api;
+	struct objectinterface_serial* serial_api = (struct objectinterface_serial*) serial0->api;
 	// get the "write" function from the api
 	serial_write_function write_func = serial_api->write;
 	// invoke the write function

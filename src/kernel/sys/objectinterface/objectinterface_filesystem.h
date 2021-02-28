@@ -73,7 +73,7 @@ typedef void (*filesystem_list_directory)(struct filesystem_node* fs_node, struc
 */
 typedef uint64_t (*filesystem_size)(struct filesystem_node* fs_node);
 
-struct objecttype_filesystem {
+struct objectinterface_filesystem {
     filesystem_get_root_node_function root;
     filesystem_read_function read;
     filesystem_write_function write;

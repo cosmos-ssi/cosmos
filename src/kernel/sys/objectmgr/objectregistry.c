@@ -9,9 +9,9 @@
 #include <sys/debug/assert.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/objectinterface/objectinterface_filesystem.h>
 #include <sys/objectmgr/objectregistry.h>
 #include <sys/objectmgr/objecttypes.h>
-#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/string/string.h>
 
 void objectregistry_init() {

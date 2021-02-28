@@ -28,7 +28,7 @@ typedef uint32_t (*block_write_sectors_function)(struct object* obj, uint8_t* da
 typedef uint16_t (*block_sector_size_function)(struct object* obj);
 typedef uint32_t (*block_total_size_function)(struct object* obj);
 
-struct objecttype_block {
+struct objectinterface_block {
     block_read_sectors_function read;
     block_write_sectors_function write;
     block_sector_size_function sector_size;

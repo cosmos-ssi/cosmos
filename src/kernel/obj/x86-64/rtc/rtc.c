@@ -14,7 +14,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_rtc.h>
+#include <sys/objectinterface/objectinterface_rtc.h>
 #include <sys/sleep/sleep.h>
 #include <types.h>
 
@@ -137,7 +137,7 @@ void rtc_objectmgr_register_objects() {
     /*
      * device api
      */
-    struct objecttype_rtc* api = (struct objecttype_rtc*)kmalloc(sizeof(struct objecttype_rtc));
+    struct objectinterface_rtc* api = (struct objectinterface_rtc*)kmalloc(sizeof(struct objectinterface_rtc));
     api->rtc_time = &rtc_time;
     api->subscribe = &rtc_subscribe;
     objectinstance->api = api;

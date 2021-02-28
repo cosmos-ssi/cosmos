@@ -7,7 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objecttype/objecttype_tcp.h>
+#include <sys/objectinterface/objectinterface_tcp.h>
 #include <sys/string/mem.h>
 
 struct udp_objectdata {
@@ -64,8 +64,8 @@ struct object* udp_attach(struct object* ip_device) {
     /*
      * the device api
      */
-    struct objecttype_tcp* api = (struct objecttype_tcp*)kmalloc(sizeof(struct objecttype_tcp));
-    memzero((uint8_t*)api, sizeof(struct objecttype_tcp));
+    struct objectinterface_tcp* api = (struct objectinterface_tcp*)kmalloc(sizeof(struct objectinterface_tcp));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_tcp));
     api->read = &udp_read;
     api->write = &udp_write;
 

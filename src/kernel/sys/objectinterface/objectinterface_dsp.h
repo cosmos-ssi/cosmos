@@ -5,15 +5,20 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all BIOS Data Area devices will implement
+ * this file defines the interface that all DSP devices will implement
  */
-#ifndef _OBJECTTYPE_BDA_H
-#define _OBJECTTYPE_BDA_H
+#ifndef _OBJECTTYPE_DSP_H
+#define _OBJECTTYPE_DSP_H
 
 #include <sys/objectmgr/objectmgr.h>
 
 #include <types.h>
 
-struct objecttype_bda {};
+typedef void (*dsp_play_function)(struct object* obj, uint8_t* buffer, uint16_t rate, uint8_t depth, uint8_t channels,
+                                  uint64_t len);
+
+struct objectinterface_dsp {
+    dsp_play_function play;
+};
 
 #endif

@@ -16,7 +16,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_nic.h>
+#include <sys/objectinterface/objectinterface_nic.h>
 #include <sys/sleep/sleep.h>
 #include <types.h>
 
@@ -177,7 +177,7 @@ void ne2000isa_objectmgr_register_objects() {
     /*
      * the device api
      */
-    struct objecttype_nic* api = (struct objecttype_nic*)kmalloc(sizeof(struct objecttype_nic));
+    struct objectinterface_nic* api = (struct objectinterface_nic*)kmalloc(sizeof(struct objectinterface_nic));
     api->write = &ne2000isa_ethernet_read;
     api->read = &ne2000isa_ethernet_write;
     objectinstance->api = api;

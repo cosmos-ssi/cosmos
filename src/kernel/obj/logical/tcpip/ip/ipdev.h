@@ -8,7 +8,7 @@
 #ifndef _IPDEV_H
 #define _IPDEV_H
 
-#include <sys/objecttype/objecttype_ip.h>
+#include <sys/objectinterface/objectinterface_ip.h>
 #include <types.h>
 
 struct object;

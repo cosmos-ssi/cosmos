@@ -37,7 +37,7 @@ struct arp {
 
 typedef void (*arp_request_function)(struct object* obj, struct arp* request, struct arp* response);
 
-struct objecttype_arp {
+struct objectinterface_arp {
     arp_request_function request;
 };
 

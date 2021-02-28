@@ -5,19 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all tick devices will implement
+ * this file defines the interface that all Serial devices will implement
  */
-#ifndef _OBJECTTYPE_TICK_H
-#define _OBJECTTYPE_TICK_H
+#ifndef _OBJECTTYPE_SERIAL_H
+#define _OBJECTTYPE_SERIAL_H
 
 #include <sys/objectmgr/objectmgr.h>
 
 #include <types.h>
 
-typedef uint64_t (*tick_read_function)(struct object* obj);
+typedef void (*serial_write_function)(struct object* obj, const int8_t* c);
 
-struct objecttype_tick {
-    tick_read_function read;
+struct objectinterface_serial {
+    serial_write_function write;
 };
 
 #endif

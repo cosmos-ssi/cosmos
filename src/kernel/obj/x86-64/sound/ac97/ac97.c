@@ -14,7 +14,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_dsp.h>
+#include <sys/objectinterface/objectinterface_dsp.h>
 
 // https://wiki.osdev.org/AC97
 
@@ -72,7 +72,7 @@ void AC97PCISearchCB(struct pci_device* dev) {
     /*
      * device api
      */
-    struct objecttype_dsp* api = (struct objecttype_dsp*)kmalloc(sizeof(struct objecttype_dsp));
+    struct objectinterface_dsp* api = (struct objectinterface_dsp*)kmalloc(sizeof(struct objectinterface_dsp));
     objectinstance->api = api;
     /*
      * the object_data

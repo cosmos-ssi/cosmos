@@ -12,7 +12,7 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_bda.h>
+#include <sys/objectinterface/objectinterface_bda.h>
 
 #define BDA_ADDRESS 0x400
 
@@ -119,7 +119,7 @@ void bda_objectmgr_register_objects() {
     /*
      * api
      */
-    //   struct objecttype_bda* api = (struct objecttype_bda*)kmalloc(sizeof(struct objecttype_bda));
+    //   struct objectinterface_bda* api = (struct objectinterface_bda*)kmalloc(sizeof(struct objectinterface_bda));
     //   objectinstance->api = api;
     /*
      * register

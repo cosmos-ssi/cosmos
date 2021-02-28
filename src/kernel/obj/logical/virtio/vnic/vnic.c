@@ -19,7 +19,7 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_nic.h>
+#include <sys/objectinterface/objectinterface_nic.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <types.h>
@@ -294,8 +294,8 @@ void objectmgr_register_pci_vnic(struct pci_device* dev) {
     objectmgr_set_object_description(objectinstance, "Virtio NIC");
 
     // define an api
-    struct objecttype_nic* api = (struct objecttype_nic*)kmalloc(sizeof(struct objecttype_nic));
-    memzero((uint8_t*)api, sizeof(struct objecttype_nic));
+    struct objectinterface_nic* api = (struct objectinterface_nic*)kmalloc(sizeof(struct objectinterface_nic));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_nic));
     api->write = &vnic_tx;
     api->read = &vnic_rx;
     objectinstance->api = api;

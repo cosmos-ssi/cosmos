@@ -15,7 +15,7 @@
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_dsp.h>
+#include <sys/objectinterface/objectinterface_dsp.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 
@@ -364,7 +364,7 @@ void sb16_objectmgr_register_object(uint64_t port) {
     /*
      * device api
      */
-    struct objecttype_dsp* api = (struct objecttype_dsp*)kmalloc(sizeof(struct objecttype_dsp));
+    struct objectinterface_dsp* api = (struct objectinterface_dsp*)kmalloc(sizeof(struct objectinterface_dsp));
     api->play = sb16_play;
     objectinstance->api = api;
     /*

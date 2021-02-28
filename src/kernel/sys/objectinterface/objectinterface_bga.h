@@ -14,18 +14,18 @@
 
 #include <types.h>
 
-struct objecttype_resolution {
+struct objectinterface_resolution {
     uint32_t width;
     uint32_t height;
     uint32_t color_depth;
 };
 
-typedef void (*bga_get_resolution_function)(struct object* obj, struct objecttype_resolution* resolution);
-typedef void (*bga_set_resolution_function)(struct object* obj, struct objecttype_resolution* resolution);
+typedef void (*bga_get_resolution_function)(struct object* obj, struct objectinterface_resolution* resolution);
+typedef void (*bga_set_resolution_function)(struct object* obj, struct objectinterface_resolution* resolution);
 typedef uint32_t (*bga_get_buffersize_function)(struct object* obj);
 typedef void (*bga_blt_function)(struct object* obj, uint8_t* buffer, uint32_t buffer_size);
 
-struct objecttype_bga {
+struct objectinterface_bga {
     bga_get_resolution_function get_resolution;
     bga_set_resolution_function set_resolution;
     bga_get_buffersize_function get_buffersize;

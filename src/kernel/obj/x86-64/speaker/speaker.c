@@ -11,7 +11,7 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_speaker.h>
+#include <sys/objectinterface/objectinterface_speaker.h>
 #include <sys/sleep/sleep.h>
 
 // https://wiki.osdev.org/PC_Speaker
@@ -70,7 +70,8 @@ void speaker_objectmgr_register_objects() {
     /*
      * device api
      */
-    struct objecttype_speaker* api = (struct objecttype_speaker*)kmalloc(sizeof(struct objecttype_speaker));
+    struct objectinterface_speaker* api =
+        (struct objectinterface_speaker*)kmalloc(sizeof(struct objectinterface_speaker));
     api->beep = &speaker_beep;
     objectinstance->api = api;
     /**

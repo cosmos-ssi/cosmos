@@ -96,7 +96,7 @@ typedef bool (*cpu_has_apic_function)();
  */
 typedef void (*cpu_manufacturer_id_function)(uint8_t* cpuid);
 
-struct objecttype_cpu {
+struct objectinterface_cpu {
     cpu_get_features_function features;
     cpu_has_apic_function apic;
     cpu_manufacturer_id_function manufacturer;

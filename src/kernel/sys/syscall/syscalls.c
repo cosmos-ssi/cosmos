@@ -8,7 +8,7 @@
 #include <sys/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_console.h>
+#include <sys/objectinterface/objectinterface_console.h>
 #include <sys/syscall/syscalls.h>
 
 uint64_t invalid_syscall(uint64_t syscall_id, void* args) {
@@ -24,7 +24,7 @@ uint64_t syscall_exit(uint64_t syscall_id, void* args) {
 uint64_t syscall_print_console(uint64_t syscall_id, void* args) {
     struct object* console_obj = objectmgr_find_object("console0");
     if (0 != console_obj) {
-        struct objecttype_console* api = (struct objecttype_console*)console_obj->api;
+        struct objectinterface_console* api = (struct objectinterface_console*)console_obj->api;
         (*api->write)(console_obj, "Hello from console\n");
     }
     return 0;

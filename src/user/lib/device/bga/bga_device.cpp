@@ -8,8 +8,8 @@
 
 #include <device/bga/bga_device.hpp>
 
-void BGADevice::getResolution(struct objecttype_resolution* resolution) {}
-void BGADevice::setResolution(struct objecttype_resolution* resolution) {}
+void BGADevice::getResolution(struct objectinterface_resolution* resolution) {}
+void BGADevice::setResolution(struct objectinterface_resolution* resolution) {}
 uint32_t BGADevice::getBuffersize() {
     return 0;
 }

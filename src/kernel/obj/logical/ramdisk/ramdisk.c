@@ -12,7 +12,7 @@
 
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_block.h>
+#include <sys/objectinterface/objectinterface_block.h>
 #include <sys/string/mem.h>
 #include <types.h>
 
@@ -145,8 +145,8 @@ struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     /*
      * the device api
      */
-    struct objecttype_block* api = (struct objecttype_block*)kmalloc(sizeof(struct objecttype_block));
-    memzero((uint8_t*)api, sizeof(struct objecttype_block));
+    struct objectinterface_block* api = (struct objectinterface_block*)kmalloc(sizeof(struct objectinterface_block));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_block));
     api->write = &ramdisk_write;
     api->read = &ramdisk_read;
     api->sector_size = &ramdisk_sector_size;

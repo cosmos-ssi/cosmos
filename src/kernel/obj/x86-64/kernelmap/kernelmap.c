@@ -12,7 +12,7 @@
 
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_kernelmap.h>
+#include <sys/objectinterface/objectinterface_kernelmap.h>
 
 // defined in cosmos.ld
 extern uint64_t _text_start;
@@ -66,7 +66,8 @@ void kernelmap_objectmgr_register_objects() {
     /*
      * api
      */
-    struct objecttype_kernelmap* api = (struct objecttype_kernelmap*)kmalloc(sizeof(struct objecttype_kernelmap));
+    struct objectinterface_kernelmap* api =
+        (struct objectinterface_kernelmap*)kmalloc(sizeof(struct objectinterface_kernelmap));
     api->read = &kernelmap_read;
     objectinstance->api = api;
     /*

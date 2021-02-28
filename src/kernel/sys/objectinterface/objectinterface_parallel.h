@@ -5,15 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all BIOS Data Area devices will implement
+ * this file defines the interface that all parallel port devices will implement
  */
-#ifndef _OBJECTTYPE_CMOS_H
-#define _OBJECTTYPE_CMOS_H
+#ifndef _OBJECTTYPE_PARALLEL_H
+#define _OBJECTTYPE_PARALLEL_H
 
 #include <sys/objectmgr/objectmgr.h>
 
 #include <types.h>
 
-struct objecttype_cmos {};
+typedef void (*parallel_write_function)(struct object* obj, uint8_t* data, uint16_t size);
+
+struct objectinterface_parallel {
+    parallel_write_function write;
+};
 
 #endif

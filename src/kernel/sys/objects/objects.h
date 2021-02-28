@@ -17,7 +17,7 @@
 #include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/objectmgr/objectmgr.h>
 
-#include <sys/objecttype/objecttype_filesystem.h>
+#include <sys/objectinterface/objectinterface_filesystem.h>
 #include <sys/proc/proc.h>
 #include <types.h>
 
