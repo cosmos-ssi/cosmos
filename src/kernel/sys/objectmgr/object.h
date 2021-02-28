@@ -16,9 +16,9 @@ struct pci_device;
 struct object;
 
 // return 1 if successful, 0 if failed to unit
-typedef uint8_t (*obj_init)(struct object* dev);
+typedef uint8_t (*obj_init)(struct object* obj);
 // return 1 is successful, 0 if failed to uninit, including if device refcount>0
-typedef uint8_t (*obj_uninit)(struct object* dev);
+typedef uint8_t (*obj_uninit)(struct object* obj);
 
 typedef enum object_type {
     NONE = 0x00,

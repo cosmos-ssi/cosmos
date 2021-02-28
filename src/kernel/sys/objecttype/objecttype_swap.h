@@ -14,10 +14,10 @@
 
 #include <types.h>
 
-typedef void (*swap_read_function)(struct object* dev, uint8_t* data, uint32_t block);
-typedef void (*swap_write_function)(struct object* dev, uint8_t* data, uint32_t block);
-typedef uint16_t (*swap_block_size_function)(struct object* dev);
-typedef uint16_t (*swap_block_count_function)(struct object* dev);
+typedef void (*swap_read_function)(struct object* obj, uint8_t* data, uint32_t block);
+typedef void (*swap_write_function)(struct object* obj, uint8_t* data, uint32_t block);
+typedef uint16_t (*swap_block_size_function)(struct object* obj);
+typedef uint16_t (*swap_block_count_function)(struct object* obj);
 
 struct objecttype_swap {
     swap_read_function read;

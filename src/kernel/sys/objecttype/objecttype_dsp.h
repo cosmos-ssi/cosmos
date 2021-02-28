@@ -14,7 +14,7 @@
 
 #include <types.h>
 
-typedef void (*dsp_play_function)(struct object* dev, uint8_t* buffer, uint16_t rate, uint8_t depth, uint8_t channels,
+typedef void (*dsp_play_function)(struct object* obj, uint8_t* buffer, uint16_t rate, uint8_t depth, uint8_t channels,
                                   uint64_t len);
 
 struct objecttype_dsp {

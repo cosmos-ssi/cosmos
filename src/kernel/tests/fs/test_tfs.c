@@ -19,8 +19,8 @@ void test_tfs() {
 
     struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct object* dev = tfs_attach(dsk);
-        tfs_detach(dev);
+        struct object* obj = tfs_attach(dsk);
+        tfs_detach(obj);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

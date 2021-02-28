@@ -17,18 +17,18 @@ void test_mbr() {
 
     struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct object* dev = mbr_pt_attach(dsk);
+        struct object* obj = mbr_pt_attach(dsk);
 
-        struct objecttype_part_table* api = (struct objecttype_part_table*)dev->api;
+        struct objecttype_part_table* api = (struct objecttype_part_table*)obj->api;
 
-        uint8_t number_partitions = (*api->partitions)(dev);
+        uint8_t number_partitions = (*api->partitions)(obj);
         kprintf("number_partitions %llu\n", number_partitions);
 
-        //    uint64_t lba = (*api->lba)(dev, 0);
-        //      uint64_t type = (*api->type)(dev, 0);
+        //    uint64_t lba = (*api->lba)(obj, 0);
+        //      uint64_t type = (*api->type)(obj, 0);
         //    kprintf("partition 0 type %llu lba %llu\n", type, lba);
 
-        mbr_pt_detach(dev);
+        mbr_pt_detach(obj);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

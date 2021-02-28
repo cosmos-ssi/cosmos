@@ -36,11 +36,11 @@ enum vga_text_color {
 
 enum vga_video_mode { VIDEO_MODE_TEXT = 1, VIDEO_MODE_MAX };
 
-typedef uint8_t (*vga_set_mode_function)(struct object* dev, enum vga_video_mode mode);
-typedef void (*vga_scroll_text_function)(struct object* dev);
-typedef uint8_t (*vga_write_text_function)(struct object* dev, const char* txt, uint8_t start_row, uint8_t start_col,
+typedef uint8_t (*vga_set_mode_function)(struct object* obj, enum vga_video_mode mode);
+typedef void (*vga_scroll_text_function)(struct object* obj);
+typedef uint8_t (*vga_write_text_function)(struct object* obj, const char* txt, uint8_t start_row, uint8_t start_col,
                                            uint8_t attrib, enum vga_text_color fg_color, enum vga_text_color bg_color);
-typedef uint8_t (*vga_query_resolution_function)(struct object* dev, uint16_t* x, uint16_t* y);
+typedef uint8_t (*vga_query_resolution_function)(struct object* obj, uint16_t* x, uint16_t* y);
 
 struct objecttype_vga {
     vga_set_mode_function set_mode;

@@ -14,7 +14,7 @@
 
 #include <types.h>
 
-typedef void (*serial_write_function)(struct object* dev, const int8_t* c);
+typedef void (*serial_write_function)(struct object* obj, const int8_t* c);
 
 struct objecttype_serial {
     serial_write_function write;

@@ -15,7 +15,7 @@
 #include <types.h>
 
 typedef void (*pit_event)();
-typedef uint64_t (*pit_tickcount_function)(struct object* dev);
+typedef uint64_t (*pit_tickcount_function)(struct object* obj);
 typedef void (*pit_subscribe_function)(pit_event event);
 
 struct objecttype_pit {

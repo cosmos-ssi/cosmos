@@ -25,7 +25,7 @@ typedef struct rtc_time_t {
     uint8_t century;
 } rtc_time_t;
 
-typedef rtc_time_t (*rtc_time_function)(struct object* dev);
+typedef rtc_time_t (*rtc_time_function)(struct object* obj);
 typedef void (*rtc_event)();
 typedef void (*rtc_subscribe_function)(rtc_event event);
 

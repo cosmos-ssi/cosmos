@@ -25,7 +25,7 @@ typedef struct filesystem_node {
     /* 
     * owning device
     */
-    struct object* filesystem_device;
+    struct object* filesystem_obj;
     /*
     * id
     */
@@ -48,7 +48,7 @@ struct filesystem_directory {
 /*
 * get root node
 */
-typedef struct filesystem_node* (*filesystem_get_root_node_function)(struct object* filesystem_device);
+typedef struct filesystem_node* (*filesystem_get_root_node_function)(struct object* filesystem_obj);
 
 /*
 * read bytes from node

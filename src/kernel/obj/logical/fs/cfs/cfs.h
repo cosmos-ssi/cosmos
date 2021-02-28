@@ -12,7 +12,7 @@
 
 struct object;
 
-struct object* cfs_attach(struct object* partition_device);
-void cfs_detach(struct object* dev);
+struct object* cfs_attach(struct object* partition_objice);
+void cfs_detach(struct object* obj);
 
 #endif

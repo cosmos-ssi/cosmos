@@ -21,13 +21,13 @@ struct bmp;
 
 struct canvas {
     uint8_t* buffer;
-    struct object* dev;
+    struct object* obj;
     uint32_t buffer_size;
     uint32_t bytes_per_pixel;
     struct objecttype_resolution resolution;
 };
 
-struct canvas* canvas_new(struct object* dev);
+struct canvas* canvas_new(struct object* obj);
 void canvas_delete(struct canvas* cvs);
 /*
 * draw a line from x0,y0 to x1,y1

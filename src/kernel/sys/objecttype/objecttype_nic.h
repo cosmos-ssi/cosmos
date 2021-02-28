@@ -14,8 +14,8 @@
 
 #include <types.h>
 
-typedef void (*nic_read_function)(struct object* dev, uint8_t* data, uint16_t size);
-typedef void (*nic_write_function)(struct object* dev, uint8_t* data, uint16_t size);
+typedef void (*nic_read_function)(struct object* obj, uint8_t* data, uint16_t size);
+typedef void (*nic_write_function)(struct object* obj, uint8_t* data, uint16_t size);
 
 struct objecttype_nic {
     nic_read_function read;

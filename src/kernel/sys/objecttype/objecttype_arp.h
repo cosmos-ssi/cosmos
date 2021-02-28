@@ -35,7 +35,7 @@ struct arp {
     uint8_t dest_protocol[ARP_PLEN];    // Destination protocol address
 };
 
-typedef void (*arp_request_function)(struct object* dev, struct arp* request, struct arp* response);
+typedef void (*arp_request_function)(struct object* obj, struct arp* request, struct arp* response);
 
 struct objecttype_arp {
     arp_request_function request;

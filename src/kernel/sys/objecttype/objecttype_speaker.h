@@ -14,7 +14,7 @@
 
 #include <types.h>
 
-typedef void (*speaker_beep_function)(struct object* dev, uint32_t frequency, uint32_t milliseconds);
+typedef void (*speaker_beep_function)(struct object* obj, uint32_t frequency, uint32_t milliseconds);
 
 struct objecttype_speaker {
     speaker_beep_function beep;

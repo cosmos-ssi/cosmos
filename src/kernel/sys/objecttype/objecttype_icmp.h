@@ -34,8 +34,8 @@ struct icmp_v4_dst_unreachable {
     uint8_t data[];
 } __attribute__((packed));
 
-typedef void (*icmp_read_function)(struct object* dev, uint8_t* data, uint16_t size);
-typedef void (*icmp_write_function)(struct object* dev, uint8_t* data, uint16_t size);
+typedef void (*icmp_read_function)(struct object* obj, uint8_t* data, uint16_t size);
+typedef void (*icmp_write_function)(struct object* obj, uint8_t* data, uint16_t size);
 
 struct objecttype_ip {
     icmp_read_function read;

@@ -43,23 +43,23 @@ uint64_t smbios_find() {
     }
 }
 
-struct smbios_entry_point* smbios_get_smbios_entry_point(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct smbios_objectdata* object_data = (struct smbios_objectdata*)dev->object_data;
+struct smbios_entry_point* smbios_get_smbios_entry_point(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct smbios_objectdata* object_data = (struct smbios_objectdata*)obj->object_data;
     return (struct smbios_entry_point*)object_data->base;
 }
 
 /*
  * perform device instance specific init here
  */
-uint8_t smbios_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct smbios_objectdata* object_data = (struct smbios_objectdata*)dev->object_data;
+uint8_t smbios_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct smbios_objectdata* object_data = (struct smbios_objectdata*)obj->object_data;
     object_data->base = smbios_find();
     if (0 != object_data->base) {
-        kprintf("Init %s (%s) at Base %#hX\n", dev->description, dev->name, object_data->base);
+        kprintf("Init %s (%s) at Base %#hX\n", obj->description, obj->name, object_data->base);
         return 1;
     } else {
         // cant find the mem region, we cant init it
@@ -71,18 +71,18 @@ void smbios_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "SMBIOS");
-    deviceinstance->devicetype = SMBIOS;
-    deviceinstance->init = &smbios_obj_init;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "SMBIOS");
+    objectinstance->devicetype = SMBIOS;
+    objectinstance->init = &smbios_obj_init;
     /*
      * device data
      */
     struct smbios_objectdata* object_data = (struct smbios_objectdata*)kmalloc(sizeof(struct smbios_objectdata));
     object_data->base = 0;
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

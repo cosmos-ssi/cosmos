@@ -141,23 +141,23 @@ void ne2000isa_irq_handler(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t ne2000_isa_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+uint8_t ne2000_isa_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
     interrupt_router_register_interrupt_handler(NE2000ISA_IRQ, &ne2000isa_irq_handler);
-    kprintf("Init %s at IRQ %llu (%s)\n", dev->description, NE2000ISA_IRQ, dev->name);
+    kprintf("Init %s at IRQ %llu (%s)\n", obj->description, NE2000ISA_IRQ, obj->name);
     // do the init
     ne2000isa_init();
     return 1;
 }
 
-void ne2000isa_ethernet_read(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
+void ne2000isa_ethernet_read(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
 
     PANIC("Ethernet read not implemented yet");
 }
-void ne2000isa_ethernet_write(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
+void ne2000isa_ethernet_write(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
 
     PANIC("Ethernet write not implemented yet");
@@ -170,21 +170,21 @@ void ne2000isa_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &ne2000_isa_init;
-    deviceinstance->devicetype = NIC;
-    objectmgr_set_object_description(deviceinstance, "NE2000 ISA");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &ne2000_isa_init;
+    objectinstance->devicetype = NIC;
+    objectmgr_set_object_description(objectinstance, "NE2000 ISA");
     /*
      * the device api
      */
     struct objecttype_nic* api = (struct objecttype_nic*)kmalloc(sizeof(struct objecttype_nic));
     api->write = &ne2000isa_ethernet_read;
     api->read = &ne2000isa_ethernet_write;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }
 
 void ne2000isa_init() {

@@ -14,8 +14,8 @@
 
 #include <types.h>
 
-typedef void (*tcp_read_function)(struct object* dev, uint8_t* data, uint16_t size);
-typedef void (*tcp_write_function)(struct object* dev, uint8_t* data, uint16_t size);
+typedef void (*tcp_read_function)(struct object* obj, uint8_t* data, uint16_t size);
+typedef void (*tcp_write_function)(struct object* obj, uint8_t* data, uint16_t size);
 
 struct objecttype_tcp {
     tcp_read_function read;

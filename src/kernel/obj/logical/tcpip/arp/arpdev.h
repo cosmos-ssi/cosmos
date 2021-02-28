@@ -14,7 +14,7 @@
 struct object;
 
 struct object* arp_attach(struct object* ethernet_device);
-void arp_detach(struct object* dev);
+void arp_detach(struct object* obj);
 
 void arp_packet_init(struct arp* a, uint16_t opcode);
 

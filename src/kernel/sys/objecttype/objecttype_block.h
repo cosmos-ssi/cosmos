@@ -17,16 +17,16 @@
 * read bytes into 'data'.  'data_size' is the number of bytes to read and 'start_lba' is the starting lba. 
 * return total bytes read
 */
-typedef uint32_t (*block_read_sectors_function)(struct object* dev, uint8_t* data, uint32_t data_size,
+typedef uint32_t (*block_read_sectors_function)(struct object* obj, uint8_t* data, uint32_t data_size,
                                                 uint32_t start_lba);
 /*
 * write bytes from 'data'.  'data_size' is the number of bytes to write and 'start_lba' is the starting lba.
 * return total bytes written
 */
-typedef uint32_t (*block_write_sectors_function)(struct object* dev, uint8_t* data, uint32_t data_size,
+typedef uint32_t (*block_write_sectors_function)(struct object* obj, uint8_t* data, uint32_t data_size,
                                                  uint32_t start_lba);
-typedef uint16_t (*block_sector_size_function)(struct object* dev);
-typedef uint32_t (*block_total_size_function)(struct object* dev);
+typedef uint16_t (*block_sector_size_function)(struct object* obj);
+typedef uint32_t (*block_total_size_function)(struct object* obj);
 
 struct objecttype_block {
     block_read_sectors_function read;

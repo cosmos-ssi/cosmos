@@ -15,6 +15,6 @@ struct object;
  * note that ramdisk uses the block api
  */
 struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count);
-void ramdisk_detach(struct object* dev);
+void ramdisk_detach(struct object* obj);
 
 #endif

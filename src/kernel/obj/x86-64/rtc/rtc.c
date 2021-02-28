@@ -54,9 +54,9 @@ void rtc_handle_irq(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t rtc_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Init %s at IRQ %llu (%s)\n", dev->description, RTC_IRQ_NUMBER, dev->name);
+uint8_t rtc_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Init %s at IRQ %llu (%s)\n", obj->description, RTC_IRQ_NUMBER, obj->name);
 
     rtcEvents = arraylist_new();
     asm_cli();
@@ -73,8 +73,8 @@ uint8_t rtc_obj_init(struct object* dev) {
     return 1;
 }
 
-rtc_time_t rtc_time(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+rtc_time_t rtc_time(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
     rtc_time_t a, b;
 
     a.second = cmos_read_register(RTC_REGISTER_SECOND);
@@ -130,19 +130,19 @@ void rtc_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "RTC");
-    deviceinstance->devicetype = RTC;
-    deviceinstance->init = &rtc_obj_init;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "RTC");
+    objectinstance->devicetype = RTC;
+    objectinstance->init = &rtc_obj_init;
     /*
      * device api
      */
     struct objecttype_rtc* api = (struct objecttype_rtc*)kmalloc(sizeof(struct objecttype_rtc));
     api->rtc_time = &rtc_time;
     api->subscribe = &rtc_subscribe;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

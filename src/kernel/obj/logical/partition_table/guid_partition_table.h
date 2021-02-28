@@ -45,9 +45,9 @@ struct guid_pt_entry {
 struct object;
 
 struct object* guid_pt_attach(struct object* block_device);
-void guid_pt_detach(struct object* dev);
+void guid_pt_detach(struct object* obj);
 
-void guid_pt_dump(struct object* dev);
+void guid_pt_dump(struct object* obj);
 
 // string must be 16*4 + some in legnth so lets presume 128 bytes
 // type is 16 bytes for GPT

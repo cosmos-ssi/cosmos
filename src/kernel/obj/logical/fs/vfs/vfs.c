@@ -27,38 +27,38 @@ struct vfs_objectdata {
 /*
  * perform device instance specific init here
  */
-uint8_t vfs_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Init %s (%s)\n", dev->description, dev->name);
+uint8_t vfs_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
 
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t vfs_uninit(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Uninit %s  (%s)\n", dev->description, dev->name);
-    struct vfs_objectdata* object_data = (struct vfs_objectdata*)dev->object_data;
+uint8_t vfs_uninit(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Uninit %s  (%s)\n", obj->description, obj->name);
+    struct vfs_objectdata* object_data = (struct vfs_objectdata*)obj->object_data;
 
-    kfree(dev->api);
+    kfree(obj->api);
     kfree(object_data->root_node);
     kfree(object_data->children);
     kfree(object_data);
     return 1;
 }
 
-struct filesystem_node* vfs_get_root_node(struct object* filesystem_device) {
-    ASSERT_NOT_NULL(filesystem_device);
-    ASSERT_NOT_NULL(filesystem_device->object_data);
-    struct vfs_objectdata* object_data = (struct vfs_objectdata*)filesystem_device->object_data;
+struct filesystem_node* vfs_get_root_node(struct object* filesystem_obj) {
+    ASSERT_NOT_NULL(filesystem_obj);
+    ASSERT_NOT_NULL(filesystem_obj->object_data);
+    struct vfs_objectdata* object_data = (struct vfs_objectdata*)filesystem_obj->object_data;
     return object_data->root_node;
 }
 
 uint32_t vfs_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -69,8 +69,8 @@ uint32_t vfs_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_
 
 uint32_t vfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -82,25 +82,25 @@ uint32_t vfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_
 
 void vfs_open(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
 
     PANIC("not implemented");
 }
 
 void vfs_close(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
 
     PANIC("not implemented");
 }
 
 struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
-    struct vfs_objectdata* object_data = (struct vfs_objectdata*)fs_node->filesystem_device->object_data;
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
+    struct vfs_objectdata* object_data = (struct vfs_objectdata*)fs_node->filesystem_obj->object_data;
     //  kprintf("vfs_find_node_by_id node id %llu of node %s\n", id, fs_node->name);
     if (fs_node == object_data->root_node) {
         /*
@@ -129,10 +129,10 @@ struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uin
 
 void vfs_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
     ASSERT_NOT_NULL(dir);
-    struct vfs_objectdata* object_data = (struct vfs_objectdata*)fs_node->filesystem_device->object_data;
+    struct vfs_objectdata* object_data = (struct vfs_objectdata*)fs_node->filesystem_obj->object_data;
     if (fs_node == object_data->root_node) {
         /*
         * root node
@@ -157,8 +157,8 @@ void vfs_list_directory(struct filesystem_node* fs_node, struct filesystem_direc
 
 uint64_t vfs_size(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
     // vfs nodes have no size
     return 0;
 }
@@ -168,13 +168,13 @@ struct object* vfs_attach(uint8_t* name) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &vfs_init;
-    deviceinstance->uninit = &vfs_uninit;
-    deviceinstance->pci = 0;
-    deviceinstance->devicetype = VFS;
-    deviceinstance->object_data = 0;
-    objectmgr_set_object_description(deviceinstance, "VFS File System");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &vfs_init;
+    objectinstance->uninit = &vfs_uninit;
+    objectinstance->pci = 0;
+    objectinstance->devicetype = VFS;
+    objectinstance->object_data = 0;
+    objectmgr_set_object_description(objectinstance, "VFS File System");
     /*
      * the device api
      */
@@ -188,38 +188,38 @@ struct object* vfs_attach(uint8_t* name) {
     api->read = &vfs_read;
     api->list = &vfs_list_directory;
     api->size = &vfs_size;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * device data
      */
     struct vfs_objectdata* object_data = (struct vfs_objectdata*)kmalloc(sizeof(struct vfs_objectdata));
-    object_data->root_node = filesystem_node_new(folder, deviceinstance, name, 0, 0);
+    object_data->root_node = filesystem_node_new(folder, objectinstance, name, 0, 0);
     object_data->children = arraylist_new();
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * register
      */
-    if (0 != objectmgr_attach_object(deviceinstance)) {
+    if (0 != objectmgr_attach_object(objectinstance)) {
         /*
         * return device
         */
-        return deviceinstance;
+        return objectinstance;
     } else {
         kfree(object_data->children);
         kfree(object_data->root_node);
         kfree(object_data);
         kfree(api);
-        kfree(deviceinstance);
+        kfree(objectinstance);
         return 0;
     }
 }
 
-void vfs_detach(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
+void vfs_detach(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
     /*
     * detach
     */
-    objectmgr_detach_object(dev);
+    objectmgr_detach_object(obj);
 }
 
 void vfs_add_child(struct object* vfs_device, struct filesystem_node* child_node) {

@@ -18,8 +18,8 @@ void test_gpt_attach() {
 
     struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct object* dev = guid_pt_attach(dsk);
-        guid_pt_detach(dev);
+        struct object* obj = guid_pt_attach(dsk);
+        guid_pt_detach(obj);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

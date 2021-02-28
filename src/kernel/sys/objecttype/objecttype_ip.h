@@ -29,8 +29,8 @@ struct ip_header {
     uint32_t daddr;
 } __attribute__((packed)) __attribute__((aligned(8)));
 
-typedef void (*ip_read_function)(struct object* dev, uint8_t* data, uint16_t size);
-typedef void (*ip_write_function)(struct object* dev, uint8_t* data, uint16_t size);
+typedef void (*ip_read_function)(struct object* obj, uint8_t* data, uint16_t size);
+typedef void (*ip_write_function)(struct object* obj, uint8_t* data, uint16_t size);
 
 struct objecttype_ip {
     ip_read_function read;

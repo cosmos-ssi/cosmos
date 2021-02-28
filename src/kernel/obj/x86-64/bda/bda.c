@@ -102,9 +102,9 @@ uint16_t bda_parallel2_base() {
 /*
  * perform device instance specific init here
  */
-uint8_t bda_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Init %s (%s)\n", dev->description, dev->name);
+uint8_t bda_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
 
@@ -112,17 +112,17 @@ void bda_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "BIOS Data Area");
-    deviceinstance->devicetype = BDA;
-    deviceinstance->init = &bda_obj_init;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "BIOS Data Area");
+    objectinstance->devicetype = BDA;
+    objectinstance->init = &bda_obj_init;
     /*
      * api
      */
     //   struct objecttype_bda* api = (struct objecttype_bda*)kmalloc(sizeof(struct objecttype_bda));
-    //   deviceinstance->api = api;
+    //   objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

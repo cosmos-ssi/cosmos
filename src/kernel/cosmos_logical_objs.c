@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <cosmos_logical_devs.h>
+#include <cosmos_logical_objs.h>
 #include <obj/logical/console/serial_console.h>
 #include <obj/logical/console/vga_console.h>
 #include <obj/logical/ethernet/ethernet.h>
@@ -33,7 +33,7 @@
 #include <sys/objecttype/objecttype_serial.h>
 #include <sys/objecttype/objecttype_speaker.h>
 
-void attach_logical_devices() {
+void attach_logical_objects() {
     /*
     * console
     */
@@ -95,10 +95,10 @@ void attach_logical_devices() {
     /*
     * vfs
     */
-    struct object* rootfs_dev = vfs_attach("/");
-    //   struct object* devfs_dev = devfs_attach();
+    struct object* rootfs_obj = vfs_attach("/");
+    //   struct object* objfs_dev = devfs_attach();
     //   struct filesystem_node* fsnode_devfs = fsfacade_get_fs_rootnode(devfs_dev);
     struct filesystem_node* fsnode_initrd = fsfacade_get_fs_rootnode(initrd_dev);
-    // vfs_add_child(rootfs_dev, fsnode_devfs);
-    vfs_add_child(rootfs_dev, fsnode_initrd);
+    // vfs_add_child(rootfs_obj, fsnode_devfs);
+    vfs_add_child(rootfs_obj, fsnode_initrd);
 }

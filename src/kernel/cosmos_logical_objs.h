@@ -9,9 +9,9 @@
 * sets up the logical devices (devices that are not hardware devices)
 */
 
-#ifndef _COSMOS_LOGICAL_DEVS
-#define _COSMOS_LOGICAL_DEVS
+#ifndef _COSMOS_LOGICAL_OBJS
+#define _COSMOS_LOGICAL_OBJS
 
-void attach_logical_devices();
+void attach_logical_objects();
 
 #endif

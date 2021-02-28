@@ -11,6 +11,6 @@
 struct object;
 
 struct object* vga_console_attach(struct object* vga_device);
-void vga_console_detach(struct object* dev);
+void vga_console_detach(struct object* obj);
 
 #endif

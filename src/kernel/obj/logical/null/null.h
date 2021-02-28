@@ -13,6 +13,6 @@
 struct object;
 
 struct object* null_attach();
-void null_detach(struct object* dev);
+void null_detach(struct object* obj);
 
 #endif

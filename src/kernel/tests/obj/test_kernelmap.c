@@ -16,6 +16,6 @@
 void test_kernelmap() {
     kprintf("Testing Kernelmap\n");
 
-    struct object* dev = objectmgr_find_object("kernelmap0");
-    ASSERT_NOT_NULL(dev);
+    struct object* obj = objectmgr_find_object("kernelmap0");
+    ASSERT_NOT_NULL(obj);
 }

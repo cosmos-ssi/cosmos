@@ -25,7 +25,7 @@ struct kernelmap {
     uint64_t debug_end;
 };
 
-typedef void (*kernelmap_read_function)(struct object* dev, struct kernelmap* km);
+typedef void (*kernelmap_read_function)(struct object* obj, struct kernelmap* km);
 
 struct objecttype_kernelmap {
     kernelmap_read_function read;

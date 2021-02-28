@@ -15,8 +15,8 @@ void test_cfs() {
 
     struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct object* dev = cfs_attach(dsk);
-        cfs_detach(dev);
+        struct object* obj = cfs_attach(dsk);
+        cfs_detach(obj);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

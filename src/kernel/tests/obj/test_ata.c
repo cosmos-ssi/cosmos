@@ -33,9 +33,9 @@ void test_ata1() {
 void test_ata_dma() {
     kprintf("Testing ATA DMA...\n");
 
-    struct object* dev = objectmgr_find_object("disk0");
+    struct object* obj = objectmgr_find_object("disk0");
 
-    ata_dma_read(dev, 0, 129, 0);
+    ata_dma_read(obj, 0, 129, 0);
 }
 
 void test_ata() {

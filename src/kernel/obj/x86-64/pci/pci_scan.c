@@ -15,24 +15,24 @@
 #define PCI_MAX_BUSSES 256
 #define PCI_MAX_DEVICES_PER_BUS 32
 
-void fill_pci_device(struct pci_device* dev, uint8_t bus, uint8_t device, uint8_t function) {
+void fill_pci_device(struct pci_device* obj, uint8_t bus, uint8_t device, uint8_t function) {
     ASSERT_NOT_NULL(pci_devices);
-    ASSERT_NOT_NULL(dev);
-    dev->bus = bus;
-    dev->device = device;
-    dev->function = function;
-    dev->pci_class = pci_header_read_class(bus, device, function);
-    dev->pci_subclass = pci_header_read_subclass(bus, device, function);
-    dev->header_type = pci_header_read_type(bus, device, function);
-    dev->irq = pci_header_read_irq(bus, device, function);
-    dev->vendor_id = pci_header_read_vendor(bus, device, function);
-    dev->device_id = pci_header_read_device_id(bus, device, function);
-    dev->bars[0] = pci_header_read_bar0(bus, device, function);
-    dev->bars[1] = pci_header_read_bar1(bus, device, function);
-    dev->bars[2] = pci_header_read_bar2(bus, device, function);
-    dev->bars[3] = pci_header_read_bar3(bus, device, function);
-    dev->bars[4] = pci_header_read_bar4(bus, device, function);
-    dev->bars[5] = pci_header_read_bar5(bus, device, function);
+    ASSERT_NOT_NULL(obj);
+    obj->bus = bus;
+    obj->device = device;
+    obj->function = function;
+    obj->pci_class = pci_header_read_class(bus, device, function);
+    obj->pci_subclass = pci_header_read_subclass(bus, device, function);
+    obj->header_type = pci_header_read_type(bus, device, function);
+    obj->irq = pci_header_read_irq(bus, device, function);
+    obj->vendor_id = pci_header_read_vendor(bus, device, function);
+    obj->device_id = pci_header_read_device_id(bus, device, function);
+    obj->bars[0] = pci_header_read_bar0(bus, device, function);
+    obj->bars[1] = pci_header_read_bar1(bus, device, function);
+    obj->bars[2] = pci_header_read_bar2(bus, device, function);
+    obj->bars[3] = pci_header_read_bar3(bus, device, function);
+    obj->bars[4] = pci_header_read_bar4(bus, device, function);
+    obj->bars[5] = pci_header_read_bar5(bus, device, function);
 }
 
 bool pci_device_exists(uint8_t bus, uint8_t device, uint8_t function) {

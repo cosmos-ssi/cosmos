@@ -11,14 +11,14 @@
 #include <sys/objectmgr/objectmgr.h>
 
 void objectregistry_init();
-void objectregistry_registerdevice(struct object* dev);
-void objectregistry_unregisterdevice(struct object* dev);
+void objectregistry_registerdevice(struct object* obj);
+void objectregistry_unregisterdevice(struct object* obj);
 
 uint16_t objectregistry_devicecount();
 uint16_t objectregistry_devicecount_type(device_type dt);
 struct object* objectregistry_get_device(device_type dt, uint16_t idx);
 
-typedef void (*device_iterator)(struct object* dev);
+typedef void (*device_iterator)(struct object* obj);
 
 void objectregistry_iterate(device_iterator deviceIterator);
 void objectregistry_iterate_type(device_type dt, device_iterator deviceIterator);

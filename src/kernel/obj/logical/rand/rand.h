@@ -13,6 +13,6 @@
 struct object;
 
 struct object* rand_attach();
-void rand_detach(struct object* dev);
+void rand_detach(struct object* obj);
 
 #endif

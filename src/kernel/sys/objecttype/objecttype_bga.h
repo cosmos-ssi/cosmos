@@ -20,10 +20,10 @@ struct objecttype_resolution {
     uint32_t color_depth;
 };
 
-typedef void (*bga_get_resolution_function)(struct object* dev, struct objecttype_resolution* resolution);
-typedef void (*bga_set_resolution_function)(struct object* dev, struct objecttype_resolution* resolution);
-typedef uint32_t (*bga_get_buffersize_function)(struct object* dev);
-typedef void (*bga_blt_function)(struct object* dev, uint8_t* buffer, uint32_t buffer_size);
+typedef void (*bga_get_resolution_function)(struct object* obj, struct objecttype_resolution* resolution);
+typedef void (*bga_set_resolution_function)(struct object* obj, struct objecttype_resolution* resolution);
+typedef uint32_t (*bga_get_buffersize_function)(struct object* obj);
+typedef void (*bga_blt_function)(struct object* obj, uint8_t* buffer, uint32_t buffer_size);
 
 struct objecttype_bga {
     bga_get_resolution_function get_resolution;

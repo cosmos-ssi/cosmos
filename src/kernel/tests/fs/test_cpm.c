@@ -17,14 +17,14 @@ void test_cpm() {
 
     struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct object* dev = cpm_attach(dsk);
+        struct object* obj = cpm_attach(dsk);
 
         // format to CPM
-        //   struct objecttype_filesystem* api = (struct objecttype_filesystem*)dev->api;
-        //  (*api->format)(dev);
+        //   struct objecttype_filesystem* api = (struct objecttype_filesystem*)obj->api;
+        //  (*api->format)(obj);
 
         // detach
-        cpm_detach(dev);
+        cpm_detach(obj);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

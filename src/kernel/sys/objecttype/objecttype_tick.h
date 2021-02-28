@@ -14,7 +14,7 @@
 
 #include <types.h>
 
-typedef uint64_t (*tick_read_function)(struct object* dev);
+typedef uint64_t (*tick_read_function)(struct object* obj);
 
 struct objecttype_tick {
     tick_read_function read;

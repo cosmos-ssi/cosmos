@@ -17,35 +17,35 @@ struct tcp_objectdata {
 /*
  * perform device instance specific init here
  */
-uint8_t tcp_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct tcp_objectdata* object_data = (struct tcp_objectdata*)dev->object_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, object_data->ip_device->name, dev->name);
+uint8_t tcp_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct tcp_objectdata* object_data = (struct tcp_objectdata*)obj->object_data;
+    kprintf("Init %s on %s (%s)\n", obj->description, object_data->ip_device->name, obj->name);
     return 1;
 }
 
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t tcp_uninit(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Uninit %s (%s)\n", dev->description, dev->name);
-    kfree(dev->api);
-    kfree(dev->object_data);
+uint8_t tcp_uninit(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Uninit %s (%s)\n", obj->description, obj->name);
+    kfree(obj->api);
+    kfree(obj->object_data);
 
     return 1;
 }
 
-void tcp_read(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    //  struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
+void tcp_read(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    //  struct ip_objectdata* object_data = (struct ip_objectdata*)obj->object_data;
 }
-void tcp_write(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    //   struct ip_objectdata* object_data = (struct ip_objectdata*)dev->object_data;
+void tcp_write(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    //   struct ip_objectdata* object_data = (struct ip_objectdata*)obj->object_data;
 }
 
 struct object* tcp_attach(struct object* ip_device) {
@@ -55,12 +55,12 @@ struct object* tcp_attach(struct object* ip_device) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &tcp_init;
-    deviceinstance->uninit = &tcp_uninit;
-    deviceinstance->pci = 0;
-    deviceinstance->devicetype = TCP;
-    objectmgr_set_object_description(deviceinstance, "Transmission Control Protocol");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &tcp_init;
+    objectinstance->uninit = &tcp_uninit;
+    objectinstance->pci = 0;
+    objectinstance->devicetype = TCP;
+    objectmgr_set_object_description(objectinstance, "Transmission Control Protocol");
     /*
      * the device api
      */
@@ -69,17 +69,17 @@ struct object* tcp_attach(struct object* ip_device) {
     api->read = &tcp_read;
     api->write = &tcp_write;
 
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * device data
      */
     struct tcp_objectdata* object_data = (struct tcp_objectdata*)kmalloc(sizeof(struct tcp_objectdata));
     object_data->ip_device = ip_device;
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * register
      */
-    if (0 != objectmgr_attach_object(deviceinstance)) {
+    if (0 != objectmgr_attach_object(objectinstance)) {
         /*
         * increase ref count of underlying device
         */
@@ -87,19 +87,19 @@ struct object* tcp_attach(struct object* ip_device) {
         /*
         * return device
         */
-        return deviceinstance;
+        return objectinstance;
     } else {
         kfree(api);
         kfree(object_data);
-        kfree(deviceinstance);
+        kfree(objectinstance);
         return 0;
     }
 }
 
-void tcp_detach(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct tcp_objectdata* object_data = (struct tcp_objectdata*)dev->object_data;
+void tcp_detach(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct tcp_objectdata* object_data = (struct tcp_objectdata*)obj->object_data;
     /*
     * decrease ref count of underlying device
     */
@@ -107,5 +107,5 @@ void tcp_detach(struct object* dev) {
     /*
     * detach
     */
-    objectmgr_detach_object(dev);
+    objectmgr_detach_object(obj);
 }

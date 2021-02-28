@@ -22,21 +22,21 @@
 #include <sys/string/string.h>
 #include <types.h>
 
-void ata_detect_devices(struct object* device, struct ata_controller* controller);
+void ata_detect_devices(struct object* object, struct ata_controller* controller);
 #define IDE_SERIAL_IRQ 14
 
 /*
  * detect all the addresses on a ATA controller
  */
-void ata_detect_addresses(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    ASSERT_NOT_NULL(dev->pci);
+void ata_detect_addresses(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    ASSERT_NOT_NULL(obj->pci);
 
-    struct ata_controller* controller = (struct ata_controller*)dev->object_data;
-    uint8_t bus = dev->pci->bus;
-    uint8_t device = dev->pci->device;
-    uint8_t function = dev->pci->function;
+    struct ata_controller* controller = (struct ata_controller*)obj->object_data;
+    uint8_t bus = obj->pci->bus;
+    uint8_t device = obj->pci->device;
+    uint8_t function = obj->pci->function;
 
     uint32_t bar_result;
     uint32_t bar_base;
@@ -82,20 +82,20 @@ void ata_detect_addresses(struct object* dev) {
 /*
  * init ATA controller
  */
-uint8_t obj_init_ata(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct ata_controller* controller = (struct ata_controller*)dev->object_data;
+uint8_t obj_init_ata(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct ata_controller* controller = (struct ata_controller*)obj->object_data;
 
-    kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX (%s)\n", dev->description, dev->pci->irq, dev->pci->vendor_id,
-            dev->pci->device_id, dev->name);
+    kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX (%s)\n", obj->description, obj->pci->irq, obj->pci->vendor_id,
+            obj->pci->device_id, obj->name);
 
     // set up selected devices
     controller->channels[ATA_PRIMARY].selected_device = ATA_DRIVE_SELECT_NONE;
     controller->channels[ATA_SECONDARY].selected_device = ATA_DRIVE_SELECT_NONE;
 
     // detect addresses
-    ata_detect_addresses(dev);
+    ata_detect_addresses(obj);
 
     kprintf("    Primary IDE I/O at %#llX, control at %#llX\n", controller->channels[ATA_PRIMARY].base_io,
             controller->channels[ATA_PRIMARY].base_io_ctrl);
@@ -103,13 +103,13 @@ uint8_t obj_init_ata(struct object* dev) {
             controller->channels[ATA_SECONDARY].base_io_ctrl);
 
     // if this doesn't set the IRQ then this is a parallel IDE, but we don't need to know that
-    pci_header_set_irq(dev->pci->bus, dev->pci->device, dev->pci->function, IDE_SERIAL_IRQ);
+    pci_header_set_irq(obj->pci->bus, obj->pci->device, obj->pci->function, IDE_SERIAL_IRQ);
 
     // turn off interrupts
     ata_interrupt_enable(controller, ATA_PRIMARY, false);
     ata_interrupt_enable(controller, ATA_SECONDARY, false);
 
-    ata_detect_devices(dev, controller);
+    ata_detect_devices(obj, controller);
 
     ata_dma_init();
 
@@ -121,27 +121,27 @@ void ata_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &obj_init_ata;
-    deviceinstance->pci = dev;
-    deviceinstance->devicetype = ATA;
-    objectmgr_set_object_description(deviceinstance, "ATA");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &obj_init_ata;
+    objectinstance->pci = dev;
+    objectinstance->devicetype = ATA;
+    objectmgr_set_object_description(objectinstance, "ATA");
     /*
      * device data
      */
     struct ata_controller* object_data = (struct ata_controller*)kmalloc(sizeof(struct ata_controller));
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }
 
 void ata_objectmgr_register_objects() {
     pci_objectmgr_search_devicetype(PCI_CLASS_MASS_STORAGE, PCI_MASS_STORAGE_SUBCLASS_IDE, &ata_search_cb);
 }
 
-void ata_detect_devices(struct object* device, struct ata_controller* controller) {
+void ata_detect_devices(struct object* object, struct ata_controller* controller) {
     uint8_t i, j;
     uint8_t status;
     //  struct ata_device_t* tmp;
@@ -181,17 +181,17 @@ void ata_detect_devices(struct object* device, struct ata_controller* controller
 
             // register the device
             //	kprintf("    Found disk at channel %llu, device %llu\n",i,j);
-            ata_register_disk(device, i, j);
+            ata_register_disk(object, i, j);
         }
     }
     return;
 }
 
-struct ata_device* ata_get_disk(struct object* dev, uint8_t channel, uint8_t disk) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
+struct ata_device* ata_get_disk(struct object* obj, uint8_t channel, uint8_t disk) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
     ASSERT(((channel >= 0) && (channel <= 1)));
     ASSERT(((disk >= 0) && (disk <= 1)));
-    struct ata_controller* controller = (struct ata_controller*)dev->object_data;
+    struct ata_controller* controller = (struct ata_controller*)obj->object_data;
     return &(controller->channels[channel].devices[disk]);
 }

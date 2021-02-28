@@ -14,7 +14,7 @@
 
 #include <types.h>
 
-typedef uint8_t (*null_read_function)(struct object* dev);
+typedef uint8_t (*null_read_function)(struct object* obj);
 
 struct objecttype_null {
     null_read_function read;

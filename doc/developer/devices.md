@@ -18,7 +18,7 @@ void network_objectmgr_register_objects() {
 }
 ```
 
-Each device driver's register function finds all instance of the specific device type, and calls `void objectmgr_register_object(struct object* dev);` to register each instance.
+Each device driver's register function finds all instance of the specific device type, and calls `void objectmgr_register_object(struct object* obj);` to register each instance.
 
 Device's on the PCI bus can use the PCI search functions to find device instances
 
@@ -53,7 +53,7 @@ These devices should expose an attach() API, and an unattach() API which can dyn
 
 The function `void initDevices();` is used by the device manager to initialize all fixed hardware devices. The devices will have passed a pointer to a init function with this prototype:
 
-`typedef void (*obj_init)(struct object* dev);`
+`typedef void (*obj_init)(struct object* obj);`
 
 The DeviceMgr will assign a unique name to each device such as "serial0".
 

@@ -14,7 +14,7 @@
 
 #include <types.h>
 
-typedef uint64_t (*rand_read_function)(struct object* dev);
+typedef uint64_t (*rand_read_function)(struct object* obj);
 
 struct objecttype_rand {
     rand_read_function read;

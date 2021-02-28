@@ -5,7 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <cosmos_logical_devs.h>
+#include <cosmos_logical_objs.h>
 #include <obj/logical/console/vga_console.h>
 #include <obj/logical/fs/initrd/initrd.h>
 #include <sys/asm/asm.h>
@@ -96,9 +96,9 @@ void CosmOS() {
     kprintf("\n");
 
     /*
-     * mount logical devices
+     * mount logical objects
      */
-    attach_logical_devices();
+    attach_logical_objects();
 
     /*
      * say hi on the VGA console

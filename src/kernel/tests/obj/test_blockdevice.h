@@ -12,6 +12,6 @@
 
 #include <sys/objectmgr/object.h>
 
-void test_block_device(struct object* dev);
+void test_block_device(struct object* obj);
 
 #endif

@@ -37,22 +37,22 @@ void sdhci_irq_handler(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t sdhci_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct sdhci_objectdata* object_data = (struct sdhci_objectdata*)dev->object_data;
-    object_data->base = (uint64_t)CONV_PHYS_ADDR(pci_calcbar(dev->pci));
-    kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
-    interrupt_router_register_interrupt_handler(dev->pci->irq, &sdhci_irq_handler);
+uint8_t sdhci_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct sdhci_objectdata* object_data = (struct sdhci_objectdata*)obj->object_data;
+    object_data->base = (uint64_t)CONV_PHYS_ADDR(pci_calcbar(obj->pci));
+    kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", obj->description, obj->pci->irq,
+            obj->pci->vendor_id, obj->pci->device_id, object_data->base, obj->name);
+    interrupt_router_register_interrupt_handler(obj->pci->irq, &sdhci_irq_handler);
     return 1;
 }
 
 /*
  * perform device instance specific uninit here
  */
-uint8_t sdhci_obj_uninit(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Uninit %s (%s)\n", dev->description, dev->name);
+uint8_t sdhci_obj_uninit(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Uninit %s (%s)\n", obj->description, obj->name);
     return 1;
 }
 
@@ -60,28 +60,28 @@ void sdhci_pci_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "SDHCI Controller");
-    deviceinstance->devicetype = SDHCI;
-    deviceinstance->pci = dev;
-    deviceinstance->init = &sdhci_obj_init;
-    deviceinstance->uninit = sdhci_obj_uninit;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "SDHCI Controller");
+    objectinstance->devicetype = SDHCI;
+    objectinstance->pci = dev;
+    objectinstance->init = &sdhci_obj_init;
+    objectinstance->uninit = sdhci_obj_uninit;
     /*
      * device api
      */
     //   struct objecttype_block* api = (struct objecttype_block*)kmalloc(sizeof(struct objecttype_block));
     //   memzero((uint8_t*)api, sizeof(struct objecttype_block));
-    //   deviceinstance->api = api;
+    //   objectinstance->api = api;
     /*
      * the object_data
      */
     struct sdhci_objectdata* object_data = (struct sdhci_objectdata*)kmalloc(sizeof(struct sdhci_objectdata));
     object_data->base = 0;
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /**
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }
 
 /**

@@ -20,13 +20,13 @@
 void test_virtio_vnic() {
     kprintf("test_virtio_vnic starting\n");
     uint8_t devicename[] = {"vnic0"};
-    struct object* dev = objectmgr_find_object(devicename);
-    if (0 == dev) {
+    struct object* obj = objectmgr_find_object(devicename);
+    if (0 == obj) {
         PANIC("nic0 not found");
     }
 
-    struct objecttype_nic* nic_api = (struct objecttype_nic*)dev->api;
-    struct vnic_objectdata* object_data = (struct vnic_objectdata*)dev->object_data;
+    struct objecttype_nic* nic_api = (struct objecttype_nic*)obj->api;
+    struct vnic_objectdata* object_data = (struct vnic_objectdata*)obj->object_data;
 
     // status
     uint8_t txq[] = {"TXQ: "};
@@ -40,7 +40,7 @@ void test_virtio_vnic() {
         uint8_t s[] = "this is a test of the emergency broadcasting system\0";
         uint8_t* buffer = (uint8_t*)kmalloc(strlen(s));
         strncpy(buffer, s, strlen(s) + 1);
-        nic_api->write(dev, buffer, strlen(s));
+        nic_api->write(obj, buffer, strlen(s));
     }
     virtq_print(rxq, object_data->receive_queue);
 }

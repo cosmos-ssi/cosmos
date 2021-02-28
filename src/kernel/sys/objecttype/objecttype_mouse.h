@@ -21,7 +21,7 @@ struct mouse_status {
     int8_t mouse_y;
 };
 
-typedef struct mouse_status* (*mouse_status_function)(struct object* dev);
+typedef struct mouse_status* (*mouse_status_function)(struct object* obj);
 
 struct objecttype_mouse {
     mouse_status_function status;
