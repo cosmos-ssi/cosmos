@@ -49,9 +49,6 @@ void interrupt_router_register_interrupt_handler(int interruptNumber, interrupt_
  * route an interrupt
  */
 void interrupt_router_route_interrupt(int interruptNumber, stack_frame* frame) {
-    if (interruptNumber != 0 && interruptNumber != 8) {
-        kprintf("\n***** INTERRUPT: %hu ********\n", interruptNumber);
-    }
     ASSERT_NOT_NULL(frame);
     ASSERT_NOT_NULL(interrupt_handlers);
 
