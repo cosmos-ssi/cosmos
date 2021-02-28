@@ -15,3 +15,7 @@ void proc_table_add(proc_info_t* proc_info) {
 
     return;
 }
+
+proc_info_t* proc_table_get(pid_t pid) {
+    return (proc_info_t*)dtable_get(proc_table, (uint64_t)pid);
+}

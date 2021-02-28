@@ -33,7 +33,8 @@ void setup_user_process(pid_t pid) {
     pttentry proc_cr3;
 
     cr3_page = slab_allocate(1, PDT_INUSE);
-    proc_cr3 = cr3_page * PAGE_SIZE;
+    ASSERT_NOT_NULL(cr3_page);
+    proc_cr3 = cr3_page * PAGE_SIZE;  // we don't need to set any flags
 
     return;
 }

@@ -85,5 +85,6 @@ void proc_init();
 
 // proc_table.c
 void proc_table_add(proc_info_t* proc_info);
+proc_info_t* proc_table_get(pid_t pid);
 
 #endif
