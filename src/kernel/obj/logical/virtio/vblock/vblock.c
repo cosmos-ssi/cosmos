@@ -14,12 +14,12 @@
 #include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_block.h>
+#include <sys/obj/objectinterface/objectinterface_block.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 #include <types.h>
@@ -88,16 +88,16 @@ void vblock_irq_handler(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t vblock_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
+uint8_t vblock_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
 
-    struct vblock_objectdata* object_data = (struct vblock_objectdata*)dev->object_data;
-    interrupt_router_register_interrupt_handler(dev->pci->irq, &vblock_irq_handler);
-    object_data->base = pci_calcbar(dev->pci);
+    struct vblock_objectdata* object_data = (struct vblock_objectdata*)obj->object_data;
+    interrupt_router_register_interrupt_handler(obj->pci->irq, &vblock_irq_handler);
+    object_data->base = pci_calcbar(obj->pci);
 
-    kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
+    kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", obj->description, obj->pci->irq,
+            obj->pci->vendor_id, obj->pci->device_id, object_data->base, obj->name);
 
     // acknowledge device and set the driver loaded bit
     asm_out_b(object_data->base + VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_DEVICE_ACKNOWLEGED);
@@ -151,13 +151,13 @@ uint8_t vblock_init(struct object* dev) {
     return 1;
 }
 
-uint32_t vblockutil_read(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
-    ASSERT_NOT_NULL(dev);
+uint32_t vblockutil_read(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
 
-    ASSERT_NOT_NULL(dev->object_data);
-    struct vblock_objectdata* object_data = (struct vblock_objectdata*)dev->object_data;
+    ASSERT_NOT_NULL(obj->object_data);
+    struct vblock_objectdata* object_data = (struct vblock_objectdata*)obj->object_data;
 
     /*
      * drop a message
@@ -193,8 +193,8 @@ uint32_t vblockutil_read(struct object* dev, uint8_t* data, uint32_t data_size, 
     return 0;
 }
 
-uint32_t vblockutil_write(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
-    ASSERT_NOT_NULL(dev);
+uint32_t vblockutil_write(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
 
@@ -202,17 +202,17 @@ uint32_t vblockutil_write(struct object* dev, uint8_t* data, uint32_t data_size,
     return 0;
 }
 
-uint16_t vblock_sector_size(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct vblock_objectdata* object_data = (struct vblock_objectdata*)dev->object_data;
+uint16_t vblock_sector_size(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct vblock_objectdata* object_data = (struct vblock_objectdata*)obj->object_data;
     return object_data->sectorLength;
 }
 
-uint32_t vblock_total_size(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct vblock_objectdata* object_data = (struct vblock_objectdata*)dev->object_data;
+uint32_t vblock_total_size(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct vblock_objectdata* object_data = (struct vblock_objectdata*)obj->object_data;
     return object_data->totalSectors * object_data->sectorLength;
 }
 
@@ -221,30 +221,30 @@ void vblock_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &vblock_init;
-    deviceinstance->pci = dev;
-    deviceinstance->devicetype = VBLOCK;
-    objectmgr_set_object_description(deviceinstance, "Virtio ATA");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &vblock_init;
+    objectinstance->pci = dev;
+    objectinstance->objectype = VBLOCK;
+    objectmgr_set_object_description(objectinstance, "Virtio ATA");
     /*
      * device data
      */
     struct vblock_objectdata* object_data = (struct vblock_objectdata*)kmalloc(sizeof(struct vblock_objectdata));
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * the device api
      */
-    struct objecttype_block* api = (struct objecttype_block*)kmalloc(sizeof(struct objecttype_block));
-    memzero((uint8_t*)api, sizeof(struct objecttype_block));
+    struct objectinterface_block* api = (struct objectinterface_block*)kmalloc(sizeof(struct objectinterface_block));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_block));
     api->write = &vblockutil_write;
     api->read = &vblockutil_read;
     api->sector_size = &vblock_sector_size;
     api->total_size = &vblock_total_size;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }
 
 /**

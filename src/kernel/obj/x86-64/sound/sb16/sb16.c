@@ -11,11 +11,11 @@
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_dsp.h>
+#include <sys/obj/objectinterface/objectinterface_dsp.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 
@@ -61,7 +61,7 @@
 uint16_t SB_BASE_PORTS[] = {0x220, 0x240, 0x260, 0x280};
 
 // forward declarations
-uint8_t sb16_get_dsp_version(struct object* dev);
+uint8_t sb16_get_dsp_version(struct object* obj);
 
 /*
  * device parameters for an sb16
@@ -83,13 +83,13 @@ void sb16_handle_irq(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t sb16_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)dev->object_data;
+uint8_t sb16_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
-    kprintf("Init %s at IRQ %llu Port %#llX (%s)\n", dev->description, sb16_data->irq, sb16_data->port, dev->name);
+    kprintf("Init %s at IRQ %llu Port %#llX (%s)\n", obj->description, sb16_data->irq, sb16_data->port, obj->name);
     interrupt_router_register_interrupt_handler(sb16_data->irq, &sb16_handle_irq);
-    sb16_data->dsp_version = sb16_get_dsp_version(dev);
+    sb16_data->dsp_version = sb16_get_dsp_version(obj);
     kprintf("   DSP Version: %llu\n", sb16_data->dsp_version);
     return 1;
 }
@@ -97,9 +97,9 @@ uint8_t sb16_obj_init(struct object* dev) {
 /*
  * stereo
  */
-void sb16_set_stereo_output(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)dev->object_data;
+void sb16_set_stereo_output(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
     /*
      * set stero
@@ -112,9 +112,9 @@ void sb16_set_stereo_output(struct object* dev) {
 /*
  * get the speaker status
  */
-uint8_t sb16_get_speaker_status(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)dev->object_data;
+uint8_t sb16_get_speaker_status(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
 
     asm_out_b(sb16_data->port + SB16_PORT_WRITE, SB16_COMMAND_GET_SPEAKER_STATUS);
@@ -124,9 +124,9 @@ uint8_t sb16_get_speaker_status(struct object* dev) {
 /*
  * get the DSP version
  */
-uint8_t sb16_get_dsp_version(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)dev->object_data;
+uint8_t sb16_get_dsp_version(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
 
     asm_out_b(sb16_data->port + SB16_PORT_WRITE, SB16_COMMAND_GET_DSP_VERSION);
@@ -136,9 +136,9 @@ uint8_t sb16_get_dsp_version(struct object* dev) {
 /*
  * reset the device
  */
-void sb16_reset(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)dev->object_data;
+void sb16_reset(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
     asm_out_b(sb16_data->port + SB16_PORT_RESET, 0x01);
     sleep_wait(100);
@@ -148,9 +148,9 @@ void sb16_reset(struct object* dev) {
 /*
  * speaker on
  */
-void sb16_speaker_on(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)dev->object_data;
+void sb16_speaker_on(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
     asm_out_b(sb16_data->port + SB16_PORT_WRITE, SB16_COMMAND_SPEAKER_ON);
 }
@@ -158,9 +158,9 @@ void sb16_speaker_on(struct object* dev) {
 /*
  * speaker off
  */
-void sb16_speaker_off(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)dev->object_data;
+void sb16_speaker_off(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
     asm_out_b(sb16_data->port + SB16_PORT_WRITE, SB16_COMMAND_SPEAKER_OFF);
 }
@@ -168,9 +168,9 @@ void sb16_speaker_off(struct object* dev) {
 /*
  * upper nibble is left, lower nibble is right, volume is b/t 0-F
  */
-void sb16_set_master_volume(struct object* dev, uint8_t v) {
-    ASSERT_NOT_NULL(dev);
-    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)dev->object_data;
+void sb16_set_master_volume(struct object* obj, uint8_t v) {
+    ASSERT_NOT_NULL(obj);
+    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
     asm_out_b(sb16_data->port + SB16_PORT_MIXER, SB16_COMMAND_MASTER_VOLUME);
     asm_out_b(sb16_data->port + SB16_PORT_MIXER_DATA, v);
@@ -179,9 +179,9 @@ void sb16_set_master_volume(struct object* dev, uint8_t v) {
 /*
  * time constant
  */
-void sb16_set_time_constant(struct object* dev, uint32_t samplerate, uint8_t channels) {
-    ASSERT_NOT_NULL(dev);
-    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)dev->object_data;
+void sb16_set_time_constant(struct object* obj, uint32_t samplerate, uint8_t channels) {
+    ASSERT_NOT_NULL(obj);
+    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
 
     // calc time constant
@@ -202,9 +202,9 @@ void sb16_set_time_constant(struct object* dev, uint32_t samplerate, uint8_t cha
  * 17h 8-bit to 2-bit ADPCM output with reference byte
  */
 
-void sb16_start_transfer_size(struct object* dev, uint16_t size, uint8_t command, uint8_t mode) {
-    ASSERT_NOT_NULL(dev);
-    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)dev->object_data;
+void sb16_start_transfer_size(struct object* obj, uint16_t size, uint8_t command, uint8_t mode) {
+    ASSERT_NOT_NULL(obj);
+    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
 
     // command
@@ -258,10 +258,10 @@ void sb16_start_transfer_size(struct object* dev, uint16_t size, uint8_t command
 //   OUTB 0x22C, 0x0F ;COUNT HIGH BIT - COUNT LENGHT-1 (EXAMPLE 0x0FFF SO 0x0FFE) - SET THIS VALUE FOR YOU
 
 //   ;now transfer start - dont forget to handle irq
-void sb16_play(struct object* dev, uint8_t* buffer, uint16_t rate, uint8_t depth, uint8_t channels, uint64_t len) {
-    ASSERT_NOT_NULL(dev);
+void sb16_play(struct object* obj, uint8_t* buffer, uint16_t rate, uint8_t depth, uint8_t channels, uint64_t len) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(buffer);
-    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)dev->object_data;
+    struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
 
     kprintf("Incoming buffer %#llX\n", buffer);
@@ -282,9 +282,9 @@ void sb16_play(struct object* dev, uint8_t* buffer, uint16_t rate, uint8_t depth
     kprintf("DMA buffer %#llX\n", dma_block_address);
     debug_show_memblock(dma_block_address, 16);
 
-    sb16_reset(dev);
-    sb16_speaker_on(dev);
-    sb16_set_master_volume(dev, 0xff);
+    sb16_reset(obj);
+    sb16_speaker_on(obj);
+    sb16_set_master_volume(obj, 0xff);
 
     if (depth == 8) {
         isadma_init_dma_read(SB16_DMA_8BIT, ISA_DMA_BUFFER_SIZE);
@@ -297,10 +297,10 @@ void sb16_play(struct object* dev, uint8_t* buffer, uint16_t rate, uint8_t depth
     if (sb16_data->dsp_version == 4) {
         // stereo
         if (channels == 2) {
-            sb16_set_stereo_output(dev);
+            sb16_set_stereo_output(obj);
         }
         // time constant
-        sb16_set_time_constant(dev, rate, channels);
+        sb16_set_time_constant(obj, rate, channels);
         // transfer size
 
         if (depth == 8) {
@@ -308,13 +308,13 @@ void sb16_play(struct object* dev, uint8_t* buffer, uint16_t rate, uint8_t depth
              * C0 Program 8-bit DMA mode digitized sound I/O
              * 0x00 mono unsigned
              */
-            sb16_start_transfer_size(dev, ISA_DMA_BUFFER_SIZE - 1, 0xC0, 0x00);
+            sb16_start_transfer_size(obj, ISA_DMA_BUFFER_SIZE - 1, 0xC0, 0x00);
         } else if (depth == 16) {
             /*
              * 0xB6 Program 16-bit DMA mode digitized sound I/O
              * 0x30 16 bit stereo unsigned
              */
-            sb16_start_transfer_size(dev, ISA_DMA_BUFFER_SIZE - 1, 0xB6, 0x30);
+            sb16_start_transfer_size(obj, ISA_DMA_BUFFER_SIZE - 1, 0xB6, 0x30);
         }
     } else {
         PANIC("Unknown SB DSP");
@@ -357,27 +357,27 @@ void sb16_objectmgr_register_object(uint64_t port) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "Soundblaster 16");
-    deviceinstance->devicetype = DSP;
-    deviceinstance->init = &sb16_obj_init;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "Soundblaster 16");
+    objectinstance->objectype = DSP;
+    objectinstance->init = &sb16_obj_init;
     /*
      * device api
      */
-    struct objecttype_dsp* api = (struct objecttype_dsp*)kmalloc(sizeof(struct objecttype_dsp));
+    struct objectinterface_dsp* api = (struct objectinterface_dsp*)kmalloc(sizeof(struct objectinterface_dsp));
     api->play = sb16_play;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * device data
      */
     struct sb16_objectdata* object_data = (struct sb16_objectdata*)kmalloc(sizeof(struct sb16_objectdata));
     object_data->port = port;
     object_data->irq = SB16_IRQ;
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }
 
 /*

@@ -11,11 +11,11 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/ringbuffer/ringbuffer.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_serial.h>
+#include <sys/obj/objectinterface/objectinterface_serial.h>
 
 #define SERIAL_RINGBUFFER_SIZE 255
 
@@ -42,10 +42,10 @@ void serial_write_char(const uint8_t c) {
     asm_out_b((uint64_t) & (comport->data), c);
 }
 
-void serial_irq_handler_for_device(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    //    struct serial_objectdata* object_data = (struct serial_objectdata*)dev->object_data;
+void serial_irq_handler_for_device(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    //    struct serial_objectdata* object_data = (struct serial_objectdata*)obj->object_data;
 
     // TODO figure out if it was THIS dev that made the interrupt and respond accordingly (like by putting the data into the ringbuffer)
     struct rs232_16550* comport = (struct rs232_16550*)COM1_ADDRESS;
@@ -89,18 +89,18 @@ void serial_init_port(uint64_t portAddress) {
 /*
  * perform device instance specific init here
  */
-uint8_t serial_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct serial_objectdata* object_data = (struct serial_objectdata*)dev->object_data;
-    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", dev->description, object_data->irq, object_data->address,
-            dev->name);
+uint8_t serial_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct serial_objectdata* object_data = (struct serial_objectdata*)obj->object_data;
+    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", obj->description, object_data->irq, object_data->address,
+            obj->name);
     interrupt_router_register_interrupt_handler(object_data->irq, &serial_irq_handler);
     serial_init_port(object_data->address);
     return 1;
 }
 
-void serial_write(struct object* dev, const int8_t* c) {
-    ASSERT_NOT_NULL(dev);
+void serial_write(struct object* obj, const int8_t* c) {
+    ASSERT_NOT_NULL(obj);
     serial_write_string(c);
 }
 
@@ -115,21 +115,21 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * the device instance
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &serial_obj_init;
-    deviceinstance->object_data = object_data;
-    deviceinstance->devicetype = SERIAL;
-    objectmgr_set_object_description(deviceinstance, SERIAL_DESCRIPTION);
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &serial_obj_init;
+    objectinstance->object_data = object_data;
+    objectinstance->objectype = SERIAL;
+    objectmgr_set_object_description(objectinstance, SERIAL_DESCRIPTION);
     /*
      * the device api
      */
-    struct objecttype_serial* api = (struct objecttype_serial*)kmalloc(sizeof(struct objecttype_serial));
+    struct objectinterface_serial* api = (struct objectinterface_serial*)kmalloc(sizeof(struct objectinterface_serial));
     api->write = &serial_write;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }
 
 /**

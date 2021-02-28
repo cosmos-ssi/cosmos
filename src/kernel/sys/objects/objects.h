@@ -15,9 +15,9 @@
 
 #include <sys/collection/dtable/dtable.h>
 #include <sys/collection/linkedlist/linkedlist.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
-#include <sys/objecttype/objecttype_filesystem.h>
+#include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/proc/proc.h>
 #include <types.h>
 
@@ -84,7 +84,7 @@ extern uint64_t object_table_next_idx;
 
 // object.c
 object_handle_t object_create(object_types_t type, void* object_data);
-object_types_t object_type(object_handle_t obj);
+object_types_t object_type_(object_handle_t obj);
 
 // object_executable.c
 object_handle_t object_executable_create_from_presentation(object_handle_t pres);

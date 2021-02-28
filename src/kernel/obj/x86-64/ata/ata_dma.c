@@ -11,8 +11,8 @@
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objecttype/objecttype_block.h>
+#include <sys/obj/objectinterface/objectinterface_block.h>
+#include <sys/obj/objectmgr/object.h>
 #include <sys/string/mem.h>
 #include <sys/sync/sync.h>
 #include <sys/x86-64/mm/pagetables.h>
@@ -29,13 +29,13 @@ bool ata_dma_buf_avail[NUM_ATA_DMA_BUFS];
 linkedlist* dma_jobs;
 linkedlist* dma_ops;
 
-void ata_dma_add_job(struct object* dev, uint64_t start, uint64_t count, BYTE* buf, ata_dma_direction dir) {
+void ata_dma_add_job(struct object* obj, uint64_t start, uint64_t count, BYTE* buf, ata_dma_direction dir) {
     ata_dma_job* cur_job;
 
     // Add the job queue entry
     cur_job = kmalloc(sizeof(ata_dma_job));
     cur_job->buf = buf;
-    cur_job->dev = dev;
+    cur_job->obj = obj;
     cur_job->dir = dir;
     cur_job->sectors_total = count;
     cur_job->start_sector = start;
@@ -75,7 +75,7 @@ void ata_dma_init() {
     return;
 }
 
-void ata_dma_read(struct object* dev, uint64_t start, uint64_t count, BYTE* buf) {
+void ata_dma_read(struct object* obj, uint64_t start, uint64_t count, BYTE* buf) {
     /*
      * Reads *count* sectors from device *dev* into *buf*, starting at LBA
      * address *start*
@@ -91,10 +91,10 @@ void ata_dma_read(struct object* dev, uint64_t start, uint64_t count, BYTE* buf)
      * since integer division truncates we check to see if there's a remainder;
      * if there is we add one.
      */
-    bytes_to_read = count * ata_sector_size(dev);
+    bytes_to_read = count * ata_sector_size(obj);
     num_reads = (bytes_to_read / ATA_DMA_BUF_SIZE) + ((bytes_to_read % ATA_DMA_BUF_SIZE) ? 1 : 0);
 
-    ata_dma_add_job(dev, start, count, buf, ATA_DMA_DIR_READ);
+    ata_dma_add_job(obj, start, count, buf, ATA_DMA_DIR_READ);
 
     return;
 }

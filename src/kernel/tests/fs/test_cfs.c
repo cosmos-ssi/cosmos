@@ -7,7 +7,7 @@
 
 #include <obj/logical/fs/cfs/cfs.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_block.h>
+#include <sys/obj/objectinterface/objectinterface_block.h>
 #include <tests/fs/test_cfs.h>
 
 void test_cfs() {
@@ -15,8 +15,8 @@ void test_cfs() {
 
     struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct object* dev = cfs_attach(dsk);
-        cfs_detach(dev);
+        struct object* obj = cfs_attach(dsk);
+        cfs_detach(obj);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

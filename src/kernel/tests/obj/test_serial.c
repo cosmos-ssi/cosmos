@@ -7,7 +7,7 @@
 
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_serial.h>
+#include <sys/obj/objectinterface/objectinterface_serial.h>
 #include <tests/obj/test_serial.h>
 
 /*
@@ -17,7 +17,7 @@ void serialMessage(const uint8_t* message) {
     // get serial0
     struct object* serial0 = objectmgr_find_object("serial0");
     if (0 != serial0) {
-        struct objecttype_serial* serial_api = (struct objecttype_serial*)serial0->api;
+        struct objectinterface_serial* serial_api = (struct objectinterface_serial*)serial0->api;
         serial_write_function write_func = serial_api->write;
         (*write_func)(serial0, message);
     } else {

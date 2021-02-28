@@ -35,7 +35,7 @@ struct filesystem_node* fsfacade_get_fs_rootnode(initrd);
 Once we have the root node, we can use the other functions in `fsfacade.h`:
 
 ```java
-struct filesystem_node* fsfacade_get_fs_rootnode(struct object* filesystem_device);
+struct filesystem_node* fsfacade_get_fs_rootnode(struct object* filesystem_obj);
 
 typedef void (*fsfacade_traverse_function)(struct filesystem_node* fs_node, uint32_t depth);
 

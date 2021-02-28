@@ -7,7 +7,7 @@
 
 #include <obj/logical/partition_table/guid_partition_table.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>
@@ -18,8 +18,8 @@ void test_gpt_attach() {
 
     struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct object* dev = guid_pt_attach(dsk);
-        guid_pt_detach(dev);
+        struct object* obj = guid_pt_attach(dsk);
+        guid_pt_detach(obj);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

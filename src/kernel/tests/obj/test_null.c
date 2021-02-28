@@ -7,7 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_null.h>
+#include <sys/obj/objectinterface/objectinterface_null.h>
 #include <tests/obj/test_null.h>
 
 void test_null() {
@@ -17,7 +17,7 @@ void test_null() {
 
     struct object* null_ = objectmgr_find_object(devicename);
     if (0 != null_) {
-        struct objecttype_null* null_api = (struct objecttype_null*)null_->api;
+        struct objectinterface_null* null_api = (struct objectinterface_null*)null_->api;
 
         uint8_t n = (*null_api->read)(null_);
         ASSERT(0 == n);

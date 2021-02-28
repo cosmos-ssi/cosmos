@@ -10,11 +10,11 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_dsp.h>
+#include <sys/obj/objectinterface/objectinterface_dsp.h>
 
 // https://wiki.osdev.org/AC97
 
@@ -49,13 +49,13 @@ void ac97_handle_irq(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t obj_initAC97(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct ac97_objectdata* object_data = (struct ac97_objectdata*)dev->object_data;
-    object_data->base = pci_calcbar(dev->pci);
-    kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
-    interrupt_router_register_interrupt_handler(dev->pci->irq, &ac97_handle_irq);
+uint8_t obj_initAC97(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct ac97_objectdata* object_data = (struct ac97_objectdata*)obj->object_data;
+    object_data->base = pci_calcbar(obj->pci);
+    kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", obj->description, obj->pci->irq,
+            obj->pci->vendor_id, obj->pci->device_id, object_data->base, obj->name);
+    interrupt_router_register_interrupt_handler(obj->pci->irq, &ac97_handle_irq);
     return 1;
 }
 
@@ -64,26 +64,26 @@ void AC97PCISearchCB(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &obj_initAC97;
-    deviceinstance->pci = dev;
-    deviceinstance->devicetype = DSP;
-    objectmgr_set_object_description(deviceinstance, "Intel 82801AA AC97");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &obj_initAC97;
+    objectinstance->pci = dev;
+    objectinstance->objectype = DSP;
+    objectmgr_set_object_description(objectinstance, "Intel 82801AA AC97");
     /*
      * device api
      */
-    struct objecttype_dsp* api = (struct objecttype_dsp*)kmalloc(sizeof(struct objecttype_dsp));
-    deviceinstance->api = api;
+    struct objectinterface_dsp* api = (struct objectinterface_dsp*)kmalloc(sizeof(struct objectinterface_dsp));
+    objectinstance->api = api;
     /*
      * the object_data
      */
     struct ac97_objectdata* object_data = (struct ac97_objectdata*)kmalloc(sizeof(struct ac97_objectdata));
     object_data->base = 0;
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }
 
 void ac97_objectmgr_register_objects() {

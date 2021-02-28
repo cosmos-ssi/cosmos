@@ -20,7 +20,7 @@ object_handle_t object_process_create(object_handle_t exe) {
     obj->body = exe;
     obj->pid = proc_create();
 
-    switch (object_type(obj->body)) {
+    switch (object_type_(obj->body)) {
         case OBJECT_KERNEL_WORK:
             break;
         case OBJECT_EXECUTABLE:

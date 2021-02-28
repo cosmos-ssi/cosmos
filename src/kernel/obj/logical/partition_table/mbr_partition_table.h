@@ -30,6 +30,6 @@ struct mbr_pt_header {
 struct object;
 
 struct object* mbr_pt_attach(struct object* block_device);
-void mbr_pt_detach(struct object* dev);
+void mbr_pt_detach(struct object* obj);
 
 #endif

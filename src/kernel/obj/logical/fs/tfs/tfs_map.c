@@ -28,13 +28,13 @@ uint64_t tfs_map_index(uint32_t block) {
 /*
  * returns zero if no block can be found (disk is full)
  */
-uint32_t tfs_map_find_free_block(struct object* dev, struct tfs_superblock_block* superblock) {
-    ASSERT_NOT_NULL(dev);
+uint32_t tfs_map_find_free_block(struct object* obj, struct tfs_superblock_block* superblock) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(superblock);
     uint64_t byte_count = 0;
-    for (uint64_t block = 1; block <= tfs_map_block_count(dev); block++) {
+    for (uint64_t block = 1; block <= tfs_map_block_count(obj); block++) {
         struct tfs_map_block mapblock;
-        tfs_read_map_block(dev, &mapblock, block);
+        tfs_read_map_block(obj, &mapblock, block);
         for (uint64_t i = 0; i < TFS_BLOCK_SIZE; i++) {
             if (mapblock.map[i] == TFS_MAP_BLOCK_FREE) {
                 mapblock.map[i] = TFS_MAP_BLOCK_USED;
@@ -53,15 +53,15 @@ uint32_t tfs_map_find_free_block(struct object* dev, struct tfs_superblock_block
     return 0;
 }
 
-void tfs_map_release_block(struct object* dev, uint64_t block, struct tfs_superblock_block* superblock) {
-    ASSERT_NOT_NULL(dev);
+void tfs_map_release_block(struct object* obj, uint64_t block, struct tfs_superblock_block* superblock) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(superblock);
     uint64_t sector = tfs_map_sector(block);
     uint64_t index = tfs_map_index(block);
     kprintf("block %llu, sector %llu, index %llu\n", block, sector, index);
 }
 
-uint32_t tfs_map_block_count(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    return (blockutil_get_sector_count(dev) / TFS_SECTORS_PER_MAP_BLOCK) + 1;
+uint32_t tfs_map_block_count(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    return (blockutil_get_sector_count(obj) / TFS_SECTORS_PER_MAP_BLOCK) + 1;
 }

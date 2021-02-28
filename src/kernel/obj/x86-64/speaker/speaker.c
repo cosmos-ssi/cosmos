@@ -8,10 +8,10 @@
 #include <obj/x86-64/speaker/speaker.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_speaker.h>
+#include <sys/obj/objectinterface/objectinterface_speaker.h>
 #include <sys/sleep/sleep.h>
 
 // https://wiki.osdev.org/PC_Speaker
@@ -21,9 +21,9 @@
 /*
  * perform device instance specific init here
  */
-uint8_t speaker_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Init %s (%s)\n", dev->description, dev->name);
+uint8_t speaker_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
 
@@ -51,8 +51,8 @@ void play_sound(uint32_t frequency) {
 }
 
 // Make a beep
-void speaker_beep(struct object* dev, uint32_t frequency, uint32_t milliseconds) {
-    ASSERT_NOT_NULL(dev);
+void speaker_beep(struct object* obj, uint32_t frequency, uint32_t milliseconds) {
+    ASSERT_NOT_NULL(obj);
     play_sound(frequency);
     sleep_wait(milliseconds);
     nosound();
@@ -63,18 +63,19 @@ void speaker_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "Speaker");
-    deviceinstance->devicetype = SPEAKER;
-    deviceinstance->init = &speaker_obj_init;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "Speaker");
+    objectinstance->objectype = SPEAKER;
+    objectinstance->init = &speaker_obj_init;
     /*
      * device api
      */
-    struct objecttype_speaker* api = (struct objecttype_speaker*)kmalloc(sizeof(struct objecttype_speaker));
+    struct objectinterface_speaker* api =
+        (struct objectinterface_speaker*)kmalloc(sizeof(struct objectinterface_speaker));
     api->beep = &speaker_beep;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /**
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

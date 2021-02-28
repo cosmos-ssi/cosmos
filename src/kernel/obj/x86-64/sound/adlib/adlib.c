@@ -9,11 +9,11 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_dsp.h>
+#include <sys/obj/objectinterface/objectinterface_dsp.h>
 
 // http://shipbrook.net/jeff/sb.html
 
@@ -53,9 +53,9 @@ uint8_t adlib_read_status() {
 /*
  * perform device instance specific init here
  */
-uint8_t adlib_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Init %s\n", dev->description);
+uint8_t adlib_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Init %s\n", obj->description);
     //   interrupt_router_register_interrupt_handler(SB16_IRQ, &adlib_handle_irq);
     return 1;
 }
@@ -64,17 +64,17 @@ void adlib_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "Yamaha YM3812 (OPL2)");
-    deviceinstance->devicetype = DSP;
-    deviceinstance->init = &adlib_obj_init;
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "Yamaha YM3812 (OPL2)");
+    objectinstance->objectype = DSP;
+    objectinstance->init = &adlib_obj_init;
     /*
      * device api
      */
-    struct objecttype_dsp* api = (struct objecttype_dsp*)kmalloc(sizeof(struct objecttype_dsp));
-    deviceinstance->api = api;
+    struct objectinterface_dsp* api = (struct objectinterface_dsp*)kmalloc(sizeof(struct objectinterface_dsp));
+    objectinstance->api = api;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }

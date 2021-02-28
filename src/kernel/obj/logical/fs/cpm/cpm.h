@@ -10,7 +10,7 @@
 
 #include <types.h>
 
-struct object* cpm_attach(struct object* partition_device);
-void cpm_detach(struct object* dev);
+struct object* cpm_attach(struct object* partition_objice);
+void cpm_detach(struct object* obj);
 
 #endif

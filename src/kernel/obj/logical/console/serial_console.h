@@ -11,6 +11,6 @@
 struct object;
 
 struct object* serial_console_attach(struct object* serial_device);
-void serial_console_detach(struct object* dev);
+void serial_console_detach(struct object* obj);
 
 #endif

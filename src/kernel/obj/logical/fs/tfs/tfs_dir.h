@@ -9,7 +9,7 @@
 #define _TFS_DIR_H
 
 #include <obj/logical/fs/tfs/tfs_block.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <types.h>
 
@@ -18,18 +18,18 @@ typedef bool (*tfs_file_iterator)(struct tfs_file_block* file_block);
 /*
  * find file. returns file block, or zero
  */
-uint64_t tfs_dir_find_file(struct object* dev, uint8_t* filename);
+uint64_t tfs_dir_find_file(struct object* obj, uint8_t* filename);
 /*
  * add file. returns file block, or zero
  */
-uint64_t tfs_dir_add_file(struct object* dev, uint8_t* filename);
+uint64_t tfs_dir_add_file(struct object* obj, uint8_t* filename);
 /*
  * remove file.
  */
-void tfs_dir_remove_file(struct object* dev, uint8_t* filename);
+void tfs_dir_remove_file(struct object* obj, uint8_t* filename);
 /*
  * iterate files
  */
-void tfs_dir_iterate_files(struct object* dev, tfs_file_iterator file_iterator);
+void tfs_dir_iterate_files(struct object* obj, tfs_file_iterator file_iterator);
 
 #endif

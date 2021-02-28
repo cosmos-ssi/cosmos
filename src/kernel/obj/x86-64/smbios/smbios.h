@@ -52,6 +52,6 @@ struct smbios_header {
 
 void smbios_objectmgr_register_objects();
 
-struct smbios_entry_point* smbios_get_smbios_entry_point(struct object* dev);
+struct smbios_entry_point* smbios_get_smbios_entry_point(struct object* obj);
 
 #endif

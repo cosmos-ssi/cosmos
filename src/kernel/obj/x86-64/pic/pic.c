@@ -8,7 +8,7 @@
 #include <obj/x86-64/pic/pic.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
 
@@ -28,9 +28,9 @@
 /*
  * perform device instance specific init here
  */
-uint8_t pic_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Init %s (%s)\n", dev->description, dev->name);
+uint8_t pic_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Init %s (%s)\n", obj->description, obj->name);
 
     // send init command to prim/sec PICs
     asm_out_b(PIC_PRIMARY_COMMAND, PIC_INIT);
@@ -58,11 +58,11 @@ void pic_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    objectmgr_set_object_description(deviceinstance, "8259 PIC");
-    deviceinstance->devicetype = PIC;
-    deviceinstance->init = &pic_obj_init;
-    objectmgr_register_object(deviceinstance);
+    struct object* objectinstance = objectmgr_new_object();
+    objectmgr_set_object_description(objectinstance, "8259 PIC");
+    objectinstance->objectype = PIC;
+    objectinstance->init = &pic_obj_init;
+    objectmgr_register_object(objectinstance);
 
     return;
 }

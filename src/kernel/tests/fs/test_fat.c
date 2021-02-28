@@ -7,7 +7,7 @@
 
 #include <obj/logical/fs/fat/fat.h>
 #include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
 #include <tests/fs/test_fat.h>
@@ -17,8 +17,8 @@ void test_fat() {
 
     struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct object* dev = fat_attach(dsk);
-        fat_detach(dev);
+        struct object* obj = fat_attach(dsk);
+        fat_detach(obj);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

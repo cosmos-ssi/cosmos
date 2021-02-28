@@ -14,12 +14,12 @@
 #include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_nic.h>
+#include <sys/obj/objectinterface/objectinterface_nic.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <types.h>
@@ -99,11 +99,11 @@ void print_link_status() {
     }
 }
 
-uint8_t vnic_initialize_device(struct object* dev) {
-    struct vnic_objectdata* object_data = (struct vnic_objectdata*)dev->object_data;
+uint8_t vnic_initialize_device(struct object* obj) {
+    struct vnic_objectdata* object_data = (struct vnic_objectdata*)obj->object_data;
 
     // get the I/O port
-    object_data->base = pci_calcbar(dev->pci);
+    object_data->base = pci_calcbar(obj->pci);
     vnet_base_port = object_data->base;
 
     kprintf("Initializing virtio-net driver... Base address: %#hX\n", vnet_base_port);
@@ -162,9 +162,9 @@ uint8_t vnic_initialize_device(struct object* dev) {
     vnic_setup_receive_buffers(object_data->receive_queue, 16);
 
     // Setup an interrupt handler for this device
-    interrupt_router_register_interrupt_handler(dev->pci->irq, &vnic_irq_handler);
-    kprintf("   init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
+    interrupt_router_register_interrupt_handler(obj->pci->irq, &vnic_irq_handler);
+    kprintf("   init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", obj->description, obj->pci->irq,
+            obj->pci->vendor_id, obj->pci->device_id, object_data->base, obj->name);
 
     // Tell the device it's initialized
     vnic_write_register(VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_DEVICE_ACKNOWLEGED | VIRTIO_STATUS_DRIVER_LOADED |
@@ -205,14 +205,14 @@ void vnic_irq_handler(stack_frame* frame) {
     // get virtual device
     uint8_t devicename[] = {"nic0"};
 
-    struct object* dev = objectmgr_find_object(devicename);
-    if (0 == dev) {
+    struct object* obj = objectmgr_find_object(devicename);
+    if (0 == obj) {
         kprintf("Unable to find %s\n", devicename);
         return;
     }
 
     // get device data
-    struct vnic_objectdata* object_data = (struct vnic_objectdata*)dev->object_data;
+    struct vnic_objectdata* object_data = (struct vnic_objectdata*)obj->object_data;
 
     // check for used send queues (meaning the device confirmed receipt)
     while (object_data->send_queue->used.idx != object_data->send_queue->last_seen_used) {
@@ -240,14 +240,14 @@ void vnic_irq_handler(stack_frame* frame) {
     // EOI sent to the PIC by the interrupt handler
 }
 
-void vnic_rx(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
+void vnic_rx(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
     PANIC("vnic read not implemented yet");
 }
 
-void vnic_tx(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
+void vnic_tx(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
 
     kprintf("vnic_tx sending data\n");
@@ -263,7 +263,7 @@ void vnic_tx(struct object* dev, uint8_t* data, uint16_t size) {
     memcpy((uint8_t*)((uint8_t*)netBuffer + sizeof(virtio_net_hdr)), (uint8_t*)data, size);
 
     // get the device data
-    struct vnic_objectdata* object_data = (struct vnic_objectdata*)dev->object_data;
+    struct vnic_objectdata* object_data = (struct vnic_objectdata*)obj->object_data;
 
     // load a descriptor with our buffer
     struct virtq_descriptor* desc = virtq_descriptor_new((uint8_t*)netBuffer, bufferSize, false);
@@ -281,31 +281,31 @@ void objectmgr_register_pci_vnic(struct pci_device* dev) {
     ASSERT_NOT_NULL(dev);
 
     // create a new device
-    struct object* deviceinstance = objectmgr_new_object();
+    struct object* objectinstance = objectmgr_new_object();
 
     // bind an initialization function to the device (called by devicemgr during startup)
-    deviceinstance->init = &vnic_initialize_device;
+    objectinstance->init = &vnic_initialize_device;
 
     // pci device info (including IRQ)
-    deviceinstance->pci = dev;
+    objectinstance->pci = dev;
 
     // set properties
-    deviceinstance->devicetype = VNIC;
-    objectmgr_set_object_description(deviceinstance, "Virtio NIC");
+    objectinstance->objectype = VNIC;
+    objectmgr_set_object_description(objectinstance, "Virtio NIC");
 
     // define an api
-    struct objecttype_nic* api = (struct objecttype_nic*)kmalloc(sizeof(struct objecttype_nic));
-    memzero((uint8_t*)api, sizeof(struct objecttype_nic));
+    struct objectinterface_nic* api = (struct objectinterface_nic*)kmalloc(sizeof(struct objectinterface_nic));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_nic));
     api->write = &vnic_tx;
     api->read = &vnic_rx;
-    deviceinstance->api = api;
+    objectinstance->api = api;
 
     // reserve for device-specific data
     struct vnic_objectdata* object_data = (struct vnic_objectdata*)kmalloc(sizeof(struct vnic_objectdata));
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
 
     // register
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }
 
 // find all virtio ethernet devices and register them

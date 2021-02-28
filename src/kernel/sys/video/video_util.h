@@ -13,11 +13,11 @@
 #include <types.h>
 
 struct object;
-struct objecttype_resolution;
+struct objectinterface_resolution;
 
-void video_get_resolution(struct object* dev, struct objecttype_resolution* resolution);
-void video_set_resolution(struct object* dev, struct objecttype_resolution* resolution);
-uint32_t video_util_get_buffersize(struct object* dev);
-void video_util_blt(struct object* dev, uint8_t* buffer, uint32_t buffer_size);
+void video_get_resolution(struct object* obj, struct objectinterface_resolution* resolution);
+void video_set_resolution(struct object* obj, struct objectinterface_resolution* resolution);
+uint32_t video_util_get_buffersize(struct object* obj);
+void video_util_blt(struct object* obj, uint8_t* buffer, uint32_t buffer_size);
 
 #endif

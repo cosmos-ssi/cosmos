@@ -6,10 +6,10 @@
 // ****************************************************************
 
 #include <obj/logical/fs/cpm/cpm.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_filesystem.h>
+#include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <tests/fs/test_cfs.h>
 
 void test_cpm() {
@@ -17,14 +17,14 @@ void test_cpm() {
 
     struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct object* dev = cpm_attach(dsk);
+        struct object* obj = cpm_attach(dsk);
 
         // format to CPM
-        //   struct objecttype_filesystem* api = (struct objecttype_filesystem*)dev->api;
-        //  (*api->format)(dev);
+        //   struct objectinterface_filesystem* api = (struct objectinterface_filesystem*)obj->api;
+        //  (*api->format)(obj);
 
         // detach
-        cpm_detach(dev);
+        cpm_detach(obj);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

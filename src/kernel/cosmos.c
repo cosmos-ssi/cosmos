@@ -5,7 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <cosmos_logical_devs.h>
+#include <cosmos_logical_objs.h>
 #include <obj/logical/console/vga_console.h>
 #include <obj/logical/fs/initrd/initrd.h>
 #include <sys/asm/asm.h>
@@ -17,9 +17,9 @@
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/objectinterface/objectinterface_console.h>
+#include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/objects/objects.h>
-#include <sys/objecttype/objecttype_console.h>
-#include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
@@ -96,9 +96,9 @@ void CosmOS() {
     kprintf("\n");
 
     /*
-     * mount logical devices
+     * mount logical objects
      */
-    attach_logical_devices();
+    attach_logical_objects();
 
     /*
      * say hi on the VGA console
@@ -206,7 +206,7 @@ void load_init_binary() {
  */
 void video_write(const uint8_t* s) {
     struct object* vga_console = objectmgr_find_object("console0");
-    struct objecttype_console* console0_api = (struct objecttype_console*)vga_console->api;
+    struct objectinterface_console* console0_api = (struct objectinterface_console*)vga_console->api;
     (*console0_api->write)(vga_console, s);
 }
 

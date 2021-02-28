@@ -13,11 +13,11 @@
 #include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_nic.h>
+#include <sys/obj/objectinterface/objectinterface_nic.h>
 #include <sys/sleep/sleep.h>
 #include <types.h>
 
@@ -142,26 +142,26 @@ void ne2000pci_irq_handler(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t ne2000_pci_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    struct ne2000pci_objectdata* object_data = (struct ne2000pci_objectdata*)dev->object_data;
-    object_data->base = pci_calcbar(dev->pci);
-    kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
-    interrupt_router_register_interrupt_handler(dev->pci->irq, &ne2000pci_irq_handler);
+uint8_t ne2000_pci_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    struct ne2000pci_objectdata* object_data = (struct ne2000pci_objectdata*)obj->object_data;
+    object_data->base = pci_calcbar(obj->pci);
+    kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", obj->description, obj->pci->irq,
+            obj->pci->vendor_id, obj->pci->device_id, object_data->base, obj->name);
+    interrupt_router_register_interrupt_handler(obj->pci->irq, &ne2000pci_irq_handler);
     // do the init
     ne2000pci_init();
     return 1;
 }
 
-void ne2000pci_ethernet_read(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
+void ne2000pci_ethernet_read(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
 
     PANIC("Ethernet read not implemented yet");
 }
-void ne2000pci_ethernet_write(struct object* dev, uint8_t* data, uint16_t size) {
-    ASSERT_NOT_NULL(dev);
+void ne2000pci_ethernet_write(struct object* obj, uint8_t* data, uint16_t size) {
+    ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(data);
 
     PANIC("Ethernet write not implemented yet");
@@ -171,29 +171,29 @@ void ne2000_pci_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &ne2000_pci_init;
-    deviceinstance->pci = dev;
-    deviceinstance->devicetype = NIC;
-    objectmgr_set_object_description(deviceinstance, "NE2000 PCI");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &ne2000_pci_init;
+    objectinstance->pci = dev;
+    objectinstance->objectype = NIC;
+    objectmgr_set_object_description(objectinstance, "NE2000 PCI");
     /*
      * the device api
      */
-    struct objecttype_nic* api = (struct objecttype_nic*)kmalloc(sizeof(struct objecttype_nic));
+    struct objectinterface_nic* api = (struct objectinterface_nic*)kmalloc(sizeof(struct objectinterface_nic));
     api->write = &ne2000pci_ethernet_read;
     api->read = &ne2000pci_ethernet_write;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * the object_data
      */
     struct ne2000pci_objectdata* object_data =
         (struct ne2000pci_objectdata*)kmalloc(sizeof(struct ne2000pci_objectdata));
     object_data->base = 0;
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }
 
 /**

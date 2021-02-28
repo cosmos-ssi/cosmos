@@ -11,7 +11,7 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
@@ -25,10 +25,10 @@ void pci_ehci_handle_irq(stack_frame* frame) {
 /*
  * perform device instance specific init here
  */
-uint8_t pci_ehci_obj_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    kprintf("Init %s at IRQ %llu\n", dev->description, dev->pci->irq);
-    interrupt_router_register_interrupt_handler(dev->pci->irq, &pci_ehci_handle_irq);
+uint8_t pci_ehci_obj_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    kprintf("Init %s at IRQ %llu\n", obj->description, obj->pci->irq);
+    interrupt_router_register_interrupt_handler(obj->pci->irq, &pci_ehci_handle_irq);
     return 1;
 }
 
@@ -37,20 +37,20 @@ void pci_ehci_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &pci_ehci_obj_init;
-    deviceinstance->pci = dev;
-    deviceinstance->devicetype = BRIDGE;
-    objectmgr_set_object_description(deviceinstance, "PCI EHCI Controller");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &pci_ehci_obj_init;
+    objectinstance->pci = dev;
+    objectinstance->objectype = BRIDGE;
+    objectmgr_set_object_description(objectinstance, "PCI EHCI Controller");
     /*
      * device data
      */
     //	struct intelisapca_deviceddata* object_data = (struct intelisapca_deviceddata*) kmalloc(sizeof(struct intelisapca_deviceddata));
-    //	deviceinstance->object_data = object_data;
+    //	objectinstance->object_data = object_data;
     /*
      * register
      */
-    objectmgr_register_object(deviceinstance);
+    objectmgr_register_object(objectinstance);
 }
 
 /**

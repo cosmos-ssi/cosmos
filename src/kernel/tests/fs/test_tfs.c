@@ -7,7 +7,7 @@
 
 #include <obj/logical/fs/tfs/tfs.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_block.h>
+#include <sys/obj/objectinterface/objectinterface_block.h>
 #include <sys/string/string.h>
 #include <tests/fs/test_tfs.h>
 
@@ -19,8 +19,8 @@ void test_tfs() {
 
     struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
-        struct object* dev = tfs_attach(dsk);
-        tfs_detach(dev);
+        struct object* obj = tfs_attach(dsk);
+        tfs_detach(obj);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

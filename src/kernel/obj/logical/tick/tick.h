@@ -17,6 +17,6 @@
 struct object;
 
 struct object* tick_attach(struct object* pit_device);
-void tick_detach(struct object* dev);
+void tick_detach(struct object* obj);
 
 #endif

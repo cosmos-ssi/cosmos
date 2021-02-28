@@ -10,13 +10,13 @@
 
 struct object;
 
-void fsutil_attach_partition_tables(struct object* block_dev);
-void fsutil_detach_partition_tables(struct object* block_dev);
+void fsutil_attach_partition_tables(struct object* block_obj);
+void fsutil_detach_partition_tables(struct object* block_obj);
 
-void fsutil_attach_partitions(struct object* partition_table_dev);
-void fsutil_detach_partitions(struct object* partition_table_dev);
+void fsutil_attach_partitions(struct object* partition_table_obj);
+void fsutil_detach_partitions(struct object* partition_table_obj);
 
-void fsutil_attach_fs(struct object* partition_dev);
-void fsutil_detach_fs(struct object* partition_dev);
+void fsutil_attach_fs(struct object* partition_obj);
+void fsutil_detach_fs(struct object* partition_obj);
 
 #endif

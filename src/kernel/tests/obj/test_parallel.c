@@ -6,7 +6,7 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_parallel.h>
+#include <sys/obj/objectinterface/objectinterface_parallel.h>
 #include <tests/obj/test_parallel.h>
 
 void test_parallel() {
@@ -14,7 +14,7 @@ void test_parallel() {
 
     struct object* parallel = objectmgr_find_object(devicename);
     if (0 != parallel) {
-        struct objecttype_parallel* parallel_api = (struct objecttype_parallel*)parallel->api;
+        struct objectinterface_parallel* parallel_api = (struct objectinterface_parallel*)parallel->api;
 
         (*parallel_api->write)(parallel, "hello", 6);
 

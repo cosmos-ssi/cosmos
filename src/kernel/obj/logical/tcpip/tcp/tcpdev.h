@@ -13,6 +13,6 @@
 struct object;
 
 struct object* tcp_attach(struct object* ip_device);
-void tcp_detach(struct object* dev);
+void tcp_detach(struct object* obj);
 
 #endif

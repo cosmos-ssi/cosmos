@@ -10,7 +10,7 @@
 
 #include <obj/x86-64/ata/ata.h>
 #include <obj/x86-64/ata/ata_dma.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <types.h>
 
@@ -43,6 +43,6 @@ struct ata_controller {
  * basically an ATA controller has two functions. It can register the disks, and it can get a disk struct.
  */
 void ata_objectmgr_register_objects();
-struct ata_device* ata_get_disk(struct object* dev, uint8_t channel, uint8_t disk);
+struct ata_device* ata_get_disk(struct object* obj, uint8_t channel, uint8_t disk);
 
 #endif

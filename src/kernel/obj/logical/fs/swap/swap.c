@@ -8,11 +8,11 @@
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/swap/swap.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objecttype/objecttype_swap.h>
+#include <sys/obj/objectinterface/objectinterface_swap.h>
 #include <sys/string/mem.h>
 #include <types.h>
 
@@ -24,88 +24,88 @@ struct swap_objectdata {
 /*
  * perform device instance specific init here
  */
-uint8_t swap_init(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, object_data->block_device->name, dev->name);
+uint8_t swap_init(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct swap_objectdata* object_data = (struct swap_objectdata*)obj->object_data;
+    kprintf("Init %s on %s (%s)\n", obj->description, object_data->block_device->name, obj->name);
     return 1;
 }
 
 /*
  * perform device instance specific uninit here, like removing API structs and Device data
  */
-uint8_t swap_uninit(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
-    kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->block_device->name, dev->name);
-    kfree(dev->api);
-    kfree(dev->object_data);
+uint8_t swap_uninit(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct swap_objectdata* object_data = (struct swap_objectdata*)obj->object_data;
+    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->block_device->name, obj->name);
+    kfree(obj->api);
+    kfree(obj->object_data);
     return 1;
 }
 
-uint16_t swap_block_size(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
+uint16_t swap_block_size(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct swap_objectdata* object_data = (struct swap_objectdata*)obj->object_data;
     return blockutil_get_sector_size(object_data->block_device);
 }
 
-void swap_read(struct object* dev, uint8_t* data, uint32_t block) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
-    blockutil_read(object_data->block_device, data, swap_block_size(dev), block, 0);
+void swap_read(struct object* obj, uint8_t* data, uint32_t block) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct swap_objectdata* object_data = (struct swap_objectdata*)obj->object_data;
+    blockutil_read(object_data->block_device, data, swap_block_size(obj), block, 0);
 }
 
-void swap_write(struct object* dev, uint8_t* data, uint32_t block) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
-    blockutil_write(object_data->block_device, data, swap_block_size(dev), block, 0);
+void swap_write(struct object* obj, uint8_t* data, uint32_t block) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct swap_objectdata* object_data = (struct swap_objectdata*)obj->object_data;
+    blockutil_write(object_data->block_device, data, swap_block_size(obj), block, 0);
 }
 
-uint16_t swap_block_count(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
+uint16_t swap_block_count(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct swap_objectdata* object_data = (struct swap_objectdata*)obj->object_data;
     return blockutil_get_sector_count(object_data->block_device);
 }
 
 struct object* swap_attach(struct object* block_device) {
     ASSERT_NOT_NULL(block_device);
-    ASSERT(1 == blockutil_is_block_device(block_device));
+    ASSERT(1 == blockutil_is_block_object(block_device));
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_object();
-    deviceinstance->init = &swap_init;
-    deviceinstance->uninit = &swap_uninit;
-    deviceinstance->pci = 0;
-    deviceinstance->devicetype = SWAP;
-    objectmgr_set_object_description(deviceinstance, "Swap");
+    struct object* objectinstance = objectmgr_new_object();
+    objectinstance->init = &swap_init;
+    objectinstance->uninit = &swap_uninit;
+    objectinstance->pci = 0;
+    objectinstance->objectype = SWAP;
+    objectmgr_set_object_description(objectinstance, "Swap");
     /*
      * the device api
      */
-    struct objecttype_swap* api = (struct objecttype_swap*)kmalloc(sizeof(struct objecttype_swap));
-    memzero((uint8_t*)api, sizeof(struct objecttype_swap));
+    struct objectinterface_swap* api = (struct objectinterface_swap*)kmalloc(sizeof(struct objectinterface_swap));
+    memzero((uint8_t*)api, sizeof(struct objectinterface_swap));
     api->write = &swap_write;
     api->read = &swap_read;
     api->block_count = &swap_block_count;
     api->block_size = &swap_block_size;
-    deviceinstance->api = api;
+    objectinstance->api = api;
     /*
      * device data
      */
     struct swap_objectdata* object_data = (struct swap_objectdata*)kmalloc(sizeof(struct swap_objectdata));
     object_data->block_device = block_device;
     object_data->block_size = blockutil_get_sector_size(block_device);
-    deviceinstance->object_data = object_data;
+    objectinstance->object_data = object_data;
     /*
      * register
      */
-    if (0 != objectmgr_attach_object(deviceinstance)) {
+    if (0 != objectmgr_attach_object(objectinstance)) {
         /*
         * increase ref count of underlying device
         */
@@ -114,19 +114,19 @@ struct object* swap_attach(struct object* block_device) {
         /*
         * return device
         */
-        return deviceinstance;
+        return objectinstance;
     } else {
         kfree(object_data);
         kfree(api);
-        kfree(deviceinstance);
+        kfree(objectinstance);
         return 0;
     }
 }
 
-void swap_detach(struct object* dev) {
-    ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->object_data);
-    struct swap_objectdata* object_data = (struct swap_objectdata*)dev->object_data;
+void swap_detach(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct swap_objectdata* object_data = (struct swap_objectdata*)obj->object_data;
     /*
     * decrease ref count of underlying device
     */
@@ -134,5 +134,5 @@ void swap_detach(struct object* dev) {
     /*
     * detach
     */
-    objectmgr_detach_object(dev);
+    objectmgr_detach_object(obj);
 }
