@@ -65,12 +65,12 @@ void cpu_manufacturer_id(uint8_t* cpuid) {
     cpuid[12] = 0;
 }
 
-void cpu_objectmgr_register_devices() {
+void cpu_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "CPU");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "CPU");
     deviceinstance->devicetype = CPU;
     deviceinstance->init = &cpu_device_init;
     /*
@@ -84,5 +84,5 @@ void cpu_objectmgr_register_devices() {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

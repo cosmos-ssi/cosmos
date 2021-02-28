@@ -417,14 +417,14 @@ uint8_t isadma_device_uninit(struct object* dev) {
     return 1;
 }
 
-void isadma_objectmgr_register_devices() {
+void isadma_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "8237 ISA DMA");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "8237 ISA DMA");
     deviceinstance->devicetype = ISADMA;
     deviceinstance->init = &isadma_device_init;
     deviceinstance->uninit = &isadma_device_uninit;
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

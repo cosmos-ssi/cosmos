@@ -17,7 +17,7 @@
 void test_vfs() {
     kprintf("Testing vfs\n");
 
-    struct object* vfsdev_device = objectmgr_find_device("vfs0");
+    struct object* vfsdev_device = objectmgr_find_object("vfs0");
     ASSERT_NOT_NULL(vfsdev_device);
 
     struct filesystem_node* fsnode = fsfacade_get_fs_rootnode(vfsdev_device);

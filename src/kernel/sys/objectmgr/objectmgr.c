@@ -33,7 +33,7 @@ int8_t* createDeviceName(struct object* dev) {
     return ret;
 }
 
-void objectmgr_register_device(struct object* dev) {
+void objectmgr_register_object(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->description);
     ASSERT_NOT_NULL(dev->devicetype);
@@ -52,7 +52,7 @@ void objectmgr_register_device(struct object* dev) {
     deviceregistry_registerdevice(dev);
 }
 
-void objectmgr_unregister_device(struct object* dev) {
+void objectmgr_unregister_object(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     /*
      * unregister
@@ -60,7 +60,7 @@ void objectmgr_unregister_device(struct object* dev) {
     deviceregistry_unregisterdevice(dev);
 }
 
-uint16_t objectmgr_device_count() {
+uint16_t objectmgr_object_count() {
     return deviceregistry_devicecount();
 }
 
@@ -77,7 +77,7 @@ void device_initIterator(struct object* dev) {
 /*
  * init order matters
  */
-void objectmgr_init_devices() {
+void objectmgr_init_objects() {
     //   kprintf("Initializing Devices\n");
     /*
      * CPU first before first?
@@ -138,7 +138,7 @@ void objectmgr_init_devices() {
     deviceregistry_iterate_type(KERNELMAP, device_initIterator);
 }
 
-struct object* objectmgr_new_device() {
+struct object* objectmgr_new_object() {
     struct object* ret = (struct object*)kmalloc(sizeof(struct object));
     for (uint16_t i = 0; i < OBJECT_MAX_DESCRIPTION; i++) {
         ret->description[i] = 0;
@@ -154,7 +154,7 @@ struct object* objectmgr_new_device() {
     return ret;
 }
 
-void objectmgr_set_device_description(struct object* dev, const uint8_t* description) {
+void objectmgr_set_object_description(struct object* dev, const uint8_t* description) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(description);
     ASSERT(strlen(description) < OBJECT_MAX_DESCRIPTION);
@@ -165,26 +165,26 @@ void objectmgr_set_device_description(struct object* dev, const uint8_t* descrip
     //    kprintf("%s\n", dev->description);
 }
 
-struct object* objectmgr_find_device(const uint8_t* name) {
+struct object* objectmgr_find_object(const uint8_t* name) {
     ASSERT_NOT_NULL(name);
     return deviceregistry_find_device(name);
 }
 
-void objectmgr_find_devices_by_description(device_type dt, const uint8_t* description, deviceSearchCallback cb) {
+void objectmgr_find_objects_by_description(device_type dt, const uint8_t* description, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(description);
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
     deviceregistry_find_devices_by_description(dt, description, cb);
 }
 
-void objectmgr_find_devices_by_device_type(device_type dt, deviceSearchCallback cb) {
+void objectmgr_find_objects_by_device_type(device_type dt, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
     deviceregistry_find_devices_by_devicetype(dt, cb);
 }
 
 #ifdef TARGET_PLATFORM_i386
-void objectmgr_register_devices() {
+void objectmgr_register_objects() {
     /*
      * scan the PCI bus first
      */
@@ -192,67 +192,67 @@ void objectmgr_register_devices() {
     /*
      * register up the pic next
      */
-    pic_objectmgr_register_devices();
+    pic_objectmgr_register_objects();
     /*
      * and then RS232
      */
-    serial_objectmgr_register_devices();
+    serial_objectmgr_register_objects();
     /*
      * and the then the PIT
      */
-    pit_objectmgr_register_devices();
+    pit_objectmgr_register_objects();
     /*
      * we need the CMOS
      */
-    cmos_objectmgr_register_devices();
+    cmos_objectmgr_register_objects();
     /*
      * ISA DMA Controller
      */
-    isadma_objectmgr_register_devices();
+    isadma_objectmgr_register_objects();
     /*
      * rest of this stuff can really happen in any order
      */
-    //   swap_objectmgr_register_devices();
-    rtc_objectmgr_register_devices();
-    keyboard_objectmgr_register_devices();
-    //  vga_objectmgr_register_devices();
-    bga_objectmgr_register_devices();
-    usb_ehci_objectmgr_register_devices();
-    network_objectmgr_register_devices();
-    bridge_objectmgr_register_devices();
-    sdhci_objectmgr_register_devices();
-    ata_objectmgr_register_devices();
-    mouse_objectmgr_register_devices();
-    // floppy_objectmgr_register_devices();
-    speaker_objectmgr_register_devices();
-    sound_objectmgr_register_devices();
-    cpu_objectmgr_register_devices();
-    virtio_objectmgr_register_devices();
-    //  ramdisk_objectmgr_register_devices();
-    pci_ehci_objectmgr_register_devices();
-    parallel_objectmgr_register_devices();
-    bda_objectmgr_register_devices();
-    acpi_objectmgr_register_devices();
-    smbios_objectmgr_register_devices();
-    kernelmap_objectmgr_register_devices();
+    //   swap_objectmgr_register_objects();
+    rtc_objectmgr_register_objects();
+    keyboard_objectmgr_register_objects();
+    //  vga_objectmgr_register_objects();
+    bga_objectmgr_register_objects();
+    usb_ehci_objectmgr_register_objects();
+    network_objectmgr_register_objects();
+    bridge_objectmgr_register_objects();
+    sdhci_objectmgr_register_objects();
+    ata_objectmgr_register_objects();
+    mouse_objectmgr_register_objects();
+    // floppy_objectmgr_register_objects();
+    speaker_objectmgr_register_objects();
+    sound_objectmgr_register_objects();
+    cpu_objectmgr_register_objects();
+    virtio_objectmgr_register_objects();
+    //  ramdisk_objectmgr_register_objects();
+    pci_ehci_objectmgr_register_objects();
+    parallel_objectmgr_register_objects();
+    bda_objectmgr_register_objects();
+    acpi_objectmgr_register_objects();
+    smbios_objectmgr_register_objects();
+    kernelmap_objectmgr_register_objects();
 }
 
 #else
 
-void objectmgr_register_devices() {
-    pl101_objectmgr_register_devices();
+void objectmgr_register_objects() {
+    pl101_objectmgr_register_objects();
 }
 
 #endif
 
 // attach a device (non-fixed devices... like RAM disks and SWAP)
-uint8_t objectmgr_attach_device(struct object* dev) {
+uint8_t objectmgr_attach_object(struct object* dev) {
     ASSERT_NOT_NULL(dev);
 
     /*
      * register
      */
-    objectmgr_register_device(dev);
+    objectmgr_register_object(dev);
     /*
      * init
      */
@@ -261,7 +261,7 @@ uint8_t objectmgr_attach_device(struct object* dev) {
     * unregister if we need to
     */
     if (0 == ret) {
-        objectmgr_unregister_device(dev);
+        objectmgr_unregister_object(dev);
     }
     /*
     * done
@@ -270,12 +270,12 @@ uint8_t objectmgr_attach_device(struct object* dev) {
 }
 
 // detach a device (non-fixed devices... like RAM disks and SWAP)
-uint8_t objectmgr_detach_device(struct object* dev) {
+uint8_t objectmgr_detach_object(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     /*
      * unregister
      */
-    objectmgr_unregister_device(dev);
+    objectmgr_unregister_object(dev);
     /*
      * uninit
      */
@@ -297,7 +297,7 @@ uint8_t objectmgr_detach_device(struct object* dev) {
 /*
 * increment device reference count
 */
-uint8_t objectmgr_increment_device_refcount(struct object* dev) {
+uint8_t objectmgr_increment_object_refcount(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     //    kprintf("Increasing ref count on %s\n", dev->name);
     dev->reference_count += 1;
@@ -306,7 +306,7 @@ uint8_t objectmgr_increment_device_refcount(struct object* dev) {
 /*
 * decrease device reference count
 */
-uint8_t objectmgr_decrement_device_refcount(struct object* dev) {
+uint8_t objectmgr_decrement_object_refcount(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     //   kprintf("Decreasing ref count on %s\n", dev->name);
     ASSERT(dev->reference_count > 0);
@@ -314,11 +314,11 @@ uint8_t objectmgr_decrement_device_refcount(struct object* dev) {
     return dev->reference_count;
 }
 
-void objectmgr_dump_devices_iterator(struct object* dev) {
+void objectmgr_dump_objects_iterator(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("%s Refcount %llu\n", dev->name, dev->reference_count);
 }
 
-void objectmgr_dump_devices() {
-    deviceregistry_iterate(&objectmgr_dump_devices_iterator);
+void objectmgr_dump_objects() {
+    deviceregistry_iterate(&objectmgr_dump_objects_iterator);
 }

@@ -9,8 +9,8 @@
 #include <dev/logical/virtio/virtio.h>
 #include <dev/logical/virtio/vnic/vnic.h>
 
-void virtio_objectmgr_register_devices() {
-    vblock_objectmgr_register_devices();
+void virtio_objectmgr_register_objects() {
+    vblock_objectmgr_register_objects();
     objectmgr_register_vnic_devices();
 }
 

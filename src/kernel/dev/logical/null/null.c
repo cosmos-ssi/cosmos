@@ -38,12 +38,12 @@ struct object* null_attach() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &null_init;
     deviceinstance->uninit = &null_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = NULL0;
-    objectmgr_set_device_description(deviceinstance, "null");
+    objectmgr_set_object_description(deviceinstance, "null");
     /*
      * the device api
      */
@@ -54,7 +54,7 @@ struct object* null_attach() {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * return device
         */
@@ -68,5 +68,5 @@ struct object* null_attach() {
 
 void null_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }

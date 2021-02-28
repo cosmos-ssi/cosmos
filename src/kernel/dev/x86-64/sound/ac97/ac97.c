@@ -64,11 +64,11 @@ void AC97PCISearchCB(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &device_initAC97;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = DSP;
-    objectmgr_set_device_description(deviceinstance, "Intel 82801AA AC97");
+    objectmgr_set_object_description(deviceinstance, "Intel 82801AA AC97");
     /*
      * device api
      */
@@ -83,9 +83,9 @@ void AC97PCISearchCB(struct pci_device* dev) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
-void ac97_objectmgr_register_devices() {
+void ac97_objectmgr_register_objects() {
     pci_objectmgr_search_device(PCI_CLASS_MULTIMEDIA, 0x01, 0x8086, 0x2415, &AC97PCISearchCB);
 }

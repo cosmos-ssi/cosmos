@@ -217,13 +217,13 @@ struct object* devfs_attach() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &devfs_init;
     deviceinstance->uninit = &devfs_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = DEVFS;
     deviceinstance->device_data = 0;
-    objectmgr_set_device_description(deviceinstance, "Device File System");
+    objectmgr_set_object_description(deviceinstance, "Device File System");
     /*
      * the device api
      */
@@ -248,7 +248,7 @@ struct object* devfs_attach() {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * return device
         */
@@ -268,5 +268,5 @@ void devfs_detach(struct object* dev) {
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }

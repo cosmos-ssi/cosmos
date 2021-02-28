@@ -12,7 +12,7 @@
 
 /* void BeethovensFifth() {
     // get the speaker
-    struct object* speaker = objectmgr_find_device("speaker0");
+    struct object* speaker = objectmgr_find_object("speaker0");
     if (0 != speaker) {
         struct objecttype_speaker* speaker_api = (struct objecttype_speaker*)speaker->api;
         speaker_beep_function beep_func = speaker_api->beep;
@@ -41,7 +41,7 @@
 
 void chirp() {
     // get the speaker
-    struct object* speaker = objectmgr_find_device("speaker0");
+    struct object* speaker = objectmgr_find_object("speaker0");
     if (0 != speaker) {
         struct objecttype_speaker* speaker_api = (struct objecttype_speaker*)speaker->api;
         speaker_beep_function beep_func = speaker_api->beep;

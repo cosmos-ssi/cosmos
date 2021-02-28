@@ -63,7 +63,7 @@ uint16_t rtl8139_get_isr_status(struct object* dev) {
 
 void rtl8139_irq_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
-    objectmgr_find_devices_by_description(NIC, RTL8139_DESCRIPTION, &rtl8139_irq_handler_for_device);
+    objectmgr_find_objects_by_description(NIC, RTL8139_DESCRIPTION, &rtl8139_irq_handler_for_device);
 }
 
 void rtl8139_power_on(struct object* dev) {
@@ -242,11 +242,11 @@ void rtl8139_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &rtl8139_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = NIC;
-    objectmgr_set_device_description(deviceinstance, RTL8139_DESCRIPTION);
+    objectmgr_set_object_description(deviceinstance, RTL8139_DESCRIPTION);
     /*
      * the device api
      */
@@ -264,12 +264,12 @@ void rtl8139_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 /**
  * find all RTL8139 devices and register them
  */
-void rtl8139_objectmgr_register_devices() {
+void rtl8139_objectmgr_register_objects() {
     pci_objectmgr_search_device(PCI_CLASS_NETWORK, PCI_NETWORK_SUBCLASS_ETHERNET, 0x10EC, 0x8139, &rtl8139_search_cb);
 }

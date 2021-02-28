@@ -55,12 +55,12 @@ struct object* ip_attach(struct object* ethernet_device) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &ip_init;
     deviceinstance->uninit = &ip_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = IP;
-    objectmgr_set_device_description(deviceinstance, "Internet Protocol");
+    objectmgr_set_object_description(deviceinstance, "Internet Protocol");
     /*
      * the device api
      */
@@ -79,11 +79,11 @@ struct object* ip_attach(struct object* ethernet_device) {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_device_refcount(ethernet_device);
+        objectmgr_increment_object_refcount(ethernet_device);
         /*
         * return device
         */
@@ -103,11 +103,11 @@ void ip_detach(struct object* dev) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_device_refcount(device_data->ethernet_device);
+    objectmgr_decrement_object_refcount(device_data->ethernet_device);
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }
 
 // https://www.saminiir.com/lets-code-tcp-ip-stack-2-ipv4-icmpv4/

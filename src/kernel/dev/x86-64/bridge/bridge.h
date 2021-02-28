@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void bridge_objectmgr_register_devices();
+void bridge_objectmgr_register_objects();
 
 #endif

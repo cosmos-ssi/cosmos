@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void usb_ehci_objectmgr_register_devices();
+void usb_ehci_objectmgr_register_objects();
 
 #endif

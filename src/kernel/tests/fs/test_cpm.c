@@ -15,7 +15,7 @@
 void test_cpm() {
     uint8_t devicename[] = {"disk3"};  // blank.img
 
-    struct object* dsk = objectmgr_find_device(devicename);
+    struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
         struct object* dev = cpm_attach(dsk);
 

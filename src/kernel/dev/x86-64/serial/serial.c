@@ -56,7 +56,7 @@ void serial_irq_handler_for_device(struct object* dev) {
 }
 void serial_irq_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
-    objectmgr_find_devices_by_description(SERIAL, SERIAL_DESCRIPTION, &serial_irq_handler_for_device);
+    objectmgr_find_objects_by_description(SERIAL, SERIAL_DESCRIPTION, &serial_irq_handler_for_device);
 }
 
 void serial_write_string(const uint8_t* c) {
@@ -115,11 +115,11 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * the device instance
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &serial_device_init;
     deviceinstance->device_data = device_data;
     deviceinstance->devicetype = SERIAL;
-    objectmgr_set_device_description(deviceinstance, SERIAL_DESCRIPTION);
+    objectmgr_set_object_description(deviceinstance, SERIAL_DESCRIPTION);
     /*
      * the device api
      */
@@ -129,13 +129,13 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 /**
  * find all RS232 devices and register them
  */
-void serial_objectmgr_register_devices() {
+void serial_objectmgr_register_objects() {
     // serial0
     uint16_t serial0_base = bda_serial0_base();
     if (0 != serial0_base) {

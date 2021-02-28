@@ -188,16 +188,16 @@ key_action_t* keyboard_read(struct object* dev) {
 /**
  * find all keyboard devices and register them
  */
-void keyboard_objectmgr_register_devices() {
+void keyboard_objectmgr_register_objects() {
     keyboard_ringbuffer = ringbuffer_new(KBD_RINGBUFFER_SIZE);
 
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &keyboard_device_init;
     deviceinstance->devicetype = KEYBOARD;
-    objectmgr_set_device_description(deviceinstance, "PS2 Keyboard");
+    objectmgr_set_object_description(deviceinstance, "PS2 Keyboard");
     /*
      * the device api
      */
@@ -207,5 +207,5 @@ void keyboard_objectmgr_register_devices() {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

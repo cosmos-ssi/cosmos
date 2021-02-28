@@ -49,12 +49,12 @@ uint8_t cmos_device_init(struct object* dev) {
     return 1;
 }
 
-void cmos_objectmgr_register_devices() {
+void cmos_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "i386 CMOS");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "i386 CMOS");
     deviceinstance->devicetype = CMOS;
     deviceinstance->init = &cmos_device_init;
     /*
@@ -65,5 +65,5 @@ void cmos_objectmgr_register_devices() {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

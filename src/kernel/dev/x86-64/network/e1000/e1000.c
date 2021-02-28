@@ -47,11 +47,11 @@ void e1000_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &e1000_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = NIC;
-    objectmgr_set_device_description(deviceinstance, "E1000 NIC");
+    objectmgr_set_object_description(deviceinstance, "E1000 NIC");
     /*
      * the device api
      */
@@ -62,11 +62,11 @@ void e1000_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 /**
  */
-void e1000_objectmgr_register_devices() {
+void e1000_objectmgr_register_objects() {
     pci_objectmgr_search_device(PCI_CLASS_NETWORK, PCI_NETWORK_SUBCLASS_ETHERNET, 0x8086, 0x100E, &e1000_search_cb);
 }

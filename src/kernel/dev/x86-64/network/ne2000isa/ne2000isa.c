@@ -166,14 +166,14 @@ void ne2000isa_ethernet_write(struct object* dev, uint8_t* data, uint16_t size) 
 /**
  * find all NE2000 devices and register them
  */
-void ne2000isa_objectmgr_register_devices() {
+void ne2000isa_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &ne2000_isa_init;
     deviceinstance->devicetype = NIC;
-    objectmgr_set_device_description(deviceinstance, "NE2000 ISA");
+    objectmgr_set_object_description(deviceinstance, "NE2000 ISA");
     /*
      * the device api
      */
@@ -184,7 +184,7 @@ void ne2000isa_objectmgr_register_devices() {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 void ne2000isa_init() {

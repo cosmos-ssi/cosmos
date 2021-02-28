@@ -164,7 +164,7 @@ void deviceregistry_find_devices_by_description(device_type dt, const int8_t* de
             }
         }
     } else {
-        PANIC("Invalid device_type passed to objectmgr_find_devices_by_description");
+        PANIC("Invalid device_type passed to objectmgr_find_objects_by_description");
     }
 }
 
@@ -183,7 +183,7 @@ void deviceregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallb
             }
         }
     } else {
-        PANIC("Invalid device_type passed to objectmgr_find_devices_by_description");
+        PANIC("Invalid device_type passed to objectmgr_find_objects_by_description");
     }
 }
 

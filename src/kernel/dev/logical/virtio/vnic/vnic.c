@@ -205,7 +205,7 @@ void vnic_irq_handler(stack_frame* frame) {
     // get virtual device
     uint8_t devicename[] = {"nic0"};
 
-    struct object* dev = objectmgr_find_device(devicename);
+    struct object* dev = objectmgr_find_object(devicename);
     if (0 == dev) {
         kprintf("Unable to find %s\n", devicename);
         return;
@@ -281,7 +281,7 @@ void objectmgr_register_pci_vnic(struct pci_device* dev) {
     ASSERT_NOT_NULL(dev);
 
     // create a new device
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
 
     // bind an initialization function to the device (called by devicemgr during startup)
     deviceinstance->init = &vnic_initialize_device;
@@ -291,7 +291,7 @@ void objectmgr_register_pci_vnic(struct pci_device* dev) {
 
     // set properties
     deviceinstance->devicetype = VNIC;
-    objectmgr_set_device_description(deviceinstance, "Virtio NIC");
+    objectmgr_set_object_description(deviceinstance, "Virtio NIC");
 
     // define an api
     struct objecttype_nic* api = (struct objecttype_nic*)kmalloc(sizeof(struct objecttype_nic));
@@ -305,7 +305,7 @@ void objectmgr_register_pci_vnic(struct pci_device* dev) {
     deviceinstance->device_data = device_data;
 
     // register
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 // find all virtio ethernet devices and register them

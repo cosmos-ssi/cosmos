@@ -9,8 +9,8 @@
 #include <dev/x86-64/sound/sb16/sb16.h>
 #include <dev/x86-64/sound/sound.h>
 
-void sound_objectmgr_register_devices() {
-    //  ac97_objectmgr_register_devices();
-    //   sb16_objectmgr_register_devices();
-    //   adlib_objectmgr_register_devices();
+void sound_objectmgr_register_objects() {
+    //  ac97_objectmgr_register_objects();
+    //   sb16_objectmgr_register_objects();
+    //   adlib_objectmgr_register_objects();
 }

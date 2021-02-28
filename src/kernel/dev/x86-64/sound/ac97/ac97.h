@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void ac97_objectmgr_register_devices();
+void ac97_objectmgr_register_objects();
 
 #endif

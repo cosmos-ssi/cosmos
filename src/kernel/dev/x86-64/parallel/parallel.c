@@ -88,12 +88,12 @@ void parallel_write(struct object* dev, uint8_t* data, uint16_t size) {
     }
 }
 
-void parallel_objectmgr_register_device(uint64_t base, uint8_t irq) {
+void parallel_objectmgr_register_object(uint64_t base, uint8_t irq) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "Parallel Port");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "Parallel Port");
     deviceinstance->devicetype = PARALLEL;
     deviceinstance->init = &parallel_device_init;
     /*
@@ -112,23 +112,23 @@ void parallel_objectmgr_register_device(uint64_t base, uint8_t irq) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
-void parallel_objectmgr_register_devices() {
+void parallel_objectmgr_register_objects() {
     // lpt0
     uint16_t lpt1_base = bda_parallel0_base();
     if (0 != lpt1_base) {
-        parallel_objectmgr_register_device(lpt1_base, PARALLEL_DEVICE_LTP1_IRQ);
+        parallel_objectmgr_register_object(lpt1_base, PARALLEL_DEVICE_LTP1_IRQ);
     }
     // lpt1
     uint16_t lpt2_base = bda_parallel1_base();
     if (0 != lpt2_base) {
-        parallel_objectmgr_register_device(lpt2_base, PARALLEL_DEVICE_LTP2_IRQ);
+        parallel_objectmgr_register_object(lpt2_base, PARALLEL_DEVICE_LTP2_IRQ);
     }
     // lpt2
     uint16_t lpt3_base = bda_parallel2_base();
     if (0 != lpt3_base) {
-        parallel_objectmgr_register_device(lpt3_base, PARALLEL_DEVICE_LTP3_IRQ);
+        parallel_objectmgr_register_object(lpt3_base, PARALLEL_DEVICE_LTP3_IRQ);
     }
 }

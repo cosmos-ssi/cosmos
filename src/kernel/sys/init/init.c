@@ -21,7 +21,7 @@ uint8_t init_load(uint8_t* initrd_disk_name, uint8_t* initrd_binary_name) {
     ASSERT_NOT_NULL(initrd_disk_name);
     ASSERT_NOT_NULL(initrd_binary_name);
 
-    struct object* dsk = objectmgr_find_device(initrd_disk_name);
+    struct object* dsk = objectmgr_find_object(initrd_disk_name);
     if (0 != dsk) {
         struct object* initrd = initrd_attach(dsk, initrd_lba());
         ASSERT_NOT_NULL(initrd);

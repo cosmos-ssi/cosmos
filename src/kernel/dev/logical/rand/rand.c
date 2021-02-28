@@ -52,12 +52,12 @@ struct object* rand_attach() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &rand_init;
     deviceinstance->uninit = &rand_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = RAND;
-    objectmgr_set_device_description(deviceinstance, "LCG Random Number Generator");
+    objectmgr_set_object_description(deviceinstance, "LCG Random Number Generator");
     /*
      * the device api
      */
@@ -74,7 +74,7 @@ struct object* rand_attach() {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * return device
         */
@@ -88,5 +88,5 @@ struct object* rand_attach() {
 
 void rand_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }

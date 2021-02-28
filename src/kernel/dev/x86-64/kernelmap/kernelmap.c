@@ -55,12 +55,12 @@ void kernelmap_read(struct object* dev, struct kernelmap* km) {
     km->debug_end = debug_end;
 }
 
-void kernelmap_objectmgr_register_devices() {
+void kernelmap_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "Kernel map");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "Kernel map");
     deviceinstance->devicetype = KERNELMAP;
     deviceinstance->init = &kernelmap_device_init;
     /*
@@ -72,5 +72,5 @@ void kernelmap_objectmgr_register_devices() {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

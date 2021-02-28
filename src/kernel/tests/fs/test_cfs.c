@@ -13,7 +13,7 @@
 void test_cfs() {
     uint8_t devicename[] = {"disk1"};
 
-    struct object* dsk = objectmgr_find_device(devicename);
+    struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
         struct object* dev = cfs_attach(dsk);
         cfs_detach(dev);

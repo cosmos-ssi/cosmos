@@ -21,7 +21,7 @@ void test_ramdisk() {
     // attach the ramdisk
     struct object* ramdisk_device = ramdisk_attach(RAMDISK_SECTOR_SIZE, RAMDISK_TOTAL_SECTORS);
 
-    struct object* ramdisk = objectmgr_find_device(ramdisk_device->name);
+    struct object* ramdisk = objectmgr_find_object(ramdisk_device->name);
     if (0 != ramdisk) {
         test_block_device(ramdisk);
     } else {

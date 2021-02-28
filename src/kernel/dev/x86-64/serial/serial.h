@@ -10,7 +10,7 @@
 
 #include <types.h>
 
-void serial_objectmgr_register_devices();
+void serial_objectmgr_register_objects();
 void serial_write_string(const uint8_t* c);
 
 #endif

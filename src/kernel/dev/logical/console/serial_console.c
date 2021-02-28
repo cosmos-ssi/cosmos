@@ -62,12 +62,12 @@ struct object* serial_console_attach(struct object* serial_device) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &serial_console_dev_init;
     deviceinstance->uninit = &serial_console_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = CONSOLE;
-    objectmgr_set_device_description(deviceinstance, "Serial Console");
+    objectmgr_set_object_description(deviceinstance, "Serial Console");
     /*
      * the device api
      */
@@ -86,11 +86,11 @@ struct object* serial_console_attach(struct object* serial_device) {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_device_refcount(serial_device);
+        objectmgr_increment_object_refcount(serial_device);
         /*
         * return device
         */
@@ -110,9 +110,9 @@ void serial_console_detach(struct object* dev) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_device_refcount(device_data->serial_device);
+    objectmgr_decrement_object_refcount(device_data->serial_device);
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }

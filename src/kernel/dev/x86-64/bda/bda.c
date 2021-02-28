@@ -108,12 +108,12 @@ uint8_t bda_device_init(struct object* dev) {
     return 1;
 }
 
-void bda_objectmgr_register_devices() {
+void bda_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "BIOS Data Area");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "BIOS Data Area");
     deviceinstance->devicetype = BDA;
     deviceinstance->init = &bda_device_init;
     /*
@@ -124,5 +124,5 @@ void bda_objectmgr_register_devices() {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

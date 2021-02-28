@@ -353,12 +353,12 @@ void sb16_play(struct object* dev, uint8_t* buffer, uint16_t rate, uint8_t depth
     //	asm_out_b(sb16_data->port+SB16_PORT_WRITE, HIGH_OF_W(ISA_DMA_BUFFER_SIZE-1));
 }
 
-void sb16_objectmgr_register_device(uint64_t port) {
+void sb16_objectmgr_register_object(uint64_t port) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "Soundblaster 16");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "Soundblaster 16");
     deviceinstance->devicetype = DSP;
     deviceinstance->init = &sb16_device_init;
     /*
@@ -377,7 +377,7 @@ void sb16_objectmgr_register_device(uint64_t port) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 /*
@@ -397,10 +397,10 @@ bool sb16_detect(uint32_t port) {
     return false;
 }
 
-void sb16_objectmgr_register_devices() {
+void sb16_objectmgr_register_objects() {
     for (uint8_t i = 0; i < 4; i++) {
         if (sb16_detect(SB_BASE_PORTS[i])) {
-            sb16_objectmgr_register_device(SB_BASE_PORTS[i]);
+            sb16_objectmgr_register_object(SB_BASE_PORTS[i]);
         }
     }
 }

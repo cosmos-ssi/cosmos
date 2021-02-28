@@ -10,7 +10,7 @@
 
 #include <dev/x86-64/keyboard/abstract_keyboard.h>
 
-void keyboard_objectmgr_register_devices();
+void keyboard_objectmgr_register_objects();
 
 void keyboard_remove_command_queue();
 void keyboard_send_command_queue();

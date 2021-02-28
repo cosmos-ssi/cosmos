@@ -20,7 +20,7 @@ void test_smbios() {
     /*
      * find the SMBIOS disk
      */
-    struct object* smbios = objectmgr_find_device(devicename);
+    struct object* smbios = objectmgr_find_object(devicename);
     if (0 != smbios) {
         ASSERT_NOT_NULL(smbios->device_data);
         struct smbios_entry_point* smbios_entry = smbios_get_smbios_entry_point(smbios);

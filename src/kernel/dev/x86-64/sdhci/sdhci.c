@@ -60,8 +60,8 @@ void sdhci_pci_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "SDHCI Controller");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "SDHCI Controller");
     deviceinstance->devicetype = SDHCI;
     deviceinstance->pci = dev;
     deviceinstance->init = &sdhci_device_init;
@@ -81,12 +81,12 @@ void sdhci_pci_search_cb(struct pci_device* dev) {
     /**
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 /**
  * find all NE2000 devices and register them
  */
-void sdhci_objectmgr_register_devices() {
+void sdhci_objectmgr_register_objects() {
     pci_objectmgr_search_device(PCI_CLASS_BASE_PERI, 0x05, 0x1B36, 0x07, &sdhci_pci_search_cb);
 }

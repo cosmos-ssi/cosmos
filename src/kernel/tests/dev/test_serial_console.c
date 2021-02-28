@@ -19,7 +19,7 @@ void test_serial_console_dev() {
     /*
      * find the physical disk
      */
-    struct object* serial = objectmgr_find_device(devicename);
+    struct object* serial = objectmgr_find_object(devicename);
     if (0 != serial) {
         // attach the console
         struct object* console_device = serial_console_attach(serial);

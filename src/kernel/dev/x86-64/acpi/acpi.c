@@ -60,16 +60,16 @@ uint8_t acpi_device_init(struct object* dev) {
     return 1;
 }
 
-void acpi_objectmgr_register_devices() {
+void acpi_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "ACPI");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "ACPI");
     deviceinstance->devicetype = ACPI;
     deviceinstance->init = &acpi_device_init;
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

@@ -228,12 +228,12 @@ struct object* initrd_attach(struct object* partition_device, uint32_t lba) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &initrd_init;
     deviceinstance->uninit = &initrd_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = FILESYSTEM;
-    objectmgr_set_device_description(deviceinstance, "initrd File System");
+    objectmgr_set_object_description(deviceinstance, "initrd File System");
     /*
      * the device api
      */
@@ -260,11 +260,11 @@ struct object* initrd_attach(struct object* partition_device, uint32_t lba) {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_device_refcount(partition_device);
+        objectmgr_increment_object_refcount(partition_device);
         /*
         * return device
         */
@@ -286,11 +286,11 @@ void initrd_detach(struct object* dev) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_device_refcount(device_data->partition_device);
+    objectmgr_decrement_object_refcount(device_data->partition_device);
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }
 
 /*

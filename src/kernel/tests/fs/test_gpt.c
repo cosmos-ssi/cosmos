@@ -16,7 +16,7 @@
 void test_gpt_attach() {
     uint8_t devicename[] = {"disk1"};
 
-    struct object* dsk = objectmgr_find_device(devicename);
+    struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
         struct object* dev = guid_pt_attach(dsk);
         guid_pt_detach(dev);

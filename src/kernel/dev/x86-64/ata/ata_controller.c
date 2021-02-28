@@ -121,11 +121,11 @@ void ata_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &device_init_ata;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = ATA;
-    objectmgr_set_device_description(deviceinstance, "ATA");
+    objectmgr_set_object_description(deviceinstance, "ATA");
     /*
      * device data
      */
@@ -134,10 +134,10 @@ void ata_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
-void ata_objectmgr_register_devices() {
+void ata_objectmgr_register_objects() {
     pci_objectmgr_search_devicetype(PCI_CLASS_MASS_STORAGE, PCI_MASS_STORAGE_SUBCLASS_IDE, &ata_search_cb);
 }
 

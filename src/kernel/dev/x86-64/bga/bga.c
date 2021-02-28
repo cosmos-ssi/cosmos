@@ -175,12 +175,12 @@ void bga_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &bga_device_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = BGA;
-    objectmgr_set_device_description(deviceinstance, "QEMU/Bochs BGA Framebuffer");
-    objectmgr_register_device(deviceinstance);
+    objectmgr_set_object_description(deviceinstance, "QEMU/Bochs BGA Framebuffer");
+    objectmgr_register_object(deviceinstance);
     /*
      * device api
      */
@@ -204,6 +204,6 @@ void bga_search_cb(struct pci_device* dev) {
 /**
  * find all Display devices and register them
  */
-void bga_objectmgr_register_devices() {
+void bga_objectmgr_register_objects() {
     pci_objectmgr_search_devicetype(PCI_CLASS_DISPLAY, PCI_DISPLAY_SUBCLASS_VGA, &bga_search_cb);
 }

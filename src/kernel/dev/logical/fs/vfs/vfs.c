@@ -168,13 +168,13 @@ struct object* vfs_attach(uint8_t* name) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &vfs_init;
     deviceinstance->uninit = &vfs_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = VFS;
     deviceinstance->device_data = 0;
-    objectmgr_set_device_description(deviceinstance, "VFS File System");
+    objectmgr_set_object_description(deviceinstance, "VFS File System");
     /*
      * the device api
      */
@@ -199,7 +199,7 @@ struct object* vfs_attach(uint8_t* name) {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * return device
         */
@@ -219,7 +219,7 @@ void vfs_detach(struct object* dev) {
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }
 
 void vfs_add_child(struct object* vfs_device, struct filesystem_node* child_node) {

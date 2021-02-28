@@ -126,12 +126,12 @@ void rtc_subscribe(rtc_event event) {
 /*
  * find all RTC devices and register them
  */
-void rtc_objectmgr_register_devices() {
+void rtc_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "RTC");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "RTC");
     deviceinstance->devicetype = RTC;
     deviceinstance->init = &rtc_device_init;
     /*
@@ -144,5 +144,5 @@ void rtc_objectmgr_register_devices() {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

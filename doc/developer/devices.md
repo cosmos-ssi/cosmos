@@ -7,18 +7,18 @@ the CosmOS device manager at `/devicemgr/devicemgr.h` contains a database of phy
 
 # Registration
 
-* Call the "register" function for each device type. For example `network_objectmgr_register_devices()` registers the network devices.
+* Call the "register" function for each device type. For example `network_objectmgr_register_objects()` registers the network devices.
 
 * The device type register function for the type calls register functions for each driver. For example
 
 ```java
-void network_objectmgr_register_devices() {
-    rtl8139_objectmgr_register_devices();
-    ne2000_objectmgr_register_devices();
+void network_objectmgr_register_objects() {
+    rtl8139_objectmgr_register_objects();
+    ne2000_objectmgr_register_objects();
 }
 ```
 
-Each device driver's register function finds all instance of the specific device type, and calls `void objectmgr_register_device(struct object* dev);` to register each instance.
+Each device driver's register function finds all instance of the specific device type, and calls `void objectmgr_register_object(struct object* dev);` to register each instance.
 
 Device's on the PCI bus can use the PCI search functions to find device instances
 
@@ -101,7 +101,7 @@ It is not generally encouraged to include header files in the subdirectory /kern
 
 ```java
 	// query the device manager for the device serial0
-	struct object* serial0 = objectmgr_find_device("serial0");
+	struct object* serial0 = objectmgr_find_object("serial0");
 	// get the serial device api for the device
 	struct objecttype_serial* serial_api = (struct objecttype_serial*) serial0->api;
 	// get the "write" function from the api

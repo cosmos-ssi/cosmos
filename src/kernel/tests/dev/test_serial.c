@@ -15,7 +15,7 @@
  */
 void serialMessage(const uint8_t* message) {
     // get serial0
-    struct object* serial0 = objectmgr_find_device("serial0");
+    struct object* serial0 = objectmgr_find_object("serial0");
     if (0 != serial0) {
         struct objecttype_serial* serial_api = (struct objecttype_serial*)serial0->api;
         serial_write_function write_func = serial_api->write;

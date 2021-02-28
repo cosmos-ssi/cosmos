@@ -25,7 +25,7 @@ The below code creates a partition table device for an MBR partition table on di
 - creating multiple part devices such as `part0`, `part1`, `part2` for each partition.
 
 ```java
-	struct object* dsk = objectmgr_find_device("disk0");
+	struct object* dsk = objectmgr_find_object("disk0");
 	if (0 != dsk) {
 		struct object* dev = mbr_pt_attach(dsk);
 		struct objecttype_part_table* api = (struct objecttype_part_table*)dev->api;
@@ -38,7 +38,7 @@ The below code creates a partition table device for an MBR partition table on di
 Now that CosmOS knows about the partitions, we can mount filesystems on them. This code creates a FAT device such as `fat0' on 'part0'.
 
 ```java
-	struct object* part = objectmgr_find_device("part0");
+	struct object* part = objectmgr_find_object("part0");
 	if (0 != part) {
 		struct object* dev = fat_attach(part);
 		fat_detach(part);

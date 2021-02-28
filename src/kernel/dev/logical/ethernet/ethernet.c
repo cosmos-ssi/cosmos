@@ -62,12 +62,12 @@ struct object* ethernet_attach(struct object* nic_device) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &ethernet_init;
     deviceinstance->uninit = &ethernet_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = ETHERNET;
-    objectmgr_set_device_description(deviceinstance, "Ethernet");
+    objectmgr_set_object_description(deviceinstance, "Ethernet");
     /*
      * the device api
      */
@@ -85,11 +85,11 @@ struct object* ethernet_attach(struct object* nic_device) {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_device_refcount(nic_device);
+        objectmgr_increment_object_refcount(nic_device);
         /*
         * return device
         */
@@ -109,11 +109,11 @@ void ethernet_detach(struct object* dev) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_device_refcount(device_data->nic_device);
+    objectmgr_decrement_object_refcount(device_data->nic_device);
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }
 
 void ethernet_init_eth(struct eth_hdr* eth, uint8_t* hw_source, uint8_t* hw_dest, uint8_t* data,

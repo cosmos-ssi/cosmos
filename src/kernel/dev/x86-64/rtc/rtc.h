@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void rtc_objectmgr_register_devices();
+void rtc_objectmgr_register_objects();
 
 #endif

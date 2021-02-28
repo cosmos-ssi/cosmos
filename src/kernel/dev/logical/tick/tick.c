@@ -53,12 +53,12 @@ struct object* tick_attach(struct object* pit_device) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &tick_init;
     deviceinstance->uninit = &tick_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = TICK;
-    objectmgr_set_device_description(deviceinstance, "Tick Count");
+    objectmgr_set_object_description(deviceinstance, "Tick Count");
     /*
      * the device api
      */
@@ -75,11 +75,11 @@ struct object* tick_attach(struct object* pit_device) {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_device_refcount(pit_device);
+        objectmgr_increment_object_refcount(pit_device);
         /*
         * return device
         */
@@ -98,9 +98,9 @@ void tick_detach(struct object* dev) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_device_refcount(device_data->pit_device);
+    objectmgr_decrement_object_refcount(device_data->pit_device);
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }

@@ -140,12 +140,12 @@ struct object* vga_console_attach(struct object* vga_device) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &vga_console_dev_init;
     deviceinstance->uninit = &vga_console_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = CONSOLE;
-    objectmgr_set_device_description(deviceinstance, "VGA Console");
+    objectmgr_set_object_description(deviceinstance, "VGA Console");
     /*
      * the device api
      */
@@ -164,11 +164,11 @@ struct object* vga_console_attach(struct object* vga_device) {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_device_refcount(vga_device);
+        objectmgr_increment_object_refcount(vga_device);
         /*
         * return device
         */
@@ -188,9 +188,9 @@ void vga_console_detach(struct object* dev) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_device_refcount(device_data->vga_device);
+    objectmgr_decrement_object_refcount(device_data->vga_device);
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }

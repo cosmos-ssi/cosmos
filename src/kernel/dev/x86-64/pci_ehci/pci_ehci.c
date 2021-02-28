@@ -37,11 +37,11 @@ void pci_ehci_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &pci_ehci_device_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = BRIDGE;
-    objectmgr_set_device_description(deviceinstance, "PCI EHCI Controller");
+    objectmgr_set_object_description(deviceinstance, "PCI EHCI Controller");
     /*
      * device data
      */
@@ -50,12 +50,12 @@ void pci_ehci_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 /**
  * find all bridge devices and register them
  */
-void pci_ehci_objectmgr_register_devices() {
+void pci_ehci_objectmgr_register_objects() {
     pci_objectmgr_search_device(PCI_CLASS_BASE_PERI, 0x05, 0x1B36, 0x07, &pci_ehci_search_cb);
 }

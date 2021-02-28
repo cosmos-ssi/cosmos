@@ -50,7 +50,7 @@ struct smbios_header {
     uint16_t handle;
 };
 
-void smbios_objectmgr_register_devices();
+void smbios_objectmgr_register_objects();
 
 struct smbios_entry_point* smbios_get_smbios_entry_point(struct object* dev);
 

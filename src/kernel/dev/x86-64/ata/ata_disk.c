@@ -185,11 +185,11 @@ void ata_register_disk(struct object* controllerDevice, uint8_t channel, uint8_t
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &device_init_ata_disk;
     deviceinstance->uninit = &device_uninit_ata_disk;
     deviceinstance->devicetype = DISK;
-    objectmgr_set_device_description(deviceinstance, "ATA Disk");
+    objectmgr_set_object_description(deviceinstance, "ATA Disk");
     /*
      * device data
      */
@@ -212,5 +212,5 @@ void ata_register_disk(struct object* controllerDevice, uint8_t channel, uint8_t
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

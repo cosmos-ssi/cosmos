@@ -120,12 +120,12 @@ struct object* cpm_attach(struct object* partition_device) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &cpm_init;
     deviceinstance->uninit = &cpm_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = FILESYSTEM;
-    objectmgr_set_device_description(deviceinstance, "CP/M File System");
+    objectmgr_set_object_description(deviceinstance, "CP/M File System");
     /*
      * the device api
      */
@@ -151,11 +151,11 @@ struct object* cpm_attach(struct object* partition_device) {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_device_refcount(partition_device);
+        objectmgr_increment_object_refcount(partition_device);
         /*
         * return device
         */
@@ -175,9 +175,9 @@ void cpm_detach(struct object* dev) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_device_refcount(device_data->partition_device);
+    objectmgr_decrement_object_refcount(device_data->partition_device);
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }

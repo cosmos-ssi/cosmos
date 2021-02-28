@@ -59,12 +59,12 @@ void speaker_beep(struct object* dev, uint32_t frequency, uint32_t milliseconds)
     // set_PIT_2(old_frequency);
 }
 
-void speaker_objectmgr_register_devices() {
+void speaker_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "Speaker");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "Speaker");
     deviceinstance->devicetype = SPEAKER;
     deviceinstance->init = &speaker_device_init;
     /*
@@ -76,5 +76,5 @@ void speaker_objectmgr_register_devices() {
     /**
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

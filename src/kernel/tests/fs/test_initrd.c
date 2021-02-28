@@ -23,7 +23,7 @@ void test_initrd() {
     // boot disk.....
     uint8_t devicename[] = {INITRD_DISK};
 
-    struct object* dsk = objectmgr_find_device(devicename);
+    struct object* dsk = objectmgr_find_object(devicename);
     if (0 != dsk) {
         //    kprintf("lba %llu\n", initrd_lba());
 

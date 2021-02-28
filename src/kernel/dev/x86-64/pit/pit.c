@@ -67,13 +67,13 @@ void pit_subscribe(pit_event event) {
     arraylist_add(pitEvents, event);
 }
 
-void pit_objectmgr_register_devices() {
+void pit_objectmgr_register_objects() {
     pitEvents = arraylist_new();
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "8253/8254 PIT");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "8253/8254 PIT");
     deviceinstance->devicetype = PIT;
     deviceinstance->init = &pit_init;
     /*
@@ -86,5 +86,5 @@ void pit_objectmgr_register_devices() {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

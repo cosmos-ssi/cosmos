@@ -126,12 +126,12 @@ struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &ramdisk_init;
     deviceinstance->uninit = &ramdisk_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = RAMDISK;
-    objectmgr_set_device_description(deviceinstance, "RAM disk");
+    objectmgr_set_object_description(deviceinstance, "RAM disk");
     /*
      * device data
      */
@@ -155,7 +155,7 @@ struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * return device
         */
@@ -170,5 +170,5 @@ struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
 
 void ramdisk_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }

@@ -149,14 +149,14 @@ struct mouse_status* ps2mouse_status(struct object* dev) {
 /**
  * find all PS/2 mouse devices and register them
  */
-void mouse_objectmgr_register_devices() {
+void mouse_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &mouse_device_init;
     deviceinstance->devicetype = MOUSE;
-    objectmgr_set_device_description(deviceinstance, "PS2 Mouse");
+    objectmgr_set_object_description(deviceinstance, "PS2 Mouse");
     /*
      * device api
      */
@@ -166,5 +166,5 @@ void mouse_objectmgr_register_devices() {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void pit_objectmgr_register_devices();
+void pit_objectmgr_register_objects();
 
 #endif

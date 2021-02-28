@@ -46,11 +46,11 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * the device instance
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &serial_device_init;
     //    deviceinstance->device_data = device_data;
     deviceinstance->devicetype = SERIAL;
-    objectmgr_set_device_description(deviceinstance, "PL101");
+    objectmgr_set_object_description(deviceinstance, "PL101");
     /*
      * the device api
      */
@@ -60,13 +60,13 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 /**
  * find all RS232 devices and register them
  */
-void serial_objectmgr_register_devices() {
+void serial_objectmgr_register_objects() {
     //   serial_register_device(SERIAL_IRQ2,COM1_ADDRESS);
 
     // TODO add code to check if these even exist

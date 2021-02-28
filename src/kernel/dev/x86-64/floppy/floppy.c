@@ -225,10 +225,10 @@ void floppy_register_device(uint64_t port, uint8_t type, bool master) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &floppy_device_init;
     deviceinstance->devicetype = FLOPPY;
-    objectmgr_set_device_description(deviceinstance, "Floppy");
+    objectmgr_set_object_description(deviceinstance, "Floppy");
     /*
      * the device api
      */
@@ -248,7 +248,7 @@ void floppy_register_device(uint64_t port, uint8_t type, bool master) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 void floppy_register_floppy(uint64_t port) {
@@ -270,6 +270,6 @@ void floppy_register_floppy(uint64_t port) {
 /**
  * find all floppy devices and register them
  */
-void floppy_objectmgr_register_devices() {
+void floppy_objectmgr_register_objects() {
     floppy_register_floppy(FLOPPY_BASE);
 }

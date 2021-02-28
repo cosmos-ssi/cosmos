@@ -36,11 +36,11 @@ void usb_ehci_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &usb_ehci_device_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = USB;
-    objectmgr_set_device_description(deviceinstance, "Intel 82801 USB EHCI Controller");
+    objectmgr_set_object_description(deviceinstance, "Intel 82801 USB EHCI Controller");
     /*
      * the device_data
      */
@@ -51,12 +51,12 @@ void usb_ehci_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 /**
  * find all USB devices and register them
  */
-void usb_ehci_objectmgr_register_devices() {
+void usb_ehci_objectmgr_register_objects() {
     pci_objectmgr_search_device(PCI_CLASS_SERIAL, PCI_SERIAL_SUBCLASS_USB, 0x8086, 0x24CD, &usb_ehci_search_cb);
 }

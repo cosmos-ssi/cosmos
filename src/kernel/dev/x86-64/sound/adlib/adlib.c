@@ -60,12 +60,12 @@ uint8_t adlib_device_init(struct object* dev) {
     return 1;
 }
 
-void adlib_objectmgr_register_devices() {
+void adlib_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "Yamaha YM3812 (OPL2)");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "Yamaha YM3812 (OPL2)");
     deviceinstance->devicetype = DSP;
     deviceinstance->init = &adlib_device_init;
     /*
@@ -76,5 +76,5 @@ void adlib_objectmgr_register_devices() {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

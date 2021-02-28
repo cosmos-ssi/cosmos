@@ -54,15 +54,15 @@ uint8_t pic_device_init(struct object* dev) {
     return 1;
 }
 
-void pic_objectmgr_register_devices() {
+void pic_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "8259 PIC");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "8259 PIC");
     deviceinstance->devicetype = PIC;
     deviceinstance->init = &pic_device_init;
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 
     return;
 }

@@ -95,12 +95,12 @@ struct object* partition_attach(struct object* partition_table_device, uint8_t p
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &partition_init;
     deviceinstance->uninit = &partition_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = PARTITION;
-    objectmgr_set_device_description(deviceinstance, "Partition");
+    objectmgr_set_object_description(deviceinstance, "Partition");
     /*
      * the device api
      */
@@ -125,11 +125,11 @@ struct object* partition_attach(struct object* partition_table_device, uint8_t p
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_device_refcount(partition_table_device);
+        objectmgr_increment_object_refcount(partition_table_device);
         /*
         * return device
         */
@@ -149,9 +149,9 @@ void partition_detach(struct object* dev) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_device_refcount(device_data->partition_table_device);
+    objectmgr_decrement_object_refcount(device_data->partition_table_device);
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }

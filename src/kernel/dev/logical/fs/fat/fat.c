@@ -330,12 +330,12 @@ struct object* fat_attach(struct object* partition_device) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &fat_init;
     deviceinstance->uninit = &fat_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = FILESYSTEM;
-    objectmgr_set_device_description(deviceinstance, "FAT File System");
+    objectmgr_set_object_description(deviceinstance, "FAT File System");
     /*
      * the device api
      */
@@ -353,11 +353,11 @@ struct object* fat_attach(struct object* partition_device) {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_device_refcount(partition_device);
+        objectmgr_increment_object_refcount(partition_device);
         /*
         * return device
         */
@@ -377,9 +377,9 @@ void fat_detach(struct object* dev) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_device_refcount(device_data->partition_device);
+    objectmgr_decrement_object_refcount(device_data->partition_device);
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }

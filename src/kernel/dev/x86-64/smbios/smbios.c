@@ -67,12 +67,12 @@ uint8_t smbios_device_init(struct object* dev) {
     }
 }
 
-void smbios_objectmgr_register_devices() {
+void smbios_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
-    objectmgr_set_device_description(deviceinstance, "SMBIOS");
+    struct object* deviceinstance = objectmgr_new_object();
+    objectmgr_set_object_description(deviceinstance, "SMBIOS");
     deviceinstance->devicetype = SMBIOS;
     deviceinstance->init = &smbios_device_init;
     /*
@@ -84,5 +84,5 @@ void smbios_objectmgr_register_devices() {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }

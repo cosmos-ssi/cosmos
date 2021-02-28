@@ -240,12 +240,12 @@ struct object* guid_pt_attach(struct object* block_device) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &guid_pt_init;
     deviceinstance->uninit = &guid_pt_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = PARTITION_TABLE;
-    objectmgr_set_device_description(deviceinstance, "GUID partition table");
+    objectmgr_set_object_description(deviceinstance, "GUID partition table");
     /*
      * the device api
      */
@@ -268,11 +268,11 @@ struct object* guid_pt_attach(struct object* block_device) {
     /*
      * register
      */
-    if (0 != objectmgr_attach_device(deviceinstance)) {
+    if (0 != objectmgr_attach_object(deviceinstance)) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_device_refcount(block_device);
+        objectmgr_increment_object_refcount(block_device);
         /*
         * return device
         */
@@ -292,11 +292,11 @@ void guid_pt_detach(struct object* dev) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_device_refcount(device_data->block_device);
+    objectmgr_decrement_object_refcount(device_data->block_device);
     /*
     * detach
     */
-    objectmgr_detach_device(dev);
+    objectmgr_detach_object(dev);
 }
 
 void guid_pt_dump(struct object* dev) {

@@ -221,11 +221,11 @@ void vblock_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* deviceinstance = objectmgr_new_device();
+    struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &vblock_init;
     deviceinstance->pci = dev;
     deviceinstance->devicetype = VBLOCK;
-    objectmgr_set_device_description(deviceinstance, "Virtio ATA");
+    objectmgr_set_object_description(deviceinstance, "Virtio ATA");
     /*
      * device data
      */
@@ -244,13 +244,13 @@ void vblock_search_cb(struct pci_device* dev) {
     /*
      * register
      */
-    objectmgr_register_device(deviceinstance);
+    objectmgr_register_object(deviceinstance);
 }
 
 /**
  * find all virtio block devices and register them
  */
-void vblock_objectmgr_register_devices() {
+void vblock_objectmgr_register_objects() {
     pci_objectmgr_search_device(PCI_CLASS_MASS_STORAGE, PCI_MASS_STORAGE_SUBCLASS_SCSI, VIRTIO_PCI_MANUFACTURER,
                                 VIRTIO_PCI_DEVICED_BLOCK, &vblock_search_cb);
 }

@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void floppy_objectmgr_register_devices();
+void floppy_objectmgr_register_objects();
 
 #endif

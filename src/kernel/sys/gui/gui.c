@@ -27,7 +27,7 @@ struct gui_state_data* gui_state;
 #define FONT_NAME "zap-vga16.psf"
 
 void gui_init() {
-    struct object* bga = objectmgr_find_device(VGA_DEVICE_NAME);
+    struct object* bga = objectmgr_find_object(VGA_DEVICE_NAME);
     if (0 != bga) {
         gui_state = (struct gui_state_data*)kmalloc(sizeof(struct gui_state_data));
         gui_state->canvas = canvas_new(bga);
