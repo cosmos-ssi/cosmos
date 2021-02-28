@@ -9,10 +9,12 @@
 #include <dev/x86-64/acpi/acpi.h>
 #include <dev/x86-64/ata/ata_controller.h>
 #include <dev/x86-64/bda/bda.h>
+#include <dev/x86-64/bga/bga.h>
 #include <dev/x86-64/bridge/bridge.h>
 #include <dev/x86-64/cmos/cmos.h>
 #include <dev/x86-64/cpu/cpu.h>
 #include <dev/x86-64/isadma/isadma.h>
+#include <dev/x86-64/kernelmap/kernelmap.h>
 #include <dev/x86-64/keyboard/keyboard.h>
 #include <dev/x86-64/mouse/mouse.h>
 #include <dev/x86-64/network/network.h>

@@ -17,6 +17,7 @@
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
+#include <sys/x86-64/mm/pagetables.h>
 
 // https://wiki.osdev.org/DMA
 // http://www.osdever.net/documents/dmaprogramming.pdf

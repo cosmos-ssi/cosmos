@@ -8,6 +8,7 @@
 #include <dev/logical/fs/devfs/devfs.h>
 #include <dev/logical/fs/node_cache.h>
 #include <dev/logical/fs/node_util.h>
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/deviceapi/deviceapi_filesystem.h>
 #include <sys/devicemgr/device.h>
