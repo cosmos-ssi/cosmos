@@ -17,8 +17,8 @@ QEMUARGS=                                                 \
   -drive file=img/mbr_fat.img,index=1,format=raw           \
   -drive file=img/gpt_fat.img,index=2,format=raw          \
   -drive file=img/blank.img,index=3,format=raw          \
-  -device sdhci-pci                                     \
-  -nic user,model=virtio-net-pci                         \
+  -device virtio-net-pci,netdev=net0                   \
+  -netdev user,id=net0,hostfwd=tcp::8080-:80  \
   -serial stdio                                           \
   -audiodev coreaudio,id=audio0                           \
   -device adlib,audiodev=audio0                          \
@@ -27,7 +27,7 @@ QEMUARGS=                                                 \
   -vga std
 
   # -object filter-dump,id=f1,netdev=virtio,file=dump.dat      \
-
+#-device sdhci-pci                                     \
  #  -device usb-ehci                                        \
 
 #  -drive if=virtio,file=img/hda.img,format=raw                \
