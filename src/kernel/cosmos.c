@@ -19,6 +19,7 @@
 #include <sys/obj/objectinterface/objectinterface_console.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
@@ -129,9 +130,9 @@ void CosmOS() {
     // any dev tests we want to run
     dev_tests();
 
-    // show the vfs
-    // kprintf("***** Devices *****\n");
-    //  objectmgr_dump_objects();
+    // show all object types and instances
+    objecttypes_dump();
+    objectmgr_dump_objects();
 
     dump_vfs();
 

@@ -298,9 +298,10 @@ uint8_t objectmgr_decrement_object_refcount(struct object* obj) {
 
 void objectmgr_dump_objects_iterator(struct object* obj) {
     ASSERT_NOT_NULL(obj);
-    kprintf("%s Refcount %llu\n", obj->name, obj->reference_count);
+    kprintf("   Name: %s Type: %#llX Refcount %llu\n", obj->name, obj->objectype, obj->reference_count);
 }
 
 void objectmgr_dump_objects() {
+    kprintf("***** All Objects *****\n");
     objectregistry_iterate(&objectmgr_dump_objects_iterator);
 }

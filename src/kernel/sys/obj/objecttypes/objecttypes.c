@@ -95,3 +95,13 @@ void objecttypes_add(struct object_type* ot) {
         PANIC("Duplicate object type");
     }
 }
+
+void objecttypes_dump() {
+    ASSERT_NOT_NULL(types);
+    kprintf("***** All Object Types *****\n");
+    for (uint32_t i = 0; i < arraylist_count(types); i++) {
+        struct object_type* ot = (struct object_type*)arraylist_get(types, i);
+        ASSERT_NOT_NULL(ot);
+        kprintf("   Object type %#llX: %s\n", ot->id, ot->name);
+    }
+}
