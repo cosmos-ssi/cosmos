@@ -5,23 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
-* userland wrapper for kernel process object
+* a userland object that represents kernel memory.  This is object is how we allocate blocks of user memory.
 */
-#ifndef _PROCESS_HPP
-#define _PROCESS_HPP
+#ifndef _MEMORY_HPP
+#define _MEMORY_HPP
 
-#include <heap.hpp>
 #include <types.h>
 
-class Process {
-  private:
-    Heap* heap;
+class Memory {
 
   public:
-    Process();
-    void sleep(uint64_t ms);
-    uint64_t pid();
-    Process* fork();
+    static void free(void* ptr);
+    static void* malloc(uint64_t size);
+    static void* realloc(void* ptr, uint64_t size);
 };
 
 #endif

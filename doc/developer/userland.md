@@ -68,3 +68,9 @@ RTC          | read            | 2100       | deviceapi_rtc
 Tick         | read            | 2200       | deviceapi_tick
 Serial       | readchar        | 2300       | deviceapi_serial
 Serial       | writechar       | 2301       | deviceapi_serial
+Memory		 | malloc		   | 2401		| to-be deviceapi_memory
+Memory		 | free		       | 2402		| to-be deviceapi_memory
+Memory		 | realloc		   | 2403		| to-be deviceapi_memory
+
+
+
