@@ -14,7 +14,6 @@
 #ifndef _PSF_H
 #define _PSF_H
 
-#include <sys/collection/arraylist/arraylist.h>
 #include <types.h>
 
 struct psf1_font {

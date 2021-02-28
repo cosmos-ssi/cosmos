@@ -5,8 +5,11 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/collection/dtable/dtable.h>
+#include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
+#include <types.h>
 
 linkedlist* task_find(pid_t pid) {
     uint64_t cpu, core;

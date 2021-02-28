@@ -8,8 +8,6 @@
 #ifndef _BGA_H
 #define _BGA_H
 
-#include <types.h>
-
 void bga_objectmgr_register_objects();
 
 #endif

@@ -7,8 +7,7 @@
 
 #include <obj/x86-64/ata/ata_controller.h>
 #include <obj/x86-64/ata/ata_util.h>
-#include <sys/asm/asm.h>
-#include <sys/kprintf/kprintf.h>
+#include <sys/asm/io.h>
 #include <sys/panic/panic.h>
 #include <sys/sleep/sleep.h>
 

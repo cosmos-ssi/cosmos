@@ -8,8 +8,6 @@
 #ifndef _SB16_H
 #define _SB16_H
 
-#include <types.h>
-
 void sb16_objectmgr_register_objects();
 
 #endif

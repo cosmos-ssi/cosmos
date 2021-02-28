@@ -8,7 +8,7 @@
 #ifndef _FAT_H
 #define _FAT_H
 
-#include <types.h>
+struct object;
 
 #define FAT_MBR_PARTITION_ID "B"
 #define FAT_GPT_PARTITION_ID "EBD0A0A2-B9E5-4433-87C0-68B6B72699C7"

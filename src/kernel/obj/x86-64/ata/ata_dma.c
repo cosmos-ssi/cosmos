@@ -11,12 +11,12 @@
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/object/object.h>
-#include <sys/obj/objectinterface/objectinterface_block.h>
 #include <sys/string/mem.h>
 #include <sys/sync/sync.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
+
+struct object;
 
 // PRDT, two channels with 16 possible entries each
 prdt* ata_dma_prdt;

@@ -9,10 +9,10 @@
 #define _ATA_IDENTITY_H
 
 #include <obj/x86-64/ata/ata.h>
-#include <obj/x86-64/ata/ata_controller.h>
 #include <types.h>
 
 struct ata_controller;
+struct ata_device;
 
 uint32_t ata_detect_extract_dword(const char* identify_buf, ata_identify_offsets offset);
 uint64_t ata_detect_extract_qword(const char* identify_buf, ata_identify_offsets offset);

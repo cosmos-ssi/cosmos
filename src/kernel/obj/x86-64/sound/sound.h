@@ -8,10 +8,6 @@
 #ifndef _SOUND_H
 #define _SOUND_H
 
-#include <obj/x86-64/sound/ac97/ac97.h>
-#include <obj/x86-64/sound/adlib/adlib.h>
-#include <obj/x86-64/sound/sb16/sb16.h>
-
 void sound_objectmgr_register_objects();
 
 #endif

@@ -9,15 +9,18 @@
  */
 
 #include <obj/x86-64/network/ne2000isa/ne2000isa.h>
-#include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/interrupt_router/interrupt_router.h>
+#include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_nic.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
+#include <sys/panic/panic.h>
 #include <sys/sleep/sleep.h>
+#include <sys/x86-64/idt/irq.h>
 #include <types.h>
 
 #define NE2000ISA_BASE_ADDRESS 0x300

@@ -6,11 +6,10 @@
 // ****************************************************************
 
 #include <obj/logical/fs/sfs/sfs.h>
-#include <sys/debug/debug.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <tests/fs/test_sfs.h>
+#include <types.h>
 
 void test_sfs() {
     uint8_t devicename[] = {"disk1"};

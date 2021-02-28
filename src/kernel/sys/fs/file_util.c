@@ -11,7 +11,7 @@
 #include <sys/fs/file_util.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/string/mem.h>
+#include <sys/kprintf/kprintf.h>
 
 /*
 * read a file. this kmallocs new memory and returns it.  The file len is populated into len

@@ -5,7 +5,6 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/asm/asm.h>
 #include <sys/asm/misc.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/mm/pagetables.h>

@@ -5,6 +5,29 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <tests/fs/test_devfs.h>
+#include <tests/fs/test_gpt.h>
+#include <tests/fs/test_initrd.h>
+#include <tests/fs/test_swap.h>
+#include <tests/fs/test_vfs.h>
+#include <tests/obj/test_ata.h>
+#include <tests/obj/test_bda.h>
+#include <tests/obj/test_kernelmap.h>
+#include <tests/obj/test_null.h>
+#include <tests/obj/test_ramdisk.h>
+#include <tests/obj/test_rand.h>
+#include <tests/obj/test_smbios.h>
+#include <tests/sys/test_array.h>
+#include <tests/sys/test_arraylist.h>
+#include <tests/sys/test_bitmap.h>
+#include <tests/sys/test_init_loader.h>
+#include <tests/sys/test_iobuffers.h>
+#include <tests/sys/test_linkedlist.h>
+#include <tests/sys/test_malloc.h>
+#include <tests/sys/test_ntree.h>
+#include <tests/sys/test_ringbuffer.h>
+#include <tests/sys/test_string.h>
+#include <tests/sys/test_tree.h>
 #include <tests/tests.h>
 
 void tests_run() {

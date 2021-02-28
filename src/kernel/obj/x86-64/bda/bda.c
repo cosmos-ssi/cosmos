@@ -6,13 +6,11 @@
 // ****************************************************************
 
 #include <obj/x86-64/bda/bda.h>
-#include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/objectinterface/objectinterface_bda.h>
+#include <sys/obj/object/object.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 
 #define BDA_ADDRESS 0x400
 

@@ -11,13 +11,15 @@
 #include <obj/logical/fs/tfs/tfs_dir.h>
 #include <obj/logical/fs/tfs/tfs_map.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/objectinterface/objectinterface_block.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
+#include <types.h>
 
 struct tfs_objectdata {
     struct object* partition_objice;

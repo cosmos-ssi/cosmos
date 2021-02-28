@@ -8,7 +8,7 @@
 #ifndef _SFS_H
 #define _SFS_H
 
-#include <types.h>
+struct object;
 
 struct object* sfs_attach(struct object* partition_objice);
 void sfs_detach(struct object* obj);

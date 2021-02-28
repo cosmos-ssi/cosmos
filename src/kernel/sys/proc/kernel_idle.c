@@ -5,7 +5,6 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/kprintf/kprintf.h>
 #include <types.h>
 
 void* kernel_idle(void* arg) {

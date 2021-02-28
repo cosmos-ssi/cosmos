@@ -6,9 +6,9 @@
 // ****************************************************************
 
 #include <obj/logical/ramdisk/ramdisk.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <tests/obj/test_blockdevice.h>
 #include <tests/obj/test_ramdisk.h>
 

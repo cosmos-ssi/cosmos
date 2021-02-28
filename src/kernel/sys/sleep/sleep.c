@@ -5,11 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/asm/asm.h>
-#include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
-#include <sys/kprintf/kprintf.h>
+#include <sys/asm/misc.h>
+#include <types.h>
 
 volatile uint64_t sleep_countdown;
 

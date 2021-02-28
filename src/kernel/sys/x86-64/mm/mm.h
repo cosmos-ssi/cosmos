@@ -9,7 +9,6 @@
 #define _MM_H
 
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
 
 // Start of physical memory region after kernel + kernel stack areas

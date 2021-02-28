@@ -7,9 +7,14 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_ethernet.h>
 #include <sys/obj/objectinterface/objectinterface_nic.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
+#include <types.h>
 
 struct ethernet_objectdata {
     struct object* nic_device;

@@ -6,7 +6,7 @@
  *****************************************************************/
 
 #include <obj/x86-64/serial/serial.h>
-#include <sys/asm/asm.h>
+#include <sys/asm/misc.h>
 #include <sys/panic/panic.h>
 #include <sys/string/string.h>
 

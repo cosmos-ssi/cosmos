@@ -6,13 +6,10 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
-#include <sys/string/string.h>
-#include <tests/fs/test_devfs.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 void test_vfs() {
     kprintf("Testing vfs\n");

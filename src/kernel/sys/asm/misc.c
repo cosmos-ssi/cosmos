@@ -6,7 +6,6 @@
  *****************************************************************/
 
 #include <sys/x86-64/mm/mm.h>
-#include <types.h>
 
 #ifdef TARGET_PLATFORM_i386
 

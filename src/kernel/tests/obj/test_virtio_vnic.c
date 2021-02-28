@@ -5,17 +5,17 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/logical/virtio/virtio.h>
 #include <obj/logical/virtio/virtqueue.h>
 #include <obj/logical/virtio/vnic/vnic.h>
-#include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_nic.h>
-#include <sys/string/mem.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/panic/panic.h>
 #include <sys/string/string.h>
 #include <tests/obj/test_virtio_vnic.h>
+#include <types.h>
 
 void test_virtio_vnic() {
     kprintf("test_virtio_vnic starting\n");

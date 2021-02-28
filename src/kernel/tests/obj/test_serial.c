@@ -5,9 +5,10 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_serial.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <tests/obj/test_serial.h>
 
 /*

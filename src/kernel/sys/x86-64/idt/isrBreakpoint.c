@@ -7,8 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/x86-64/idt/exceptions.h>
-#include <types.h>
+#include <sys/x86-64/idt/irq.h>
 
 void isrBreakpoint_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);

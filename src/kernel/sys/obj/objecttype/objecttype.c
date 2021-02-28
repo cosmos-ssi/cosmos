@@ -7,9 +7,9 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/string/string.h>
+#include <types.h>
 
 int8_t* object_type_names[] = {"None",   "serial", "vga",   "rtc",    "keyboard", "nic",  "bridge",   "usb",
                                "ata",    "pic",    "mouse", "floppy", "speaker",  "pit",  "dsp",      "cmos",

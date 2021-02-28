@@ -6,11 +6,12 @@
  *****************************************************************/
 
 #include <obj/x86-64/pic/pic.h>
-#include <sys/asm/asm.h>
+#include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 
 // I/O ports
 #define PIC_PRIMARY_COMMAND 0x20

@@ -6,8 +6,8 @@
 // ****************************************************************
 
 #include <obj/x86-64/pci/pci_device.h>
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/kprintf/kprintf.h>
 #include <types.h>
 
 struct arraylist* pci_devices;

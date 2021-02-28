@@ -8,8 +8,6 @@
 #ifndef _INTEL82371_H
 #define _INTEL82371_H
 
-#include <types.h>
-
 void i982371_bridge_register();
 
 #endif

@@ -11,15 +11,17 @@
 #include <obj/x86-64/ata/ata_dma.h>
 #include <obj/x86-64/ata/ata_identity.h>
 #include <obj/x86-64/ata/ata_util.h>
+#include <obj/x86-64/pci/devicetree.h>
 #include <obj/x86-64/pci/pci.h>
-#include <sys/asm/asm.h>
+#include <obj/x86-64/pci/pci_device.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
+#include <sys/panic/panic.h>
 #include <sys/sleep/sleep.h>
-#include <sys/string/string.h>
 #include <types.h>
 
 void ata_detect_devices(struct object* object, struct ata_controller* controller);

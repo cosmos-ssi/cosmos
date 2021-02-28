@@ -8,13 +8,14 @@
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/cpm/cpm.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/objectinterface/objectinterface_block.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
-#include <sys/string/string.h>
+#include <types.h>
 
 // https://obsolescence.wixsite.com/obsolescence/cpm-internals
 

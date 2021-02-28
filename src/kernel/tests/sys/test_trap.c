@@ -5,10 +5,6 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/debug/debug.h>
-#include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/x86-64/mm/pagetables.h>
 #include <tests/sys/test_trap.h>
 
 void test_trap() {

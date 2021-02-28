@@ -9,6 +9,7 @@
 #define _OBJECTYPES_H
 
 #include <sys/obj/objecttype/objectype.h>
+#include <types.h>
 
 void objecttypes_init();
 uint32_t objecttypes_count();
