@@ -19,6 +19,7 @@ QEMUARGS=                                                 \
   -drive file=img/blank.img,index=3,format=raw          \
   -device virtio-net-pci,netdev=net0                   \
   -netdev user,id=net0,hostfwd=tcp::8080-:80  \
+  -object filter-dump,id=f1,netdev=net0,file=net0.dat\
   -serial stdio                                           \
   -audiodev coreaudio,id=audio0                           \
   -device adlib,audiodev=audio0                          \
