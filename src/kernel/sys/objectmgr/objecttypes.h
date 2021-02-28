@@ -14,8 +14,8 @@
 
 #define MAX_DEVICE_TYPES 256
 
-void devicetypes_init();
-struct arraylist* devicetypes_get_devicelist(device_type dt);
-void devicetypes_set_devicelist(device_type dt, struct arraylist* lst);
-uint32_t devicetypes_count();
+void objecttypes_init();
+struct arraylist* objecttypes_get_objectlist(device_type dt);
+void objecttypes_set_objectlist(device_type dt, struct arraylist* lst);
+uint32_t objecttypes_count();
 #endif

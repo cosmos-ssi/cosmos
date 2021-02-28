@@ -121,7 +121,7 @@ struct filesystem_node* devfs_find_node_by_id(struct filesystem_node* fs_node, u
     struct filesystem_node* this_node = node_cache_find(object_data->nc, id);
     if (0 == this_node) {
         enum object_type dt = (enum object_type)devfs_device_type(id);
-        struct arraylist* lst = devicetypes_get_devicelist(dt);
+        struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
             // there is a node with that id, we need to make a fs entry and cache it
             this_node =
@@ -148,13 +148,13 @@ void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
         /*
         * root node
         */
-        dir->count = devicetypes_count();
+        dir->count = objecttypes_count();
         uint32_t folder_count = 0;
         /*
         * every device type has a unique integer to identify it, so that can be the node_id
         */
         for (uint32_t i = 0; i < MAX_DEVICE_TYPES; i++) {
-            struct arraylist* lst = devicetypes_get_devicelist(i);
+            struct arraylist* lst = objecttypes_get_objectlist(i);
             if (0 != lst) {
                 struct filesystem_node* this_node = node_cache_find(object_data->nc, i);
                 if (0 == this_node) {
@@ -178,7 +178,7 @@ void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
             enum object_type dt = (enum object_type)devfs_device_type(fs_node->id);
             ASSERT_NOT_NULL(dt);
             //   kprintf("dt %#llX\n", dt);
-            struct arraylist* lst = devicetypes_get_devicelist(dt);
+            struct arraylist* lst = objecttypes_get_objectlist(dt);
             ASSERT_NOT_NULL(lst);
             uint32_t count = arraylist_count(lst);
             dir->count = count;

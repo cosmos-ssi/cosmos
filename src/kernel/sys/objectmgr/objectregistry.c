@@ -14,27 +14,27 @@
 #include <sys/objecttype/objecttype_filesystem.h>
 #include <sys/string/string.h>
 
-void deviceregistry_init() {
+void objectregistry_init() {
     /*
     * init the types
     */
-    devicetypes_init();
+    objecttypes_init();
 }
 
 /*
 * register a device
 */
-void deviceregistry_registerdevice(struct object* dev) {
+void objectregistry_registerdevice(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->devicetype);
 
     /*
     * get the list for the device type
     */
-    struct arraylist* lst = devicetypes_get_devicelist(dev->devicetype);
+    struct arraylist* lst = objecttypes_get_objectlist(dev->devicetype);
     if (0 == lst) {
         lst = arraylist_new();
-        devicetypes_set_devicelist(dev->devicetype, lst);
+        objecttypes_set_objectlist(dev->devicetype, lst);
     }
     /*
     * add to the list
@@ -45,13 +45,13 @@ void deviceregistry_registerdevice(struct object* dev) {
 /*
 * unregister a device
 */
-void deviceregistry_unregisterdevice(struct object* dev) {
+void objectregistry_unregisterdevice(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->devicetype);
     /*
     * get the list for the device type
     */
-    struct arraylist* lst = devicetypes_get_devicelist(dev->devicetype);
+    struct arraylist* lst = objecttypes_get_objectlist(dev->devicetype);
     ASSERT_NOT_NULL(lst);
     /*
     * find the device
@@ -69,10 +69,10 @@ void deviceregistry_unregisterdevice(struct object* dev) {
     }
 }
 
-uint16_t deviceregistry_devicecount() {
+uint16_t objectregistry_devicecount() {
     uint16_t ret = 0;
     for (uint16_t i = 0; i < MAX_DEVICE_TYPES; i++) {
-        struct arraylist* lst = devicetypes_get_devicelist(i);
+        struct arraylist* lst = objecttypes_get_objectlist(i);
         if (0 != lst) {
             ret = ret + arraylist_count(lst);
         }
@@ -80,77 +80,77 @@ uint16_t deviceregistry_devicecount() {
     return ret;
 }
 
-uint16_t deviceregistry_devicecount_type(device_type dt) {
+uint16_t objectregistry_devicecount_type(device_type dt) {
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
-        struct arraylist* lst = devicetypes_get_devicelist(dt);
+        struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
             return arraylist_count(lst);
         }
         return 0;
     } else {
-        PANIC("Invalid device type passed to deviceregistry_devicecount_type");
+        PANIC("Invalid device type passed to objectregistry_devicecount_type");
     }
     return 0;
 }
 
-struct object* deviceregistry_get_device(device_type dt, uint16_t idx) {
+struct object* objectregistry_get_device(device_type dt, uint16_t idx) {
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
-        struct arraylist* lst = devicetypes_get_devicelist(dt);
+        struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
             return arraylist_get(lst, idx);
         } else {
             PANIC("there are no devices of type");
         }
     } else {
-        PANIC("Invalid device type passed to deviceregistry_get_device");
+        PANIC("Invalid device type passed to objectregistry_get_device");
     }
     return 0;
 }
 
-void deviceregistry_iterate(device_iterator deviceIterator) {
+void objectregistry_iterate(device_iterator deviceIterator) {
     if (0 != deviceIterator) {
         for (uint32_t i = 0; i < MAX_DEVICE_TYPES; i++) {
-            struct arraylist* lst = devicetypes_get_devicelist(i);
+            struct arraylist* lst = objecttypes_get_objectlist(i);
             if (0 != lst) {
                 for (uint32_t j = 0; j < arraylist_count(lst); j++) {
                     struct object* dev = (struct object*)arraylist_get(lst, j);
                     if (0 != dev) {
                         (*deviceIterator)(dev);
                     } else {
-                        PANIC("null dev in deviceregistry_iterate");
+                        PANIC("null dev in objectregistry_iterate");
                     }
                 }
             }
         }
     } else {
-        PANIC("Invalid iterator passed to deviceregistry_iterate");
+        PANIC("Invalid iterator passed to objectregistry_iterate");
     }
 }
 
-void deviceregistry_iterate_type(device_type dt, device_iterator deviceIterator) {
+void objectregistry_iterate_type(device_type dt, device_iterator deviceIterator) {
     ASSERT_NOT_NULL(deviceIterator);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
-        struct arraylist* lst = devicetypes_get_devicelist(dt);
+        struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
                 struct object* dev = (struct object*)arraylist_get(lst, j);
                 if (0 != dev) {
                     (*deviceIterator)(dev);
                 } else {
-                    PANIC("null dev in deviceregistry_iterate");
+                    PANIC("null dev in objectregistry_iterate");
                 }
             }
         }
     } else {
-        PANIC("Invalid device_type passed to deviceregistry_iterate");
+        PANIC("Invalid device_type passed to objectregistry_iterate");
     }
 }
 
-void deviceregistry_find_devices_by_description(device_type dt, const int8_t* description, deviceSearchCallback cb) {
+void objectregistry_find_devices_by_description(device_type dt, const int8_t* description, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(description);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
-        struct arraylist* lst = devicetypes_get_devicelist(dt);
+        struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
                 struct object* dev = (struct object*)arraylist_get(lst, j);
@@ -159,7 +159,7 @@ void deviceregistry_find_devices_by_description(device_type dt, const int8_t* de
                         (*cb)(dev);
                     }
                 } else {
-                    PANIC("null dev in deviceregistry_iterate");
+                    PANIC("null dev in objectregistry_iterate");
                 }
             }
         }
@@ -168,17 +168,17 @@ void deviceregistry_find_devices_by_description(device_type dt, const int8_t* de
     }
 }
 
-void deviceregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallback cb) {
+void objectregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
-        struct arraylist* lst = devicetypes_get_devicelist(dt);
+        struct arraylist* lst = objecttypes_get_objectlist(dt);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
                 struct object* dev = (struct object*)arraylist_get(lst, j);
                 if (0 != dev) {
                     (*cb)(dev);
                 } else {
-                    PANIC("null dev in deviceregistry_iterate");
+                    PANIC("null dev in objectregistry_iterate");
                 }
             }
         }
@@ -190,10 +190,10 @@ void deviceregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallb
 /*
  * find device by name.  return zero if there is no such device
  */
-struct object* deviceregistry_find_device(const int8_t* name) {
+struct object* objectregistry_find_device(const int8_t* name) {
     ASSERT_NOT_NULL(name);
     for (uint16_t i = 0; i < MAX_DEVICE_TYPES; i++) {
-        struct arraylist* lst = devicetypes_get_devicelist(i);
+        struct arraylist* lst = objecttypes_get_objectlist(i);
         if (0 != lst) {
             for (uint16_t j = 0; j < arraylist_count(lst); j++) {
                 struct object* dev = (struct object*)arraylist_get(lst, j);
@@ -202,7 +202,7 @@ struct object* deviceregistry_find_device(const int8_t* name) {
                         return dev;
                     }
                 } else {
-                    PANIC("null dev in deviceregistry_find_device");
+                    PANIC("null dev in objectregistry_find_device");
                 }
             }
         }

@@ -18,7 +18,7 @@
 #define MAX_DEVICE_NAME_LENGTH 128
 
 void objectmgr_init() {
-    deviceregistry_init();
+    objectregistry_init();
 }
 
 int8_t* createDeviceName(struct object* dev) {
@@ -41,7 +41,7 @@ void objectmgr_register_object(struct object* dev) {
     /*
      * set index
      */
-    dev->type_index = deviceregistry_devicecount_type(dev->devicetype);
+    dev->type_index = objectregistry_devicecount_type(dev->devicetype);
     /*
      * create name
      */
@@ -49,7 +49,7 @@ void objectmgr_register_object(struct object* dev) {
     /*
      * register
      */
-    deviceregistry_registerdevice(dev);
+    objectregistry_registerdevice(dev);
 }
 
 void objectmgr_unregister_object(struct object* dev) {
@@ -57,11 +57,11 @@ void objectmgr_unregister_object(struct object* dev) {
     /*
      * unregister
      */
-    deviceregistry_unregisterdevice(dev);
+    objectregistry_unregisterdevice(dev);
 }
 
 uint16_t objectmgr_object_count() {
-    return deviceregistry_devicecount();
+    return objectregistry_devicecount();
 }
 
 void obj_initIterator(struct object* dev) {
@@ -82,60 +82,60 @@ void objectmgr_init_objects() {
     /*
      * CPU first before first?
      */
-    deviceregistry_iterate_type(CPU, obj_initIterator);
+    objectregistry_iterate_type(CPU, obj_initIterator);
     /*
      * BDA, EBDA
      */
-    deviceregistry_iterate_type(BDA, obj_initIterator);
-    deviceregistry_iterate_type(ACPI, obj_initIterator);
+    objectregistry_iterate_type(BDA, obj_initIterator);
+    objectregistry_iterate_type(ACPI, obj_initIterator);
     /*
      * PIC first
      */
-    deviceregistry_iterate_type(PIC, obj_initIterator);
+    objectregistry_iterate_type(PIC, obj_initIterator);
     /*
      * Serial next
      */
-    deviceregistry_iterate_type(SERIAL, obj_initIterator);
+    objectregistry_iterate_type(SERIAL, obj_initIterator);
     /*
      * the PIT
      */
-    deviceregistry_iterate_type(PIT, obj_initIterator);
+    objectregistry_iterate_type(PIT, obj_initIterator);
     /*
      * CMOS
      */
-    deviceregistry_iterate_type(CMOS, obj_initIterator);
+    objectregistry_iterate_type(CMOS, obj_initIterator);
     /*
      * DMA
      */
-    deviceregistry_iterate_type(ISADMA, obj_initIterator);
+    objectregistry_iterate_type(ISADMA, obj_initIterator);
     /*
      * virtual devices
      */
-    deviceregistry_iterate_type(VNIC, obj_initIterator);
-    deviceregistry_iterate_type(VBLOCK, obj_initIterator);
+    objectregistry_iterate_type(VNIC, obj_initIterator);
+    objectregistry_iterate_type(VBLOCK, obj_initIterator);
     /*
      * everything else
      */
-    deviceregistry_iterate_type(RTC, obj_initIterator);
-    deviceregistry_iterate_type(KEYBOARD, obj_initIterator);
-    deviceregistry_iterate_type(VGA, obj_initIterator);
-    deviceregistry_iterate_type(BGA, obj_initIterator);
-    deviceregistry_iterate_type(USB, obj_initIterator);
-    deviceregistry_iterate_type(NIC, obj_initIterator);
-    deviceregistry_iterate_type(BRIDGE, obj_initIterator);
-    deviceregistry_iterate_type(ATA, obj_initIterator);
-    deviceregistry_iterate_type(MOUSE, obj_initIterator);
-    deviceregistry_iterate_type(FLOPPY, obj_initIterator);
-    deviceregistry_iterate_type(SPEAKER, obj_initIterator);
-    deviceregistry_iterate_type(DSP, obj_initIterator);
-    deviceregistry_iterate_type(DISK, obj_initIterator);
-    deviceregistry_iterate_type(SDHCI, obj_initIterator);
-    deviceregistry_iterate_type(SMBIOS, obj_initIterator);
+    objectregistry_iterate_type(RTC, obj_initIterator);
+    objectregistry_iterate_type(KEYBOARD, obj_initIterator);
+    objectregistry_iterate_type(VGA, obj_initIterator);
+    objectregistry_iterate_type(BGA, obj_initIterator);
+    objectregistry_iterate_type(USB, obj_initIterator);
+    objectregistry_iterate_type(NIC, obj_initIterator);
+    objectregistry_iterate_type(BRIDGE, obj_initIterator);
+    objectregistry_iterate_type(ATA, obj_initIterator);
+    objectregistry_iterate_type(MOUSE, obj_initIterator);
+    objectregistry_iterate_type(FLOPPY, obj_initIterator);
+    objectregistry_iterate_type(SPEAKER, obj_initIterator);
+    objectregistry_iterate_type(DSP, obj_initIterator);
+    objectregistry_iterate_type(DISK, obj_initIterator);
+    objectregistry_iterate_type(SDHCI, obj_initIterator);
+    objectregistry_iterate_type(SMBIOS, obj_initIterator);
 
-    //  deviceregistry_iterate_type(RAMDISK, obj_initIterator);
-    deviceregistry_iterate_type(PARALLEL, obj_initIterator);
-    //  deviceregistry_iterate_type(SWAP, obj_initIterator);
-    deviceregistry_iterate_type(KERNELMAP, obj_initIterator);
+    //  objectregistry_iterate_type(RAMDISK, obj_initIterator);
+    objectregistry_iterate_type(PARALLEL, obj_initIterator);
+    //  objectregistry_iterate_type(SWAP, obj_initIterator);
+    objectregistry_iterate_type(KERNELMAP, obj_initIterator);
 }
 
 struct object* objectmgr_new_object() {
@@ -167,20 +167,20 @@ void objectmgr_set_object_description(struct object* dev, const uint8_t* descrip
 
 struct object* objectmgr_find_object(const uint8_t* name) {
     ASSERT_NOT_NULL(name);
-    return deviceregistry_find_device(name);
+    return objectregistry_find_device(name);
 }
 
 void objectmgr_find_objects_by_description(device_type dt, const uint8_t* description, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(description);
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
-    deviceregistry_find_devices_by_description(dt, description, cb);
+    objectregistry_find_devices_by_description(dt, description, cb);
 }
 
 void objectmgr_find_objects_by_device_type(device_type dt, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
-    deviceregistry_find_devices_by_devicetype(dt, cb);
+    objectregistry_find_devices_by_devicetype(dt, cb);
 }
 
 #ifdef TARGET_PLATFORM_i386
@@ -320,5 +320,5 @@ void objectmgr_dump_objects_iterator(struct object* dev) {
 }
 
 void objectmgr_dump_objects() {
-    deviceregistry_iterate(&objectmgr_dump_objects_iterator);
+    objectregistry_iterate(&objectmgr_dump_objects_iterator);
 }

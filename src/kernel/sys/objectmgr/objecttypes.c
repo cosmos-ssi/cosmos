@@ -11,7 +11,7 @@
 
 struct array* types;
 
-void devicetypes_init() {
+void objecttypes_init() {
     //   kprintf("Init Device Types\n");
     types = array_new(MAX_DEVICE_TYPES);
     for (uint16_t i = 0; i < MAX_DEVICE_TYPES; i++) {
@@ -19,26 +19,26 @@ void devicetypes_init() {
     }
 }
 
-struct arraylist* devicetypes_get_devicelist(device_type dt) {
+struct arraylist* objecttypes_get_objectlist(device_type dt) {
     ASSERT_NOT_NULL(types);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         return (struct arraylist*)array_get(types, dt);
     } else {
-        PANIC("Invalid device type passed to devicetypes_get_devicelist");
+        PANIC("Invalid device type passed to objecttypes_get_objectlist");
     }
     return 0;
 }
 
-void devicetypes_set_devicelist(device_type dt, struct arraylist* lst) {
+void objecttypes_set_objectlist(device_type dt, struct arraylist* lst) {
     ASSERT_NOT_NULL(types);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         array_set(types, dt, lst);
     } else {
-        PANIC("Invalid device type passed to devicetypes_set_devicelist");
+        PANIC("Invalid device type passed to objecttypes_set_objectlist");
     }
 }
 
-uint32_t devicetypes_count() {
+uint32_t objecttypes_count() {
     uint32_t ret = 0;
     for (uint32_t i = 0; i < MAX_DEVICE_TYPES; i++) {
         if (0 != array_get(types, i)) {
