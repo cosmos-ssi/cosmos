@@ -196,7 +196,7 @@ void keyboard_objectmgr_register_objects() {
      */
     struct object* objectinstance = objectmgr_new_object();
     objectinstance->init = &keyboard_obj_init;
-    objectinstance->devicetype = KEYBOARD;
+    objectinstance->objectype = KEYBOARD;
     objectmgr_set_object_description(objectinstance, "PS2 Keyboard");
     /*
      * the device api

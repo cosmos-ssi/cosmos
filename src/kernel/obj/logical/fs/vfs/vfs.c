@@ -172,7 +172,7 @@ struct object* vfs_attach(uint8_t* name) {
     objectinstance->init = &vfs_init;
     objectinstance->uninit = &vfs_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = VFS;
+    objectinstance->objectype = VFS;
     objectinstance->object_data = 0;
     objectmgr_set_object_description(objectinstance, "VFS File System");
     /*

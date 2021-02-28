@@ -58,7 +58,7 @@ void arp_request(struct object* obj, struct arp* request, struct arp* response) 
 
 struct object* arp_attach(struct object* ethernet_device) {
     ASSERT_NOT_NULL(ethernet_device);
-    ASSERT(ethernet_device->devicetype == ETHERNET);
+    ASSERT(ethernet_device->objectype == ETHERNET);
 
     /*
      * register device
@@ -67,7 +67,7 @@ struct object* arp_attach(struct object* ethernet_device) {
     objectinstance->init = &arp_init;
     objectinstance->uninit = &arp_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = ARP;
+    objectinstance->objectype = ARP;
     objectmgr_set_object_description(objectinstance, "Address Resolution Protocol");
     /*
      * the device api

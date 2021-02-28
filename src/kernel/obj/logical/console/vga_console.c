@@ -136,7 +136,7 @@ void vga_console_dev_write(struct object* obj, const char* c) {
 
 struct object* vga_console_attach(struct object* vga_device) {
     ASSERT_NOT_NULL(vga_device);
-    ASSERT(vga_device->devicetype == VGA);
+    ASSERT(vga_device->objectype == VGA);
     /*
      * register device
      */
@@ -144,7 +144,7 @@ struct object* vga_console_attach(struct object* vga_device) {
     objectinstance->init = &vga_console_dev_init;
     objectinstance->uninit = &vga_console_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = CONSOLE;
+    objectinstance->objectype = CONSOLE;
     objectmgr_set_object_description(objectinstance, "VGA Console");
     /*
      * the device api

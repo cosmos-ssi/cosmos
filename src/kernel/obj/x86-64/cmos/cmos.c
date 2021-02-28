@@ -55,7 +55,7 @@ void cmos_objectmgr_register_objects() {
      */
     struct object* objectinstance = objectmgr_new_object();
     objectmgr_set_object_description(objectinstance, "i386 CMOS");
-    objectinstance->devicetype = CMOS;
+    objectinstance->objectype = CMOS;
     objectinstance->init = &cmos_obj_init;
     /*
      * api

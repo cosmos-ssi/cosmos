@@ -359,7 +359,7 @@ void sb16_objectmgr_register_object(uint64_t port) {
      */
     struct object* objectinstance = objectmgr_new_object();
     objectmgr_set_object_description(objectinstance, "Soundblaster 16");
-    objectinstance->devicetype = DSP;
+    objectinstance->objectype = DSP;
     objectinstance->init = &sb16_obj_init;
     /*
      * device api

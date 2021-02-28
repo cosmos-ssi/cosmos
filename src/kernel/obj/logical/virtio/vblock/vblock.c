@@ -224,7 +224,7 @@ void vblock_search_cb(struct pci_device* dev) {
     struct object* objectinstance = objectmgr_new_object();
     objectinstance->init = &vblock_init;
     objectinstance->pci = dev;
-    objectinstance->devicetype = VBLOCK;
+    objectinstance->objectype = VBLOCK;
     objectmgr_set_object_description(objectinstance, "Virtio ATA");
     /*
      * device data

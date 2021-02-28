@@ -23,11 +23,11 @@ void objectmgr_init() {
 
 int8_t* createDeviceName(struct object* obj) {
     ASSERT_NOT_NULL(obj);
-    ASSERT_NOT_NULL(obj->devicetype);
+    ASSERT_NOT_NULL(obj->objectype);
     int8_t nn[32];
     int8_t* ret = kmalloc(MAX_DEVICE_NAME_LENGTH);
-    ASSERT_NOT_NULL(object_type_names[obj->devicetype]);
-    strncpy(ret, object_type_names[obj->devicetype], MAX_DEVICE_NAME_LENGTH);
+    ASSERT_NOT_NULL(object_type_names[obj->objectype]);
+    strncpy(ret, object_type_names[obj->objectype], MAX_DEVICE_NAME_LENGTH);
     uitoa3(obj->type_index, nn, 32, 10);
     ret = strncat(ret, nn, MAX_DEVICE_NAME_LENGTH);
     return ret;
@@ -36,12 +36,12 @@ int8_t* createDeviceName(struct object* obj) {
 void objectmgr_register_object(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->description);
-    ASSERT_NOT_NULL(obj->devicetype);
+    ASSERT_NOT_NULL(obj->objectype);
     ASSERT_NOT_NULL(obj->init);
     /*
      * set index
      */
-    obj->type_index = objectregistry_devicecount_type(obj->devicetype);
+    obj->type_index = objectregistry_devicecount_type(obj->objectype);
     /*
      * create name
      */
@@ -147,7 +147,7 @@ struct object* objectmgr_new_object() {
     ret->object_data = 0;
     ret->name = 0;
     ret->type_index = 0;
-    ret->devicetype = 0;
+    ret->objectype = 0;
     ret->api = 0;
     ret->pci = 0;
     ret->reference_count = 0;
@@ -180,7 +180,7 @@ void objectmgr_find_objects_by_description(device_type dt, const uint8_t* descri
 void objectmgr_find_objects_by_device_type(device_type dt, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(dt);
-    objectregistry_find_devices_by_devicetype(dt, cb);
+    objectregistry_find_devices_by_objectype(dt, cb);
 }
 
 #ifdef TARGET_PLATFORM_i386

@@ -58,7 +58,7 @@ void ethernet_write(struct object* obj, struct eth_hdr* eth, uint16_t size) {
 
 struct object* ethernet_attach(struct object* nic_device) {
     ASSERT_NOT_NULL(nic_device);
-    ASSERT((nic_device->devicetype == NIC) || (nic_device->devicetype == VNIC));
+    ASSERT((nic_device->objectype == NIC) || (nic_device->objectype == VNIC));
     /*
      * register device
      */
@@ -66,7 +66,7 @@ struct object* ethernet_attach(struct object* nic_device) {
     objectinstance->init = &ethernet_init;
     objectinstance->uninit = &ethernet_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = ETHERNET;
+    objectinstance->objectype = ETHERNET;
     objectmgr_set_object_description(objectinstance, "Ethernet");
     /*
      * the device api

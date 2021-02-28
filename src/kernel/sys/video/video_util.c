@@ -16,7 +16,7 @@ void video_get_resolution(struct object* obj, struct objecttype_resolution* reso
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->api);
     ASSERT_NOT_NULL(resolution);
-    ASSERT(obj->devicetype == BGA);
+    ASSERT(obj->objectype == BGA);
     struct objecttype_bga* api = (struct objecttype_bga*)obj->api;
     if (0 != api->get_resolution) {
         (*api->get_resolution)(obj, resolution);
@@ -26,11 +26,11 @@ void video_get_resolution(struct object* obj, struct objecttype_resolution* reso
 void video_set_resolution(struct object* obj, struct objecttype_resolution* resolution) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->api);
-    ASSERT(obj->devicetype == BGA);
+    ASSERT(obj->objectype == BGA);
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->api);
     ASSERT_NOT_NULL(resolution);
-    ASSERT(obj->devicetype == BGA);
+    ASSERT(obj->objectype == BGA);
     struct objecttype_bga* api = (struct objecttype_bga*)obj->api;
     if (0 != api->set_resolution) {
         (*api->set_resolution)(obj, resolution);
@@ -40,7 +40,7 @@ void video_set_resolution(struct object* obj, struct objecttype_resolution* reso
 uint32_t video_util_get_buffersize(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->api);
-    ASSERT(obj->devicetype == BGA);
+    ASSERT(obj->objectype == BGA);
     struct objecttype_bga* api = (struct objecttype_bga*)obj->api;
     if (0 != api->get_buffersize) {
         return (*api->get_buffersize)(obj);
@@ -51,7 +51,7 @@ uint32_t video_util_get_buffersize(struct object* obj) {
 void video_util_blt(struct object* obj, uint8_t* buffer, uint32_t buffer_size) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->api);
-    ASSERT(obj->devicetype == BGA);
+    ASSERT(obj->objectype == BGA);
     struct objecttype_bga* api = (struct objecttype_bga*)obj->api;
     if (0 != api->blt) {
         (*api->blt)(obj, buffer, buffer_size);

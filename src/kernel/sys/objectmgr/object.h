@@ -83,7 +83,7 @@ struct object {
     /*
      * the type (SERIAL, VGA etc)
      */
-    enum object_type devicetype;
+    enum object_type objectype;
     /*
      * init function
      */

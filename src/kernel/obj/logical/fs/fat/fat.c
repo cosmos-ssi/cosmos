@@ -334,7 +334,7 @@ struct object* fat_attach(struct object* partition_objice) {
     objectinstance->init = &fat_init;
     objectinstance->uninit = &fat_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = FILESYSTEM;
+    objectinstance->objectype = FILESYSTEM;
     objectmgr_set_object_description(objectinstance, "FAT File System");
     /*
      * the device api

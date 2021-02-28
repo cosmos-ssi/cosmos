@@ -40,7 +40,7 @@ void pci_ehci_search_cb(struct pci_device* dev) {
     struct object* objectinstance = objectmgr_new_object();
     objectinstance->init = &pci_ehci_obj_init;
     objectinstance->pci = dev;
-    objectinstance->devicetype = BRIDGE;
+    objectinstance->objectype = BRIDGE;
     objectmgr_set_object_description(objectinstance, "PCI EHCI Controller");
     /*
      * device data

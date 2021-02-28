@@ -49,7 +49,7 @@ uint64_t tick_read(struct object* obj) {
 
 struct object* tick_attach(struct object* pit_device) {
     ASSERT_NOT_NULL(pit_device);
-    ASSERT(pit_device->devicetype == PIT);
+    ASSERT(pit_device->objectype == PIT);
     /*
      * register device
      */
@@ -57,7 +57,7 @@ struct object* tick_attach(struct object* pit_device) {
     objectinstance->init = &tick_init;
     objectinstance->uninit = &tick_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = TICK;
+    objectinstance->objectype = TICK;
     objectmgr_set_object_description(objectinstance, "Tick Count");
     /*
      * the device api

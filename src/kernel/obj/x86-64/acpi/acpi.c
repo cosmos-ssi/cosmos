@@ -66,7 +66,7 @@ void acpi_objectmgr_register_objects() {
      */
     struct object* objectinstance = objectmgr_new_object();
     objectmgr_set_object_description(objectinstance, "ACPI");
-    objectinstance->devicetype = ACPI;
+    objectinstance->objectype = ACPI;
     objectinstance->init = &acpi_obj_init;
     /*
      * register

@@ -232,7 +232,7 @@ struct object* initrd_attach(struct object* partition_objice, uint32_t lba) {
     objectinstance->init = &initrd_init;
     objectinstance->uninit = &initrd_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = FILESYSTEM;
+    objectinstance->objectype = FILESYSTEM;
     objectmgr_set_object_description(objectinstance, "initrd File System");
     /*
      * the device api

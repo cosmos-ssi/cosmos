@@ -155,7 +155,7 @@ void mouse_objectmgr_register_objects() {
      */
     struct object* objectinstance = objectmgr_new_object();
     objectinstance->init = &mouse_obj_init;
-    objectinstance->devicetype = MOUSE;
+    objectinstance->objectype = MOUSE;
     objectmgr_set_object_description(objectinstance, "PS2 Mouse");
     /*
      * device api

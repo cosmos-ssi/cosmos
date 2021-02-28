@@ -290,7 +290,7 @@ void objectmgr_register_pci_vnic(struct pci_device* dev) {
     objectinstance->pci = dev;
 
     // set properties
-    objectinstance->devicetype = VNIC;
+    objectinstance->objectype = VNIC;
     objectmgr_set_object_description(objectinstance, "Virtio NIC");
 
     // define an api

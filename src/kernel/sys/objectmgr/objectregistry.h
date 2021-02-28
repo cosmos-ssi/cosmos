@@ -26,10 +26,10 @@ void objectregistry_iterate_type(device_type dt, device_iterator deviceIterator)
 // find a device by name ie "rtc0"
 struct object* objectregistry_find_device(const int8_t* name);
 
-// find devices by devicetype and description
+// find devices by objectype and description
 void objectregistry_find_devices_by_description(device_type dt, const int8_t* description, deviceSearchCallback cb);
 
-// find devices by devicetype
-void objectregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallback cb);
+// find devices by objectype
+void objectregistry_find_devices_by_objectype(device_type dt, deviceSearchCallback cb);
 
 #endif

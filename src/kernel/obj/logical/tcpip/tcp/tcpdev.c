@@ -50,7 +50,7 @@ void tcp_write(struct object* obj, uint8_t* data, uint16_t size) {
 
 struct object* tcp_attach(struct object* ip_device) {
     ASSERT_NOT_NULL(ip_device);
-    ASSERT(ip_device->devicetype == IP);
+    ASSERT(ip_device->objectype == IP);
 
     /*
      * register device
@@ -59,7 +59,7 @@ struct object* tcp_attach(struct object* ip_device) {
     objectinstance->init = &tcp_init;
     objectinstance->uninit = &tcp_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = TCP;
+    objectinstance->objectype = TCP;
     objectmgr_set_object_description(objectinstance, "Transmission Control Protocol");
     /*
      * the device api

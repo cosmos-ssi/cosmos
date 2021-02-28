@@ -38,7 +38,7 @@ void i982371_search_cb(struct pci_device* dev) {
     struct object* objectinstance = objectmgr_new_object();
     objectinstance->init = &i982371_init;
     objectinstance->pci = dev;
-    objectinstance->devicetype = BRIDGE;
+    objectinstance->objectype = BRIDGE;
     objectmgr_set_object_description(objectinstance, "Intel PIIX4/4E/4M Power Management Controller");
     /*
      * device data
@@ -56,5 +56,5 @@ void i982371_search_cb(struct pci_device* dev) {
  * find all bridge devices and register them
  */
 void i982371_bridge_register() {
-    pci_objectmgr_search_devicetype(PCI_CLASS_BRIDGE, PCI_BRIDGE_SUBCLASS_OTHER, &i982371_search_cb);
+    pci_objectmgr_search_objectype(PCI_CLASS_BRIDGE, PCI_BRIDGE_SUBCLASS_OTHER, &i982371_search_cb);
 }

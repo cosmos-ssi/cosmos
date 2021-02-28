@@ -58,7 +58,7 @@ void serial_console_dev_write(struct object* obj, const char* s) {
 
 struct object* serial_console_attach(struct object* serial_device) {
     ASSERT_NOT_NULL(serial_device);
-    ASSERT(serial_device->devicetype == SERIAL);
+    ASSERT(serial_device->objectype == SERIAL);
     /*
      * register device
      */
@@ -66,7 +66,7 @@ struct object* serial_console_attach(struct object* serial_device) {
     objectinstance->init = &serial_console_dev_init;
     objectinstance->uninit = &serial_console_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = CONSOLE;
+    objectinstance->objectype = CONSOLE;
     objectmgr_set_object_description(objectinstance, "Serial Console");
     /*
      * the device api

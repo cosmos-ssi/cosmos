@@ -26,15 +26,15 @@ void objectregistry_init() {
 */
 void objectregistry_registerdevice(struct object* obj) {
     ASSERT_NOT_NULL(obj);
-    ASSERT_NOT_NULL(obj->devicetype);
+    ASSERT_NOT_NULL(obj->objectype);
 
     /*
     * get the list for the device type
     */
-    struct arraylist* lst = objecttypes_get_objectlist(obj->devicetype);
+    struct arraylist* lst = objecttypes_get_objectlist(obj->objectype);
     if (0 == lst) {
         lst = arraylist_new();
-        objecttypes_set_objectlist(obj->devicetype, lst);
+        objecttypes_set_objectlist(obj->objectype, lst);
     }
     /*
     * add to the list
@@ -47,11 +47,11 @@ void objectregistry_registerdevice(struct object* obj) {
 */
 void objectregistry_unregisterdevice(struct object* obj) {
     ASSERT_NOT_NULL(obj);
-    ASSERT_NOT_NULL(obj->devicetype);
+    ASSERT_NOT_NULL(obj->objectype);
     /*
     * get the list for the device type
     */
-    struct arraylist* lst = objecttypes_get_objectlist(obj->devicetype);
+    struct arraylist* lst = objecttypes_get_objectlist(obj->objectype);
     ASSERT_NOT_NULL(lst);
     /*
     * find the device
@@ -168,7 +168,7 @@ void objectregistry_find_devices_by_description(device_type dt, const int8_t* de
     }
 }
 
-void objectregistry_find_devices_by_devicetype(device_type dt, deviceSearchCallback cb) {
+void objectregistry_find_devices_by_objectype(device_type dt, deviceSearchCallback cb) {
     ASSERT_NOT_NULL(cb);
     if ((dt >= 0) && (dt < MAX_DEVICE_TYPES)) {
         struct arraylist* lst = objecttypes_get_objectlist(dt);

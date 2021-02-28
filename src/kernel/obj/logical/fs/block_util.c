@@ -189,8 +189,8 @@ uint32_t blockutil_read(struct object* obj, uint8_t* data, uint32_t data_size, u
 
 uint8_t blockutil_is_block_object(struct object* obj) {
     ASSERT_NOT_NULL(obj);
-    if ((obj->devicetype == DISK) || (obj->devicetype == VBLOCK) || (obj->devicetype == RAMDISK) ||
-        (obj->devicetype == PARTITION)) {
+    if ((obj->objectype == DISK) || (obj->objectype == VBLOCK) || (obj->objectype == RAMDISK) ||
+        (obj->objectype == PARTITION)) {
         return 1;
     }
     return 0;

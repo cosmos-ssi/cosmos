@@ -171,7 +171,7 @@ struct object* mbr_pt_attach(struct object* block_device) {
     objectinstance->init = &mbr_pt_init;
     objectinstance->uninit = &mbr_pt_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = PARTITION_TABLE;
+    objectinstance->objectype = PARTITION_TABLE;
     objectmgr_set_object_description(objectinstance, "MBR partition table");
     /*
      * the device api

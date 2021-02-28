@@ -50,7 +50,7 @@ void udp_write(struct object* obj, uint8_t* data, uint16_t size) {
 
 struct object* udp_attach(struct object* ip_device) {
     ASSERT_NOT_NULL(ip_device);
-    ASSERT(ip_device->devicetype == IP);
+    ASSERT(ip_device->objectype == IP);
 
     /*
      * register device
@@ -59,7 +59,7 @@ struct object* udp_attach(struct object* ip_device) {
     objectinstance->init = &udp_init;
     objectinstance->uninit = &udp_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = UDP;
+    objectinstance->objectype = UDP;
     objectmgr_set_object_description(objectinstance, "User Datagram Protocol");
     /*
      * the device api

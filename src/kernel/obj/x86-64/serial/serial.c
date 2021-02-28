@@ -118,7 +118,7 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     struct object* objectinstance = objectmgr_new_object();
     objectinstance->init = &serial_obj_init;
     objectinstance->object_data = object_data;
-    objectinstance->devicetype = SERIAL;
+    objectinstance->objectype = SERIAL;
     objectmgr_set_object_description(objectinstance, SERIAL_DESCRIPTION);
     /*
      * the device api

@@ -56,7 +56,7 @@ struct object* rand_attach() {
     objectinstance->init = &rand_init;
     objectinstance->uninit = &rand_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = RAND;
+    objectinstance->objectype = RAND;
     objectmgr_set_object_description(objectinstance, "LCG Random Number Generator");
     /*
      * the device api

@@ -221,7 +221,7 @@ struct object* objfs_attach() {
     objectinstance->init = &devfs_init;
     objectinstance->uninit = &devfs_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = DEVFS;
+    objectinstance->objectype = DEVFS;
     objectinstance->object_data = 0;
     objectmgr_set_object_description(objectinstance, "Device File System");
     /*

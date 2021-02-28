@@ -172,7 +172,7 @@ void ne2000isa_objectmgr_register_objects() {
      */
     struct object* objectinstance = objectmgr_new_object();
     objectinstance->init = &ne2000_isa_init;
-    objectinstance->devicetype = NIC;
+    objectinstance->objectype = NIC;
     objectmgr_set_object_description(objectinstance, "NE2000 ISA");
     /*
      * the device api

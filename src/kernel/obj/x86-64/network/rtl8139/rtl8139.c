@@ -245,7 +245,7 @@ void rtl8139_search_cb(struct pci_device* dev) {
     struct object* objectinstance = objectmgr_new_object();
     objectinstance->init = &rtl8139_init;
     objectinstance->pci = dev;
-    objectinstance->devicetype = NIC;
+    objectinstance->objectype = NIC;
     objectmgr_set_object_description(objectinstance, RTL8139_DESCRIPTION);
     /*
      * the device api

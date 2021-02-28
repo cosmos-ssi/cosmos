@@ -50,7 +50,7 @@ void icmp_write(struct object* obj, uint8_t* data, uint16_t size) {
 
 struct object* icmp_attach(struct object* ethernet_device) {
     ASSERT_NOT_NULL(ethernet_device);
-    ASSERT(ethernet_device->devicetype == ETHERNET);
+    ASSERT(ethernet_device->objectype == ETHERNET);
 
     /*
      * register device
@@ -59,7 +59,7 @@ struct object* icmp_attach(struct object* ethernet_device) {
     objectinstance->init = &icmp_init;
     objectinstance->uninit = &icmp_uninit;
     objectinstance->pci = 0;
-    objectinstance->devicetype = ICMP;
+    objectinstance->objectype = ICMP;
     objectmgr_set_object_description(objectinstance, "Internet Control Message Protocol");
     /*
      * the device api

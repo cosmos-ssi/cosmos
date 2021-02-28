@@ -67,7 +67,7 @@ void AC97PCISearchCB(struct pci_device* dev) {
     struct object* objectinstance = objectmgr_new_object();
     objectinstance->init = &obj_initAC97;
     objectinstance->pci = dev;
-    objectinstance->devicetype = DSP;
+    objectinstance->objectype = DSP;
     objectmgr_set_object_description(objectinstance, "Intel 82801AA AC97");
     /*
      * device api
