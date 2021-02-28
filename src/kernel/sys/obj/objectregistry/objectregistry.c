@@ -10,7 +10,6 @@
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectregistry/objectregistry.h>
 #include <sys/obj/objecttypes/objecttypes.h>
-#include <sys/panic/panic.h>
 #include <sys/string/string.h>
 
 /*

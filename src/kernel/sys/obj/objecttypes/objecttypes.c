@@ -5,13 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/collection/array/array.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/obj/objecttypes/objecttypes.h>
-#include <sys/panic/panic.h>
-
-struct arraylist;
 
 struct arraylist* types;
 

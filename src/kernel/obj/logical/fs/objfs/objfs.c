@@ -8,7 +8,6 @@
 #include <obj/logical/fs/node_cache.h>
 #include <obj/logical/fs/node_util.h>
 #include <obj/logical/fs/objfs/objfs.h>
-#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
