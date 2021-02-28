@@ -6,6 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>

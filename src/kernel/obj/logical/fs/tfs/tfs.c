@@ -13,9 +13,8 @@
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_filesystem.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectinterface/objectinterface_block.h>
+#include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <types.h>

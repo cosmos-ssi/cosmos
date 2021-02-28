@@ -10,14 +10,12 @@
 #include <sys/asm/io.h>
 #include <sys/collection/ringbuffer/ringbuffer.h>
 #include <sys/debug/assert.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_keyboard.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/panic/panic.h>
-#include <sys/x86-64/idt/irq.h>
+#include <sys/obj/objectinterface/objectinterface_keyboard.h>
 #include <types.h>
 
 #define KB_IRQ_NUMBER 1

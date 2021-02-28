@@ -6,9 +6,7 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_parallel.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectinterface/objectinterface_parallel.h>
 #include <tests/obj/test_parallel.h>
 #include <types.h>
 

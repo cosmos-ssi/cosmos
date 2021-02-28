@@ -7,11 +7,8 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_pit.h>
-#include <sys/objectinterface/objectinterface_tick.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectinterface/objectinterface_pit.h>
+#include <sys/obj/objectinterface/objectinterface_tick.h>
 #include <sys/string/mem.h>
 #include <types.h>
 

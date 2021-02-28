@@ -5,6 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/kprintf/kprintf.h>
+#include <sys/obj/objectinterface/objectinterface_dsp.h>
 //#include <sys/sound/tone.h>
 //#include <sys/sound/wav.h>
 #include <tests/obj/test_sb16.h>

@@ -5,6 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <obj/logical/fs/initrd/initrd.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/objectinterface/objectinterface_filesystem.h>
 #include <sys/objects/objects.h>

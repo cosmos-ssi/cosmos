@@ -7,7 +7,7 @@
 
 #include <obj/logical/fs/cfs/cfs.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectinterface/objectinterface_block.h>
 #include <tests/fs/test_cfs.h>
 #include <types.h>
 

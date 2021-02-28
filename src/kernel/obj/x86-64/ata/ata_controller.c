@@ -15,6 +15,8 @@
 #include <obj/x86-64/pci/pci.h>
 #include <obj/x86-64/pci/pci_device.h>
 #include <sys/debug/assert.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectmgr/object.h>

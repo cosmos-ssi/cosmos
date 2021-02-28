@@ -12,6 +12,8 @@
 #include <sys/asm/byte.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectmgr/object.h>

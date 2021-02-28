@@ -12,10 +12,7 @@
 #include <obj/logical/partition_table/guid_partition_table.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_part_table.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectinterface/objectinterface_part_table.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 

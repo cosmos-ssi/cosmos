@@ -12,7 +12,7 @@
 #ifndef _CANVAS_H
 #define _CANVAS_H
 
-#include <sys/objectinterface/objectinterface_bga.h>
+#include <sys/obj/objectinterface/objectinterface_bga.h>
 #include <types.h>
 
 struct object;

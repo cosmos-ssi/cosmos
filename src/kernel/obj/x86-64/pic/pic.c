@@ -8,6 +8,8 @@
 #include <obj/x86-64/pic/pic.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectmgr/object.h>
 #include <sys/objectmgr/objectmgr.h>

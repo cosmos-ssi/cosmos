@@ -7,7 +7,9 @@
 
 #include <obj/x86-64/ata/ata_dma.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectinterface/objectinterface_block.h>
+#include <sys/string/mem.h>
+#include <sys/string/string.h>
 #include <tests/obj/test_ata.h>
 #include <tests/obj/test_blockdevice.h>
 #include <types.h>

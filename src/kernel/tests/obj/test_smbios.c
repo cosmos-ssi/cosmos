@@ -7,6 +7,9 @@
 
 #include <obj/x86-64/smbios/smbios.h>
 #include <sys/debug/assert.h>
+#include <sys/debug/debug.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectmgr/object.h>
 #include <sys/objectmgr/objectmgr.h>

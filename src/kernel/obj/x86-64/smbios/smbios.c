@@ -9,10 +9,11 @@
 
 #include <obj/x86-64/smbios/smbios.h>
 #include <sys/debug/assert.h>
-#include <sys/kmalloc/kmalloc.h>
+#include <sys/debug/debug.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectinterface/objectinterface_bda.h>
 
 struct smbios_objectdata {
     uint64_t base;

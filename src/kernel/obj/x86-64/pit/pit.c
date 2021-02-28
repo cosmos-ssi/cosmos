@@ -8,14 +8,12 @@
 #include <obj/x86-64/pit/pit.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_pit.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <sys/x86-64/idt/irq.h>
-#include <types.h>
+#include <sys/obj/objectinterface/objectinterface_pit.h>
 
 // https://wiki.osdev.org/Programmable_Interval_Timer
 // http://www.osdever.net/bkerndev/Docs/pit.htm

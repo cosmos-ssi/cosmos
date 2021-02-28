@@ -19,10 +19,17 @@
 #include <obj/logical/tcpip/tcp/tcpdev.h>
 #include <obj/logical/tcpip/udp/udpdev.h>
 #include <obj/logical/tick/tick.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/objectmgr.h>
-#include <types.h>
+#include <sys/obj/objectinterface/objectinterface_console.h>
+#include <sys/obj/objectinterface/objectinterface_cpu.h>
+#include <sys/obj/objectinterface/objectinterface_dsp.h>
+#include <sys/obj/objectinterface/objectinterface_pit.h>
+#include <sys/obj/objectinterface/objectinterface_rtc.h>
+#include <sys/obj/objectinterface/objectinterface_serial.h>
+#include <sys/obj/objectinterface/objectinterface_speaker.h>
 
 void attach_logical_objects() {
     /*

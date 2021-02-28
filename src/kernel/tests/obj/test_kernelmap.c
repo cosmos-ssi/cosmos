@@ -6,6 +6,9 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
+#include <sys/debug/debug.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/kprintf/kprintf.h>
 #include <sys/objectmgr/objectmgr.h>
 #include <tests/obj/test_kernelmap.h>

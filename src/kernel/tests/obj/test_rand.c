@@ -7,9 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_rand.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectinterface/objectinterface_rand.h>
 #include <tests/obj/test_rand.h>
 #include <types.h>
 

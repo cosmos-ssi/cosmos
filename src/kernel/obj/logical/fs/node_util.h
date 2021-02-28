@@ -8,10 +8,7 @@
 #ifndef _NODE_UTIL_H
 #define _NODE_UTIL_H
 
-#include <sys/objectinterface/objectinterface_filesystem.h>
-#include <types.h>
-
-struct object;
+#include <sys/obj/objectinterface/objectinterface_filesystem.h>
 
 struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, struct object*, const uint8_t* name,
                                             uint64_t id, void* node_data);

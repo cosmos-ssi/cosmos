@@ -8,7 +8,7 @@
 #ifndef _ETHERNET_H
 #define _ETHERNET_H
 
-#include <sys/objectinterface/objectinterface_ethernet.h>
+#include <sys/obj/objectinterface/objectinterface_ethernet.h>
 #include <types.h>
 struct object;
 

@@ -7,6 +7,8 @@
 
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <sys/gui/gui.h>
 #include <sys/gui/window.h>
 #include <sys/kmalloc/kmalloc.h>

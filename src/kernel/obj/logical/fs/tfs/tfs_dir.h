@@ -8,6 +8,9 @@
 #ifndef _TFS_DIR_H
 #define _TFS_DIR_H
 
+#include <obj/logical/fs/tfs/tfs_block.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
 #include <types.h>
 
 struct object;
