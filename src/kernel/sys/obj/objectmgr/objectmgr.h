@@ -8,10 +8,9 @@
 #ifndef _OBJECTMGR_H
 #define _OBJECTMGR_H
 
-#include <sys/obj/object/object.h>
-#include <sys/obj/objecttype/objectype.h>
-
 #include <types.h>
+
+struct object;
 
 // register a object
 void objectmgr_register_object(struct object* obj);
