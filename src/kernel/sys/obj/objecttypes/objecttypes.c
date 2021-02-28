@@ -5,45 +5,37 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/objecttypes/objecttypes.h>
 
-struct array* types;
+struct arraylist* types;
 
 void objecttypes_init() {
-    //   kprintf("Init Device Types\n");
-    types = array_new(MAX_OBJECT_TYPES);
-    for (uint16_t i = 0; i < MAX_OBJECT_TYPES; i++) {
-        array_set(types, i, 0);
-    }
+    types = arraylist_new();
 }
 
-struct arraylist* objecttypes_get_objectlist(enum object_type_id dt) {
+uint32_t objecttypes_count() {
     ASSERT_NOT_NULL(types);
-    if ((dt >= 0) && (dt < MAX_OBJECT_TYPES)) {
-        return (struct arraylist*)array_get(types, dt);
-    } else {
-        PANIC("Invalid device type passed to objecttypes_get_objectlist");
+    return arraylist_count(types);
+}
+
+struct object_type* objecttypes_find(enum object_type_id id) {
+    ASSERT_NOT_NULL(types);
+    ASSERT_NOT_NULL(id);
+    for (uint32_t i = 0; i < arraylist_count(types); i++) {
+        struct object_type* ot = (struct object_type*)arraylist_get(types, i);
+        ASSERT_NOT_NULL(ot);
+        if (ot->id == id) {
+            return ot;
+        }
     }
     return 0;
 }
 
-void objecttypes_set_objectlist(enum object_type_id dt, struct arraylist* lst) {
+struct object_type* objecttypes_get(uint32_t i) {
     ASSERT_NOT_NULL(types);
-    if ((dt >= 0) && (dt < MAX_OBJECT_TYPES)) {
-        array_set(types, dt, lst);
-    } else {
-        PANIC("Invalid device type passed to objecttypes_set_objectlist");
-    }
-}
-
-uint32_t objecttypes_count() {
-    uint32_t ret = 0;
-    for (uint32_t i = 0; i < MAX_OBJECT_TYPES; i++) {
-        if (0 != array_get(types, i)) {
-            ret += 1;
-        }
-    }
-    return ret;
+    ASSERT(i < arraylist_count(types));
+    return (struct object_type*)arraylist_get(types, i);
 }

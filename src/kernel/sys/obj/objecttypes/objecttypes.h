@@ -8,15 +8,11 @@
 #ifndef _OBJECTYPES_H
 #define _OBJECTYPES_H
 
-#include <sys/collection/array/array.h>
-#include <sys/collection/arraylist/arraylist.h>
-#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
 
-#define MAX_OBJECT_TYPES 256
-
 void objecttypes_init();
-struct arraylist* objecttypes_get_objectlist(enum object_type_id dt);
-void objecttypes_set_objectlist(enum object_type_id dt, struct arraylist* lst);
 uint32_t objecttypes_count();
+struct object_type* objecttypes_find(enum object_type_id id);
+struct object_type* objecttypes_get(uint32_t i);
+
 #endif
