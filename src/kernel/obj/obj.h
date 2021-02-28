@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _DEV_H
-#define _DEV_H
+#ifndef _OBJ_H
+#define _OBJ_H
 
 #include <obj/logical/fs/devfs/devfs.h>
 #include <obj/logical/fs/swap/swap.h>

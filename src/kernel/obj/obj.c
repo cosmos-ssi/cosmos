@@ -6,4 +6,4 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/dev.h>
+#include <obj/obj.h>
