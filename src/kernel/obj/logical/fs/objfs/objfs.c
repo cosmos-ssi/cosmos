@@ -126,8 +126,7 @@ struct filesystem_node* objfs_find_node_by_id(struct filesystem_node* fs_node, u
         struct object_type* ot = objecttypes_find(dt);
         if (0 != ot) {
             // there is a node with that id, we need to make a fs entry and cache it
-            this_node =
-                filesystem_node_new(folder, fs_node->filesystem_obj, object_type_names[id], objfs_node_id(id, 0), 0);
+            this_node = filesystem_node_new(folder, fs_node->filesystem_obj, ot->name, objfs_node_id(id, 0), 0);
             node_cache_add(object_data->nc, this_node);
         }
     } else {
@@ -161,8 +160,7 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
                 struct filesystem_node* this_node = node_cache_find(object_data->nc, i);
                 if (0 == this_node) {
                     //             kprintf("node_id %#llX %#llX\n", i, objfs_node_id(i, 0));
-                    this_node = filesystem_node_new(folder, fs_node->filesystem_obj, object_type_names[i],
-                                                    objfs_node_id(i, 0), 0);
+                    this_node = filesystem_node_new(folder, fs_node->filesystem_obj, ot->name, objfs_node_id(i, 0), 0);
                     node_cache_add(object_data->nc, this_node);
                 }
                 dir->ids[folder_count] = this_node->id;

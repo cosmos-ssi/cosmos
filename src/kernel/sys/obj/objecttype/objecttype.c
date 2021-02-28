@@ -11,13 +11,6 @@
 #include <sys/string/string.h>
 #include <types.h>
 
-int8_t* object_type_names[] = {"None",   "serial", "vga",   "rtc",    "keyboard", "nic",  "bridge",   "usb",
-                               "ata",    "pic",    "mouse", "floppy", "speaker",  "pit",  "dsp",      "cmos",
-                               "isadma", "cpu",    "rd",    "vnic",   "vblock",   "disk", "parallel", "bda",
-                               "acpi",   "swap",   "fs",    "pt",     "console",  "part", "null",     "tick",
-                               "rand",   "ip",     "tcp",   "arp",    "udp",      "icmp", "eth",      "sdhci",
-                               "smbios", "devfs",  "vfs",   "bga",    "kernelmap"};
-
 struct object_type* objecttype_new(uint8_t* name, uint16_t id) {
     ASSERT_NOT_NULL(name);
     ASSERT_NOT_NULL(id);
