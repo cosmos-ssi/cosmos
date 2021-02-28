@@ -157,7 +157,7 @@ void CosmOS() {
 
     object_handle_t test_exe_obj;
     test_exe_obj = object_executable_create_from_presentation(object_presentation_create(load_test_binary()));
-
+    object_process_create(test_exe_obj);
     sched_switch(task_select());
 }
 
