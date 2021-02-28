@@ -39,26 +39,26 @@ uint8_t vfs_init(struct object* dev) {
 uint8_t vfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s  (%s)\n", dev->description, dev->name);
-    struct vfs_devicedata* device_data = (struct vfs_devicedata*)dev->device_data;
+    struct vfs_devicedata* object_data = (struct vfs_devicedata*)dev->object_data;
 
     kfree(dev->api);
-    kfree(device_data->root_node);
-    kfree(device_data->children);
-    kfree(device_data);
+    kfree(object_data->root_node);
+    kfree(object_data->children);
+    kfree(object_data);
     return 1;
 }
 
 struct filesystem_node* vfs_get_root_node(struct object* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
-    ASSERT_NOT_NULL(filesystem_device->device_data);
-    struct vfs_devicedata* device_data = (struct vfs_devicedata*)filesystem_device->device_data;
-    return device_data->root_node;
+    ASSERT_NOT_NULL(filesystem_device->object_data);
+    struct vfs_devicedata* object_data = (struct vfs_devicedata*)filesystem_device->object_data;
+    return object_data->root_node;
 }
 
 uint32_t vfs_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -70,7 +70,7 @@ uint32_t vfs_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_
 uint32_t vfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -83,7 +83,7 @@ uint32_t vfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_
 void vfs_open(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
 
     PANIC("not implemented");
 }
@@ -91,7 +91,7 @@ void vfs_open(struct filesystem_node* fs_node) {
 void vfs_close(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
 
     PANIC("not implemented");
 }
@@ -99,21 +99,21 @@ void vfs_close(struct filesystem_node* fs_node) {
 struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-    struct vfs_devicedata* device_data = (struct vfs_devicedata*)fs_node->filesystem_device->device_data;
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
+    struct vfs_devicedata* object_data = (struct vfs_devicedata*)fs_node->filesystem_device->object_data;
     //  kprintf("vfs_find_node_by_id node id %llu of node %s\n", id, fs_node->name);
-    if (fs_node == device_data->root_node) {
+    if (fs_node == object_data->root_node) {
         /*
         * root node
         */
-        if (0 == device_data->children) {
+        if (0 == object_data->children) {
             //   kprintf("no chilren\n");
             return 0;
         } else {
-            uint32_t child_count = arraylist_count(device_data->children);
+            uint32_t child_count = arraylist_count(object_data->children);
             ASSERT(id < child_count);
             for (uint32_t i = 0; i < child_count; i++) {
-                struct filesystem_node* n = (struct filesystem_node*)arraylist_get(device_data->children, i);
+                struct filesystem_node* n = (struct filesystem_node*)arraylist_get(object_data->children, i);
                 //     kprintf("n %llu\n", n->id);
                 if (n->id == id) {
                     return n;
@@ -130,17 +130,17 @@ struct filesystem_node* vfs_find_node_by_id(struct filesystem_node* fs_node, uin
 void vfs_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
     ASSERT_NOT_NULL(dir);
-    struct vfs_devicedata* device_data = (struct vfs_devicedata*)fs_node->filesystem_device->device_data;
-    if (fs_node == device_data->root_node) {
+    struct vfs_devicedata* object_data = (struct vfs_devicedata*)fs_node->filesystem_device->object_data;
+    if (fs_node == object_data->root_node) {
         /*
         * root node
         */
-        if (0 == device_data->children) {
+        if (0 == object_data->children) {
             dir->count = 0;
         } else {
-            dir->count = arraylist_count(device_data->children);
+            dir->count = arraylist_count(object_data->children);
             for (uint32_t i = 0; i < dir->count; i++) {
                 // node id is the index into the array list
                 dir->ids[i] = i;
@@ -158,7 +158,7 @@ void vfs_list_directory(struct filesystem_node* fs_node, struct filesystem_direc
 uint64_t vfs_size(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
     // vfs nodes have no size
     return 0;
 }
@@ -173,7 +173,7 @@ struct object* vfs_attach(uint8_t* name) {
     deviceinstance->uninit = &vfs_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = VFS;
-    deviceinstance->device_data = 0;
+    deviceinstance->object_data = 0;
     objectmgr_set_object_description(deviceinstance, "VFS File System");
     /*
      * the device api
@@ -192,10 +192,10 @@ struct object* vfs_attach(uint8_t* name) {
     /*
      * device data
      */
-    struct vfs_devicedata* device_data = (struct vfs_devicedata*)kmalloc(sizeof(struct vfs_devicedata));
-    device_data->root_node = filesystem_node_new(folder, deviceinstance, name, 0, 0);
-    device_data->children = arraylist_new();
-    deviceinstance->device_data = device_data;
+    struct vfs_devicedata* object_data = (struct vfs_devicedata*)kmalloc(sizeof(struct vfs_devicedata));
+    object_data->root_node = filesystem_node_new(folder, deviceinstance, name, 0, 0);
+    object_data->children = arraylist_new();
+    deviceinstance->object_data = object_data;
     /*
      * register
      */
@@ -205,9 +205,9 @@ struct object* vfs_attach(uint8_t* name) {
         */
         return deviceinstance;
     } else {
-        kfree(device_data->children);
-        kfree(device_data->root_node);
-        kfree(device_data);
+        kfree(object_data->children);
+        kfree(object_data->root_node);
+        kfree(object_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;
@@ -224,18 +224,18 @@ void vfs_detach(struct object* dev) {
 
 void vfs_add_child(struct object* vfs_device, struct filesystem_node* child_node) {
     ASSERT_NOT_NULL(vfs_device);
-    ASSERT_NOT_NULL(vfs_device->device_data);
+    ASSERT_NOT_NULL(vfs_device->object_data);
     ASSERT_NOT_NULL(child_node);
-    struct vfs_devicedata* device_data = (struct vfs_devicedata*)vfs_device->device_data;
-    ASSERT_NOT_NULL(device_data);
-    ASSERT_NOT_NULL(device_data->children);
+    struct vfs_devicedata* object_data = (struct vfs_devicedata*)vfs_device->object_data;
+    ASSERT_NOT_NULL(object_data);
+    ASSERT_NOT_NULL(object_data->children);
     // the node id will be it's position in teh array
-    child_node->id = arraylist_count(device_data->children);
-    arraylist_add(device_data->children, child_node);
+    child_node->id = arraylist_count(object_data->children);
+    arraylist_add(object_data->children, child_node);
 }
 
 void vfs_remove_child(struct object* vfs_device, uint64_t id) {
     ASSERT_NOT_NULL(vfs_device);
-    ASSERT_NOT_NULL(vfs_device->device_data);
+    ASSERT_NOT_NULL(vfs_device->object_data);
     PANIC("not implemented");
 }

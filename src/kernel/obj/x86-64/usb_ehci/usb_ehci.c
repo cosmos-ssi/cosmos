@@ -24,10 +24,10 @@ struct usbcontroller_devicedata {
  */
 uint8_t usb_ehci_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct usbcontroller_devicedata* device_data = (struct usbcontroller_devicedata*)dev->device_data;
-    device_data->base = pci_calcbar(dev->pci);
+    struct usbcontroller_devicedata* object_data = (struct usbcontroller_devicedata*)dev->object_data;
+    object_data->base = pci_calcbar(dev->pci);
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, device_data->base, dev->name);
+            dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
     return 1;
 }
 
@@ -42,12 +42,12 @@ void usb_ehci_search_cb(struct pci_device* dev) {
     deviceinstance->devicetype = USB;
     objectmgr_set_object_description(deviceinstance, "Intel 82801 USB EHCI Controller");
     /*
-     * the device_data
+     * the object_data
      */
-    struct usbcontroller_devicedata* device_data =
+    struct usbcontroller_devicedata* object_data =
         (struct usbcontroller_devicedata*)kmalloc(sizeof(struct usbcontroller_devicedata));
-    device_data->base = 0;
-    deviceinstance->device_data = device_data;
+    object_data->base = 0;
+    deviceinstance->object_data = object_data;
     /*
      * register
      */

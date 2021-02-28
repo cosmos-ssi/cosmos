@@ -46,15 +46,15 @@ struct initrd_devicedata {
  */
 uint8_t initrd_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct initrd_devicedata* object_data = (struct initrd_devicedata*)dev->object_data;
     /*
     * read the header
     */
-    blockutil_read(device_data->partition_device, (uint8_t*)&(device_data->header), sizeof(struct initrd_header),
-                   device_data->lba, 0);
+    blockutil_read(object_data->partition_device, (uint8_t*)&(object_data->header), sizeof(struct initrd_header),
+                   object_data->lba, 0);
 
-    kprintf("Init %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
+    kprintf("Init %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     return 1;
 }
 
@@ -63,21 +63,21 @@ uint8_t initrd_init(struct object* dev) {
  */
 uint8_t initrd_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
-    kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct initrd_devicedata* object_data = (struct initrd_devicedata*)dev->object_data;
+    kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     kfree(dev->api);
-    node_cache_delete(device_data->nc);
-    kfree(device_data->root_node);
-    kfree(device_data);
+    node_cache_delete(object_data->nc);
+    kfree(object_data->root_node);
+    kfree(object_data);
     return 1;
 }
 
 struct filesystem_node* initrd_get_root_node(struct object* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
-    ASSERT_NOT_NULL(filesystem_device->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)filesystem_device->device_data;
-    return device_data->root_node;
+    ASSERT_NOT_NULL(filesystem_device->object_data);
+    struct initrd_devicedata* object_data = (struct initrd_devicedata*)filesystem_device->object_data;
+    return object_data->root_node;
 }
 
 uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
@@ -85,12 +85,12 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
     //        fs_node->filesystem_device->name, data, data_size);
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
-    if (fs_node == device_data->root_node) {
+    struct initrd_devicedata* object_data = (struct initrd_devicedata*)fs_node->filesystem_device->object_data;
+    if (fs_node == object_data->root_node) {
         /*
         * cant read or write root node
         */
@@ -99,11 +99,11 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
         /*
         * get underlying sector size
         */
-        uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
+        uint32_t sector_size = blockutil_get_sector_size(object_data->partition_device);
 
-        uint32_t offset = device_data->header.headers[fs_node->id].offset;
+        uint32_t offset = object_data->header.headers[fs_node->id].offset;
         ASSERT(offset > 0);
-        uint32_t length = device_data->header.headers[fs_node->id].length;
+        uint32_t length = object_data->header.headers[fs_node->id].length;
         ASSERT(data_size >= length);
         //  kprintf("offset %llu length %llu\n", offset, length);
 
@@ -117,7 +117,7 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
         if (byte_offset + length > sector_size) {
             total_sectors += 1;
         }
-        uint32_t target_lba = device_data->lba + lba_offset;
+        uint32_t target_lba = object_data->lba + lba_offset;
 
         //   kprintf("lba_offset %llu byte_offset %llu total_sectors %llu target_lba %llu buffer_size %#llX\\n", lba_offset,
         //         byte_offset, total_sectors, target_lba, buffer_size);
@@ -125,7 +125,7 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
         /*
         * read the blocks
         */
-        blockutil_read(device_data->partition_device, data, data_size, target_lba, byte_offset);
+        blockutil_read(object_data->partition_device, data, data_size, target_lba, byte_offset);
 
         return 1;
     }
@@ -134,7 +134,7 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
 uint32_t initrd_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -148,7 +148,7 @@ uint32_t initrd_write(struct filesystem_node* fs_node, const uint8_t* data, uint
 void initrd_open(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
 
     PANIC("not implemented");
 }
@@ -156,7 +156,7 @@ void initrd_open(struct filesystem_node* fs_node) {
 void initrd_close(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
 
     PANIC("not implemented");
 }
@@ -164,19 +164,19 @@ void initrd_close(struct filesystem_node* fs_node) {
 struct filesystem_node* initrd_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
-    if (fs_node == device_data->root_node) {
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
+    struct initrd_devicedata* object_data = (struct initrd_devicedata*)fs_node->filesystem_device->object_data;
+    if (fs_node == object_data->root_node) {
         /*
         * root node
         */
-        struct filesystem_node* ret = node_cache_find(device_data->nc, id);
+        struct filesystem_node* ret = node_cache_find(object_data->nc, id);
         if (0 == ret) {
-            ASSERT(id < device_data->header.number_files);
+            ASSERT(id < object_data->header.number_files);
             // the node id is the index into the headers
-            char* name = device_data->header.headers[id].name;
+            char* name = object_data->header.headers[id].name;
             ret = filesystem_node_new(file, fs_node->filesystem_device, name, id, 0);
-            node_cache_add(device_data->nc, ret);
+            node_cache_add(object_data->nc, ret);
         }
         return ret;
     } else {
@@ -188,15 +188,15 @@ struct filesystem_node* initrd_find_node_by_id(struct filesystem_node* fs_node, 
 void initrd_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
     ASSERT_NOT_NULL(dir);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
-    if (fs_node == device_data->root_node) {
+    struct initrd_devicedata* object_data = (struct initrd_devicedata*)fs_node->filesystem_device->object_data;
+    if (fs_node == object_data->root_node) {
         /*
         * root node
         */
-        dir->count = device_data->header.number_files;
-        for (uint32_t i = 0; i < device_data->header.number_files; i++) {
+        dir->count = object_data->header.number_files;
+        for (uint32_t i = 0; i < object_data->header.number_files; i++) {
             // node id is the index into the header table
             dir->ids[i] = i;
         }
@@ -209,15 +209,15 @@ void initrd_list_directory(struct filesystem_node* fs_node, struct filesystem_di
 uint64_t initrd_size(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)fs_node->filesystem_device->device_data;
-    if (fs_node == device_data->root_node) {
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
+    struct initrd_devicedata* object_data = (struct initrd_devicedata*)fs_node->filesystem_device->object_data;
+    if (fs_node == object_data->root_node) {
         /*
         * cant read or write root node
         */
         return 0;
     } else {
-        return device_data->header.headers[fs_node->id].length;
+        return object_data->header.headers[fs_node->id].length;
     }
 }
 
@@ -251,12 +251,12 @@ struct object* initrd_attach(struct object* partition_device, uint32_t lba) {
     /*
      * device data
      */
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)kmalloc(sizeof(struct initrd_devicedata));
-    device_data->root_node = filesystem_node_new(folder, deviceinstance, "initrd", 0, 0);
-    device_data->lba = lba;
-    device_data->partition_device = partition_device;
-    device_data->nc = node_cache_new();
-    deviceinstance->device_data = device_data;
+    struct initrd_devicedata* object_data = (struct initrd_devicedata*)kmalloc(sizeof(struct initrd_devicedata));
+    object_data->root_node = filesystem_node_new(folder, deviceinstance, "initrd", 0, 0);
+    object_data->lba = lba;
+    object_data->partition_device = partition_device;
+    object_data->nc = node_cache_new();
+    deviceinstance->object_data = object_data;
     /*
      * register
      */
@@ -270,9 +270,9 @@ struct object* initrd_attach(struct object* partition_device, uint32_t lba) {
         */
         return deviceinstance;
     } else {
-        node_cache_delete(device_data->nc);
-        kfree(device_data->root_node);
-        kfree(device_data);
+        node_cache_delete(object_data->nc);
+        kfree(object_data->root_node);
+        kfree(object_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;
@@ -281,12 +281,12 @@ struct object* initrd_attach(struct object* partition_device, uint32_t lba) {
 
 void initrd_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct initrd_devicedata* device_data = (struct initrd_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct initrd_devicedata* object_data = (struct initrd_devicedata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(device_data->partition_device);
+    objectmgr_decrement_object_refcount(object_data->partition_device);
     /*
     * detach
     */

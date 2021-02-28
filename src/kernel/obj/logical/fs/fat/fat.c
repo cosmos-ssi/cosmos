@@ -182,8 +182,8 @@ void fat_read_fs_parameters(struct object* dev, struct fat_fs_parameters* param)
 
 void fat_format(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    //   struct fat_devicedata* device_data = (struct fat_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    //   struct fat_devicedata* object_data = (struct fat_devicedata*)dev->object_data;
 }
 
 /*
@@ -303,9 +303,9 @@ struct fs_directory_listing* fat_list_dir(struct object* dev) {
  */
 uint8_t fat_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct fat_devicedata* device_data = (struct fat_devicedata*)dev->device_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct fat_devicedata* object_data = (struct fat_devicedata*)dev->object_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     return 1;
 }
 
@@ -314,11 +314,11 @@ uint8_t fat_init(struct object* dev) {
  */
 uint8_t fat_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct fat_devicedata* device_data = (struct fat_devicedata*)dev->device_data;
-    kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct fat_devicedata* object_data = (struct fat_devicedata*)dev->object_data;
+    kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     kfree(dev->api);
-    kfree(dev->device_data);
+    kfree(dev->object_data);
     return 1;
 }
 
@@ -346,9 +346,9 @@ struct object* fat_attach(struct object* partition_device) {
     /*
      * device data
      */
-    struct fat_devicedata* device_data = (struct fat_devicedata*)kmalloc(sizeof(struct fat_devicedata));
-    device_data->partition_device = partition_device;
-    deviceinstance->device_data = device_data;
+    struct fat_devicedata* object_data = (struct fat_devicedata*)kmalloc(sizeof(struct fat_devicedata));
+    object_data->partition_device = partition_device;
+    deviceinstance->object_data = object_data;
 
     /*
      * register
@@ -363,7 +363,7 @@ struct object* fat_attach(struct object* partition_device) {
         */
         return deviceinstance;
     } else {
-        kfree(device_data);
+        kfree(object_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;
@@ -372,12 +372,12 @@ struct object* fat_attach(struct object* partition_device) {
 
 void fat_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct fat_devicedata* device_data = (struct fat_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct fat_devicedata* object_data = (struct fat_devicedata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(device_data->partition_device);
+    objectmgr_decrement_object_refcount(object_data->partition_device);
     /*
     * detach
     */

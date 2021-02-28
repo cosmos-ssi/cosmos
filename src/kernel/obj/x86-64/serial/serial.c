@@ -44,8 +44,8 @@ void serial_write_char(const uint8_t c) {
 
 void serial_irq_handler_for_device(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    //    struct serial_devicedata* device_data = (struct serial_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    //    struct serial_devicedata* object_data = (struct serial_devicedata*)dev->object_data;
 
     // TODO figure out if it was THIS dev that made the interrupt and respond accordingly (like by putting the data into the ringbuffer)
     struct rs232_16550* comport = (struct rs232_16550*)COM1_ADDRESS;
@@ -91,11 +91,11 @@ void serial_init_port(uint64_t portAddress) {
  */
 uint8_t serial_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct serial_devicedata* device_data = (struct serial_devicedata*)dev->device_data;
-    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", dev->description, device_data->irq, device_data->address,
+    struct serial_devicedata* object_data = (struct serial_devicedata*)dev->object_data;
+    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", dev->description, object_data->irq, object_data->address,
             dev->name);
-    interrupt_router_register_interrupt_handler(device_data->irq, &serial_irq_handler);
-    serial_init_port(device_data->address);
+    interrupt_router_register_interrupt_handler(object_data->irq, &serial_irq_handler);
+    serial_init_port(object_data->address);
     return 1;
 }
 
@@ -108,16 +108,16 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * ISA serial port specific data
      */
-    struct serial_devicedata* device_data = kmalloc(sizeof(struct serial_devicedata));
-    device_data->irq = irq;
-    device_data->address = base;
-    device_data->buffer = ringbuffer_new(SERIAL_RINGBUFFER_SIZE);
+    struct serial_devicedata* object_data = kmalloc(sizeof(struct serial_devicedata));
+    object_data->irq = irq;
+    object_data->address = base;
+    object_data->buffer = ringbuffer_new(SERIAL_RINGBUFFER_SIZE);
     /*
      * the device instance
      */
     struct object* deviceinstance = objectmgr_new_object();
     deviceinstance->init = &serial_device_init;
-    deviceinstance->device_data = device_data;
+    deviceinstance->object_data = object_data;
     deviceinstance->devicetype = SERIAL;
     objectmgr_set_object_description(deviceinstance, SERIAL_DESCRIPTION);
     /*

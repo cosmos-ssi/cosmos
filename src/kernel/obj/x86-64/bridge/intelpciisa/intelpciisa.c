@@ -23,10 +23,10 @@ struct intelisapca_deviceddata {
  */
 uint8_t pciisa_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct intelisapca_deviceddata* device_data = (struct intelisapca_deviceddata*)dev->device_data;
-    device_data->base = pci_calcbar(dev->pci);
+    struct intelisapca_deviceddata* object_data = (struct intelisapca_deviceddata*)dev->object_data;
+    object_data->base = pci_calcbar(dev->pci);
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, device_data->base, dev->name);
+            dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
     return 1;
 }
 
@@ -43,9 +43,9 @@ void pciisa_search_cb(struct pci_device* dev) {
     /*
      * device data
      */
-    struct intelisapca_deviceddata* device_data =
+    struct intelisapca_deviceddata* object_data =
         (struct intelisapca_deviceddata*)kmalloc(sizeof(struct intelisapca_deviceddata));
-    deviceinstance->device_data = device_data;
+    deviceinstance->object_data = object_data;
     /*
      * register
      */

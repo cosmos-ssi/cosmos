@@ -51,10 +51,10 @@ void ac97_handle_irq(stack_frame* frame) {
  */
 uint8_t device_initAC97(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct ac97_devicedata* device_data = (struct ac97_devicedata*)dev->device_data;
-    device_data->base = pci_calcbar(dev->pci);
+    struct ac97_devicedata* object_data = (struct ac97_devicedata*)dev->object_data;
+    object_data->base = pci_calcbar(dev->pci);
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, device_data->base, dev->name);
+            dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
     interrupt_router_register_interrupt_handler(dev->pci->irq, &ac97_handle_irq);
     return 1;
 }
@@ -75,11 +75,11 @@ void AC97PCISearchCB(struct pci_device* dev) {
     struct objecttype_dsp* api = (struct objecttype_dsp*)kmalloc(sizeof(struct objecttype_dsp));
     deviceinstance->api = api;
     /*
-     * the device_data
+     * the object_data
      */
-    struct ac97_devicedata* device_data = (struct ac97_devicedata*)kmalloc(sizeof(struct ac97_devicedata));
-    device_data->base = 0;
-    deviceinstance->device_data = device_data;
+    struct ac97_devicedata* object_data = (struct ac97_devicedata*)kmalloc(sizeof(struct ac97_devicedata));
+    object_data->base = 0;
+    deviceinstance->object_data = object_data;
     /*
      * register
      */

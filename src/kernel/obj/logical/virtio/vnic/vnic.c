@@ -100,11 +100,11 @@ void print_link_status() {
 }
 
 uint8_t vnic_initialize_device(struct object* dev) {
-    struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
+    struct vnic_devicedata* object_data = (struct vnic_devicedata*)dev->object_data;
 
     // get the I/O port
-    device_data->base = pci_calcbar(dev->pci);
-    vnet_base_port = device_data->base;
+    object_data->base = pci_calcbar(dev->pci);
+    vnet_base_port = object_data->base;
 
     kprintf("Initializing virtio-net driver... Base address: %#hX\n", vnet_base_port);
 
@@ -155,16 +155,16 @@ uint8_t vnic_initialize_device(struct object* dev) {
             mac_addr[5]);
 
     // Init virtqueues (see 4.1.5.1.3 of virtio-v1.0-cs04.pdf)
-    vnic_init_virtqueue(&(device_data->receive_queue), VIRTQ_NET_RECEIVE_INDEX);
-    vnic_init_virtqueue(&(device_data->send_queue), VIRTQ_NET_TRANSMIT_INDEX);
+    vnic_init_virtqueue(&(object_data->receive_queue), VIRTQ_NET_RECEIVE_INDEX);
+    vnic_init_virtqueue(&(object_data->send_queue), VIRTQ_NET_TRANSMIT_INDEX);
 
     // Setup the receive queue
-    vnic_setup_receive_buffers(device_data->receive_queue, 16);
+    vnic_setup_receive_buffers(object_data->receive_queue, 16);
 
     // Setup an interrupt handler for this device
     interrupt_router_register_interrupt_handler(dev->pci->irq, &vnic_irq_handler);
     kprintf("   init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, device_data->base, dev->name);
+            dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
 
     // Tell the device it's initialized
     vnic_write_register(VIRTIO_DEVICE_STATUS, VIRTIO_STATUS_DEVICE_ACKNOWLEGED | VIRTIO_STATUS_DRIVER_LOADED |
@@ -212,21 +212,21 @@ void vnic_irq_handler(stack_frame* frame) {
     }
 
     // get device data
-    struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
+    struct vnic_devicedata* object_data = (struct vnic_devicedata*)dev->object_data;
 
     // check for used send queues (meaning the device confirmed receipt)
-    while (device_data->send_queue->used.idx != device_data->send_queue->last_seen_used) {
+    while (object_data->send_queue->used.idx != object_data->send_queue->last_seen_used) {
         kprintf("irqh: Packet sent successfully");
-        struct virtq_descriptor* desc = virtq_dequeue_descriptor(device_data->send_queue);
+        struct virtq_descriptor* desc = virtq_dequeue_descriptor(object_data->send_queue);
         virtq_descriptor_delete(desc);
     }
 
     // see if the receive queue has been used
-    while (device_data->receive_queue->used.idx != device_data->receive_queue->last_seen_used) {
+    while (object_data->receive_queue->used.idx != object_data->receive_queue->last_seen_used) {
         kprintf("irqh: Packet received successfully");
 
         // get the descriptor
-        struct virtq_descriptor* desc = virtq_dequeue_descriptor(device_data->receive_queue);
+        struct virtq_descriptor* desc = virtq_dequeue_descriptor(object_data->receive_queue);
 
         // TODO: something with the data
 
@@ -234,7 +234,7 @@ void vnic_irq_handler(stack_frame* frame) {
         virtq_descriptor_delete(desc);
 
         // restock receive queue buffer
-        vnic_setup_receive_buffers(device_data->receive_queue, 1);
+        vnic_setup_receive_buffers(object_data->receive_queue, 1);
     }
 
     // EOI sent to the PIC by the interrupt handler
@@ -263,13 +263,13 @@ void vnic_tx(struct object* dev, uint8_t* data, uint16_t size) {
     memcpy((uint8_t*)((uint8_t*)netBuffer + sizeof(virtio_net_hdr)), (uint8_t*)data, size);
 
     // get the device data
-    struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
+    struct vnic_devicedata* object_data = (struct vnic_devicedata*)dev->object_data;
 
     // load a descriptor with our buffer
     struct virtq_descriptor* desc = virtq_descriptor_new((uint8_t*)netBuffer, bufferSize, false);
 
     // queue it up
-    virtq_enqueue_descriptor(device_data->send_queue, desc);
+    virtq_enqueue_descriptor(object_data->send_queue, desc);
 
     // tell the device we're ready to send
     vnic_write_register(VIRTIO_QUEUE_NOTIFY, VIRTQ_NET_TRANSMIT_INDEX);
@@ -301,8 +301,8 @@ void objectmgr_register_pci_vnic(struct pci_device* dev) {
     deviceinstance->api = api;
 
     // reserve for device-specific data
-    struct vnic_devicedata* device_data = (struct vnic_devicedata*)kmalloc(sizeof(struct vnic_devicedata));
-    deviceinstance->device_data = device_data;
+    struct vnic_devicedata* object_data = (struct vnic_devicedata*)kmalloc(sizeof(struct vnic_devicedata));
+    deviceinstance->object_data = object_data;
 
     // register
     objectmgr_register_object(deviceinstance);

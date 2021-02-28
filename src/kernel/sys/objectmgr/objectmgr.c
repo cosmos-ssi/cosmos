@@ -144,7 +144,7 @@ struct object* objectmgr_new_object() {
         ret->description[i] = 0;
     }
     ret->init = 0;
-    ret->device_data = 0;
+    ret->object_data = 0;
     ret->name = 0;
     ret->type_index = 0;
     ret->devicetype = 0;

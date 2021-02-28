@@ -61,9 +61,9 @@ struct bga_devicedata {
     struct objecttype_resolution resolution;
 };
 
-uint32_t bga_buffer_size(struct bga_devicedata* device_data) {
-    ASSERT_NOT_NULL(device_data);
-    return (device_data->resolution.height * device_data->resolution.width) * (device_data->resolution.color_depth / 8);
+uint32_t bga_buffer_size(struct bga_devicedata* object_data) {
+    ASSERT_NOT_NULL(object_data);
+    return (object_data->resolution.height * object_data->resolution.width) * (object_data->resolution.color_depth / 8);
 }
 
 void bga_write_register(uint16_t index_value, uint16_t data_value) {
@@ -102,13 +102,13 @@ void bga_set_bank(uint16_t bank_number) {
 uint8_t bga_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct bga_devicedata* object_data = (struct bga_devicedata*)dev->object_data;
     /* 
     * lfb
     */
-    device_data->lfb_physical = dev->pci->bars[0] & 0xFFFFFFF0;
-    device_data->lfb_virtual = (uint64_t)CONV_PHYS_ADDR(device_data->lfb_physical);
+    object_data->lfb_physical = dev->pci->bars[0] & 0xFFFFFFF0;
+    object_data->lfb_virtual = (uint64_t)CONV_PHYS_ADDR(object_data->lfb_physical);
 
     /*
     * screen params
@@ -120,54 +120,54 @@ uint8_t bga_device_init(struct object* dev) {
     bga_set_resolution(dev, &resolution);
 
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX at lfb (physical) %#llX lfb (virtual) %#llX (%s)\n",
-            dev->description, dev->pci->irq, dev->pci->vendor_id, dev->pci->device_id, device_data->lfb_physical,
-            device_data->lfb_virtual, dev->name);
-    //   kprintf("bga_buffer_size : %#llX\n", bga_buffer_size(device_data));
+            dev->description, dev->pci->irq, dev->pci->vendor_id, dev->pci->device_id, object_data->lfb_physical,
+            object_data->lfb_virtual, dev->name);
+    //   kprintf("bga_buffer_size : %#llX\n", bga_buffer_size(object_data));
     return 1;
 }
 
 uint32_t bga_get_buffersize(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
-    ASSERT_NOT_NULL(dev->device_data);
-    return bga_buffer_size(dev->device_data);
+    ASSERT_NOT_NULL(dev->object_data);
+    return bga_buffer_size(dev->object_data);
 }
 
 void bga_blt(struct object* dev, uint8_t* buffer, uint32_t buffer_size) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
-    ASSERT_NOT_NULL(dev->device_data);
+    ASSERT_NOT_NULL(dev->object_data);
     ASSERT_NOT_NULL(buffer);
-    ASSERT(buffer_size = bga_buffer_size(dev->device_data));
-    struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
-    memcpy((uint8_t*)device_data->lfb_virtual, buffer, buffer_size);
+    ASSERT(buffer_size = bga_buffer_size(dev->object_data));
+    struct bga_devicedata* object_data = (struct bga_devicedata*)dev->object_data;
+    memcpy((uint8_t*)object_data->lfb_virtual, buffer, buffer_size);
 }
 
 void bga_get_resolution(struct object* dev, struct objecttype_resolution* resolution) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct bga_devicedata* object_data = (struct bga_devicedata*)dev->object_data;
     ASSERT_NOT_NULL(resolution);
-    resolution->color_depth = device_data->resolution.color_depth;
-    resolution->height = device_data->resolution.height;
-    resolution->width = device_data->resolution.width;
+    resolution->color_depth = object_data->resolution.color_depth;
+    resolution->height = object_data->resolution.height;
+    resolution->width = object_data->resolution.width;
 }
 
 void bga_set_resolution(struct object* dev, struct objecttype_resolution* resolution) {
     ASSERT_NOT_NULL(dev);
     ASSERT_NOT_NULL(dev->pci);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct bga_devicedata* device_data = (struct bga_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct bga_devicedata* object_data = (struct bga_devicedata*)dev->object_data;
     ASSERT_NOT_NULL(resolution);
-    device_data->resolution.color_depth = resolution->color_depth;
-    device_data->resolution.height = resolution->height;
-    device_data->resolution.width = resolution->width;
-    bga_set_video_mode(device_data->resolution.width, device_data->resolution.height,
-                       device_data->resolution.color_depth, 1, 1);
-    memset((uint8_t*)device_data->lfb_virtual, 0x00,
-           (device_data->resolution.width * device_data->resolution.height) *
-               (device_data->resolution.color_depth / 8));
+    object_data->resolution.color_depth = resolution->color_depth;
+    object_data->resolution.height = resolution->height;
+    object_data->resolution.width = resolution->width;
+    bga_set_video_mode(object_data->resolution.width, object_data->resolution.height,
+                       object_data->resolution.color_depth, 1, 1);
+    memset((uint8_t*)object_data->lfb_virtual, 0x00,
+           (object_data->resolution.width * object_data->resolution.height) *
+               (object_data->resolution.color_depth / 8));
 }
 
 void bga_search_cb(struct pci_device* dev) {
@@ -194,11 +194,11 @@ void bga_search_cb(struct pci_device* dev) {
     /*
      * device data
      */
-    struct bga_devicedata* device_data = (struct bga_devicedata*)kmalloc(sizeof(struct bga_devicedata));
-    memzero((uint8_t*)device_data, sizeof(struct bga_devicedata));
-    device_data->lfb_physical = 0;
-    device_data->lfb_virtual = 0;
-    deviceinstance->device_data = device_data;
+    struct bga_devicedata* object_data = (struct bga_devicedata*)kmalloc(sizeof(struct bga_devicedata));
+    memzero((uint8_t*)object_data, sizeof(struct bga_devicedata));
+    object_data->lfb_physical = 0;
+    object_data->lfb_virtual = 0;
+    deviceinstance->object_data = object_data;
 }
 
 /**

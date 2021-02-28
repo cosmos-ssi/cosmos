@@ -33,7 +33,7 @@ Non-PCI bus devices such as Keyboard, RTC, and RS-232 will need to use hard-code
 
 PCI devices generally use the `pci` field of the `device` struct to contain their appropriate `pci_device` struct.  Non-PCI devices can use this field to hold a pointer to their own custom configuration.
 
-All devices can use the `device_data` field of the `device` struct to hold device instance specific configuration such as base ports or queues.
+All devices can use the `object_data` field of the `device` struct to hold device instance specific configuration such as base ports or queues.
 
 All devices must assign a value to the field `devicetype` from the enum `device_type`.  Additionally devices which expose an API must assign an API struct to the field `api`.   Appropriate API structs are in `kernel/devicemgr/deviceapi`
 

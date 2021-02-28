@@ -42,15 +42,15 @@ void mbr_pt_read_mbr_pt_header(struct object* dev, struct mbr_pt_header* header)
  */
 uint8_t mbr_pt_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct mbr_pt_devicedata* object_data = (struct mbr_pt_devicedata*)dev->object_data;
 
-    device_data->num_partitions = mbr_pt_part_table_total_partitions(dev);
+    object_data->num_partitions = mbr_pt_part_table_total_partitions(dev);
     struct mbr_pt_header header;
-    mbr_pt_read_mbr_pt_header(device_data->block_device, &header);
+    mbr_pt_read_mbr_pt_header(object_data->block_device, &header);
     if ((header.signature[0] == 0x55) && (header.signature[1] == 0xAA)) {
-        kprintf("Init %s on %s (%s) with %llu partitions\n", dev->description, device_data->block_device->name,
-                dev->name, device_data->num_partitions);
+        kprintf("Init %s on %s (%s) with %llu partitions\n", dev->description, object_data->block_device->name,
+                dev->name, object_data->num_partitions);
 
         // attach partitions
         fsutil_attach_partitions(dev);
@@ -65,9 +65,9 @@ uint8_t mbr_pt_init(struct object* dev) {
  */
 uint8_t mbr_pt_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
-    kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->block_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct mbr_pt_devicedata* object_data = (struct mbr_pt_devicedata*)dev->object_data;
+    kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->block_device->name, dev->name);
 
     /*
      * unmount partitions
@@ -78,29 +78,29 @@ uint8_t mbr_pt_uninit(struct object* dev) {
      * done w device
      */
     kfree(dev->api);
-    kfree(dev->device_data);
+    kfree(dev->object_data);
     return 1;
 }
 
 uint64_t mbr_pt_part_table_get_partition_lba(struct object* dev, uint8_t partition) {
     ASSERT(partition >= 0);
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
-    ASSERT(partition < device_data->num_partitions);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct mbr_pt_devicedata* object_data = (struct mbr_pt_devicedata*)dev->object_data;
+    ASSERT(partition < object_data->num_partitions);
     struct mbr_pt_header header;
-    mbr_pt_read_mbr_pt_header(device_data->block_device, &header);
+    mbr_pt_read_mbr_pt_header(object_data->block_device, &header);
     return header.partitions[partition].lba_start;
 }
 
 uint64_t mbr_part_table_get_sector_count_function(struct object* dev, uint8_t partition) {
     ASSERT(partition >= 0);
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
-    ASSERT(partition < device_data->num_partitions);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct mbr_pt_devicedata* object_data = (struct mbr_pt_devicedata*)dev->object_data;
+    ASSERT(partition < object_data->num_partitions);
     struct mbr_pt_header header;
-    mbr_pt_read_mbr_pt_header(device_data->block_device, &header);
+    mbr_pt_read_mbr_pt_header(object_data->block_device, &header);
     return header.partitions[partition].total_sectors;
 }
 
@@ -108,21 +108,21 @@ void mbr_pt_part_table_get_partition_type(struct object* dev, uint8_t partition,
                                           uint16_t len) {
     ASSERT(partition >= 0);
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
+    ASSERT_NOT_NULL(dev->object_data);
     ASSERT_NOT_NULL(parititon_type);
-    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
-    ASSERT(partition < device_data->num_partitions);
+    struct mbr_pt_devicedata* object_data = (struct mbr_pt_devicedata*)dev->object_data;
+    ASSERT(partition < object_data->num_partitions);
     struct mbr_pt_header header;
-    mbr_pt_read_mbr_pt_header(device_data->block_device, &header);
+    mbr_pt_read_mbr_pt_header(object_data->block_device, &header);
     uitoa3(header.partitions[partition].partition_type, parititon_type, len, 16);
 }
 
 uint8_t mbr_pt_part_table_total_partitions(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct mbr_pt_devicedata* object_data = (struct mbr_pt_devicedata*)dev->object_data;
     struct mbr_pt_header header;
-    mbr_pt_read_mbr_pt_header(device_data->block_device, &header);
+    mbr_pt_read_mbr_pt_header(object_data->block_device, &header);
 
     uint8_t ret = 0;
     for (uint8_t i = 0; i < 4; i++) {
@@ -135,8 +135,8 @@ uint8_t mbr_pt_part_table_total_partitions(struct object* dev) {
 
 uint8_t mbr_part_table_detachable(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    //    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    //    struct mbr_pt_devicedata* object_data = (struct mbr_pt_devicedata*)dev->object_data;
 
     // check the partitions TODO
     return 1;
@@ -145,19 +145,19 @@ uint8_t mbr_part_table_detachable(struct object* dev) {
 uint32_t mbr_part_read_sectors(struct object* dev, uint8_t partition_index, uint8_t* data, uint32_t data_size,
                                uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct mbr_pt_devicedata* object_data = (struct mbr_pt_devicedata*)dev->object_data;
     uint64_t lba = mbr_pt_part_table_get_partition_lba(dev, partition_index);
-    return blockutil_read(device_data->block_device, data, data_size, lba + start_lba, 0);
+    return blockutil_read(object_data->block_device, data, data_size, lba + start_lba, 0);
 }
 
 uint32_t mbr_part_write_sectors(struct object* dev, uint8_t partition_index, uint8_t* data, uint32_t data_size,
                                 uint32_t start_lba) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct mbr_pt_devicedata* object_data = (struct mbr_pt_devicedata*)dev->object_data;
     uint64_t lba = mbr_pt_part_table_get_partition_lba(dev, partition_index);
-    return blockutil_write(device_data->block_device, data, data_size, lba + start_lba, 0);
+    return blockutil_write(object_data->block_device, data, data_size, lba + start_lba, 0);
 }
 
 struct object* mbr_pt_attach(struct object* block_device) {
@@ -189,10 +189,10 @@ struct object* mbr_pt_attach(struct object* block_device) {
     /*
      * device data
      */
-    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)kmalloc(sizeof(struct mbr_pt_devicedata));
-    device_data->block_device = block_device;
-    device_data->num_partitions = 0;
-    deviceinstance->device_data = device_data;
+    struct mbr_pt_devicedata* object_data = (struct mbr_pt_devicedata*)kmalloc(sizeof(struct mbr_pt_devicedata));
+    object_data->block_device = block_device;
+    object_data->num_partitions = 0;
+    deviceinstance->object_data = object_data;
     /*
      * register
      */
@@ -206,7 +206,7 @@ struct object* mbr_pt_attach(struct object* block_device) {
         */
         return deviceinstance;
     } else {
-        kfree(device_data);
+        kfree(object_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;
@@ -215,12 +215,12 @@ struct object* mbr_pt_attach(struct object* block_device) {
 
 void mbr_pt_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct mbr_pt_devicedata* device_data = (struct mbr_pt_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct mbr_pt_devicedata* object_data = (struct mbr_pt_devicedata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(device_data->block_device);
+    objectmgr_decrement_object_refcount(object_data->block_device);
     /*
     * detach
     */

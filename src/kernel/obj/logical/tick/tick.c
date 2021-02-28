@@ -20,9 +20,9 @@ struct tick_devicedata {
  */
 uint8_t tick_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct tick_devicedata* device_data = (struct tick_devicedata*)dev->device_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, device_data->pit_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct tick_devicedata* object_data = (struct tick_devicedata*)dev->object_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, object_data->pit_device->name, dev->name);
     return 1;
 }
 
@@ -31,7 +31,7 @@ uint8_t tick_init(struct object* dev) {
  */
 uint8_t tick_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
+    ASSERT_NOT_NULL(dev->object_data);
 
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
@@ -40,11 +40,11 @@ uint8_t tick_uninit(struct object* dev) {
 
 uint64_t tick_read(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct tick_devicedata* device_data = (struct tick_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct tick_devicedata* object_data = (struct tick_devicedata*)dev->object_data;
 
-    struct objecttype_pit* api = (struct objecttype_pit*)device_data->pit_device->api;
-    return (*api->tickcount)(device_data->pit_device);
+    struct objecttype_pit* api = (struct objecttype_pit*)object_data->pit_device->api;
+    return (*api->tickcount)(object_data->pit_device);
 }
 
 struct object* tick_attach(struct object* pit_device) {
@@ -69,9 +69,9 @@ struct object* tick_attach(struct object* pit_device) {
     /*
      * device data
      */
-    struct tick_devicedata* device_data = (struct tick_devicedata*)kmalloc(sizeof(struct tick_devicedata));
-    device_data->pit_device = pit_device;
-    deviceinstance->device_data = device_data;
+    struct tick_devicedata* object_data = (struct tick_devicedata*)kmalloc(sizeof(struct tick_devicedata));
+    object_data->pit_device = pit_device;
+    deviceinstance->object_data = object_data;
     /*
      * register
      */
@@ -93,12 +93,12 @@ struct object* tick_attach(struct object* pit_device) {
 
 void tick_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct tick_devicedata* device_data = (struct tick_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct tick_devicedata* object_data = (struct tick_devicedata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(device_data->pit_device);
+    objectmgr_decrement_object_refcount(object_data->pit_device);
     /*
     * detach
     */

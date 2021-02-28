@@ -15,7 +15,7 @@
 
 struct filesystem_node* fsfacade_get_fs_rootnode(struct object* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
-    ASSERT_NOT_NULL(filesystem_device->device_data);
+    ASSERT_NOT_NULL(filesystem_device->object_data);
     struct objecttype_filesystem* fs_api = (struct objecttype_filesystem*)filesystem_device->api;
     ASSERT_NOT_NULL(fs_api->root);
     return (*fs_api->root)(filesystem_device);

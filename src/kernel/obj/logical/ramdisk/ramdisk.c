@@ -31,11 +31,11 @@ struct ramdisk_devicedata {
  */
 uint8_t ramdisk_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
-    kprintf("Init %s of size %llu MB at %#hX (%s)\n", dev->description, (device_data->size) / 1024, device_data->data,
+    ASSERT_NOT_NULL(dev->object_data);
+    struct ramdisk_devicedata* object_data = (struct ramdisk_devicedata*)dev->object_data;
+    kprintf("Init %s of size %llu MB at %#hX (%s)\n", dev->description, (object_data->size) / 1024, object_data->data,
             dev->name);
-    memset(device_data->data, 0, device_data->size);
+    memset(object_data->data, 0, object_data->size);
     return 1;
 }
 
@@ -44,17 +44,17 @@ uint8_t ramdisk_init(struct object* dev) {
  */
 uint8_t ramdisk_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct ramdisk_devicedata* object_data = (struct ramdisk_devicedata*)dev->object_data;
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
-    kfree(device_data->data);
-    kfree(device_data);
+    kfree(object_data->data);
+    kfree(object_data);
     kfree(dev->api);
     return 1;
 }
 
-uint8_t* ramdisk_calc_address(struct ramdisk_devicedata* device_data, uint32_t sector) {
-    return (uint8_t*)(uint64_t)((device_data->data) + (sector * device_data->sector_size));
+uint8_t* ramdisk_calc_address(struct ramdisk_devicedata* object_data, uint32_t sector) {
+    return (uint8_t*)(uint64_t)((object_data->data) + (sector * object_data->sector_size));
 }
 
 uint32_t ramdisk_read(struct object* dev, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
@@ -62,21 +62,21 @@ uint32_t ramdisk_read(struct object* dev, uint8_t* data, uint32_t data_size, uin
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
 
-    ASSERT_NOT_NULL(dev->device_data);
-    struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct ramdisk_devicedata* object_data = (struct ramdisk_devicedata*)dev->object_data;
 
     // don't start off the end of the RAM
-    ASSERT(start_lba < device_data->sector_count);
+    ASSERT(start_lba < object_data->sector_count);
 
     // don't end off the end of the RAM
-    uint32_t total_sectors = data_size / device_data->sector_size;
-    if (0 != data_size % device_data->sector_size) {
+    uint32_t total_sectors = data_size / object_data->sector_size;
+    if (0 != data_size % object_data->sector_size) {
         total_sectors += 1;
     }
-    ASSERT((start_lba + total_sectors) < device_data->sector_count);
+    ASSERT((start_lba + total_sectors) < object_data->sector_count);
 
     // copy
-    uint8_t* block_address = ramdisk_calc_address(device_data, start_lba);
+    uint8_t* block_address = ramdisk_calc_address(object_data, start_lba);
     memcpy(data, block_address, data_size);
 
     return data_size;
@@ -87,21 +87,21 @@ uint32_t ramdisk_write(struct object* dev, uint8_t* data, uint32_t data_size, ui
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
 
-    ASSERT_NOT_NULL(dev->device_data);
-    struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct ramdisk_devicedata* object_data = (struct ramdisk_devicedata*)dev->object_data;
 
     // don't start off the end of the RAM
-    ASSERT(start_lba < device_data->sector_count);
+    ASSERT(start_lba < object_data->sector_count);
 
     // don't end off the end of the RAM
-    uint32_t total_sectors = data_size / device_data->sector_size;
-    if (0 != data_size % device_data->sector_size) {
+    uint32_t total_sectors = data_size / object_data->sector_size;
+    if (0 != data_size % object_data->sector_size) {
         total_sectors += 1;
     }
-    ASSERT((start_lba + total_sectors) < device_data->sector_count);
+    ASSERT((start_lba + total_sectors) < object_data->sector_count);
 
     // copy
-    uint8_t* block_address = ramdisk_calc_address(device_data, start_lba);
+    uint8_t* block_address = ramdisk_calc_address(object_data, start_lba);
     memcpy(block_address, data, (data_size));
 
     return data_size;
@@ -109,17 +109,17 @@ uint32_t ramdisk_write(struct object* dev, uint8_t* data, uint32_t data_size, ui
 
 uint16_t ramdisk_sector_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct ramdisk_devicedata* object_data = (struct ramdisk_devicedata*)dev->object_data;
 
-    return device_data->sector_size;
+    return object_data->sector_size;
 }
 uint32_t ramdisk_total_size(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct ramdisk_devicedata* object_data = (struct ramdisk_devicedata*)dev->object_data;
 
-    return device_data->size;
+    return object_data->size;
 }
 
 struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
@@ -135,13 +135,13 @@ struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     /*
      * device data
      */
-    struct ramdisk_devicedata* device_data = (struct ramdisk_devicedata*)kmalloc(sizeof(struct ramdisk_devicedata));
-    device_data->size = (uint64_t)sector_size * sector_count;
-    device_data->sector_size = sector_size;
-    device_data->sector_count = sector_count;
-    device_data->data = kmalloc(device_data->size);
-    memzero(device_data->data, device_data->size);
-    deviceinstance->device_data = device_data;
+    struct ramdisk_devicedata* object_data = (struct ramdisk_devicedata*)kmalloc(sizeof(struct ramdisk_devicedata));
+    object_data->size = (uint64_t)sector_size * sector_count;
+    object_data->sector_size = sector_size;
+    object_data->sector_count = sector_count;
+    object_data->data = kmalloc(object_data->size);
+    memzero(object_data->data, object_data->size);
+    deviceinstance->object_data = object_data;
     /*
      * the device api
      */
@@ -161,7 +161,7 @@ struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
         */
         return deviceinstance;
     } else {
-        kfree(device_data);
+        kfree(object_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;

@@ -171,9 +171,9 @@ void command(uint8_t commandByte) {
  */
 uint8_t floppy_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    //   struct floppy_devicedata* device_data = (struct floppy_devicedata*)dev->device_data;
+    //   struct floppy_devicedata* object_data = (struct floppy_devicedata*)dev->object_data;
     kprintf("Init %s at IRQ %llu (%s)\n", dev->description, FLOPPY_IRQ_NUMBER, dev->name);
-    //	printDriveType(device_data->type);
+    //	printDriveType(object_data->type);
     interrupt_router_register_interrupt_handler(FLOPPY_IRQ_NUMBER, &floppy_irq_read);
 
     // set CCR, DSR to zero
@@ -240,11 +240,11 @@ void floppy_register_device(uint64_t port, uint8_t type, bool master) {
     /*
      * device data
      */
-    struct floppy_devicedata* device_data = (struct floppy_devicedata*)kmalloc(sizeof(struct floppy_devicedata));
-    device_data->port = port;
-    device_data->type = type;
-    device_data->master = master;
-    deviceinstance->device_data = device_data;
+    struct floppy_devicedata* object_data = (struct floppy_devicedata*)kmalloc(sizeof(struct floppy_devicedata));
+    object_data->port = port;
+    object_data->type = type;
+    object_data->master = master;
+    deviceinstance->object_data = object_data;
     /*
      * register
      */

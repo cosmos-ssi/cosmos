@@ -45,8 +45,8 @@ void pci_ehci_search_cb(struct pci_device* dev) {
     /*
      * device data
      */
-    //	struct intelisapca_deviceddata* device_data = (struct intelisapca_deviceddata*) kmalloc(sizeof(struct intelisapca_deviceddata));
-    //	deviceinstance->device_data = device_data;
+    //	struct intelisapca_deviceddata* object_data = (struct intelisapca_deviceddata*) kmalloc(sizeof(struct intelisapca_deviceddata));
+    //	deviceinstance->object_data = object_data;
     /*
      * register
      */

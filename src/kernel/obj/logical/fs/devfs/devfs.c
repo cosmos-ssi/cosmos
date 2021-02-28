@@ -52,25 +52,25 @@ uint64_t devfs_device_number(uint64_t node_id) {
 uint8_t devfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s  (%s)\n", dev->description, dev->name);
-    struct devfs_devicedata* device_data = (struct devfs_devicedata*)dev->device_data;
+    struct devfs_devicedata* object_data = (struct devfs_devicedata*)dev->object_data;
     kfree(dev->api);
-    kfree(device_data->root_node);
-    node_cache_delete(device_data->nc);
-    kfree(device_data);
+    kfree(object_data->root_node);
+    node_cache_delete(object_data->nc);
+    kfree(object_data);
     return 1;
 }
 
 struct filesystem_node* devfs_get_root_node(struct object* filesystem_device) {
     ASSERT_NOT_NULL(filesystem_device);
-    ASSERT_NOT_NULL(filesystem_device->device_data);
-    struct devfs_devicedata* device_data = (struct devfs_devicedata*)filesystem_device->device_data;
-    return device_data->root_node;
+    ASSERT_NOT_NULL(filesystem_device->object_data);
+    struct devfs_devicedata* object_data = (struct devfs_devicedata*)filesystem_device->object_data;
+    return object_data->root_node;
 }
 
 uint32_t devfs_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     // read from node. we cant read from the root node, but we can find underlying file and folder nodes
@@ -82,7 +82,7 @@ uint32_t devfs_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t dat
 uint32_t devfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
 
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
@@ -95,7 +95,7 @@ uint32_t devfs_write(struct filesystem_node* fs_node, const uint8_t* data, uint3
 void devfs_open(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
 
     PANIC("not implemented");
 }
@@ -103,7 +103,7 @@ void devfs_open(struct filesystem_node* fs_node) {
 void devfs_close(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
 
     PANIC("not implemented");
 }
@@ -111,14 +111,14 @@ void devfs_close(struct filesystem_node* fs_node) {
 struct filesystem_node* devfs_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
-    struct devfs_devicedata* device_data = (struct devfs_devicedata*)fs_node->filesystem_device->device_data;
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
+    struct devfs_devicedata* object_data = (struct devfs_devicedata*)fs_node->filesystem_device->object_data;
     //  kprintf("finding %#llX in %s\n", id, fs_node->name);
 
     /*
     * check the cache
     */
-    struct filesystem_node* this_node = node_cache_find(device_data->nc, id);
+    struct filesystem_node* this_node = node_cache_find(object_data->nc, id);
     if (0 == this_node) {
         enum object_type dt = (enum object_type)devfs_device_type(id);
         struct arraylist* lst = devicetypes_get_devicelist(dt);
@@ -126,7 +126,7 @@ struct filesystem_node* devfs_find_node_by_id(struct filesystem_node* fs_node, u
             // there is a node with that id, we need to make a fs entry and cache it
             this_node =
                 filesystem_node_new(folder, fs_node->filesystem_device, object_type_names[id], devfs_node_id(id, 0), 0);
-            node_cache_add(device_data->nc, this_node);
+            node_cache_add(object_data->nc, this_node);
         }
     } else {
         //    kprintf("found in cache %llu\n", id);
@@ -141,10 +141,10 @@ void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
     kprintf("devfs_list_directory %s\n", fs_node->name);
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
     ASSERT_NOT_NULL(dir);
-    struct devfs_devicedata* device_data = (struct devfs_devicedata*)fs_node->filesystem_device->device_data;
-    if (fs_node == device_data->root_node) {
+    struct devfs_devicedata* object_data = (struct devfs_devicedata*)fs_node->filesystem_device->object_data;
+    if (fs_node == object_data->root_node) {
         /*
         * root node
         */
@@ -156,12 +156,12 @@ void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
         for (uint32_t i = 0; i < MAX_DEVICE_TYPES; i++) {
             struct arraylist* lst = devicetypes_get_devicelist(i);
             if (0 != lst) {
-                struct filesystem_node* this_node = node_cache_find(device_data->nc, i);
+                struct filesystem_node* this_node = node_cache_find(object_data->nc, i);
                 if (0 == this_node) {
                     //             kprintf("node_id %#llX %#llX\n", i, devfs_node_id(i, 0));
                     this_node = filesystem_node_new(folder, fs_node->filesystem_device, object_type_names[i],
                                                     devfs_node_id(i, 0), 0);
-                    node_cache_add(device_data->nc, this_node);
+                    node_cache_add(object_data->nc, this_node);
                 }
                 dir->ids[folder_count] = this_node->id;
                 folder_count += 1;
@@ -185,7 +185,7 @@ void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
 
             for (uint32_t i = 0; i < count; i++) {
                 uint64_t node_id = devfs_node_id(dt, i + 1);
-                struct filesystem_node* this_node = node_cache_find(device_data->nc, node_id);
+                struct filesystem_node* this_node = node_cache_find(object_data->nc, node_id);
                 if (0 == this_node) {
                     struct object* dev = (struct object*)arraylist_get(lst, i);
                     ASSERT_NOT_NULL(dev);
@@ -194,7 +194,7 @@ void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
                     this_node = filesystem_node_new(device, dev, dev->name, node_id, 0);
                     kprintf("dev2 %s\n", dev->name);
 
-                    node_cache_add(device_data->nc, this_node);
+                    node_cache_add(object_data->nc, this_node);
                     kprintf("dev3 %s\n", dev->name);
                 }
                 dir->ids[i] = this_node->id;
@@ -208,7 +208,7 @@ void devfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
 uint64_t devfs_size(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_device);
-    ASSERT_NOT_NULL(fs_node->filesystem_device->device_data);
+    ASSERT_NOT_NULL(fs_node->filesystem_device->object_data);
     // devices have no size
     return 0;
 }
@@ -222,7 +222,7 @@ struct object* devfs_attach() {
     deviceinstance->uninit = &devfs_uninit;
     deviceinstance->pci = 0;
     deviceinstance->devicetype = DEVFS;
-    deviceinstance->device_data = 0;
+    deviceinstance->object_data = 0;
     objectmgr_set_object_description(deviceinstance, "Device File System");
     /*
      * the device api
@@ -241,10 +241,10 @@ struct object* devfs_attach() {
     /*
      * device data
      */
-    struct devfs_devicedata* device_data = (struct devfs_devicedata*)kmalloc(sizeof(struct devfs_devicedata));
-    device_data->root_node = filesystem_node_new(folder, deviceinstance, "dev", 0, 0);
-    device_data->nc = node_cache_new();
-    deviceinstance->device_data = device_data;
+    struct devfs_devicedata* object_data = (struct devfs_devicedata*)kmalloc(sizeof(struct devfs_devicedata));
+    object_data->root_node = filesystem_node_new(folder, deviceinstance, "dev", 0, 0);
+    object_data->nc = node_cache_new();
+    deviceinstance->object_data = object_data;
     /*
      * register
      */
@@ -254,9 +254,9 @@ struct object* devfs_attach() {
         */
         return deviceinstance;
     } else {
-        node_cache_delete(device_data->nc);
-        kfree(device_data->root_node);
-        kfree(device_data);
+        node_cache_delete(object_data->nc);
+        kfree(object_data->root_node);
+        kfree(object_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;

@@ -39,10 +39,10 @@ void sdhci_irq_handler(stack_frame* frame) {
  */
 uint8_t sdhci_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    struct sdhci_devicedata* device_data = (struct sdhci_devicedata*)dev->device_data;
-    device_data->base = (uint64_t)CONV_PHYS_ADDR(pci_calcbar(dev->pci));
+    struct sdhci_devicedata* object_data = (struct sdhci_devicedata*)dev->object_data;
+    object_data->base = (uint64_t)CONV_PHYS_ADDR(pci_calcbar(dev->pci));
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX Base %#hX (%s)\n", dev->description, dev->pci->irq,
-            dev->pci->vendor_id, dev->pci->device_id, device_data->base, dev->name);
+            dev->pci->vendor_id, dev->pci->device_id, object_data->base, dev->name);
     interrupt_router_register_interrupt_handler(dev->pci->irq, &sdhci_irq_handler);
     return 1;
 }
@@ -73,11 +73,11 @@ void sdhci_pci_search_cb(struct pci_device* dev) {
     //   memzero((uint8_t*)api, sizeof(struct objecttype_block));
     //   deviceinstance->api = api;
     /*
-     * the device_data
+     * the object_data
      */
-    struct sdhci_devicedata* device_data = (struct sdhci_devicedata*)kmalloc(sizeof(struct sdhci_devicedata));
-    device_data->base = 0;
-    deviceinstance->device_data = device_data;
+    struct sdhci_devicedata* object_data = (struct sdhci_devicedata*)kmalloc(sizeof(struct sdhci_devicedata));
+    object_data->base = 0;
+    deviceinstance->object_data = object_data;
     /**
      * register
      */

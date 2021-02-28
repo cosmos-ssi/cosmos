@@ -128,13 +128,13 @@ void sfs_read_superblock(struct object* dev, struct sfs_superblock* superblock) 
 
 void sfs_format(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct sfs_devicedata* device_data = (struct sfs_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct sfs_devicedata* object_data = (struct sfs_devicedata*)dev->object_data;
 
     // device parameters
-    //    uint64_t total_size = blockutil_get_total_size(device_data->block_device);
-    uint32_t sector_size = blockutil_get_sector_size(device_data->partition_device);
-    uint32_t total_sectors = blockutil_get_sector_count(device_data->partition_device);
+    //    uint64_t total_size = blockutil_get_total_size(object_data->block_device);
+    uint32_t sector_size = blockutil_get_sector_size(object_data->partition_device);
+    uint32_t total_sectors = blockutil_get_sector_count(object_data->partition_device);
 
     // create a superblock struct
     struct sfs_superblock superblock;
@@ -151,7 +151,7 @@ void sfs_format(struct object* dev) {
     superblock.block_size = (sector_size / 512) + 1;
 
     // write superblock
-    blockutil_write(device_data->partition_device, (uint8_t*)&superblock, sizeof(struct sfs_superblock), 0, 0);
+    blockutil_write(object_data->partition_device, (uint8_t*)&superblock, sizeof(struct sfs_superblock), 0, 0);
 }
 
 /*
@@ -159,9 +159,9 @@ void sfs_format(struct object* dev) {
  */
 uint8_t sfs_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct sfs_devicedata* device_data = (struct sfs_devicedata*)dev->device_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct sfs_devicedata* object_data = (struct sfs_devicedata*)dev->object_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     return 1;
 }
 
@@ -170,12 +170,12 @@ uint8_t sfs_init(struct object* dev) {
  */
 uint8_t sfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
+    ASSERT_NOT_NULL(dev->object_data);
 
-    struct sfs_devicedata* device_data = (struct sfs_devicedata*)dev->device_data;
-    kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
+    struct sfs_devicedata* object_data = (struct sfs_devicedata*)dev->object_data;
+    kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     kfree(dev->api);
-    kfree(dev->device_data);
+    kfree(dev->object_data);
     return 1;
 }
 
@@ -201,9 +201,9 @@ struct object* sfs_attach(struct object* partition_device) {
     /*
      * device data
      */
-    struct sfs_devicedata* device_data = (struct sfs_devicedata*)kmalloc(sizeof(struct sfs_devicedata));
-    device_data->partition_device = partition_device;
-    deviceinstance->device_data = device_data;
+    struct sfs_devicedata* object_data = (struct sfs_devicedata*)kmalloc(sizeof(struct sfs_devicedata));
+    object_data->partition_device = partition_device;
+    deviceinstance->object_data = object_data;
 
     /*
      * register
@@ -219,7 +219,7 @@ struct object* sfs_attach(struct object* partition_device) {
         */
         return deviceinstance;
     } else {
-        kfree(device_data);
+        kfree(object_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;
@@ -228,12 +228,12 @@ struct object* sfs_attach(struct object* partition_device) {
 
 void sfs_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct sfs_devicedata* device_data = (struct sfs_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct sfs_devicedata* object_data = (struct sfs_devicedata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(device_data->partition_device);
+    objectmgr_decrement_object_refcount(object_data->partition_device);
     /*
     * detach
     */

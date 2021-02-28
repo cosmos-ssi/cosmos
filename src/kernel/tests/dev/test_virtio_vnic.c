@@ -26,21 +26,21 @@ void test_virtio_vnic() {
     }
 
     struct objecttype_nic* nic_api = (struct objecttype_nic*)dev->api;
-    struct vnic_devicedata* device_data = (struct vnic_devicedata*)dev->device_data;
+    struct vnic_devicedata* object_data = (struct vnic_devicedata*)dev->object_data;
 
     // status
     uint8_t txq[] = {"TXQ: "};
     uint8_t rxq[] = {"RXQ: "};
 
-    virtq_print(rxq, device_data->receive_queue);
+    virtq_print(rxq, object_data->receive_queue);
     uint8_t x = 0;
     for (x = 0; x < 20; x++) {
-        virtq_print(txq, device_data->send_queue);
+        virtq_print(txq, object_data->send_queue);
 
         uint8_t s[] = "this is a test of the emergency broadcasting system\0";
         uint8_t* buffer = (uint8_t*)kmalloc(strlen(s));
         strncpy(buffer, s, strlen(s) + 1);
         nic_api->write(dev, buffer, strlen(s));
     }
-    virtq_print(rxq, device_data->receive_queue);
+    virtq_print(rxq, object_data->receive_queue);
 }

@@ -28,21 +28,21 @@ struct tfs_devicedata {
  */
 void tfs_format(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct tfs_devicedata* device_data = (struct tfs_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
 
     /*
      * figure out how many map blocks we need
      */
-    uint32_t number_map_blocks = tfs_map_block_count(device_data->partition_device);
+    uint32_t number_map_blocks = tfs_map_block_count(object_data->partition_device);
     /*
      * create superblock
      */
     struct tfs_superblock_block superblock;
     memset((uint8_t*)&superblock, 0, sizeof(struct tfs_superblock_block));
     superblock.magic = TFS_MAGIC_SUPERBLOCK;
-    superblock.blocks_size = (uint64_t)blockutil_get_sector_size(device_data->partition_device);
-    superblock.blocks_count = (uint64_t)blockutil_get_sector_count(device_data->partition_device);
+    superblock.blocks_size = (uint64_t)blockutil_get_sector_size(object_data->partition_device);
+    superblock.blocks_count = (uint64_t)blockutil_get_sector_count(object_data->partition_device);
     superblock.number_map_blocks = number_map_blocks;
     superblock.root_dir = number_map_blocks + 1;  // sector one, since sector zero is the super-block
     kprintf("blocks_count %llu\n", superblock.blocks_count);
@@ -51,14 +51,14 @@ void tfs_format(struct object* dev) {
     /*
      * write superblock
      */
-    tfs_write_superblock(device_data->partition_device, &superblock);
+    tfs_write_superblock(object_data->partition_device, &superblock);
     /*
      * create & write map blocks
      */
     for (uint32_t i = 0; i < number_map_blocks; i++) {
         struct tfs_map_block map_block;
         memset((uint8_t*)&map_block, 0, sizeof(struct tfs_map_block));
-        tfs_write_map_block(device_data->partition_device, &map_block, i + 1);
+        tfs_write_map_block(object_data->partition_device, &map_block, i + 1);
         //    kprintf("map block: %llu\n",i+1);
     }
     /*
@@ -70,7 +70,7 @@ void tfs_format(struct object* dev) {
     /*
      * write root dir
      */
-    tfs_write_dir_block(device_data->partition_device, &root_dir_block, superblock.root_dir);
+    tfs_write_dir_block(object_data->partition_device, &root_dir_block, superblock.root_dir);
     kprintf("dir block: %llu\n", superblock.root_dir);
 }
 
@@ -91,8 +91,8 @@ void tfs_read(struct object* dev, const uint8_t* name, const uint8_t* data, uint
     ASSERT_NOT_NULL(name);
     ASSERT_NOT_NULL(data);
     ASSERT(strlen(name) < TFS_FILENAME_SIZE);
-    ASSERT_NOT_NULL(dev->device_data);
-    //   struct tfs_devicedata* device_data = (struct tfs_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    //   struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
 }
 
 void tfs_write(struct object* dev, const uint8_t* name, const uint8_t* data, uint32_t size) {
@@ -100,8 +100,8 @@ void tfs_write(struct object* dev, const uint8_t* name, const uint8_t* data, uin
     ASSERT_NOT_NULL(name);
     ASSERT_NOT_NULL(data);
     ASSERT(strlen(name) < TFS_FILENAME_SIZE);
-    ASSERT_NOT_NULL(dev->device_data);
-    //  struct tfs_devicedata* device_data = (struct tfs_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    //  struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
 
     kprintf("write file: %s of length %llu\n", name, size);
     /*
@@ -122,9 +122,9 @@ void tfs_write(struct object* dev, const uint8_t* name, const uint8_t* data, uin
  */
 uint8_t tfs_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct tfs_devicedata* device_data = (struct tfs_devicedata*)dev->device_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     return 1;
 }
 
@@ -133,12 +133,12 @@ uint8_t tfs_init(struct object* dev) {
  */
 uint8_t tfs_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
+    ASSERT_NOT_NULL(dev->object_data);
 
-    struct tfs_devicedata* device_data = (struct tfs_devicedata*)dev->device_data;
-    kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
+    struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
+    kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     kfree(dev->api);
-    kfree(dev->device_data);
+    kfree(dev->object_data);
     return 1;
 }
 
@@ -169,9 +169,9 @@ struct object* tfs_attach(struct object* partition_device) {
     /*
      * device data
      */
-    struct tfs_devicedata* device_data = (struct tfs_devicedata*)kmalloc(sizeof(struct tfs_devicedata));
-    device_data->partition_device = partition_device;
-    deviceinstance->device_data = device_data;
+    struct tfs_devicedata* object_data = (struct tfs_devicedata*)kmalloc(sizeof(struct tfs_devicedata));
+    object_data->partition_device = partition_device;
+    deviceinstance->object_data = object_data;
 
     /*
      * register
@@ -186,7 +186,7 @@ struct object* tfs_attach(struct object* partition_device) {
         */
         return deviceinstance;
     } else {
-        kfree(device_data);
+        kfree(object_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;
@@ -195,12 +195,12 @@ struct object* tfs_attach(struct object* partition_device) {
 
 void tfs_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct tfs_devicedata* device_data = (struct tfs_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct tfs_devicedata* object_data = (struct tfs_devicedata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(device_data->partition_device);
+    objectmgr_decrement_object_refcount(object_data->partition_device);
     /*
     * detach
     */

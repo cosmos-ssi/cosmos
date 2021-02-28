@@ -21,9 +21,9 @@ struct arp_devicedata {
  */
 uint8_t arp_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct arp_devicedata* device_data = (struct arp_devicedata*)dev->device_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, device_data->ethernet_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct arp_devicedata* object_data = (struct arp_devicedata*)dev->object_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, object_data->ethernet_device->name, dev->name);
     return 1;
 }
 
@@ -34,7 +34,7 @@ uint8_t arp_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
-    kfree(dev->device_data);
+    kfree(dev->object_data);
 
     return 1;
 }
@@ -44,16 +44,16 @@ uint8_t arp_uninit(struct object* dev) {
 */
 void arp_request(struct object* dev, struct arp* request, struct arp* response) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
+    ASSERT_NOT_NULL(dev->object_data);
     // get our device data for this device
-    //   struct arp_devicedata* device_data = (struct arp_devicedata*)dev->device_data;
+    //   struct arp_devicedata* object_data = (struct arp_devicedata*)dev->object_data;
     // get the api for the underlying ethernet device
-    //   struct objecttype_ethernet* ether_api = (struct objecttype_ethernet*)device_data->ethernet_device->api;
+    //   struct objecttype_ethernet* ether_api = (struct objecttype_ethernet*)object_data->ethernet_device->api;
     PANIC("Um, what HW addresses do I put in here?");
     // send
-    //  (*ether_api->write)(device_data->ethernet_device, (uint8_t*)request, sizeof(struct arp));
+    //  (*ether_api->write)(object_data->ethernet_device, (uint8_t*)request, sizeof(struct arp));
     // receive. I presume this blocks?
-    // (*ether_api->read)(device_data->ethernet_device, (uint8_t*)response, sizeof(struct arp));
+    // (*ether_api->read)(object_data->ethernet_device, (uint8_t*)response, sizeof(struct arp));
 }
 
 struct object* arp_attach(struct object* ethernet_device) {
@@ -79,9 +79,9 @@ struct object* arp_attach(struct object* ethernet_device) {
     /*
      * device data
      */
-    struct arp_devicedata* device_data = (struct arp_devicedata*)kmalloc(sizeof(struct arp_devicedata));
-    device_data->ethernet_device = ethernet_device;
-    deviceinstance->device_data = device_data;
+    struct arp_devicedata* object_data = (struct arp_devicedata*)kmalloc(sizeof(struct arp_devicedata));
+    object_data->ethernet_device = ethernet_device;
+    deviceinstance->object_data = object_data;
     /*
      * register
      */
@@ -96,7 +96,7 @@ struct object* arp_attach(struct object* ethernet_device) {
         return deviceinstance;
     } else {
         kfree(api);
-        kfree(device_data);
+        kfree(object_data);
         kfree(deviceinstance);
         return 0;
     }
@@ -104,12 +104,12 @@ struct object* arp_attach(struct object* ethernet_device) {
 
 void arp_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct arp_devicedata* device_data = (struct arp_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct arp_devicedata* object_data = (struct arp_devicedata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(device_data->ethernet_device);
+    objectmgr_decrement_object_refcount(object_data->ethernet_device);
     /*
     * detach
     */

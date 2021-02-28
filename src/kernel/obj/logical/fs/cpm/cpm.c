@@ -48,8 +48,8 @@ struct cpm_devicedata {
 
 void cpm_format(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct cpm_devicedata* device_data = (struct cpm_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct cpm_devicedata* object_data = (struct cpm_devicedata*)dev->object_data;
 
     /*
     * make the dir entry
@@ -63,24 +63,24 @@ void cpm_format(struct object* dev) {
     /*
     * figure out how many sectors we need
     */
-    uint8_t* buffer = kmalloc(device_data->byte_size_dir);
-    memset(buffer, 0, device_data->byte_size_dir);
+    uint8_t* buffer = kmalloc(object_data->byte_size_dir);
+    memset(buffer, 0, object_data->byte_size_dir);
     memcpy(buffer, (uint8_t*)&dir, sizeof(struct cpm_dir));
-    for (uint8_t i = 0; i < device_data->sectors_needed_for_dir; i++) {
-        blockutil_write(device_data->partition_device, &(buffer[i]), device_data->byte_size_dir, i, 0);
+    for (uint8_t i = 0; i < object_data->sectors_needed_for_dir; i++) {
+        blockutil_write(object_data->partition_device, &(buffer[i]), object_data->byte_size_dir, i, 0);
     }
     kfree(buffer);
 }
 
 void cpm_read_dir(struct object* dev, struct cpm_dir* dir) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct cpm_devicedata* device_data = (struct cpm_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct cpm_devicedata* object_data = (struct cpm_devicedata*)dev->object_data;
 
-    uint8_t* buffer = kmalloc(device_data->byte_size_dir);
-    memset(buffer, 0, device_data->byte_size_dir);
-    for (uint8_t i = 0; i < device_data->sectors_needed_for_dir; i++) {
-        blockutil_read(device_data->partition_device, &(buffer[i]), device_data->byte_size_dir, i, 0);
+    uint8_t* buffer = kmalloc(object_data->byte_size_dir);
+    memset(buffer, 0, object_data->byte_size_dir);
+    for (uint8_t i = 0; i < object_data->sectors_needed_for_dir; i++) {
+        blockutil_read(object_data->partition_device, &(buffer[i]), object_data->byte_size_dir, i, 0);
     }
 
     // copy to dest
@@ -94,9 +94,9 @@ void cpm_read_dir(struct object* dev, struct cpm_dir* dir) {
  */
 uint8_t cpm_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct cpm_devicedata* device_data = (struct cpm_devicedata*)dev->device_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct cpm_devicedata* object_data = (struct cpm_devicedata*)dev->object_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     return 1;
 }
 
@@ -105,11 +105,11 @@ uint8_t cpm_init(struct object* dev) {
  */
 uint8_t cpm_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct cpm_devicedata* device_data = (struct cpm_devicedata*)dev->device_data;
-    kprintf("Uninit %s on %s (%s)\n", dev->description, device_data->partition_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct cpm_devicedata* object_data = (struct cpm_devicedata*)dev->object_data;
+    kprintf("Uninit %s on %s (%s)\n", dev->description, object_data->partition_device->name, dev->name);
     kfree(dev->api);
-    kfree(dev->device_data);
+    kfree(dev->object_data);
     return 1;
 }
 
@@ -136,17 +136,17 @@ struct object* cpm_attach(struct object* partition_device) {
     /*
      * device data
      */
-    struct cpm_devicedata* device_data = (struct cpm_devicedata*)kmalloc(sizeof(struct cpm_devicedata));
-    device_data->partition_device = partition_device;
-    device_data->block_device_sector_size = blockutil_get_sector_size(device_data->partition_device);
+    struct cpm_devicedata* object_data = (struct cpm_devicedata*)kmalloc(sizeof(struct cpm_devicedata));
+    object_data->partition_device = partition_device;
+    object_data->block_device_sector_size = blockutil_get_sector_size(object_data->partition_device);
     // blocks needed for dir
-    uint8_t sectors_needed = sizeof(struct cpm_dir) / device_data->block_device_sector_size;
-    if (0 != (sizeof(struct cpm_dir) % device_data->block_device_sector_size)) {
+    uint8_t sectors_needed = sizeof(struct cpm_dir) / object_data->block_device_sector_size;
+    if (0 != (sizeof(struct cpm_dir) % object_data->block_device_sector_size)) {
         sectors_needed = sectors_needed + 1;
     }
-    device_data->sectors_needed_for_dir = sectors_needed;
-    device_data->byte_size_dir = device_data->sectors_needed_for_dir * device_data->block_device_sector_size;
-    deviceinstance->device_data = device_data;
+    object_data->sectors_needed_for_dir = sectors_needed;
+    object_data->byte_size_dir = object_data->sectors_needed_for_dir * object_data->block_device_sector_size;
+    deviceinstance->object_data = object_data;
 
     /*
      * register
@@ -161,7 +161,7 @@ struct object* cpm_attach(struct object* partition_device) {
         */
         return deviceinstance;
     } else {
-        kfree(device_data);
+        kfree(object_data);
         kfree(api);
         kfree(deviceinstance);
         return 0;
@@ -170,12 +170,12 @@ struct object* cpm_attach(struct object* partition_device) {
 
 void cpm_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct cpm_devicedata* device_data = (struct cpm_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct cpm_devicedata* object_data = (struct cpm_devicedata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(device_data->partition_device);
+    objectmgr_decrement_object_refcount(object_data->partition_device);
     /*
     * detach
     */

@@ -40,9 +40,9 @@ void parallel_irq_handler(stack_frame* frame) {
  */
 void parallel_device_ready(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct parallel_devicedata* device_data = (struct parallel_devicedata*)(dev->device_data);
-    while (!(asm_in_b(device_data->address + PARALLEL_DEVICE_REGISTER_STATUS) & 0x80)) {
+    ASSERT_NOT_NULL(dev->object_data);
+    struct parallel_devicedata* object_data = (struct parallel_devicedata*)(dev->object_data);
+    while (!(asm_in_b(object_data->address + PARALLEL_DEVICE_REGISTER_STATUS) & 0x80)) {
         sleep_wait(10);
     }
 }
@@ -52,23 +52,23 @@ void parallel_device_ready(struct object* dev) {
  */
 uint8_t parallel_device_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct parallel_devicedata* device_data = (struct parallel_devicedata*)(dev->device_data);
-    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", dev->description, device_data->irq, device_data->address,
+    ASSERT_NOT_NULL(dev->object_data);
+    struct parallel_devicedata* object_data = (struct parallel_devicedata*)(dev->object_data);
+    kprintf("Init %s at IRQ %llu Base %#hX (%s)\n", dev->description, object_data->irq, object_data->address,
             dev->name);
-    interrupt_router_register_interrupt_handler(device_data->irq, &parallel_irq_handler);
+    interrupt_router_register_interrupt_handler(object_data->irq, &parallel_irq_handler);
     /*
      * reset
      */
-    asm_out_w(device_data->address + PARALLEL_DEVICE_REGISTER_CONTROL, 0x00);
+    asm_out_w(object_data->address + PARALLEL_DEVICE_REGISTER_CONTROL, 0x00);
     return 1;
 }
 
 void parallel_write(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
+    ASSERT_NOT_NULL(dev->object_data);
     ASSERT_NOT_NULL(data);
-    struct parallel_devicedata* device_data = (struct parallel_devicedata*)(dev->device_data);
+    struct parallel_devicedata* object_data = (struct parallel_devicedata*)(dev->object_data);
     for (uint16_t i = 0; i < size; i++) {
         /*
          * wait for ready
@@ -77,14 +77,14 @@ void parallel_write(struct object* dev, uint8_t* data, uint16_t size) {
         /*
          * write byte
          */
-        asm_out_w(device_data->address + PARALLEL_DEVICE_REGISTER_DATA, data[i]);
+        asm_out_w(object_data->address + PARALLEL_DEVICE_REGISTER_DATA, data[i]);
         /*
          * strobe
          */
-        uint8_t lControl = asm_in_b(device_data->address + PARALLEL_DEVICE_REGISTER_CONTROL);
-        asm_out_b(device_data->address + PARALLEL_DEVICE_REGISTER_CONTROL, lControl | 1);
+        uint8_t lControl = asm_in_b(object_data->address + PARALLEL_DEVICE_REGISTER_CONTROL);
+        asm_out_b(object_data->address + PARALLEL_DEVICE_REGISTER_CONTROL, lControl | 1);
         sleep_wait(10);
-        asm_out_b(device_data->address + PARALLEL_DEVICE_REGISTER_CONTROL, lControl);
+        asm_out_b(object_data->address + PARALLEL_DEVICE_REGISTER_CONTROL, lControl);
     }
 }
 
@@ -105,10 +105,10 @@ void parallel_objectmgr_register_object(uint64_t base, uint8_t irq) {
     /*
      * device data
      */
-    struct parallel_devicedata* device_data = (struct parallel_devicedata*)kmalloc(sizeof(struct parallel_devicedata));
-    device_data->address = base;
-    device_data->irq = irq;
-    deviceinstance->device_data = device_data;
+    struct parallel_devicedata* object_data = (struct parallel_devicedata*)kmalloc(sizeof(struct parallel_devicedata));
+    object_data->address = base;
+    object_data->irq = irq;
+    deviceinstance->object_data = object_data;
     /*
      * register
      */

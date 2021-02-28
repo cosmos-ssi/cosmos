@@ -97,9 +97,9 @@ struct object {
      */
     uint8_t description[OBJECT_MAX_DESCRIPTION];
     /*
-     * device-specific data
+     * object-specific data
      */
-    void* device_data;
+    void* object_data;
     /*
      * For PCI devices, this is a struct pci_device*.
      */

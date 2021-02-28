@@ -19,9 +19,9 @@ struct ip_devicedata {
  */
 uint8_t ip_init(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct ip_devicedata* device_data = (struct ip_devicedata*)dev->device_data;
-    kprintf("Init %s on %s (%s)\n", dev->description, device_data->ethernet_device->name, dev->name);
+    ASSERT_NOT_NULL(dev->object_data);
+    struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
+    kprintf("Init %s on %s (%s)\n", dev->description, object_data->ethernet_device->name, dev->name);
     return 1;
 }
 
@@ -32,20 +32,20 @@ uint8_t ip_uninit(struct object* dev) {
     ASSERT_NOT_NULL(dev);
     kprintf("Uninit %s (%s)\n", dev->description, dev->name);
     kfree(dev->api);
-    kfree(dev->device_data);
+    kfree(dev->object_data);
 
     return 1;
 }
 
 void ip_read(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    //  struct ip_devicedata* device_data = (struct ip_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    //  struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
 }
 void ip_write(struct object* dev, uint8_t* data, uint16_t size) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    //   struct ip_devicedata* device_data = (struct ip_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    //   struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
 }
 
 struct object* ip_attach(struct object* ethernet_device) {
@@ -73,9 +73,9 @@ struct object* ip_attach(struct object* ethernet_device) {
     /*
      * device data
      */
-    struct ip_devicedata* device_data = (struct ip_devicedata*)kmalloc(sizeof(struct ip_devicedata));
-    device_data->ethernet_device = ethernet_device;
-    deviceinstance->device_data = device_data;
+    struct ip_devicedata* object_data = (struct ip_devicedata*)kmalloc(sizeof(struct ip_devicedata));
+    object_data->ethernet_device = ethernet_device;
+    deviceinstance->object_data = object_data;
     /*
      * register
      */
@@ -90,7 +90,7 @@ struct object* ip_attach(struct object* ethernet_device) {
         return deviceinstance;
     } else {
         kfree(api);
-        kfree(device_data);
+        kfree(object_data);
         kfree(deviceinstance);
         return 0;
     }
@@ -98,12 +98,12 @@ struct object* ip_attach(struct object* ethernet_device) {
 
 void ip_detach(struct object* dev) {
     ASSERT_NOT_NULL(dev);
-    ASSERT_NOT_NULL(dev->device_data);
-    struct ip_devicedata* device_data = (struct ip_devicedata*)dev->device_data;
+    ASSERT_NOT_NULL(dev->object_data);
+    struct ip_devicedata* object_data = (struct ip_devicedata*)dev->object_data;
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(device_data->ethernet_device);
+    objectmgr_decrement_object_refcount(object_data->ethernet_device);
     /*
     * detach
     */

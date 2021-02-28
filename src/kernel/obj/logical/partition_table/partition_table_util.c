@@ -15,7 +15,7 @@ uint32_t partition_table_util_write_sectors(struct object* partition_table_devic
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
-    ASSERT_NOT_NULL(partition_table_device->device_data);
+    ASSERT_NOT_NULL(partition_table_device->object_data);
     struct objecttype_part_table* pt_api = (struct objecttype_part_table*)partition_table_device->api;
     return (*pt_api->write)(partition_table_device, partition_index, data, data_size, start_lba);
 }
@@ -27,7 +27,7 @@ uint32_t partition_table_util_read_sectors(struct object* partition_table_device
     ASSERT_NOT_NULL(data_size);
 
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
-    ASSERT_NOT_NULL(partition_table_device->device_data);
+    ASSERT_NOT_NULL(partition_table_device->object_data);
     struct objecttype_part_table* pt_api = (struct objecttype_part_table*)partition_table_device->api;
     return (*pt_api->read)(partition_table_device, partition_index, data, data_size, start_lba);
 }
@@ -35,7 +35,7 @@ uint32_t partition_table_util_read_sectors(struct object* partition_table_device
 uint16_t partition_table_util_sector_size(struct object* partition_table_device, uint8_t partition_index) {
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
-    ASSERT_NOT_NULL(partition_table_device->device_data);
+    ASSERT_NOT_NULL(partition_table_device->object_data);
     PANIC("not implemented");
     return 0;
 }
@@ -43,7 +43,7 @@ uint16_t partition_table_util_sector_size(struct object* partition_table_device,
 uint32_t partition_table_util_total_size(struct object* partition_table_device, uint8_t partition_index) {
     ASSERT_NOT_NULL(partition_table_device);
     ASSERT(partition_table_device->devicetype == PARTITION_TABLE);
-    ASSERT_NOT_NULL(partition_table_device->device_data);
+    ASSERT_NOT_NULL(partition_table_device->object_data);
     PANIC("not implemented");
     return 0;
 }
