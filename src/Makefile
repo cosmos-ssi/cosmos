@@ -7,6 +7,7 @@ INITRD=img/initrd.img
 SRC_FILES=$(shell find . -type f \( -name "*.c" -o -name "*.h" \))
 
 CRUFT_FILES=$(shell find . -type f \( -name "dump.dat" -o \
+									  -name "net0.dat" -o \
 									  -name "qemu.log" \))
 
 all: subsystems
