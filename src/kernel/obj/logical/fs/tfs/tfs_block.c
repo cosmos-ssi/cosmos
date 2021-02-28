@@ -8,11 +8,6 @@
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/tfs/tfs_block.h>
 #include <sys/debug/assert.h>
-#include <sys/debug/debug.h>
-#include <sys/kmalloc/kmalloc.h>
-#include <sys/kprintf/kprintf.h>
-#include <sys/obj/objectinterface/objectinterface_block.h>
-#include <sys/string/mem.h>
 
 /*
  * read the superblock at lba 0

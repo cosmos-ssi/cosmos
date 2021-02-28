@@ -31,11 +31,11 @@
 #include <obj/x86-64/speaker/speaker.h>
 #include <obj/x86-64/usb_ehci/usb_ehci.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objectregistry/objectregistry.h>
+#include <sys/panic/panic.h>
 #include <sys/string/string.h>
 #include <types.h>
 

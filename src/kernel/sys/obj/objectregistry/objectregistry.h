@@ -8,7 +8,9 @@
 #ifndef _OBJECTREGISTRY_H
 #define _OBJECTREGISTRY_H
 
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <types.h>
 
 void objectregistry_init();
 void objectregistry_registerobject(struct object* obj);

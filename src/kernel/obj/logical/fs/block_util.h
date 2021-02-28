@@ -8,7 +8,6 @@
 #ifndef _BLOCK_UTIL_H
 #define _BLOCK_UTIL_H
 
-#include <sys/obj/objectinterface/objectinterface_block.h>
 #include <types.h>
 
 struct object;

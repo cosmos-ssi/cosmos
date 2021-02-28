@@ -13,7 +13,6 @@
 #include <sys/gui/window.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/objectmgr.h>
 #include <sys/video/bmp.h>
 #include <sys/video/canvas.h>
 #include <sys/video/psf.h>

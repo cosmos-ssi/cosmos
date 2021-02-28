@@ -12,13 +12,11 @@
 #include <sys/asm/byte.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/panic/panic.h>
+#include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/mm/pagetables.h>
 
 // https://wiki.osdev.org/DMA

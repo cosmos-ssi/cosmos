@@ -7,8 +7,10 @@
 
 #include <sys/collection/array/array.h>
 #include <sys/debug/assert.h>
-#include <sys/kprintf/kprintf.h>
 #include <sys/obj/objecttypes/objecttypes.h>
+#include <sys/panic/panic.h>
+
+struct arraylist;
 
 struct array* types;
 

@@ -12,7 +12,6 @@
 #include <sys/fs/fs_facade.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/objectmgr.h>
 
 /*
 * read a file. this kmallocs new memory and returns it.  The file len is populated into len

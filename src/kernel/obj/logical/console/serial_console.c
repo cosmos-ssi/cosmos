@@ -8,8 +8,11 @@
 #include <obj/logical/console/serial_console.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_console.h>
 #include <sys/obj/objectinterface/objectinterface_serial.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/string/mem.h>
 #include <types.h>
 

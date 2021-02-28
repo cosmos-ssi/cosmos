@@ -9,10 +9,9 @@
 #include <sys/asm/io.h>
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/objectinterface/objectinterface_cmos.h>
+#include <sys/obj/object/object.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 void cmos_write_register(uint8_t reg, uint8_t val) {
     uint8_t pv;

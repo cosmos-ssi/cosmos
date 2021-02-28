@@ -5,10 +5,10 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_console.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/syscall/syscalls.h>
 
 uint64_t invalid_syscall(uint64_t syscall_id, void* args) {

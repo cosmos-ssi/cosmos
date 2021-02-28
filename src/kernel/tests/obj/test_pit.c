@@ -6,7 +6,9 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_pit.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/sleep/sleep.h>
 #include <tests/obj/test_pit.h>
 #include <types.h>

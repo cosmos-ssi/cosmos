@@ -8,9 +8,10 @@
 #ifndef _OBJECTYPES_H
 #define _OBJECTTYPES_H
 
-#include <sys/collection/array/array.h>
-#include <sys/collection/arraylist/arraylist.h>
-#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/object/object.h>
+#include <types.h>
+
+struct arraylist;
 
 #define MAX_OBJECT_TYPES 256
 

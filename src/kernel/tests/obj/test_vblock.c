@@ -6,9 +6,7 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/objectinterface/objectinterface_block.h>
-#include <sys/string/mem.h>
-#include <sys/string/string.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <tests/obj/test_blockdevice.h>
 #include <tests/obj/test_vblock.h>
 #include <types.h>

@@ -8,11 +8,11 @@
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/swap/swap.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_swap.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/string/mem.h>
 #include <types.h>
 

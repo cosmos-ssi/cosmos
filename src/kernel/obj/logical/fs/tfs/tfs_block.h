@@ -8,8 +8,6 @@
 #ifndef _TFS_BLOCK_H
 #define _TFS_BLOCK_H
 
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <types.h>
 
 struct object;

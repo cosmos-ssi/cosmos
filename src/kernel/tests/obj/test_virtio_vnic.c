@@ -9,8 +9,10 @@
 #include <obj/logical/virtio/vnic/vnic.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_nic.h>
-#include <sys/string/mem.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/panic/panic.h>
 #include <sys/string/string.h>
 #include <tests/obj/test_virtio_vnic.h>
 #include <types.h>

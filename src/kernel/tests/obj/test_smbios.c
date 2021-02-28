@@ -11,8 +11,6 @@
 #include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectmgr/object.h>
-#include <sys/objectmgr/objectmgr.h>
 #include <tests/obj/test_smbios.h>
 #include <types.h>
 

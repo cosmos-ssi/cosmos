@@ -11,12 +11,13 @@
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_dsp.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/panic/panic.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 #include <sys/x86-64/idt/irq.h>
