@@ -174,7 +174,8 @@ void reserve_next_ptt(ptt_levels level, uint64_t* expansion) {
 }
 
 uint16_t vaddr_ptt_index(void* address, ptt_levels level) {
-    ASSERT_NOT_NULL(address);
+    // address can be null--we're not actually dereferencing it, just using its
+    // value for a calculation
 
     uint64_t mask;
     uint8_t shift;

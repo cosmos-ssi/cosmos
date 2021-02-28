@@ -45,9 +45,8 @@ void proc_map_image(pttentry cr3, object_handle_t exe_obj) {
     obj = OBJECT_DATA(exe_obj, object_executable_t);
 
     for (i = 0; i < obj->page_count; i++) {
+        map_page_at(obj->page_base + i, vaddr + (PAGE_SIZE * i), cr3, true);
     }
-
-    vaddr++;
 
     return;
 }
