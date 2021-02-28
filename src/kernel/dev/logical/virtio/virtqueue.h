@@ -28,7 +28,7 @@
 #define VIRTQ_DESC_F_INDIRECT 0x04  // buffer contains a list of buffer descriptors.
 
 struct virtq_descriptor {
-    uint64_t* addr; /* Address (guest-physical). */
+    uint64_t addr; /* Address (guest-physical). */
     uint32_t len;
     uint16_t flags;
     uint16_t next;
@@ -74,7 +74,7 @@ void virtq_enqueue_descriptor(struct virtq* queue, struct virtq_descriptor* desc
 struct virtq_descriptor* virtq_dequeue_descriptor(struct virtq* queue);
 
 // descriptors
-struct virtq_descriptor* virtq_descriptor_new(void* buffer, uint32_t len, bool writable);
+struct virtq_descriptor* virtq_descriptor_new(uint8_t* buffer, uint32_t len, bool writable);
 void virtq_descriptor_delete(struct virtq_descriptor* descriptor);
 
 // available
@@ -83,4 +83,7 @@ uint16_t virtq_get_available_idx(struct virtq* queue);
 // used
 uint16_t virtq_get_used_idx(struct virtq* queue);
 
+uint16_t find_first_empty_slot(struct virtq* queue);
+
+void virtq_print(uint8_t qname[], struct virtq* queue);
 #endif

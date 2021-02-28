@@ -31,6 +31,7 @@
 #include <tests/dev/test_vblock.h>
 #include <tests/dev/test_vga_console.h>
 #include <tests/dev/test_virtio_virtqueue.h>
+#include <tests/dev/test_virtio_vnic.h>
 #include <tests/fs/test_cfs.h>
 #include <tests/fs/test_cpm.h>
 #include <tests/fs/test_devfs.h>

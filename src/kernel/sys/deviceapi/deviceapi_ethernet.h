@@ -20,7 +20,7 @@ struct eth_hdr {
     uint8_t source_hw[ETHERNET_HW_LEN];
     uint16_t type;
     uint8_t* data;
-} __attribute__((packed));
+};
 
 typedef void (*ethernet_read_function)(struct device* dev, struct eth_hdr* eth, uint16_t size);
 typedef void (*ethernet_write_function)(struct device* dev, struct eth_hdr* eth, uint16_t size);

@@ -44,7 +44,7 @@ void ethernet_read(struct device* dev, struct eth_hdr* eth, uint16_t size) {
     ASSERT_NOT_NULL(eth);
     struct ethernet_devicedata* device_data = (struct ethernet_devicedata*)dev->device_data;
     struct deviceapi_nic* nic_api = (struct deviceapi_nic*)device_data->nic_device->api;
-    (*nic_api->read)(device_data->nic_device, (uint8_t*)eth, size);
+    nic_api->read(device_data->nic_device, (uint8_t*)eth, size);
 }
 
 void ethernet_write(struct device* dev, struct eth_hdr* eth, uint16_t size) {
@@ -53,7 +53,7 @@ void ethernet_write(struct device* dev, struct eth_hdr* eth, uint16_t size) {
     ASSERT_NOT_NULL(eth);
     struct ethernet_devicedata* device_data = (struct ethernet_devicedata*)dev->device_data;
     struct deviceapi_nic* nic_api = (struct deviceapi_nic*)device_data->nic_device->api;
-    (*nic_api->read)(device_data->nic_device, (uint8_t*)eth, size);
+    nic_api->write(device_data->nic_device, (uint8_t*)eth, size);
 }
 
 struct device* ethernet_attach(struct device* nic_device) {
