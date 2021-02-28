@@ -73,7 +73,7 @@ void cpu_objectmgr_register_objects() {
      */
     struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "CPU");
-    objectinstance->objectype = CPU;
+    objectinstance->objectype = OBJECT_TYPE_CPU;
     objectinstance->init = &cpu_obj_init;
     /*
      * device api

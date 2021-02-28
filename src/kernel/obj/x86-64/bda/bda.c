@@ -112,7 +112,7 @@ void bda_objectmgr_register_objects() {
      */
     struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "BIOS Data Area");
-    objectinstance->objectype = BDA;
+    objectinstance->objectype = OBJECT_TYPE_BDA;
     objectinstance->init = &bda_obj_init;
     /*
      * api

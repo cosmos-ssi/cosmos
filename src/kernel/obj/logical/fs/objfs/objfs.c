@@ -122,7 +122,7 @@ struct filesystem_node* objfs_find_node_by_id(struct filesystem_node* fs_node, u
     */
     struct filesystem_node* this_node = node_cache_find(object_data->nc, id);
     if (0 == this_node) {
-        enum object_type_id dt = (enum object_type_id)objfs_device_type(id);
+        uint16_t dt = (uint16_t)objfs_device_type(id);
         struct object_type* ot = objecttypes_find(dt);
         if (0 != ot) {
             // there is a node with that id, we need to make a fs entry and cache it
@@ -177,7 +177,7 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
 
             kprintf("folder %s %#llX\n", fs_node->name, fs_node->id);
 
-            enum object_type_id dt = (enum object_type_id)objfs_device_type(fs_node->id);
+            uint16_t dt = (uint16_t)objfs_device_type(fs_node->id);
             ASSERT_NOT_NULL(dt);
             //   kprintf("dt %#llX\n", dt);
             uint32_t count = objectregistry_objectcount_type(dt);
@@ -221,7 +221,7 @@ struct object* objfs_attach() {
     objectinstance->init = &objfs_init;
     objectinstance->uninit = &objfs_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = DEVFS;
+    objectinstance->objectype = OBJECT_TYPE_OBJFS;
     objectinstance->object_data = 0;
     objectmgr_set_object_description(objectinstance, "Object File System");
     /*

@@ -84,7 +84,7 @@ struct object* swap_attach(struct object* block_device) {
     objectinstance->init = &swap_init;
     objectinstance->uninit = &swap_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = SWAP;
+    objectinstance->objectype = OBJECT_TYPE_SWAP;
     objectmgr_set_object_description(objectinstance, "Swap");
     /*
      * the device api

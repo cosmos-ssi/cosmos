@@ -130,7 +130,7 @@ struct object* ramdisk_attach(uint16_t sector_size, uint16_t sector_count) {
     objectinstance->init = &ramdisk_init;
     objectinstance->uninit = &ramdisk_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = RAMDISK;
+    objectinstance->objectype = OBJECT_TYPE_RAMDISK;
     objectmgr_set_object_description(objectinstance, "RAM disk");
     /*
      * device data

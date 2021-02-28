@@ -13,7 +13,7 @@
 
 void objecttypes_init();
 uint32_t objecttypes_count();
-struct object_type* objecttypes_find(enum object_type_id id);
+struct object_type* objecttypes_find(uint16_t id);
 struct object_type* objecttypes_get(uint32_t i);
 void objecttypes_add(struct object_type* ot);
 

@@ -68,7 +68,7 @@ uint16_t rtl8139_get_isr_status(struct object* obj) {
 
 void rtl8139_irq_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
-    objectmgr_find_objects_by_description(NIC, RTL8139_DESCRIPTION, &rtl8139_irq_handler_for_device);
+    objectmgr_find_objects_by_description(OBJECT_TYPE_NIC, RTL8139_DESCRIPTION, &rtl8139_irq_handler_for_device);
 }
 
 void rtl8139_power_on(struct object* obj) {
@@ -250,7 +250,7 @@ void rtl8139_search_cb(struct pci_device* dev) {
     struct object* objectinstance = object_new_object();
     objectinstance->init = &rtl8139_init;
     objectinstance->pci = dev;
-    objectinstance->objectype = NIC;
+    objectinstance->objectype = OBJECT_TYPE_NIC;
     objectmgr_set_object_description(objectinstance, RTL8139_DESCRIPTION);
     /*
      * the device api
