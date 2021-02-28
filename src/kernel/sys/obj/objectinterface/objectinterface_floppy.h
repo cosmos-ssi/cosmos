@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all floppy devices will implement
+ * this file defines the interface that all floppy objects will implement
  */
 #ifndef _OBJECTTYPE_FLOPPY_H
 #define _OBJECTTYPE_FLOPPY_H

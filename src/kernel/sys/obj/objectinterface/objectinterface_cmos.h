@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all BIOS Data Area devices will implement
+ * this file defines the interface that all BIOS Data Area objects will implement
  */
 #ifndef _OBJECTTYPE_CMOS_H
 #define _OBJECTTYPE_CMOS_H

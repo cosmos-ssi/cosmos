@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all rand devices will implement
+ * this file defines the interface that all rand objects will implement
  */
 #ifndef _OBJECTTYPE_RAND_H
 #define _OBJECTTYPE_RAND_H

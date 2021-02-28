@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all tick devices will implement
+ * this file defines the interface that all tick objects will implement
  */
 #ifndef _OBJECTTYPE_TICK_H
 #define _OBJECTTYPE_TICK_H

@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all PIT devices will implement
+ * this file defines the interface that all PIT objects will implement
  */
 #ifndef _OBJECTTYPE_PIT_H
 #define _OBJECTTYPE_PIT_H

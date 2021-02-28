@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all ICMP devices will implement
+ * this file defines the interface that all ICMP objects will implement
  */
 #ifndef _OBJECTTYPE_ICMP_H
 #define _OBJECTTYPE_ICMP_H

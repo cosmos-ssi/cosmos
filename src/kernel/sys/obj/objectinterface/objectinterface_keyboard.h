@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all keyboard devices will implement
+ * this file defines the interface that all keyboard objects will implement
  */
 #ifndef _OBJECTTYPE_KEYBOARD_H
 #define _OBJECTTYPE_KEYBOARD_H

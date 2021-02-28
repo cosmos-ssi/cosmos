@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all VGA devices will implement
+ * this file defines the interface that all VGA objects will implement
  */
 #ifndef _OBJECTTYPE_VGA_H
 #define _OBJECTTYPE_VGA_H

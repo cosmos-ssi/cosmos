@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all Ethernet devices will implement
+ * this file defines the interface that all Ethernet objects will implement
  */
 #ifndef _OBJECTTYPE_ETHERNET_H
 #define _OBJECTTYPE_ETHERNET_H

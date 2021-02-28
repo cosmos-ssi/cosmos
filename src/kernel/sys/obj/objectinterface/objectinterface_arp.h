@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all ARP devices will implement
+ * this file defines the interface that all ARP objects will implement
  */
 #ifndef _OBJECTTYPE_ARP_H
 #define _OBJECTTYPE_ARP_H

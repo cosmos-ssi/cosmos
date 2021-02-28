@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all console devices will implement (vga and serial)
+ * this file defines the interface that all console objects will implement (vga and serial)
  */
 #ifndef _OBJECTTYPE_CONSOLE_H
 #define _OBJECTTYPE_CONSOLE_H

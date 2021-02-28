@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
- * this file defines the interface that all BGA devices will implement
+ * this file defines the interface that all BGA objects will implement
  */
 #ifndef _OBJECTTYPE_BGA_H
 #define _OBJECTTYPE_BGA_H

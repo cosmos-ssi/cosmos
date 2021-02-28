@@ -23,7 +23,7 @@ typedef struct filesystem_node {
     */
     enum filesystem_node_type type;
     /* 
-    * owning device
+    * owning filesystem object
     */
     struct object* filesystem_obj;
     /*
