@@ -9,8 +9,8 @@
 #include <obj/x86-64/serial/serial.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objectinterface/objectinterface_console.h>
-#include <sys/objectinterface/objectinterface_vga.h>
+#include <sys/obj/objectinterface/objectinterface_console.h>
+#include <sys/obj/objectinterface/objectinterface_vga.h>
 #include <sys/string/mem.h>
 
 #define CONSOLE_TAB_WIDTH 5

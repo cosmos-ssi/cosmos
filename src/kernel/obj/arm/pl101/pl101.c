@@ -9,11 +9,11 @@
 #include <sys/asm/asm.h>
 #include <sys/collection/ringbuffer/ringbuffer.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_serial.h>
+#include <sys/obj/objectinterface/objectinterface_serial.h>
 
 // void serial_irq_handler(stack_frame *frame){
 //	ASSERT_NOT_NULL(frame);

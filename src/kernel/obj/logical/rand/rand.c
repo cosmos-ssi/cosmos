@@ -7,7 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objectinterface/objectinterface_rand.h>
+#include <sys/obj/objectinterface/objectinterface_rand.h>
 #include <sys/string/mem.h>
 
 uint64_t RAND_MAX = (1 << 31);

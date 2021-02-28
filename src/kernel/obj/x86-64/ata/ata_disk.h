@@ -12,7 +12,7 @@
 #define _ATA_DISK_H
 
 #include <obj/x86-64/ata/ata_controller.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <types.h>
 

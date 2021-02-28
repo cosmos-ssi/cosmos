@@ -13,13 +13,13 @@
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_nic.h>
+#include <sys/obj/objectinterface/objectinterface_nic.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 

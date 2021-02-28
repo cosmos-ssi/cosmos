@@ -7,7 +7,7 @@
 
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_rtc.h>
+#include <sys/obj/objectinterface/objectinterface_rtc.h>
 #include <tests/obj/test_rtc.h>
 
 void test_rtc() {

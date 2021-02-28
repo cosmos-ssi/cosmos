@@ -10,11 +10,11 @@
 #include <obj/x86-64/pci/pci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_floppy.h>
+#include <sys/obj/objectinterface/objectinterface_floppy.h>
 #include <sys/sleep/sleep.h>
 
 #define FLOPPY_IRQ_NUMBER 6

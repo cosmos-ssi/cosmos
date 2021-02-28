@@ -7,7 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objectinterface/objectinterface_null.h>
+#include <sys/obj/objectinterface/objectinterface_null.h>
 #include <sys/string/mem.h>
 
 /*

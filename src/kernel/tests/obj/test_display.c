@@ -6,7 +6,7 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_vga.h>
+#include <sys/obj/objectinterface/objectinterface_vga.h>
 #include <tests/obj/test_display.h>
 
 void test_display() {

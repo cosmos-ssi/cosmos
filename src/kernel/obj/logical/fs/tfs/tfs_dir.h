@@ -9,7 +9,7 @@
 #define _TFS_DIR_H
 
 #include <obj/logical/fs/tfs/tfs_block.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <types.h>
 

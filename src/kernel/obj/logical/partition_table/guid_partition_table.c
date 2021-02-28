@@ -14,7 +14,7 @@
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objectinterface/objectinterface_part_table.h>
+#include <sys/obj/objectinterface/objectinterface_part_table.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 

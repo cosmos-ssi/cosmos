@@ -8,10 +8,10 @@
 #include <obj/x86-64/speaker/speaker.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_speaker.h>
+#include <sys/obj/objectinterface/objectinterface_speaker.h>
 #include <sys/sleep/sleep.h>
 
 // https://wiki.osdev.org/PC_Speaker

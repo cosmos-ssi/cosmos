@@ -8,10 +8,10 @@
 #include <obj/x86-64/cpu/cpu.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_cpu.h>
+#include <sys/obj/objectinterface/objectinterface_cpu.h>
 
 void cpu_manufacturer_id(uint8_t* cpuid);
 

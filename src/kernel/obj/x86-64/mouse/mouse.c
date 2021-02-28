@@ -9,12 +9,12 @@
 #include <obj/x86-64/pci/pci.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_mouse.h>
+#include <sys/obj/objectinterface/objectinterface_mouse.h>
 
 #define MOUSE_IRQ_NUMBER 12
 

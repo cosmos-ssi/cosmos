@@ -6,7 +6,7 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_speaker.h>
+#include <sys/obj/objectinterface/objectinterface_speaker.h>
 #include <sys/sleep/sleep.h>
 #include <tests/obj/test_speaker.h>
 

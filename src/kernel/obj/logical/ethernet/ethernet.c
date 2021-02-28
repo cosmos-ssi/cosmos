@@ -7,8 +7,8 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objectinterface/objectinterface_ethernet.h>
-#include <sys/objectinterface/objectinterface_nic.h>
+#include <sys/obj/objectinterface/objectinterface_ethernet.h>
+#include <sys/obj/objectinterface/objectinterface_nic.h>
 #include <sys/string/mem.h>
 
 struct ethernet_objectdata {

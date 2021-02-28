@@ -11,7 +11,7 @@
 #include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_block.h>
+#include <sys/obj/objectinterface/objectinterface_block.h>
 #include <sys/string/mem.h>
 
 /*

@@ -7,7 +7,7 @@
 
 #include <obj/logical/partition_table/guid_partition_table.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/string.h>

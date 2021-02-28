@@ -7,7 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objectinterface/objectinterface_ip.h>
+#include <sys/obj/objectinterface/objectinterface_ip.h>
 #include <sys/string/mem.h>
 
 struct ip_objectdata {

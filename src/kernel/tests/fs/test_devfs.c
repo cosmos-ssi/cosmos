@@ -6,7 +6,7 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>

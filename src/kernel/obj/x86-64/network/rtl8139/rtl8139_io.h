@@ -8,7 +8,7 @@
 #ifndef _RTL8139_IO_H
 #define _RTL8139_IO_H
 
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <types.h>
 

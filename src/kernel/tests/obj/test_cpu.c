@@ -6,7 +6,7 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_cpu.h>
+#include <sys/obj/objectinterface/objectinterface_cpu.h>
 #include <tests/obj/test_cpu.h>
 
 void show_cpu_data() {

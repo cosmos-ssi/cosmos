@@ -9,8 +9,8 @@
 #include <obj/x86-64/serial/serial.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/objectinterface/objectinterface_console.h>
-#include <sys/objectinterface/objectinterface_serial.h>
+#include <sys/obj/objectinterface/objectinterface_console.h>
+#include <sys/obj/objectinterface/objectinterface_serial.h>
 #include <sys/string/mem.h>
 
 struct serial_console_objectdata {

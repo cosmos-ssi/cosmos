@@ -7,7 +7,7 @@
 
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_floppy.h>
+#include <sys/obj/objectinterface/objectinterface_floppy.h>
 #include <tests/obj/test_floppy.h>
 
 void floppyread() {

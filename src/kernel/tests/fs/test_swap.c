@@ -10,7 +10,7 @@
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_swap.h>
+#include <sys/obj/objectinterface/objectinterface_swap.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <tests/fs/ramdisk_helper.h>

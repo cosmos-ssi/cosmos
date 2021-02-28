@@ -12,11 +12,11 @@
 #include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_nic.h>
+#include <sys/obj/objectinterface/objectinterface_nic.h>
 #include <sys/sleep/sleep.h>
 #include <types.h>
 

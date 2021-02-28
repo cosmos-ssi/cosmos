@@ -11,10 +11,10 @@
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_bda.h>
+#include <sys/obj/objectinterface/objectinterface_bda.h>
 
 struct smbios_objectdata {
     uint64_t base;

@@ -9,11 +9,11 @@
 #include <obj/x86-64/vga/vga.h>
 #include <sys/asm/asm.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_vga.h>
+#include <sys/obj/objectinterface/objectinterface_vga.h>
 
 // CRT control I/O ports
 #define CRT_INDEX_REGISTER 0x3D4

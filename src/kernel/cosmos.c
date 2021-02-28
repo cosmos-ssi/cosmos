@@ -17,8 +17,8 @@
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_console.h>
-#include <sys/objectinterface/objectinterface_filesystem.h>
+#include <sys/obj/objectinterface/objectinterface_console.h>
+#include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>

@@ -8,12 +8,12 @@
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/sfs/sfs.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_block.h>
-#include <sys/objectinterface/objectinterface_filesystem.h>
+#include <sys/obj/objectinterface/objectinterface_block.h>
+#include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/string/mem.h>
 
 #define SFS_VOLUME_IDENTIFIER 0x01

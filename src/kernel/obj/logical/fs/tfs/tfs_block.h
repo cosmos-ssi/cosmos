@@ -8,7 +8,7 @@
 #ifndef _TFS_BLOCK_H
 #define _TFS_BLOCK_H
 
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <types.h>
 

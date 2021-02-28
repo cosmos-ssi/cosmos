@@ -8,7 +8,7 @@
 #ifndef _BLOCK_UTIL_H
 #define _BLOCK_UTIL_H
 
-#include <sys/objectinterface/objectinterface_block.h>
+#include <sys/obj/objectinterface/objectinterface_block.h>
 #include <types.h>
 
 uint32_t blockutil_get_sector_size(struct object* obj);

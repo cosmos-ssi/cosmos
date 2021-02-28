@@ -7,7 +7,7 @@
 
 #include <obj/logical/partition_table/partition_table_util.h>
 #include <sys/debug/assert.h>
-#include <sys/objectinterface/objectinterface_part_table.h>
+#include <sys/obj/objectinterface/objectinterface_part_table.h>
 
 uint32_t partition_table_util_write_sectors(struct object* partition_table_objice, uint8_t partition_index,
                                             uint8_t* data, uint32_t data_size, uint32_t start_lba) {

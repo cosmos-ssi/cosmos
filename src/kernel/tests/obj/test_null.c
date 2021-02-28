@@ -7,7 +7,7 @@
 
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_null.h>
+#include <sys/obj/objectinterface/objectinterface_null.h>
 #include <tests/obj/test_null.h>
 
 void test_null() {

@@ -14,12 +14,12 @@
 #include <sys/asm/asm.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
-#include <sys/objectmgr/objectmgr.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/objectinterface/objectinterface_block.h>
+#include <sys/obj/objectinterface/objectinterface_block.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 #include <types.h>
