@@ -9,6 +9,7 @@
 #include <obj/logical/console/serial_console.h>
 #include <obj/logical/ethernet/ethernet.h>
 #include <obj/logical/fs/initrd/initrd.h>
+#include <obj/logical/fs/objfs/objfs.h>
 #include <obj/logical/fs/voh/voh.h>
 #include <obj/logical/null/null.h>
 #include <obj/logical/ramdisk/ramdisk.h>
@@ -87,9 +88,9 @@ void attach_logical_objects() {
     * voh
     */
     struct object* rootfs_obj = voh_attach("/");
-    //   struct object* objfs_dev = devfs_attach();
-    //   struct filesystem_node* fsnode_devfs = fsfacade_get_fs_rootnode(devfs_dev);
+    struct object* objfs_dev = objfs_attach();
+    struct filesystem_node* fsnode_objfs = fsfacade_get_fs_rootnode(objfs_dev);
     struct filesystem_node* fsnode_initrd = fsfacade_get_fs_rootnode(initrd_dev);
-    // vfs_add_child(rootfs_obj, fsnode_devfs);
+    voh_add_child(rootfs_obj, fsnode_objfs);
     voh_add_child(rootfs_obj, fsnode_initrd);
 }

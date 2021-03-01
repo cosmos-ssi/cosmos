@@ -89,6 +89,8 @@ struct object_type* objecttypes_get(uint32_t i) {
 void objecttypes_add(struct object_type* ot) {
     ASSERT_NOT_NULL(types);
     ASSERT_NOT_NULL(ot);
+    ASSERT_NOT_NULL(ot->id);
+    ASSERT_NOT_NULL(ot->name);
     if (0 == objecttypes_find(ot->id)) {
         arraylist_add(types, ot);
     } else {

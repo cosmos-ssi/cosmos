@@ -51,10 +51,12 @@ void objectmgr_init() {
 int8_t* createDeviceName(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->objectype);
+
     int8_t nn[32];
     int8_t* ret = kmalloc(MAX_DEVICE_NAME_LENGTH);
     struct object_type* ot = objecttypes_find(obj->objectype);
     ASSERT_NOT_NULL(ot);
+    ASSERT_NOT_NULL(ot->id);
     ASSERT_NOT_NULL(ot->name);
     strncpy(ret, ot->name, MAX_DEVICE_NAME_LENGTH);
     uitoa3(obj->type_index, nn, 32, 10);

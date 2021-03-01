@@ -20,7 +20,12 @@
 #include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 #include <types.h>
-
+/*
+* node ids are 64 bits.  the top 32 are the device type, and the bottom 32 are the device number
+*/
+/*
+* object data.
+*/
 struct objfs_objectdata {
     struct filesystem_node* root_node;
     struct node_cache* nc;
@@ -35,16 +40,16 @@ uint8_t objfs_init(struct object* obj) {
     return 1;
 }
 
-uint64_t objfs_node_id(uint64_t device_type, uint64_t device_number) {
-    //   kprintf("device_type %#lllX device number %#llX\n", device_type, device_number);
-    return (device_type << 32) + device_number;
+uint64_t objfs_node_id(uint64_t object_type, uint64_t device_number) {
+    //   kprintf("object_type %#lllX device number %#llX\n", object_type, device_number);
+    return (object_type << 32) + device_number;
 }
 
-uint64_t objfs_device_type(uint64_t node_id) {
+uint64_t objfs_object_type(uint64_t node_id) {
     return node_id >> 32;
 }
 
-uint64_t objfs_device_number(uint64_t node_id) {
+uint64_t objfs_object_number(uint64_t node_id) {
     return (node_id & 0xFFFF0000);
 }
 
@@ -122,11 +127,13 @@ struct filesystem_node* objfs_find_node_by_id(struct filesystem_node* fs_node, u
     */
     struct filesystem_node* this_node = node_cache_find(object_data->nc, id);
     if (0 == this_node) {
-        uint16_t dt = (uint16_t)objfs_device_type(id);
+        uint64_t dt = (uint16_t)objfs_object_type(id);
+        ASSERT_NOT_NULL(dt);
         struct object_type* ot = objecttypes_find(dt);
         if (0 != ot) {
+            ASSERT_NOT_NULL(ot->id);
             // there is a node with that id, we need to make a fs entry and cache it
-            this_node = filesystem_node_new(folder, fs_node->filesystem_obj, ot->name, objfs_node_id(id, 0), 0);
+            this_node = filesystem_node_new(folder, fs_node->filesystem_obj, ot->name, objfs_node_id(dt, id), 0);
             node_cache_add(object_data->nc, this_node);
         }
     } else {
@@ -157,12 +164,14 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
         for (uint32_t i = 0; i < objecttypes_count(); i++) {
             struct object_type* ot = objecttypes_get(i);
             if (0 != ot) {
-                struct filesystem_node* this_node = node_cache_find(object_data->nc, i);
+                struct filesystem_node* this_node = node_cache_find(object_data->nc, ot->id);
                 if (0 == this_node) {
                     //             kprintf("node_id %#llX %#llX\n", i, objfs_node_id(i, 0));
-                    this_node = filesystem_node_new(folder, fs_node->filesystem_obj, ot->name, objfs_node_id(i, 0), 0);
+                    this_node =
+                        filesystem_node_new(folder, fs_node->filesystem_obj, ot->name, objfs_node_id(ot->id, 0), 0);
                     node_cache_add(object_data->nc, this_node);
                 }
+                ASSERT_NOT_NULL(this_node->id);  // there is no object type 0, so this can't be zero
                 dir->ids[folder_count] = this_node->id;
                 folder_count += 1;
             }
@@ -175,7 +184,7 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
 
             kprintf("folder %s %#llX\n", fs_node->name, fs_node->id);
 
-            uint16_t dt = (uint16_t)objfs_device_type(fs_node->id);
+            uint16_t dt = (uint16_t)objfs_object_type(fs_node->id);
             ASSERT_NOT_NULL(dt);
             //   kprintf("dt %#llX\n", dt);
             uint32_t count = objectregistry_objectcount_type(dt);
