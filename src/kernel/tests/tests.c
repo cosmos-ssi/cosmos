@@ -9,7 +9,7 @@
 #include <tests/fs/test_gpt.h>
 #include <tests/fs/test_initrd.h>
 #include <tests/fs/test_swap.h>
-#include <tests/fs/test_vfs.h>
+#include <tests/fs/test_voh.h>
 #include <tests/obj/test_ata.h>
 #include <tests/obj/test_bda.h>
 #include <tests/obj/test_kernelmap.h>
@@ -41,7 +41,7 @@ void tests_run() {
     test_string();
     test_bitmap();
     test_iobuffers();
-    test_vfs();
+    test_voh();
     test_devfs();
     test_gpt();
     test_bda();

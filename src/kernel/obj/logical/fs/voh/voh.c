@@ -171,7 +171,7 @@ struct object* voh_attach(uint8_t* name) {
     objectinstance->init = &voh_init;
     objectinstance->uninit = &voh_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = OBJECT_TYPE_VFS;
+    objectinstance->objectype = OBJECT_TYPE_VOH;
     objectinstance->object_data = 0;
     objectmgr_set_object_description(objectinstance, "VOH File System");
     /*

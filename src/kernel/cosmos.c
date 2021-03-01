@@ -164,7 +164,7 @@ filesystem_node_t* load_test_binary() {
     struct object* voh_dev;
     filesystem_node_t *voh_node, *initrd_node, *file_node;
 
-    voh_dev = objectmgr_find_object_by_name("vfs0");
+    voh_dev = objectmgr_find_object_by_name("voh0");
     ASSERT_NOT_NULL(voh_dev);
 
     voh_node = fsfacade_get_fs_rootnode(voh_dev);
@@ -183,7 +183,7 @@ void dump_VOH() {
     kprintf("\n");
     kprintf("***** VOH (Virtual Object Hierarchy) *****\n");
     kprintf("\n");
-    struct object* voh_dev = objectmgr_find_object_by_name("vfs0");
+    struct object* voh_dev = objectmgr_find_object_by_name("voh0");
     ASSERT_NOT_NULL(voh_dev);
     struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(voh_dev);
     ASSERT_NOT_NULL(fs_node);

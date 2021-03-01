@@ -54,7 +54,7 @@
 #define OBJECT_TYPE_SDHCI 0x27            // sdhci0
 #define OBJECT_TYPE_SMBIOS 0x28           // smbios0
 #define OBJECT_TYPE_OBJFS 0x29            // objfs0 objecttype_filesytem
-#define OBJECT_TYPE_VFS 0x2A              // vfs0 objecttype_filesytem
+#define OBJECT_TYPE_VOH 0x2A              // voh0 objecttype_filesytem
 #define OBJECT_TYPE_BGA 0x2B              // bga0 objecttype_bga
 #define OBJECT_TYPE_KERNELMAP 0x2C        // kernelmap0 objecttype_kernelmap
 

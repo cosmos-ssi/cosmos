@@ -56,7 +56,7 @@ void objecttypes_init() {
     objecttypes_add(objecttype_new("sdhci", OBJECT_TYPE_SDHCI));
     objecttypes_add(objecttype_new("smbios", OBJECT_TYPE_SMBIOS));
     objecttypes_add(objecttype_new("objfs", OBJECT_TYPE_OBJFS));
-    objecttypes_add(objecttype_new("vfs", OBJECT_TYPE_VFS));
+    objecttypes_add(objecttype_new("voh", OBJECT_TYPE_VOH));
     objecttypes_add(objecttype_new("bga", OBJECT_TYPE_BGA));
     objecttypes_add(objecttype_new("kernelmap", OBJECT_TYPE_KERNELMAP));
     objecttypes_add(objecttype_new("udp", OBJECT_TYPE_UDP));

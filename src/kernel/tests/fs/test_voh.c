@@ -11,10 +11,10 @@
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 
-void test_vfs() {
-    kprintf("Testing vfs\n");
+void test_voh() {
+    kprintf("Testing voh\n");
 
-    struct object* vfsdev_device = objectmgr_find_object_by_name("vfs0");
+    struct object* vfsdev_device = objectmgr_find_object_by_name("voh0");
     ASSERT_NOT_NULL(vfsdev_device);
 
     struct filesystem_node* fsnode = fsfacade_get_fs_rootnode(vfsdev_device);

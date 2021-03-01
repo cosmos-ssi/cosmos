@@ -5,9 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef __TEST_VFS_H
-#define __TEST_VFS_H
+#ifndef __TEST_VOH
+#define __TEST_VOH
 
-void test_vfs();
+void test_voh();
 
 #endif
