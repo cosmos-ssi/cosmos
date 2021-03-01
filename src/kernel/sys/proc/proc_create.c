@@ -53,6 +53,15 @@ void proc_map_image(pttentry cr3, object_handle_t exe_obj) {
 }
 
 void proc_map_kernelspace(pttentry cr3) {
+    uint64_t *sys_pml4, *proc_pml4;
+    uint16_t i;
+
+    sys_pml4 = (uint64_t*)CONV_PHYS_ADDR(PTT_EXTRACT_BASE(system_cr3));
+    proc_pml4 = (uint64_t*)CONV_PHYS_ADDR(PTT_EXTRACT_BASE(cr3));
+
+    for (i = 256; i < 512; i++) {
+        proc_pml4[i] = sys_pml4[i];
+    }
     return;
 }
 
