@@ -1,5 +1,5 @@
 NASM=nasm
-NASMARGS=-O0
+NASMARGS=-O0 -Werror
 RM=rm -f
 
 all: boot

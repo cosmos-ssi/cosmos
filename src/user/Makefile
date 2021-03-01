@@ -18,7 +18,7 @@ $(COSMOS_LIB_ARCHIVE):
 	make -C lib
 
 $(COSMOS_TEST_BINARY): fs/initfs/test.asm
-	$(NASM) $(NASMFLATARGS) -o $(COSMOS_TEST_BINARY) fs/initfs/test.asm
+	$(NASM) $(NASMARGSFLAT) -o $(COSMOS_TEST_BINARY) fs/initfs/test.asm
 
 $(COSMOS_INITRD_IMAGE): $(COSMOS_LIB_ARCHIVE)  $(COSMOS_TEST_BINARY)
 	make -C apps
