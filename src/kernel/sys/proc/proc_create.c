@@ -18,7 +18,7 @@
 pttentry proc_obtain_cr3();
 void proc_map_image(pttentry cr3, object_handle_t exe_obj);
 void proc_map_kernelspace(pttentry cr3);
-void* proc_set_brk(object_handle_t exe_obj);
+void* proc_initial_brk(object_handle_t exe_obj);
 
 pid_t proc_create() {
     proc_info_t* proc_info;
@@ -82,7 +82,7 @@ pttentry proc_obtain_cr3() {
     return proc_cr3;
 }
 
-void* proc_set_brk(object_handle_t exe_obj) {
+void* proc_initial_brk(object_handle_t exe_obj) {
     void* vaddr = LOAD_BASE_VIRTUAL;
 
     vaddr = (void*)(OBJECT_DATA(exe_obj, object_executable_t)->page_count * PAGE_SIZE);
@@ -98,10 +98,10 @@ void setup_user_process(pid_t pid, object_handle_t exe_obj) {
 
     proc_map_image(proc_table_get(pid)->cr3, exe_obj);
 
-    proc_map_kernelspace(proc_table_get(pid)->cr3);
-
-    proc_table_get(pid)->brk = proc_set_brk(exe_obj);
+    proc_table_get(pid)->brk = proc_initial_brk(exe_obj);
     ASSERT_NOT_NULL(proc_table_get(pid)->brk);
+
+    proc_map_kernelspace(proc_table_get(pid)->cr3);
 
     return;
 }
