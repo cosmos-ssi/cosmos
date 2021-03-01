@@ -9,7 +9,6 @@
 #define _OBJECTREGISTRY_H
 
 #include <sys/obj/objectmgr/objectmgr.h>
-#include <sys/obj/objecttype/objectype.h>
 #include <types.h>
 
 struct object;

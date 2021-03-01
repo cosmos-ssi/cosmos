@@ -7,7 +7,6 @@
 
 #ifndef _OBJECT_H
 #define _OBJECT_H
-#include <sys/obj/objecttype/objectype.h>
 #include <types.h>
 
 #define OBJECT_MAX_DESCRIPTION 64
