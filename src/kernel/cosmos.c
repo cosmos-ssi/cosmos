@@ -170,7 +170,7 @@ filesystem_node_t* load_test_binary() {
     voh_node = fsfacade_get_fs_rootnode(voh_dev);
     ASSERT_NOT_NULL(voh_node);
 
-    initrd_node = fsfacade_find_node_by_name(voh_node, "initrd");
+    initrd_node = fsfacade_find_node_by_name(voh_node, "fs2");
     ASSERT_NOT_NULL(initrd_node);
 
     file_node = fsfacade_find_node_by_name(initrd_node, "test.bin");
