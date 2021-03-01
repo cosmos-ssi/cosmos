@@ -16,7 +16,7 @@
 void test_rand() {
     kprintf("Testing rand\n");
 
-    struct object* rand = objectmgr_find_object("rand0");
+    struct object* rand = objectmgr_find_object_by_name("rand0");
     if (0 != rand) {
         struct objectinterface_rand* rand_api = (struct objectinterface_rand*)rand->api;
         uint64_t last = 0;

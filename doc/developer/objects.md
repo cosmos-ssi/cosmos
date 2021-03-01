@@ -101,7 +101,7 @@ It is not generally encouraged to include header files in the subdirectory /kern
 
 ```java
 	// query the device manager for the device serial0
-	struct object* serial0 = objectmgr_find_object("serial0");
+	struct object* serial0 = objectmgr_find_object_by_name("serial0");
 	// get the serial device api for the device
 	struct objectinterface_serial* serial_api = (struct objectinterface_serial*) serial0->api;
 	// get the "write" function from the api

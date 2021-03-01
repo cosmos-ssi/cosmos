@@ -208,7 +208,7 @@ void vnic_irq_handler(stack_frame* frame) {
     // get virtual device
     uint8_t devicename[] = {"nic0"};
 
-    struct object* obj = objectmgr_find_object(devicename);
+    struct object* obj = objectmgr_find_object_by_name(devicename);
     if (0 == obj) {
         kprintf("Unable to find %s\n", devicename);
         return;

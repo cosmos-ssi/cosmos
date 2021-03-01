@@ -18,7 +18,7 @@ void test_vga_console_dev() {
     /*
      * find the physical disk
      */
-    struct object* vga = objectmgr_find_object(devicename);
+    struct object* vga = objectmgr_find_object_by_name(devicename);
     if (0 != vga) {
         // attach the console
         struct object* console_device = vga_console_attach(vga);

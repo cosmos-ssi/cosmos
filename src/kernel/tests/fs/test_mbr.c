@@ -16,7 +16,7 @@
 void test_mbr() {
     uint8_t devicename[] = {"disk1"};
 
-    struct object* dsk = objectmgr_find_object(devicename);
+    struct object* dsk = objectmgr_find_object_by_name(devicename);
     if (0 != dsk) {
         struct object* obj = mbr_pt_attach(dsk);
 

@@ -18,7 +18,7 @@ void test_null() {
 
     uint8_t devicename[] = {"null0"};
 
-    struct object* null_ = objectmgr_find_object(devicename);
+    struct object* null_ = objectmgr_find_object_by_name(devicename);
     if (0 != null_) {
         struct objectinterface_null* null_api = (struct objectinterface_null*)null_->api;
 

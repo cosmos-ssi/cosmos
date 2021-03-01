@@ -17,12 +17,12 @@
 * we are in user-land context here.  This is the entry point to userland that the kernel code calls
 */
 int main(int argc, char* argv[]) {
-    SerialDevice* serialDevice = (SerialDevice*)Device::find(INIT_SERIAL_DEVICE);
+    SerialObject* serialDevice = (SerialObject*)Object::find(INIT_SERIAL_DEVICE);
     if (0 != serialDevice) {
         serialDevice->writeln("Hello from user land");
     }
 
-    FilesystemDevice* filesystemDevice = (FilesystemDevice*)Device::find(INIT_ROOT_FS_DEVICE);
+    FilesystemObject* filesystemDevice = (FilesystemObject*)Object::find(INIT_ROOT_FS_DEVICE);
     if (0 != filesystemDevice) {
         serialDevice->writeln("Found root file system");
     }

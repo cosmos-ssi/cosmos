@@ -18,7 +18,7 @@ struct object* ramdisk_helper_create_rd() {
     // attach the ramdisk
     struct object* ramdisk_device = ramdisk_attach(RAMDISK_SECTOR_SIZE, RAMDISK_TOTAL_SECTORS);
 
-    struct object* ramdisk = objectmgr_find_object(ramdisk_device->name);
+    struct object* ramdisk = objectmgr_find_object_by_name(ramdisk_device->name);
     if (0 != ramdisk) {
         return ramdisk;
     } else {

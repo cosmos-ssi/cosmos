@@ -34,7 +34,10 @@ void objectmgr_init_objects();
 void objectmgr_set_object_description(struct object* obj, const uint8_t* description);
 
 // find a object ie ("rtc0")
-struct object* objectmgr_find_object(const uint8_t* name);
+struct object* objectmgr_find_object_by_name(const uint8_t* name);
+
+// find a object by handle
+struct object* objectmgr_find_object_by_handle(uint64_t handle);
 
 // find objects by the object description
 typedef void (*objectSearchCallback)(struct object* obj);

@@ -45,7 +45,7 @@ void Term::lineloop() {
 
 void Term::run() {
     if (0 == this->serialDevice) {
-        this->serialDevice = (SerialDevice*)Device::find("serial0");
+        this->serialDevice = (SerialObject*)Object::find("serial0");
     }
     if (0 != this->serialDevice) {
         lineloop();
