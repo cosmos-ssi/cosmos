@@ -129,7 +129,7 @@ struct filesystem_node* objfs_find_node_by_id(struct filesystem_node* fs_node, u
 }
 
 void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
-    kprintf("objfs_list_directory %s\n", fs_node->name);
+    //   kprintf("objfs_list_directory %s\n", fs_node->name);
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
@@ -205,10 +205,10 @@ struct object* objfs_attach() {
     api->size = &objfs_size;
     objectinstance->api = api;
     /*
-     * device data
+     * object data
      */
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)kmalloc(sizeof(struct objfs_objectdata));
-    object_data->root_node = filesystem_node_new(folder, objectinstance, "dev", 0, 0);
+    object_data->root_node = filesystem_node_new(folder, objectinstance, "obj", 0, 0);
     object_data->nc = node_cache_new();
     objectinstance->object_data = object_data;
     /*
