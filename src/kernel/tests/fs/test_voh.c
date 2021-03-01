@@ -14,10 +14,10 @@
 void test_voh() {
     kprintf("Testing voh\n");
 
-    struct object* vfsdev_device = objectmgr_find_object_by_name("voh0");
-    ASSERT_NOT_NULL(vfsdev_device);
+    struct object* vohdev_device = objectmgr_find_object_by_name("voh0");
+    ASSERT_NOT_NULL(vohdev_device);
 
-    struct filesystem_node* fsnode = fsfacade_get_fs_rootnode(vfsdev_device);
+    struct filesystem_node* fsnode = fsfacade_get_fs_rootnode(vohdev_device);
     ASSERT_NOT_NULL(fsnode);
     ASSERT(fsnode->type == folder);
 }

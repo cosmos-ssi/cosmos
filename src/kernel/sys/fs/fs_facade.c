@@ -69,7 +69,7 @@ void fsfacade_traverse(struct filesystem_node* fs_node, fsfacade_traverse_functi
     fsfacade_traverse_internal(fs_node, f, 0);
 }
 
-void vfs_dump_traverse_function(struct filesystem_node* fs_node, uint32_t depth) {
+void fsfacade_voh_dump_traverse_function(struct filesystem_node* fs_node, uint32_t depth) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
@@ -82,7 +82,7 @@ void vfs_dump_traverse_function(struct filesystem_node* fs_node, uint32_t depth)
 
 void fsfacade_dump(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
-    fsfacade_traverse(fs_node, &vfs_dump_traverse_function);
+    fsfacade_traverse(fs_node, &fsfacade_voh_dump_traverse_function);
 }
 
 void fsfacade_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {

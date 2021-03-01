@@ -1,7 +1,7 @@
 
-# CosmOS Virtual File System
+# CosmOS VOH (Virtual Object Hierarchy)
 
-CosmOS has a hierarchical file system, similar to POSIX. 
+CosmOS has a hierarchical object system, similar how POSIX has a virtual file system
 
 ```java
 struct objectinterface_filesystem {
@@ -42,12 +42,9 @@ struct filesystem_node {
 
 Each node has:
 
-* A pointer to the device that it is part of
-* A 64-bit id that identifies it on the device
+* A pointer to the object that it is part of
+* A 64-bit id that identifies it on the object
 * A name
-* A pointer to device-specific data
+* A pointer to node-specific data
 
-
-Nodes can be folders, files, devices, etc.
-
-
+Nodes can be folders, files or objects

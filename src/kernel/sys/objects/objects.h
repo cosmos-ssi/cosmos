@@ -64,7 +64,7 @@ typedef struct object_kernel_work_t {
 typedef struct object_presentation_t {
     /*
      * For now just encapsulate enough to use the initrd driver directly, once
-     * vfs develops switch to that
+     * voh develops switch to that
      */
     filesystem_node_t* node;
 } object_presentation_t;

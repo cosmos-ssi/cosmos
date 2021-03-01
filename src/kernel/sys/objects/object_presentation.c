@@ -19,7 +19,7 @@ object_handle_t object_presentation_create(filesystem_node_t* node) {
     }
 
     /* 
-     * No attempt to validate any of this for now, once vfs is stabilized that
+     * No attempt to validate any of this for now, once voh is stabilized that
      * will be added
      */
 
