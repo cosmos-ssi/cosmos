@@ -83,7 +83,11 @@ pttentry proc_obtain_cr3() {
 }
 
 void* proc_set_brk(object_handle_t exe_obj) {
-    return 0;
+    void* vaddr = LOAD_BASE_VIRTUAL;
+
+    vaddr = (void*)(OBJECT_DATA(exe_obj, object_executable_t)->page_count * PAGE_SIZE);
+
+    return vaddr;
 }
 
 void setup_user_process(pid_t pid, object_handle_t exe_obj) {
