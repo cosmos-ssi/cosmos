@@ -178,9 +178,14 @@ void objectmgr_set_object_description(struct object* obj, const uint8_t* descrip
     //    kprintf("%s\n", obj->description);
 }
 
-struct object* objectmgr_find_object(const uint8_t* name) {
+struct object* objectmgr_find_object_by_name(const uint8_t* name) {
     ASSERT_NOT_NULL(name);
     return objectregistry_find_object_by_name(name);
+}
+
+struct object* objectmgr_find_object_by_handle(uint64_t handle) {
+    ASSERT_NOT_NULL(handle);
+    return objectregistry_find_object_by_handle(handle);
 }
 
 void objectmgr_find_objects_by_description(uint16_t dt, const uint8_t* description, objectSearchCallback cb) {

@@ -164,7 +164,7 @@ filesystem_node_t* load_test_binary() {
     struct object* vfs_dev;
     filesystem_node_t *vfs_node, *initrd_node, *file_node;
 
-    vfs_dev = objectmgr_find_object("vfs0");
+    vfs_dev = objectmgr_find_object_by_name("vfs0");
     ASSERT_NOT_NULL(vfs_dev);
 
     vfs_node = fsfacade_get_fs_rootnode(vfs_dev);
@@ -183,7 +183,7 @@ void dump_vfs() {
     kprintf("\n");
     kprintf("***** VFS *****\n");
     kprintf("\n");
-    struct object* vfs_dev = objectmgr_find_object("vfs0");
+    struct object* vfs_dev = objectmgr_find_object_by_name("vfs0");
     ASSERT_NOT_NULL(vfs_dev);
     struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(vfs_dev);
     ASSERT_NOT_NULL(fs_node);
@@ -204,7 +204,7 @@ void load_init_binary() {
  * write to vga console which we created earlier (will be console0)
  */
 void video_write(const uint8_t* s) {
-    struct object* vga_console = objectmgr_find_object("console0");
+    struct object* vga_console = objectmgr_find_object_by_name("console0");
     struct objectinterface_console* console0_api = (struct objectinterface_console*)vga_console->api;
     (*console0_api->write)(vga_console, s);
 }

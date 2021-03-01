@@ -28,7 +28,7 @@ void attach_logical_objects() {
     /*
     * console
     */
-    struct object* serial = objectmgr_find_object("serial0");
+    struct object* serial = objectmgr_find_object_by_name("serial0");
     if (0 != serial) {
         // this makes "console1"
         serial_console_attach(serial);
@@ -52,14 +52,14 @@ void attach_logical_objects() {
     /*
     * tick device
     */
-    struct object* pit = objectmgr_find_object("pit0");
+    struct object* pit = objectmgr_find_object_by_name("pit0");
     if (0 != pit) {
         tick_attach(pit);
     }
     /*
     * tcp/ip
     */
-    struct object* vnic = objectmgr_find_object("vnic0");
+    struct object* vnic = objectmgr_find_object_by_name("vnic0");
     if (0 != vnic) {
         struct object* eth = ethernet_attach(vnic);
         arp_attach(eth);
@@ -76,7 +76,7 @@ void attach_logical_objects() {
     */
     uint8_t devicename[] = {INITRD_DISK};
     struct object* initrd_dev = 0;
-    struct object* dsk = objectmgr_find_object(devicename);
+    struct object* dsk = objectmgr_find_object_by_name(devicename);
     if (0 != dsk) {
         initrd_dev = initrd_attach(dsk, initrd_lba());
 

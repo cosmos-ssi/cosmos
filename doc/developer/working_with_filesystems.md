@@ -9,7 +9,7 @@ This little piece of code mounts an `initrd` filesystem on the device `disk0`.  
 
 
 ```java
-struct object* dsk = objectmgr_find_object("disk0");
+struct object* dsk = objectmgr_find_object_by_name("disk0");
 if (0 != dsk) {
 	struct object* initrd = initrd_attach(dsk, initrd_lba());
 	ASSERT_NOT_NULL(initrd);

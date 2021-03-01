@@ -11,7 +11,7 @@
 
 void test_sb16() {
     // get the sb
-    //  struct object* dsp = objectmgr_find_object("dsp0");
+    //  struct object* dsp = objectmgr_find_object_by_name("dsp0");
     //  if (0 != dsp) {
     //    struct wav_header* wav = sound_get_tone();
 

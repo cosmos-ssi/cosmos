@@ -15,7 +15,7 @@
 
 void floppyread() {
     // get the floppy
-    struct object* floppy = objectmgr_find_object("floppy0");
+    struct object* floppy = objectmgr_find_object_by_name("floppy0");
     if (0 != floppy) {
         struct objectinterface_floppy* floppy_api = (struct objectinterface_floppy*)floppy->api;
 

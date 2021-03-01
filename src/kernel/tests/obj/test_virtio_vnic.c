@@ -20,7 +20,7 @@
 void test_virtio_vnic() {
     kprintf("test_virtio_vnic starting\n");
     uint8_t devicename[] = {"vnic0"};
-    struct object* obj = objectmgr_find_object(devicename);
+    struct object* obj = objectmgr_find_object_by_name(devicename);
     if (0 == obj) {
         PANIC("nic0 not found");
     }

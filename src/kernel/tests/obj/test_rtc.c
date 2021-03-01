@@ -13,7 +13,7 @@
 
 void test_rtc() {
     // get the time, b/c we can
-    struct object* rtc = objectmgr_find_object("rtc0");
+    struct object* rtc = objectmgr_find_object_by_name("rtc0");
     if (0 != rtc) {
         struct objectinterface_rtc* rtc_api = (struct objectinterface_rtc*)rtc->api;
         rtc_time_function time_func = rtc_api->rtc_time;

@@ -23,7 +23,7 @@ uint8_t* file_util_read_file(uint8_t* device_name, uint8_t* file_name, uint32_t*
     /*
     * get device
     */
-    struct object* fs_dev = objectmgr_find_object(device_name);
+    struct object* fs_dev = objectmgr_find_object_by_name(device_name);
     if (0 != fs_dev) {
         /*
         * root node
