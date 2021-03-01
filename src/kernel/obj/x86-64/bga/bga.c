@@ -85,7 +85,7 @@ uint8_t bga_is_available(void) {
 
 void bga_set_video_mode(uint32_t width, uint32_t height, uint32_t bit_depth, uint8_t use_linear_frame_buffer,
                         uint8_t clear_video_memory) {
-    kprintf("w %llu, h %llu\n", width, height);
+    //  kprintf("w %llu, h %llu\n", width, height);
     bga_write_register(VBE_DISPI_INDEX_ENABLE, VBE_DISPI_DISABLED);
     bga_write_register(VBE_DISPI_INDEX_XRES, width);
     bga_write_register(VBE_DISPI_INDEX_YRES, height);
