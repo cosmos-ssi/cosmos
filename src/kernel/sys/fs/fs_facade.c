@@ -25,11 +25,11 @@ void fsfacade_dump_node(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
 
-    kprintf("   FS Node Name: %s\n", fs_node->name);
-    //   kprintf("   FS Node ID: %#llX\n", fs_node->id);
-    //   kprintf("   FS Node Owner Object: %s\n", fs_node->filesystem_obj->name);
-    //   kprintf("   FS Node Type: %#llX\n", fs_node->type);
-    //   kprintf("   FS Node Data: %#llX\n", fs_node->node_data);
+    kprintf("FS Node Name: %s\n", fs_node->name);
+    //   kprintf("FS Node ID: %#llX\n", fs_node->id);
+    //   kprintf("FS Node Owner Object: %s\n", fs_node->filesystem_obj->name);
+    //   kprintf("FS Node Type: %#llX\n", fs_node->type);
+    //   kprintf("FS Node Data: %#llX\n", fs_node->node_data);
 }
 
 void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traverse_function f, uint32_t depth) {
@@ -74,9 +74,9 @@ void fsfacade_voh_dump_traverse_function(struct filesystem_node* fs_node, uint32
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
 
-    for (int32_t i = 0; i < depth; i++) {
-        kprintf(" ");
-    }
+    //   for (int32_t i = 0; i < depth; i++) {
+    //       kprintf(" ");
+    //   }
     // kprintf("Node: %s %#llX\n", fs_node->name, fs_node->id);
 }
 
