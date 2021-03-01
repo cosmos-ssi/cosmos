@@ -17,6 +17,8 @@ LINKER_SCRIPT=cosmos.ld
 
 SELF_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 
+IWYU_FIX_INCLUDES := $(shell command -v fix_include || command -v fix_includes.py || command -v fix_includes)
+
 # detect build platform
 UNAME := $(shell uname)
 ifeq ($(UNAME),Darwin)
