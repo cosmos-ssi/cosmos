@@ -14,7 +14,7 @@
 
 void show_cpu_data() {
     // get the CPU
-    struct object* cpu = objectmgr_find_object("cpu0");
+    struct object* cpu = objectmgr_find_object_by_name("cpu0");
     if (0 != cpu) {
         struct objectinterface_cpu* cpu_api = (struct objectinterface_cpu*)cpu->api;
         /*

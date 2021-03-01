@@ -25,11 +25,13 @@ void fsfacade_dump_node(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
 
-    kprintf("Name: %s\n", fs_node->name);
-    kprintf("ID: %#llX\n", fs_node->id);
-    kprintf("Object: %s\n", fs_node->filesystem_obj->name);
-    kprintf("Type: %#llX\n", fs_node->type);
-    kprintf("Node Data: %#llX\n", fs_node->node_data);
+    kprintf("%s\n", fs_node->name);
+
+    // kprintf("FS Node Name: %s\n", fs_node->name);
+    //   kprintf("FS Node ID: %#llX\n", fs_node->id);
+    //   kprintf("FS Node Owner Object: %s\n", fs_node->filesystem_obj->name);
+    //   kprintf("FS Node Type: %#llX\n", fs_node->type);
+    //   kprintf("FS Node Data: %#llX\n", fs_node->node_data);
 }
 
 void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traverse_function f, uint32_t depth) {
@@ -48,8 +50,11 @@ void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traver
 
     if (dir.count > 0) {
         for (uint32_t i = 0; i < dir.count; i++) {
-            kprintf("dir node i %llu id %#llX\n", i, dir.ids[i]);
+            //    kprintf("dir %s index: %llu child id: %#llX\n", fs_node->name, i, dir.ids[i]);
             struct filesystem_node* child = fsfacade_find_node_by_id(fs_node, dir.ids[i]);
+            for (int32_t i = 0; i < depth; i++) {
+                kprintf("  ");
+            }
             fsfacade_dump_node(child);
             ASSERT_NOT_NULL(child);
             fsfacade_traverse_internal(child, f, depth + 1);
@@ -69,20 +74,20 @@ void fsfacade_traverse(struct filesystem_node* fs_node, fsfacade_traverse_functi
     fsfacade_traverse_internal(fs_node, f, 0);
 }
 
-void vfs_dump_traverse_function(struct filesystem_node* fs_node, uint32_t depth) {
+void fsfacade_voh_dump_traverse_function(struct filesystem_node* fs_node, uint32_t depth) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
 
-    for (int32_t i = 0; i < depth; i++) {
-        kprintf(" ");
-    }
-    kprintf("%s %#llX\n", fs_node->name, fs_node->id);
+    //   for (int32_t i = 0; i < depth; i++) {
+    //       kprintf(" ");
+    //   }
+    // kprintf("Node: %s %#llX\n", fs_node->name, fs_node->id);
 }
 
 void fsfacade_dump(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
-    fsfacade_traverse(fs_node, &vfs_dump_traverse_function);
+    fsfacade_traverse(fs_node, &fsfacade_voh_dump_traverse_function);
 }
 
 void fsfacade_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
@@ -106,7 +111,7 @@ struct filesystem_node* fsfacade_find_node_by_id(struct filesystem_node* fs_node
     ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
     struct objectinterface_filesystem* fs_api = (struct objectinterface_filesystem*)fs_node->filesystem_obj->api;
 
-    //  kprintf("fsfacade_find_node_by_id id %llu of parent %s\n", id, fs_node->name);
+    //    kprintf("fsfacade_find_node_by_id id %llu of parent %s\n", id, fs_node->name);
     if (0 != fs_api->find_id) {
         return (*fs_api->find_id)(fs_node, id);
     }

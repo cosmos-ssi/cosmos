@@ -15,7 +15,7 @@ void test_vblock() {
     // get virtual block device
     uint8_t devicename[] = {"vblock0"};
 
-    struct object* vblock = objectmgr_find_object(devicename);
+    struct object* vblock = objectmgr_find_object_by_name(devicename);
     if (0 != vblock) {
         test_block_device(vblock);
     } else {

@@ -62,9 +62,9 @@ void sdhci_pci_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "SDHCI Controller");
-    objectinstance->objectype = SDHCI;
+    objectinstance->objectype = OBJECT_TYPE_SDHCI;
     objectinstance->pci = dev;
     objectinstance->init = &sdhci_obj_init;
     objectinstance->uninit = sdhci_obj_uninit;

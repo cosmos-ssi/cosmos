@@ -121,11 +121,11 @@ struct object* cpm_attach(struct object* partition_objice) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &cpm_init;
     objectinstance->uninit = &cpm_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = FILESYSTEM;
+    objectinstance->objectype = OBJECT_TYPE_FILESYSTEM;
     objectmgr_set_object_description(objectinstance, "CP/M File System");
     /*
      * the device api

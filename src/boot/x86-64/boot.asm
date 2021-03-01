@@ -12,7 +12,7 @@ cli
 ; set video mode
 mov ah, 0x0
 ;mov al, 0x3 ; 80x25
-mov al, 277 ; 800x600, 24 bit color
+mov al, 21 ; 800x600, 24 bit color
 ;mov al, 0x13 ; vga 320x200 256 bit color
 int 0x10 
 

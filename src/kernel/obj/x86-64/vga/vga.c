@@ -163,10 +163,10 @@ void vga_search_cb(struct pci_device* dev) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &vga_obj_init;
     objectinstance->pci = dev;
-    objectinstance->objectype = VGA;
+    objectinstance->objectype = OBJECT_TYPE_VGA;
     objectmgr_set_object_description(objectinstance, "QEMU/Bochs VBE Framebuffer");
     objectmgr_register_object(objectinstance);
     /*

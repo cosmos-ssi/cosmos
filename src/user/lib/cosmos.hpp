@@ -9,10 +9,10 @@
 #define _COSMOS_HPP
 
 #include <assert.h>
-#include <device/devices.hpp>
 #include <heap.hpp>
 #include <malloc.h>
 #include <new.hpp>
+#include <object/objects.hpp>
 #include <process.hpp>
 #include <string.hpp>
 #include <types.h>

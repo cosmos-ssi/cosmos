@@ -7,6 +7,7 @@ INITRD=img/initrd.img
 SRC_FILES=$(shell find . -type f \( -name "*.c" -o -name "*.h" \))
 
 CRUFT_FILES=$(shell find . -type f \( -name "dump.dat" -o \
+									  -name "net0.dat" -o \
 									  -name "qemu.log" \))
 
 all: subsystems
@@ -74,9 +75,9 @@ lint:
 header-check:
 	./util/iwyu_map_check.sh kernel kernel/iwyu_mapping.imp
 	cd kernel && $(MAKE) -k "CC=iwyu -Xiwyu --mapping_file=iwyu_mapping.imp -resource-dir . -isystem. -I." all 2>&1 > /dev/null | \
-	fix_include --noreorder --comments --nosafe_headers --dry_run
+	$(IWYU_FIX_INCLUDES) --noreorder --comments --nosafe_headers --dry_run
 
 header-fix:
 	./util/iwyu_map_check.sh kernel kernel/iwyu_mapping.imp
 	cd kernel && $(MAKE) -k "CC=iwyu -Xiwyu --mapping_file=iwyu_mapping.imp -resource-dir . -isystem. -I." all 2>&1 > /dev/null | \
-	fix_include --reorder --nocomments --nosafe_headers
+	$(IWYU_FIX_INCLUDES) --reorder --nocomments --nosafe_headers

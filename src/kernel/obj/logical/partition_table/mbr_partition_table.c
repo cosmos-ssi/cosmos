@@ -169,11 +169,11 @@ struct object* mbr_pt_attach(struct object* block_device) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &mbr_pt_init;
     objectinstance->uninit = &mbr_pt_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = PARTITION_TABLE;
+    objectinstance->objectype = OBJECT_TYPE_PARTITION_TABLE;
     objectmgr_set_object_description(objectinstance, "MBR partition table");
     /*
      * the device api

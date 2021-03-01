@@ -8,12 +8,4 @@
 #ifndef _OBJ_H
 #define _OBJ_H
 
-#ifdef TARGET_PLATFORM_i386
-
-#else
-
-#include <obj/arm/pl101/pl101.h>
-
-#endif
-
 #endif

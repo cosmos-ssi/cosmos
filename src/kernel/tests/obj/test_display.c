@@ -14,7 +14,7 @@
 
 void test_display() {
     // get the display
-    struct object* vga = objectmgr_find_object("vga0");
+    struct object* vga = objectmgr_find_object_by_name("vga0");
     if (0 != vga) {
         struct objectinterface_vga* vga_api = (struct objectinterface_vga*)vga->api;
         (*vga_api->write_text)(vga, "hi", 1, 1, NULL, VGA_TEXT_WHITE, VGA_TEXT_BLACK);

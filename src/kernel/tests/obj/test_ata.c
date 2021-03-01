@@ -18,7 +18,7 @@ void test_ata1() {
     // disk 3 is mounted to blank.img.  We can use it for testing.
     uint8_t devicename[] = {"disk3"};
 
-    struct object* ata = objectmgr_find_object(devicename);
+    struct object* ata = objectmgr_find_object_by_name(devicename);
     if (0 != ata) {
         test_block_device(ata);
     } else {
@@ -29,7 +29,7 @@ void test_ata1() {
 void test_ata_dma() {
     kprintf("Testing ATA DMA...\n");
 
-    struct object* obj = objectmgr_find_object("disk0");
+    struct object* obj = objectmgr_find_object_by_name("disk0");
 
     ata_dma_read(obj, 0, 129, 0);
 }

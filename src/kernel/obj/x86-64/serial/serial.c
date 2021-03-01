@@ -59,7 +59,7 @@ void serial_irq_handler_for_device(struct object* obj) {
 }
 void serial_irq_handler(stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
-    objectmgr_find_objects_by_description(SERIAL, SERIAL_DESCRIPTION, &serial_irq_handler_for_device);
+    objectmgr_find_objects_by_description(OBJECT_TYPE_SERIAL, SERIAL_DESCRIPTION, &serial_irq_handler_for_device);
 }
 
 void serial_write_string(const uint8_t* c) {
@@ -118,10 +118,10 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * the device instance
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &serial_obj_init;
     objectinstance->object_data = object_data;
-    objectinstance->objectype = SERIAL;
+    objectinstance->objectype = OBJECT_TYPE_SERIAL;
     objectmgr_set_object_description(objectinstance, SERIAL_DESCRIPTION);
     /*
      * the device api

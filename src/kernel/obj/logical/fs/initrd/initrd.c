@@ -46,6 +46,8 @@ uint8_t initrd_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)obj->object_data;
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0);
+
     /*
     * read the header
     */
@@ -226,11 +228,11 @@ struct object* initrd_attach(struct object* partition_objice, uint32_t lba) {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &initrd_init;
     objectinstance->uninit = &initrd_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = FILESYSTEM;
+    objectinstance->objectype = OBJECT_TYPE_FILESYSTEM;
     objectmgr_set_object_description(objectinstance, "initrd File System");
     /*
      * the device api
@@ -251,7 +253,7 @@ struct object* initrd_attach(struct object* partition_objice, uint32_t lba) {
      * device data
      */
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)kmalloc(sizeof(struct initrd_objectdata));
-    object_data->root_node = filesystem_node_new(folder, objectinstance, "initrd", 0, 0);
+    object_data->root_node = 0;
     object_data->lba = lba;
     object_data->partition_objice = partition_objice;
     object_data->nc = node_cache_new();

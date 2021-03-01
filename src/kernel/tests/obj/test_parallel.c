@@ -15,7 +15,7 @@
 void test_parallel() {
     uint8_t devicename[] = {"par0"};
 
-    struct object* parallel = objectmgr_find_object(devicename);
+    struct object* parallel = objectmgr_find_object_by_name(devicename);
     if (0 != parallel) {
         struct objectinterface_parallel* parallel_api = (struct objectinterface_parallel*)parallel->api;
 

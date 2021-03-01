@@ -11,7 +11,7 @@
 #include <sys/string/string.h>
 #include <types.h>
 
-struct object_type* objecttype_new(uint8_t* name, enum object_type_id id) {
+struct object_type* objecttype_new(uint8_t* name, uint16_t id) {
     ASSERT_NOT_NULL(name);
     ASSERT_NOT_NULL(id);
     ASSERT(strlen(name) < OBJECT_TYPE_MAX_NAME);

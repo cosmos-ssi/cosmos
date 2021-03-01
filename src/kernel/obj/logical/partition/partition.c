@@ -96,15 +96,15 @@ uint32_t partition_write_sectors(struct object* obj, uint8_t* data, uint32_t dat
 
 struct object* partition_attach(struct object* partition_table_objice, uint8_t partition_index) {
     ASSERT_NOT_NULL(partition_table_objice);
-    ASSERT(partition_table_objice->objectype == PARTITION_TABLE);
+    ASSERT(partition_table_objice->objectype == OBJECT_TYPE_PARTITION_TABLE);
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &partition_init;
     objectinstance->uninit = &partition_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = PARTITION;
+    objectinstance->objectype = OBJECT_TYPE_PARTITION;
     objectmgr_set_object_description(objectinstance, "Partition");
     /*
      * the device api

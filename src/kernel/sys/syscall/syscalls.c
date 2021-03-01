@@ -22,7 +22,7 @@ uint64_t syscall_exit(uint64_t syscall_id, void* args) {
 }
 
 uint64_t syscall_print_console(uint64_t syscall_id, void* args) {
-    struct object* console_obj = objectmgr_find_object("console0");
+    struct object* console_obj = objectmgr_find_object_by_name("console0");
     if (0 != console_obj) {
         struct objectinterface_console* api = (struct objectinterface_console*)console_obj->api;
         (*api->write)(console_obj, "Hello from console\n");

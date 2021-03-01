@@ -19,6 +19,7 @@
 #include <sys/obj/objectinterface/objectinterface_console.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
@@ -31,7 +32,7 @@
 
 void dev_tests();
 void load_init_binary();
-void dump_vfs();
+void dump_VOH();
 void video_write(const uint8_t* s);
 filesystem_node_t* load_test_binary();
 
@@ -61,9 +62,9 @@ void CosmOS() {
     kprintf("Initializing IO buffers...\n");
     iobuffers_init();
     /*
-     * init the device registry
+     * init the object manager
      */
-    kprintf("Initializing Device Registry...\n");
+    kprintf("Initializing Object Manager...\n");
     objectmgr_init();
 
     kprintf("Initializing system call handler...\n");
@@ -129,11 +130,11 @@ void CosmOS() {
     // any dev tests we want to run
     dev_tests();
 
-    // show the vfs
-    // kprintf("***** Devices *****\n");
-    //  objectmgr_dump_objects();
+    // show all object types and instances
+    objecttypes_dump();
+    objectmgr_dump_objects();
 
-    dump_vfs();
+    dump_VOH();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
     kprintf("\n");
@@ -160,16 +161,16 @@ void CosmOS() {
 }
 
 filesystem_node_t* load_test_binary() {
-    struct object* vfs_dev;
-    filesystem_node_t *vfs_node, *initrd_node, *file_node;
+    struct object* voh_dev;
+    filesystem_node_t *voh_node, *initrd_node, *file_node;
 
-    vfs_dev = objectmgr_find_object("vfs0");
-    ASSERT_NOT_NULL(vfs_dev);
+    voh_dev = objectmgr_find_object_by_name("voh0");
+    ASSERT_NOT_NULL(voh_dev);
 
-    vfs_node = fsfacade_get_fs_rootnode(vfs_dev);
-    ASSERT_NOT_NULL(vfs_node);
+    voh_node = fsfacade_get_fs_rootnode(voh_dev);
+    ASSERT_NOT_NULL(voh_node);
 
-    initrd_node = fsfacade_find_node_by_name(vfs_node, "initrd");
+    initrd_node = fsfacade_find_node_by_name(voh_node, "fs2");
     ASSERT_NOT_NULL(initrd_node);
 
     file_node = fsfacade_find_node_by_name(initrd_node, "test.bin");
@@ -178,13 +179,13 @@ filesystem_node_t* load_test_binary() {
     return file_node;
 }
 
-void dump_vfs() {
+void dump_VOH() {
     kprintf("\n");
-    kprintf("***** VFS *****\n");
+    kprintf("***** VOH (Virtual Object Hierarchy) *****\n");
     kprintf("\n");
-    struct object* vfs_dev = objectmgr_find_object("vfs0");
-    ASSERT_NOT_NULL(vfs_dev);
-    struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(vfs_dev);
+    struct object* voh_dev = objectmgr_find_object_by_name("voh0");
+    ASSERT_NOT_NULL(voh_dev);
+    struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(voh_dev);
     ASSERT_NOT_NULL(fs_node);
 
     fsfacade_dump(fs_node);
@@ -203,7 +204,7 @@ void load_init_binary() {
  * write to vga console which we created earlier (will be console0)
  */
 void video_write(const uint8_t* s) {
-    struct object* vga_console = objectmgr_find_object("console0");
+    struct object* vga_console = objectmgr_find_object_by_name("console0");
     struct objectinterface_console* console0_api = (struct objectinterface_console*)vga_console->api;
     (*console0_api->write)(vga_console, s);
 }

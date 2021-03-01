@@ -9,7 +9,6 @@
 #include <sys/debug/assert.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectregistry/objectregistry.h>
-#include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/string/string.h>
 
 /*
@@ -18,10 +17,6 @@
 struct arraylist* object_reg;
 
 void objectregistry_init() {
-    /*
-    * init the types
-    */
-    objecttypes_init();
     object_reg = arraylist_new();
 }
 
@@ -66,7 +61,7 @@ uint32_t objectregistry_objectcount() {
     return arraylist_count(object_reg);
 }
 
-uint32_t objectregistry_objectcount_type(enum object_type_id dt) {
+uint32_t objectregistry_objectcount_type(uint16_t dt) {
     ASSERT_NOT_NULL(object_reg);
     uint32_t ret = 0;
     for (uint32_t i = 0; i < arraylist_count(object_reg); i++) {
@@ -79,7 +74,7 @@ uint32_t objectregistry_objectcount_type(enum object_type_id dt) {
     return ret;
 }
 
-struct object* objectregistry_get_object(enum object_type_id dt, uint16_t idx) {
+struct object* objectregistry_get_object(uint16_t dt, uint16_t idx) {
     ASSERT_NOT_NULL(object_reg);
     uint32_t count = 0;
     for (uint32_t i = 0; i < arraylist_count(object_reg); i++) {
@@ -106,7 +101,7 @@ void objectregistry_iterate(object_iterator objectIterator) {
     }
 }
 
-void objectregistry_iterate_type(enum object_type_id dt, object_iterator objectIterator) {
+void objectregistry_iterate_type(uint16_t dt, object_iterator objectIterator) {
     ASSERT_NOT_NULL(object_reg);
     ASSERT_NOT_NULL(objectIterator);
     for (uint32_t i = 0; i < arraylist_count(object_reg); i++) {
@@ -118,8 +113,7 @@ void objectregistry_iterate_type(enum object_type_id dt, object_iterator objectI
     }
 }
 
-void objectregistry_find_objects_by_description(enum object_type_id dt, const int8_t* description,
-                                                objectSearchCallback cb) {
+void objectregistry_find_objects_by_description(uint16_t dt, const int8_t* description, objectSearchCallback cb) {
     ASSERT_NOT_NULL(object_reg);
     ASSERT_NOT_NULL(cb);
     ASSERT_NOT_NULL(description);
@@ -135,7 +129,7 @@ void objectregistry_find_objects_by_description(enum object_type_id dt, const in
     }
 }
 
-void objectregistry_find_objects_by_objectype(enum object_type_id dt, objectSearchCallback cb) {
+void objectregistry_find_objects_by_objectype(uint16_t dt, objectSearchCallback cb) {
     ASSERT_NOT_NULL(object_reg);
     ASSERT_NOT_NULL(cb);
 
@@ -148,13 +142,26 @@ void objectregistry_find_objects_by_objectype(enum object_type_id dt, objectSear
     }
 }
 
-struct object* objectregistry_find_object(const int8_t* name) {
+struct object* objectregistry_find_object_by_name(const int8_t* name) {
     ASSERT_NOT_NULL(object_reg);
 
     for (uint32_t i = 0; i < arraylist_count(object_reg); i++) {
         struct object* o = (struct object*)arraylist_get(object_reg, i);
         ASSERT_NOT_NULL(o);
         if (strcmp(o->name, name) == 0) {
+            return o;
+        }
+    }
+    return 0;
+}
+
+struct object* objectregistry_find_object_by_handle(uint64_t handle) {
+    ASSERT_NOT_NULL(object_reg);
+
+    for (uint32_t i = 0; i < arraylist_count(object_reg); i++) {
+        struct object* o = (struct object*)arraylist_get(object_reg, i);
+        ASSERT_NOT_NULL(o);
+        if (o->handle == handle) {
             return o;
         }
     }

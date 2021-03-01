@@ -43,11 +43,11 @@ struct object* null_attach() {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectinstance->init = &null_init;
     objectinstance->uninit = &null_uninit;
     objectinstance->pci = 0;
-    objectinstance->objectype = NULL0;
+    objectinstance->objectype = OBJECT_TYPE_NULL0;
     objectmgr_set_object_description(objectinstance, "null");
     /*
      * the device api

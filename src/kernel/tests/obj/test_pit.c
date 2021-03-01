@@ -15,7 +15,7 @@
 
 void test_pit() {
     // get the PIT
-    struct object* pit = objectmgr_find_object("pit0");
+    struct object* pit = objectmgr_find_object_by_name("pit0");
     if (0 != pit) {
         struct objectinterface_pit* pit_api = (struct objectinterface_pit*)pit->api;
         pit_tickcount_function tickcount_func = pit_api->tickcount;

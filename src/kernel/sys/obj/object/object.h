@@ -7,7 +7,6 @@
 
 #ifndef _OBJECT_H
 #define _OBJECT_H
-#include <sys/obj/objecttype/objectype.h>
 #include <types.h>
 
 #define OBJECT_MAX_DESCRIPTION 64
@@ -19,11 +18,6 @@ typedef uint8_t (*obj_init)(struct object* obj);
 // return 1 is successful, 0 if failed to uninit, including if device refcount>0
 typedef uint8_t (*obj_uninit)(struct object* obj);
 
-/*
- * array of names, indexed by object_type
- */
-extern int8_t* object_type_names[];
-
 struct object {
     /*
      * the combination of name (from object_type_names) and index
@@ -34,7 +28,7 @@ struct object {
     /*
      * the type (SERIAL, VGA etc)
      */
-    enum object_type_id objectype;
+    uint16_t objectype;
     /*
      * init function
      */
@@ -64,6 +58,12 @@ struct object {
     * and decremented when a device detaches from this device
     */
     uint8_t reference_count;
+    /*
+    * handle. every instance has a unique handle
+    */
+    uint64_t handle;
 };
 
+// new device, allocated on the kernel heap
+struct object* object_new_object();
 #endif

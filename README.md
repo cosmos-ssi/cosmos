@@ -29,7 +29,7 @@ CosmOS will be an [SSI](https://en.wikipedia.org/wiki/Single_system_image) opera
 - [Device Status](doc/developer/device_status.md)
 - [Working with Filesytems](doc/developer/working_with_filesystems.md)
 - [Boot Disk Layout](doc/developer/boot_disk_layout.md)
-- [VFS](doc/developer/vfs.md)
+- [VOH](doc/developer/voh.md)
 - [Using Block Devices](doc/developer/using_block_devices.md)
 - [Block Devices](doc/developer/block_devices.md)
 - [Memory Map](doc/developer/memory_map.md)

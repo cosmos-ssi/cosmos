@@ -66,9 +66,9 @@ void adlib_objectmgr_register_objects() {
     /*
      * register device
      */
-    struct object* objectinstance = objectmgr_new_object();
+    struct object* objectinstance = object_new_object();
     objectmgr_set_object_description(objectinstance, "Yamaha YM3812 (OPL2)");
-    objectinstance->objectype = DSP;
+    objectinstance->objectype = OBJECT_TYPE_DSP;
     objectinstance->init = &adlib_obj_init;
     /*
      * device api
