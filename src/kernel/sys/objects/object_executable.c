@@ -10,6 +10,7 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/objects/objects.h>
+#include <sys/string/mem.h>
 #include <sys/string/string.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/mm/pagetables.h>
@@ -23,6 +24,7 @@ object_handle_t object_executable_create_from_presentation(object_handle_t pres_
     object_handle_t exe_handle;
     BYTE* exe_buf;
     filesystem_node_t* node;
+    uint64_t i;
 
     pres_obj = OBJECT_DATA(pres_handle, object_presentation_t);
     node = pres_obj->node;
@@ -41,8 +43,12 @@ object_handle_t object_executable_create_from_presentation(object_handle_t pres_
 
     exe_obj->page_base = slab_allocate(exe_obj->page_count, PDT_INUSE);
 
+    for (i = 0; i < exe_obj->page_count; i++) {
+        memset((uint8_t*)CONV_PHYS_ADDR(exe_obj->page_base + (i * PAGE_SIZE)), 0, PAGE_SIZE);
+    }
+
     exe_buf = (BYTE*)CONV_PHYS_ADDR((exe_obj->page_base * PAGE_SIZE));
-    fsfacade_read(node, (uint8_t*)exe_buf, PAGE_SIZE * exe_obj->page_count);
+    fsfacade_read(node, (uint8_t*)exe_buf, pres_len);
 
     exe_obj->from_presentation = true;
     exe_obj->presentation = pres_handle;
