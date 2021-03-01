@@ -21,7 +21,7 @@
 #include <sys/string/mem.h>
 #include <types.h>
 /*
-* node ids are 64 bits.  the top 32 are the device type, and the bottom 32 are the device number
+* node ids are the object handles
 */
 /*
 * object data.
@@ -38,19 +38,6 @@ uint8_t objfs_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
-}
-
-uint64_t objfs_node_id(uint64_t object_type, uint64_t device_number) {
-    //   kprintf("object_type %#lllX device number %#llX\n", object_type, device_number);
-    return (object_type << 32) + device_number;
-}
-
-uint64_t objfs_object_type(uint64_t node_id) {
-    return node_id >> 32;
-}
-
-uint64_t objfs_object_number(uint64_t node_id) {
-    return (node_id & 0xFFFF0000);
 }
 
 /*
@@ -127,15 +114,11 @@ struct filesystem_node* objfs_find_node_by_id(struct filesystem_node* fs_node, u
     */
     struct filesystem_node* this_node = node_cache_find(object_data->nc, id);
     if (0 == this_node) {
-        uint64_t dt = (uint16_t)objfs_object_type(id);
-        ASSERT_NOT_NULL(dt);
-        struct object_type* ot = objecttypes_find(dt);
-        if (0 != ot) {
-            ASSERT_NOT_NULL(ot->id);
-            // there is a node with that id, we need to make a fs entry and cache it
-            this_node = filesystem_node_new(folder, fs_node->filesystem_obj, ot->name, objfs_node_id(dt, id), 0);
-            node_cache_add(object_data->nc, this_node);
-        }
+        struct object* obj = objectregistry_find_object_by_handle(id);
+        ASSERT_NOT_NULL(obj);
+        // there is a node with that id, we need to make a fs entry and cache it
+        this_node = filesystem_node_new(object, fs_node->filesystem_obj, obj->name, obj->handle, 0);
+        node_cache_add(object_data->nc, this_node);
     } else {
         //    kprintf("found in cache %llu\n", id);
     }
@@ -156,59 +139,34 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
         /*
         * root node
         */
-        dir->count = objecttypes_count();
-        uint32_t folder_count = 0;
+        dir->count = objectregistry_objectcount();
+        uint32_t obj_count = 0;
         /*
-        * every device type has a unique integer to identify it, so that can be the node_id
+        * every object has a handle, so it becomes the node id
         */
+        /*
+       * walk the types
+       */
         for (uint32_t i = 0; i < objecttypes_count(); i++) {
             struct object_type* ot = objecttypes_get(i);
+            ASSERT_NOT_NULL(ot);
             if (0 != ot) {
-                struct filesystem_node* this_node = node_cache_find(object_data->nc, ot->id);
-                if (0 == this_node) {
-                    //             kprintf("node_id %#llX %#llX\n", i, objfs_node_id(i, 0));
-                    this_node =
-                        filesystem_node_new(folder, fs_node->filesystem_obj, ot->name, objfs_node_id(ot->id, 0), 0);
-                    node_cache_add(object_data->nc, this_node);
+                for (uint32_t j = 0; j < objectregistry_objectcount_type(ot->id); j++) {
+                    struct object* obj = objectregistry_get_object(ot->id, j);
+                    struct filesystem_node* this_node = node_cache_find(object_data->nc, obj->handle);
+                    if (0 == this_node) {
+                        //             kprintf("node_id %#llX %#llX\n", i, objfs_node_id(i, 0));
+                        this_node = filesystem_node_new(object, fs_node->filesystem_obj, obj->name, obj->handle, 0);
+                        node_cache_add(object_data->nc, this_node);
+                    }
+                    ASSERT_NOT_NULL(this_node->id);  // there is no object type 0, so this can't be zero
+                    dir->ids[obj_count] = this_node->id;
+                    obj_count += 1;
                 }
-                ASSERT_NOT_NULL(this_node->id);  // there is no object type 0, so this can't be zero
-                dir->ids[folder_count] = this_node->id;
-                folder_count += 1;
             }
         }
     } else {
-        /*
-        * folders contain leaf nodes for the type
-        */
-        if (fs_node->type == folder) {
-
-            kprintf("folder %s %#llX\n", fs_node->name, fs_node->id);
-
-            uint16_t dt = (uint16_t)objfs_object_type(fs_node->id);
-            ASSERT_NOT_NULL(dt);
-            //   kprintf("dt %#llX\n", dt);
-            uint32_t count = objectregistry_objectcount_type(dt);
-            dir->count = count;
-
-            for (uint32_t i = 0; i < count; i++) {
-                uint64_t node_id = objfs_node_id(dt, i + 1);
-                struct filesystem_node* this_node = node_cache_find(object_data->nc, node_id);
-                if (0 == this_node) {
-                    struct object* obj = (struct object*)objectregistry_get_object(dt, i);
-                    ASSERT_NOT_NULL(obj);
-                    kprintf("dev %s\n", obj->name);
-
-                    this_node = filesystem_node_new(object, obj, obj->name, node_id, 0);
-                    kprintf("dev2 %s\n", obj->name);
-
-                    node_cache_add(object_data->nc, this_node);
-                    kprintf("dev3 %s\n", obj->name);
-                }
-                dir->ids[i] = this_node->id;
-            }
-        } else {
-            // its a leaf node which is a device. it has no children
-        }
+        dir->count = 0;
     }
 }
 
