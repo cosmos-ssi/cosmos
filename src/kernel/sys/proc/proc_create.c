@@ -17,6 +17,7 @@
 
 pttentry proc_obtain_cr3();
 void proc_map_image(pttentry cr3, object_handle_t exe_obj);
+void proc_map_kernelspace(pttentry cr3);
 
 pid_t proc_create() {
     proc_info_t* proc_info;
@@ -51,6 +52,10 @@ void proc_map_image(pttentry cr3, object_handle_t exe_obj) {
     return;
 }
 
+void proc_map_kernelspace(pttentry cr3) {
+    return;
+}
+
 pttentry proc_obtain_cr3() {
     // Find a page to put our PML4 table in, and return a value suitable for
     // loading into cr3.
@@ -72,6 +77,7 @@ void setup_user_process(pid_t pid, object_handle_t exe_obj) {
 
     proc_table_get(pid)->cr3 = proc_obtain_cr3();
     proc_map_image(proc_table_get(pid)->cr3, exe_obj);
+    proc_map_kernelspace(proc_table_get(pid)->cr3);
 
     return;
 }
