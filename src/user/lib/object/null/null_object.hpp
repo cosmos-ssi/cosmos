@@ -5,16 +5,15 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _COSMOS_HPP
-#define _COSMOS_HPP
+#ifndef _NULL_OBJECT_HPP
+#define _NULL_OBJECT_HPP
 
-#include <assert.h>
-#include <heap.hpp>
-#include <malloc.h>
-#include <new.hpp>
-#include <object/objects.hpp>
-#include <process.hpp>
-#include <string.hpp>
+#include <object/object.hpp>
 #include <types.h>
+
+class NullObject : public Object {
+  public:
+    uint64_t read();
+};
 
 #endif

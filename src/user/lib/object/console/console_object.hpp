@@ -5,16 +5,16 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _COSMOS_HPP
-#define _COSMOS_HPP
+#ifndef _CONSOLE_OBJECT_HPP
+#define _CONSOLE_OBJECT_HPP
 
-#include <assert.h>
-#include <heap.hpp>
-#include <malloc.h>
-#include <new.hpp>
-#include <object/objects.hpp>
-#include <process.hpp>
-#include <string.hpp>
+#include <object/object.hpp>
 #include <types.h>
+
+class ConsoleObject : public Object {
+  public:
+    uint8_t setPos(uint8_t x, uint8_t y);
+    void write(const char* s);
+};
 
 #endif

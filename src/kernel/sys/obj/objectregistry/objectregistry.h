@@ -28,7 +28,10 @@ void objectregistry_iterate(object_iterator objectIterator);
 void objectregistry_iterate_type(uint16_t dt, object_iterator objectIterator);
 
 // find a object by name ie "rtc0"
-struct object* objectregistry_find_object(const int8_t* name);
+struct object* objectregistry_find_object_by_name(const int8_t* name);
+
+// find a object by handle
+struct object* objectregistry_find_object_by_handle(uint64_t handle);
 
 // find objects by objectype and description
 void objectregistry_find_objects_by_description(uint16_t dt, const int8_t* description, objectSearchCallback cb);

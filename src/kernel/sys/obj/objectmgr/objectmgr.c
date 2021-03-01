@@ -154,7 +154,7 @@ void objectmgr_set_object_description(struct object* obj, const uint8_t* descrip
 
 struct object* objectmgr_find_object(const uint8_t* name) {
     ASSERT_NOT_NULL(name);
-    return objectregistry_find_object(name);
+    return objectregistry_find_object_by_name(name);
 }
 
 void objectmgr_find_objects_by_description(uint16_t dt, const uint8_t* description, objectSearchCallback cb) {

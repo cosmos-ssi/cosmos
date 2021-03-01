@@ -5,16 +5,6 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _COSMOS_HPP
-#define _COSMOS_HPP
+#include <object/rtc/rtc_object.hpp>
 
-#include <assert.h>
-#include <heap.hpp>
-#include <malloc.h>
-#include <new.hpp>
-#include <object/objects.hpp>
-#include <process.hpp>
-#include <string.hpp>
-#include <types.h>
-
-#endif
+void RTCObject::read(struct rtc_time* time) {}

@@ -5,16 +5,19 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _COSMOS_HPP
-#define _COSMOS_HPP
+#include <object/block/block_object.hpp>
 
-#include <assert.h>
-#include <heap.hpp>
-#include <malloc.h>
-#include <new.hpp>
-#include <object/objects.hpp>
-#include <process.hpp>
-#include <string.hpp>
-#include <types.h>
+uint32_t BlockObject::readSectors(uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+    return 0;
+}
+uint32_t BlockObject::writeSectors(uint8_t* data, uint32_t data_size, uint32_t start_lba) {
+    return 0;
+}
 
-#endif
+uint16_t BlockObject::sectorSize() {
+    return 0;
+}
+
+uint32_t BlockObject::totalSize() {
+    return 0;
+}

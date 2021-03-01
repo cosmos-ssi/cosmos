@@ -16,7 +16,7 @@
 
 class Term {
   private:
-    SerialDevice* serialDevice;
+    SerialObject* serialDevice;
     void lineloop();
     uint16_t readline(uint8_t* line, uint16_t len);
 

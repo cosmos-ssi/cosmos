@@ -5,16 +5,17 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _COSMOS_HPP
-#define _COSMOS_HPP
+#ifndef _SERIAL_OBJECT_HPP
+#define _SERIAL_OBJECT_HPP
 
-#include <assert.h>
-#include <heap.hpp>
-#include <malloc.h>
-#include <new.hpp>
-#include <object/objects.hpp>
-#include <process.hpp>
-#include <string.hpp>
+#include <object/object.hpp>
 #include <types.h>
+
+class SerialObject : public Object {
+  public:
+    void writeln(const char* str);
+    uint8_t readChar();
+    void writeChar(uint8_t c);
+};
 
 #endif

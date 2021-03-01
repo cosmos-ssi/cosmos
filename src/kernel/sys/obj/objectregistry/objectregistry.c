@@ -143,13 +143,26 @@ void objectregistry_find_objects_by_objectype(uint16_t dt, objectSearchCallback 
     }
 }
 
-struct object* objectregistry_find_object(const int8_t* name) {
+struct object* objectregistry_find_object_by_name(const int8_t* name) {
     ASSERT_NOT_NULL(object_reg);
 
     for (uint32_t i = 0; i < arraylist_count(object_reg); i++) {
         struct object* o = (struct object*)arraylist_get(object_reg, i);
         ASSERT_NOT_NULL(o);
         if (strcmp(o->name, name) == 0) {
+            return o;
+        }
+    }
+    return 0;
+}
+
+struct object* objectregistry_find_object_by_handle(uint64_t handle) {
+    ASSERT_NOT_NULL(object_reg);
+
+    for (uint32_t i = 0; i < arraylist_count(object_reg); i++) {
+        struct object* o = (struct object*)arraylist_get(object_reg, i);
+        ASSERT_NOT_NULL(o);
+        if (o->handle == handle) {
             return o;
         }
     }

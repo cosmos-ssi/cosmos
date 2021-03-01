@@ -5,16 +5,22 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _COSMOS_HPP
-#define _COSMOS_HPP
+#ifndef _MOUSE_OBJECT_HPP
+#define _MOUSE_OBJECT_HPP
 
-#include <assert.h>
-#include <heap.hpp>
-#include <malloc.h>
-#include <new.hpp>
-#include <object/objects.hpp>
-#include <process.hpp>
-#include <string.hpp>
+#include <object/object.hpp>
 #include <types.h>
+
+struct mouse_status {
+    uint8_t mouse_cycle;
+    int8_t mouse_byte[3];
+    int8_t mouse_x;
+    int8_t mouse_y;
+};
+
+class MouseObject : public Object {
+  public:
+    void read(struct mouse_status* status);
+};
 
 #endif

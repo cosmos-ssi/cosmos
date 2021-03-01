@@ -5,16 +5,16 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _COSMOS_HPP
-#define _COSMOS_HPP
+#include <object/object.hpp>
 
-#include <assert.h>
-#include <heap.hpp>
-#include <malloc.h>
-#include <new.hpp>
-#include <object/objects.hpp>
-#include <process.hpp>
-#include <string.hpp>
-#include <types.h>
+Object* Object::find(String name) {
+    return 0;
+}
 
-#endif
+Object* Object::find(const char* name) {
+    return 0;
+}
+
+Object* find(uint64_t handle) {
+    return 0;
+}
