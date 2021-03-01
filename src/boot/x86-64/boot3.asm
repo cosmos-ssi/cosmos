@@ -84,7 +84,7 @@ add ebx, 3
 	loop .fillK4
 	
 ; set the new stack pointer
-mov rsp, 0xfffffffffffffff8
+mov rsp, 0x0
     
 mov rax, [kernelAddress]
 
