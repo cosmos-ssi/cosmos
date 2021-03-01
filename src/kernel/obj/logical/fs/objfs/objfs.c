@@ -36,6 +36,9 @@ struct objfs_objectdata {
  */
 uint8_t objfs_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct objfs_objectdata* object_data = (struct objfs_objectdata*)obj->object_data;
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0);
     kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
@@ -45,6 +48,8 @@ uint8_t objfs_init(struct object* obj) {
  */
 uint8_t objfs_uninit(struct object* obj) {
     ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+
     kprintf("Uninit %s  (%s)\n", obj->description, obj->name);
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)obj->object_data;
     kfree(obj->api);
@@ -208,7 +213,7 @@ struct object* objfs_attach() {
      * object data
      */
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)kmalloc(sizeof(struct objfs_objectdata));
-    object_data->root_node = filesystem_node_new(folder, objectinstance, "obj", 0, 0);
+    object_data->root_node = 0;
     object_data->nc = node_cache_new();
     objectinstance->object_data = object_data;
     /*
