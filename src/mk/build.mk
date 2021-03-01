@@ -7,7 +7,7 @@
 
 NASM=nasm
 NASMARGS=-O0 -f elf64 -g -F dwarf
-NASMARGSFLAT= -O0 -f bin
+NASMARGSFLAT= -O0 -Werror -f bin
 
 RM=rm -f
 MAKE=make
