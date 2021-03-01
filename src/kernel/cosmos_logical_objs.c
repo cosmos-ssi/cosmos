@@ -9,7 +9,7 @@
 #include <obj/logical/console/serial_console.h>
 #include <obj/logical/ethernet/ethernet.h>
 #include <obj/logical/fs/initrd/initrd.h>
-#include <obj/logical/fs/vfs/vfs.h>
+#include <obj/logical/fs/voh/voh.h>
 #include <obj/logical/null/null.h>
 #include <obj/logical/ramdisk/ramdisk.h>
 #include <obj/logical/rand/rand.h>
@@ -84,12 +84,12 @@ void attach_logical_objects() {
         kprintf("Unable to find %s\n", devicename);
     }
     /*
-    * vfs
+    * voh
     */
-    struct object* rootfs_obj = vfs_attach("/");
+    struct object* rootfs_obj = voh_attach("/");
     //   struct object* objfs_dev = devfs_attach();
     //   struct filesystem_node* fsnode_devfs = fsfacade_get_fs_rootnode(devfs_dev);
     struct filesystem_node* fsnode_initrd = fsfacade_get_fs_rootnode(initrd_dev);
     // vfs_add_child(rootfs_obj, fsnode_devfs);
-    vfs_add_child(rootfs_obj, fsnode_initrd);
+    voh_add_child(rootfs_obj, fsnode_initrd);
 }

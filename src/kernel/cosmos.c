@@ -32,7 +32,7 @@
 
 void dev_tests();
 void load_init_binary();
-void dump_vfs();
+void dump_VOH();
 void video_write(const uint8_t* s);
 filesystem_node_t* load_test_binary();
 
@@ -134,7 +134,7 @@ void CosmOS() {
     objecttypes_dump();
     objectmgr_dump_objects();
 
-    dump_vfs();
+    dump_VOH();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
     kprintf("\n");
@@ -161,16 +161,16 @@ void CosmOS() {
 }
 
 filesystem_node_t* load_test_binary() {
-    struct object* vfs_dev;
-    filesystem_node_t *vfs_node, *initrd_node, *file_node;
+    struct object* voh_dev;
+    filesystem_node_t *voh_node, *initrd_node, *file_node;
 
-    vfs_dev = objectmgr_find_object_by_name("vfs0");
-    ASSERT_NOT_NULL(vfs_dev);
+    voh_dev = objectmgr_find_object_by_name("vfs0");
+    ASSERT_NOT_NULL(voh_dev);
 
-    vfs_node = fsfacade_get_fs_rootnode(vfs_dev);
-    ASSERT_NOT_NULL(vfs_node);
+    voh_node = fsfacade_get_fs_rootnode(voh_dev);
+    ASSERT_NOT_NULL(voh_node);
 
-    initrd_node = fsfacade_find_node_by_name(vfs_node, "initrd");
+    initrd_node = fsfacade_find_node_by_name(voh_node, "initrd");
     ASSERT_NOT_NULL(initrd_node);
 
     file_node = fsfacade_find_node_by_name(initrd_node, "test.bin");
@@ -179,13 +179,13 @@ filesystem_node_t* load_test_binary() {
     return file_node;
 }
 
-void dump_vfs() {
+void dump_VOH() {
     kprintf("\n");
-    kprintf("***** VFS *****\n");
+    kprintf("***** VOH (Virtual Object Hierarchy) *****\n");
     kprintf("\n");
-    struct object* vfs_dev = objectmgr_find_object_by_name("vfs0");
-    ASSERT_NOT_NULL(vfs_dev);
-    struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(vfs_dev);
+    struct object* voh_dev = objectmgr_find_object_by_name("vfs0");
+    ASSERT_NOT_NULL(voh_dev);
+    struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(voh_dev);
     ASSERT_NOT_NULL(fs_node);
 
     fsfacade_dump(fs_node);

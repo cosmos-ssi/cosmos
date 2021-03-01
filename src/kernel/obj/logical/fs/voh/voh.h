@@ -5,18 +5,18 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _VFS_H
-#define _VFS_H
+#ifndef _VOH_H
+#define _VOH_H
 
 #include <types.h>
 
 struct filesystem_node;
 struct object;
 
-struct object* vfs_attach(uint8_t* name);
-void vfs_detach(struct object* obj);
+struct object* voh_attach(uint8_t* name);
+void voh_detach(struct object* obj);
 
-void vfs_add_child(struct object* vfs_device, struct filesystem_node* child_node);
-void vfs_remove_child(struct object* vfs_device, uint64_t id);
+void voh_add_child(struct object* voh_device, struct filesystem_node* child_node);
+void voh_remove_child(struct object* voh_device, uint64_t id);
 
 #endif
