@@ -115,12 +115,11 @@ void serial_writechar(struct object* obj, const int8_t c) {
 void serial_irq_handler_for_device(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
-    //  struct serial_objectdata* object_data = (struct serial_objectdata*)obj->object_data;
-
-    // TODO figure out if it was THIS dev that made the interrupt and respond accordingly (like by putting the data into the ringbuffer)
+    struct serial_objectdata* object_data = (struct serial_objectdata*)obj->object_data;
+    uint64_t address = object_data->address;
+    struct rs232_16550* comport = (struct rs232_16550*)address;
 
     if (serial_is_read_ready(obj)) {
-        struct rs232_16550* comport = (struct rs232_16550*)COM1_ADDRESS;
         uint8_t data = asm_in_b((uint64_t) & (comport->data));
 
         // echo the data
