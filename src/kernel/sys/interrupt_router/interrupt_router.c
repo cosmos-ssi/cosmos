@@ -55,9 +55,9 @@ void interrupt_router_route_interrupt(int interruptNumber, stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     ASSERT_NOT_NULL(interrupt_handlers);
 
-    if ((8 != interruptNumber) && (0 != interruptNumber)) {
-        kprintf("Routing IRQ %llu\n", interruptNumber);
-    }
+    //if ((8 != interruptNumber) && (0 != interruptNumber)) {
+    //   kprintf("Routing IRQ %llu\n", interruptNumber);
+    //}
     if ((interruptNumber >= 0) && (interruptNumber < NUMBER_INTERRUPTS)) {
         struct arraylist* lst = array_get(interrupt_handlers, interruptNumber);
         if (0 == lst) {

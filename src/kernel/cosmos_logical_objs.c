@@ -19,21 +19,32 @@
 #include <obj/logical/tcpip/ip/ipdev.h>
 #include <obj/logical/tcpip/tcp/tcpdev.h>
 #include <obj/logical/tcpip/udp/udpdev.h>
+#include <obj/logical/telnet/telnet.h>
 #include <obj/logical/tick/tick.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <types.h>
 
 void attach_logical_objects() {
     /*
+    * kernel telnet
+    * 
+    */
+    struct object* serial2 = objectmgr_find_object_by_name("serial0");
+    struct object* telnet = 0;
+    if (0 != serial2) {
+        telnet = telnet_attach(serial2);
+    }
+    /*
     * console
     */
-    struct object* serial = objectmgr_find_object_by_name("serial0");
-    if (0 != serial) {
-        // this makes "console1"
-        serial_console_attach(serial);
-    }
+    //   struct object* serial = objectmgr_find_object_by_name("serial0");
+    //   if (0 != serial) {
+    // this makes "console1"
+    //       serial_console_attach(serial);
+    //   }
     /*
     * ramdisks
     */
@@ -84,6 +95,7 @@ void attach_logical_objects() {
     } else {
         kprintf("Unable to find %s\n", devicename);
     }
+
     /*
     * voh
     */

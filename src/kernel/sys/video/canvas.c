@@ -22,7 +22,7 @@ struct canvas* canvas_new(struct object* obj) {
     * useful state data
     */
     ret->buffer_size = video_util_get_buffersize(obj);
-    kprintf("Canvas buffer size %#llX\n", ret->buffer_size);
+    // kprintf("Canvas buffer size %#llX\n", ret->buffer_size);
     video_get_resolution(obj, &(ret->resolution));
     ret->buffer = kmalloc(ret->buffer_size);
     ret->obj = obj;
