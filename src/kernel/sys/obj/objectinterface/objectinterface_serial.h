@@ -17,11 +17,13 @@
 typedef void (*serial_write_function)(struct object* obj, const int8_t* c);
 typedef uint8_t (*serial_readchar_function)(struct object* obj);
 typedef void (*serial_writechar_function)(struct object* obj, const int8_t c);
+typedef uint16_t (*serial_avail_function)(struct object* obj);
 
 struct objectinterface_serial {
     serial_write_function write;
     serial_readchar_function readchar;
     serial_writechar_function writechar;
+    serial_avail_function avail;
 };
 
 #endif

@@ -10,6 +10,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
 
@@ -177,4 +178,16 @@ uint32_t fsfacade_write(struct filesystem_node* fs_node, const uint8_t* data, ui
         return (*fs_api->write)(fs_node, data, data_size);
     }
     return 0;
+}
+
+void dump_VOH() {
+    //    kprintf("\n");
+    //    kprintf("***** VOH (Virtual Object Hierarchy) *****\n");
+    kprintf("\n");
+    struct object* voh_dev = objectmgr_find_object_by_name("voh0");
+    ASSERT_NOT_NULL(voh_dev);
+    struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(voh_dev);
+    ASSERT_NOT_NULL(fs_node);
+
+    fsfacade_dump(fs_node);
 }

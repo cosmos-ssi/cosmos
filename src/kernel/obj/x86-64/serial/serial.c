@@ -114,6 +114,13 @@ void serial_writechar(struct object* obj, const int8_t c) {
     asm_out_b((uint64_t) & (comport->data), c);
 }
 
+uint16_t serial_avail(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct serial_objectdata* object_data = (struct serial_objectdata*)obj->object_data;
+    return ringbuffer_avail(object_data->buffer);
+}
+
 void serial_irq_handler_for_device(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
@@ -126,7 +133,7 @@ void serial_irq_handler_for_device(struct object* obj) {
         ringbuffer_add(object_data->buffer, (void*)(uint64_t)data);
 
         // echo the data
-        serial_writechar(obj, data);
+        //  serial_writechar(obj, data);
     }
 }
 
@@ -157,7 +164,8 @@ void serial_register_device(uint8_t irq, uint64_t base) {
     struct objectinterface_serial* api = (struct objectinterface_serial*)kmalloc(sizeof(struct objectinterface_serial));
     api->write = &serial_write;
     api->readchar = &serial_readchar;
-    api->writechar = serial_writechar;
+    api->writechar = &serial_writechar;
+    api->avail = &serial_avail;
     objectinstance->api = api;
     /*
      * register
