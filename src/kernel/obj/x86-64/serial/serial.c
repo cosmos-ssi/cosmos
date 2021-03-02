@@ -24,50 +24,15 @@
 
 #define SERIAL_DESCRIPTION "RS232"
 
+void serial_irq_handler(stack_frame* frame);
+void serial_writechar(struct object* obj, const int8_t c);
+
 struct serial_objectdata {
     uint8_t irq;
-    uint16_t address;
+    uint64_t address;
     struct ringbuffer* buffer;
 
 } __attribute__((packed));
-
-int serial_is_transmit_empty() {
-    struct rs232_16550* comport = (struct rs232_16550*)COM1_ADDRESS;
-    uint8_t data = asm_in_b((uint64_t) & (comport->linestatus));
-    return data & 0x20;
-}
-
-void serial_write_char(const uint8_t c) {
-    struct rs232_16550* comport = (struct rs232_16550*)COM1_ADDRESS;
-
-    while (serial_is_transmit_empty() == 0)
-        ;
-    asm_out_b((uint64_t) & (comport->data), c);
-}
-
-void serial_irq_handler_for_device(struct object* obj) {
-    ASSERT_NOT_NULL(obj);
-    ASSERT_NOT_NULL(obj->object_data);
-    //    struct serial_objectdata* object_data = (struct serial_objectdata*)obj->object_data;
-
-    // TODO figure out if it was THIS dev that made the interrupt and respond accordingly (like by putting the data into the ringbuffer)
-    struct rs232_16550* comport = (struct rs232_16550*)COM1_ADDRESS;
-    uint8_t data = asm_in_b((uint64_t) & (comport->data));
-
-    // echo the data
-    serial_write_char(data);
-}
-void serial_irq_handler(stack_frame* frame) {
-    ASSERT_NOT_NULL(frame);
-    objectmgr_find_objects_by_description(OBJECT_TYPE_SERIAL, SERIAL_DESCRIPTION, &serial_irq_handler_for_device);
-}
-
-void serial_write_string(const uint8_t* c) {
-    uint16_t i = 0;
-    while (c[i] != 0) {
-        serial_write_char(c[i++]);
-    }
-}
 
 // https://wiki.osdev.org/Serial_Ports
 void serial_init_port(uint64_t portAddress) {
@@ -104,16 +69,68 @@ uint8_t serial_obj_init(struct object* obj) {
 
 void serial_write(struct object* obj, const int8_t* c) {
     ASSERT_NOT_NULL(obj);
-    serial_write_string(c);
+    int16_t i = 0;
+    while (c[i] != 0) {
+        serial_writechar(obj, c[i++]);
+    }
+}
+
+int serial_is_read_ready(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct serial_objectdata* object_data = (struct serial_objectdata*)obj->object_data;
+    uint64_t address = object_data->address;
+    struct rs232_16550* comport = (struct rs232_16550*)address;
+    uint8_t data = asm_in_b((uint64_t) & (comport->linestatus));
+    return data & 0x01;
 }
 
 uint8_t serial_readchar(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     return 0;
 }
+
+int serial_is_transmit_empty(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct serial_objectdata* object_data = (struct serial_objectdata*)obj->object_data;
+    uint64_t address = object_data->address;
+    struct rs232_16550* comport = (struct rs232_16550*)address;
+    uint8_t data = asm_in_b((uint64_t) & (comport->linestatus));
+    return data & 0x20;
+}
+
 void serial_writechar(struct object* obj, const int8_t c) {
     ASSERT_NOT_NULL(obj);
-    serial_write_char(c);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct serial_objectdata* object_data = (struct serial_objectdata*)obj->object_data;
+    uint64_t address = object_data->address;
+    struct rs232_16550* comport = (struct rs232_16550*)address;
+
+    while (serial_is_transmit_empty(obj) == 0)
+        ;
+    asm_out_b((uint64_t) & (comport->data), c);
+}
+
+void serial_irq_handler_for_device(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    //  struct serial_objectdata* object_data = (struct serial_objectdata*)obj->object_data;
+
+    // TODO figure out if it was THIS dev that made the interrupt and respond accordingly (like by putting the data into the ringbuffer)
+
+    if (serial_is_read_ready(obj)) {
+        struct rs232_16550* comport = (struct rs232_16550*)COM1_ADDRESS;
+        uint8_t data = asm_in_b((uint64_t) & (comport->data));
+
+        // echo the data
+        serial_writechar(obj, data);
+    }
+}
+
+void serial_irq_handler(stack_frame* frame) {
+    ASSERT_NOT_NULL(frame);
+    objectmgr_find_objects_by_description(OBJECT_TYPE_SERIAL, SERIAL_DESCRIPTION, &serial_irq_handler_for_device);
 }
 
 void serial_register_device(uint8_t irq, uint64_t base) {
