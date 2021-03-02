@@ -7,6 +7,7 @@
 
 #include <sys/collection/dtable/dtable.h>
 #include <sys/proc/proc.h>
+#include <types.h>
 
 dtable proc_table;
 
