@@ -90,7 +90,13 @@ void proc_map_kernelspace(pttentry cr3) {
 }
 
 void proc_map_stack(pttentry cr3) {
+    uint8_t i;
+    uint64_t stack_page;
 
+    for (i = 0; i < 4; i++) {
+        stack_page = slab_allocate(1, PDT_INUSE);
+        map_page_at(stack_page, (void*)(DEFAULT_PROC_USER_STACK_START + (i * PAGE_SIZE)), cr3, true);
+    }
     return;
 }
 
@@ -132,6 +138,8 @@ void setup_user_process(pid_t pid, object_handle_t exe_obj) {
     proc_map_kernelspace(proc_table_get(pid)->cr3);
 
     proc_adjust_kernel_stack(proc_table_get(pid)->cr3);
+
+    proc_map_stack(proc_table_get(pid)->cr3);
 
     return;
 }
