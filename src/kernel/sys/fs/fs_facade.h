@@ -36,5 +36,5 @@ uint32_t fsfacade_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t 
 uint32_t fsfacade_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size);
 
 void fsfacade_dump_node(struct filesystem_node* fs_node);
-
+void dump_VOH();
 #endif

@@ -131,12 +131,6 @@ void CosmOS() {
     // any dev tests we want to run
     dev_tests();
 
-    // show all object types and instances
-    objecttypes_dump();
-    objectmgr_dump_objects();
-
-    dump_VOH();
-
     // load the init binary.  next step here would be to map it into memory and jump to userland
     kprintf("\n");
     kprintf("***** Loading Userland init from %s *****\n", "disk0");
@@ -162,7 +156,7 @@ void CosmOS() {
     /*
     * start telnet
     */
-    /*
+
     struct object* telnet = objectmgr_find_object_by_name("telnet0");
     kprintf("\n");
     kprintf("***** Starting Kernel Telnet *****\n");
@@ -173,7 +167,8 @@ void CosmOS() {
     } else {
         kprintf("Unable to find telnet0\n");
     }
-*/
+
+    // we never get here currently... well.... eventually the telnet over serial needs to be a on a thread
     sched_switch(task_select());
 }
 
@@ -194,18 +189,6 @@ filesystem_node_t* load_test_binary() {
     ASSERT_NOT_NULL(file_node);
 
     return file_node;
-}
-
-void dump_VOH() {
-    kprintf("\n");
-    kprintf("***** VOH (Virtual Object Hierarchy) *****\n");
-    kprintf("\n");
-    struct object* voh_dev = objectmgr_find_object_by_name("voh0");
-    ASSERT_NOT_NULL(voh_dev);
-    struct filesystem_node* fs_node = fsfacade_get_fs_rootnode(voh_dev);
-    ASSERT_NOT_NULL(fs_node);
-
-    fsfacade_dump(fs_node);
 }
 
 /*

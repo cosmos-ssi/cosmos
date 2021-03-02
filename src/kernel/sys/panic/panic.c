@@ -5,7 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <obj/x86-64/serial/serial.h>
+#include <obj/x86-64/serial/com1.h>
 #include <sys/asm/misc.h>
 #include <sys/panic/panic.h>
 #include <sys/string/string.h>
@@ -14,13 +14,13 @@ void panic(const char* s, const char* fn, uint32_t line) {
     uint8_t ll[255];
     uitoa3(line, ll, 255, 10);
 
-    serial_write_string("Kernel panic: ");
-    serial_write_string(s);
-    serial_write_string(" in ");
-    serial_write_string(fn);
-    serial_write_string(" at line ");
-    serial_write_string(ll);
-    serial_write_string("\n");
+    com1_serial_write("Kernel panic: ");
+    com1_serial_write(s);
+    com1_serial_write(" in ");
+    com1_serial_write(fn);
+    com1_serial_write(" at line ");
+    com1_serial_write(ll);
+    com1_serial_write("\n");
 
     asm_cli();
     asm_hlt();
