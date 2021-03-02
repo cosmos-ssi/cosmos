@@ -107,6 +107,15 @@ void serial_write(struct object* obj, const int8_t* c) {
     serial_write_string(c);
 }
 
+uint8_t serial_readchar(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    return 0;
+}
+void serial_writechar(struct object* obj, const int8_t c) {
+    ASSERT_NOT_NULL(obj);
+    serial_write_char(c);
+}
+
 void serial_register_device(uint8_t irq, uint64_t base) {
     /*
      * ISA serial port specific data
@@ -128,6 +137,8 @@ void serial_register_device(uint8_t irq, uint64_t base) {
      */
     struct objectinterface_serial* api = (struct objectinterface_serial*)kmalloc(sizeof(struct objectinterface_serial));
     api->write = &serial_write;
+    api->readchar = &serial_readchar;
+    api->writechar = serial_writechar;
     objectinstance->api = api;
     /*
      * register
