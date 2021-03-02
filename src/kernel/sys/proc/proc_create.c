@@ -15,10 +15,32 @@
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
 
+void proc_adjust_kernel_stack(pttentry cr3);
 pttentry proc_obtain_cr3();
 void proc_map_image(pttentry cr3, object_handle_t exe_obj);
 void proc_map_kernelspace(pttentry cr3);
 void* proc_initial_brk(object_handle_t exe_obj);
+
+void proc_adjust_kernel_stack(pttentry cr3) {
+    // Remove the page tables for the top eight megabytes in the address space
+    // specified by cr3, then replace it with 16 kb of a process kernel stack.
+
+    pttentry* pml4;
+    uint8_t i;
+    uint64_t stack_page;
+
+    // Clear the last PML4 entry--this is where the stack is, and we don't want
+    // to overwrite system page tables.
+    pml4 = CONV_PHYS_ADDR(PTT_EXTRACT_BASE(cr3));
+    pml4[511] = 0;
+
+    for (i = 0; i < 4; i++) {
+        stack_page = slab_allocate(1, PDT_INUSE);
+        map_page_at(stack_page, (void*)(DEFAULT_PROC_KERNEL_STACK_START + (i * PAGE_SIZE)), cr3, true);
+    }
+
+    return;
+}
 
 pid_t proc_create() {
     proc_info_t* proc_info;
@@ -54,7 +76,7 @@ void proc_map_image(pttentry cr3, object_handle_t exe_obj) {
 }
 
 void proc_map_kernelspace(pttentry cr3) {
-    uint64_t *sys_pml4, *proc_pml4;
+    pttentry *sys_pml4, *proc_pml4;
     uint16_t i;
 
     sys_pml4 = (uint64_t*)CONV_PHYS_ADDR(PTT_EXTRACT_BASE(system_cr3));
@@ -102,6 +124,8 @@ void setup_user_process(pid_t pid, object_handle_t exe_obj) {
     ASSERT_NOT_NULL(proc_table_get(pid)->brk);
 
     proc_map_kernelspace(proc_table_get(pid)->cr3);
+
+    proc_adjust_kernel_stack(proc_table_get(pid)->cr3);
 
     return;
 }
