@@ -119,7 +119,7 @@ void serial_irq_handler_for_device(struct object* obj) {
     uint64_t address = object_data->address;
     struct rs232_16550* comport = (struct rs232_16550*)address;
 
-    if (serial_is_read_ready(obj)) {
+    while (serial_is_read_ready(obj)) {
         uint8_t data = asm_in_b((uint64_t) & (comport->data));
 
         // echo the data
