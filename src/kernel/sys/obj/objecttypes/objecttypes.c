@@ -60,6 +60,7 @@ void objecttypes_init() {
     objecttypes_add(objecttype_new("bga", OBJECT_TYPE_BGA));
     objecttypes_add(objecttype_new("kernelmap", OBJECT_TYPE_KERNELMAP));
     objecttypes_add(objecttype_new("udp", OBJECT_TYPE_UDP));
+    objecttypes_add(objecttype_new("telnet", OBJECT_TYPE_TELNET));
 }
 
 uint32_t objecttypes_count() {

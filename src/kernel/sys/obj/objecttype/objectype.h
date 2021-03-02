@@ -57,6 +57,7 @@
 #define OBJECT_TYPE_VOH 0x2A              // voh0 objecttype_filesytem
 #define OBJECT_TYPE_BGA 0x2B              // bga0 objecttype_bga
 #define OBJECT_TYPE_KERNELMAP 0x2C        // kernelmap0 objecttype_kernelmap
+#define OBJECT_TYPE_TELNET 0x2D           // telnet0 objecttype_telnet
 
 struct object_type {
     uint8_t name[OBJECT_TYPE_MAX_NAME];

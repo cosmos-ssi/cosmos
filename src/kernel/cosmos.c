@@ -18,6 +18,7 @@
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_console.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
+#include <sys/obj/objectinterface/objectinterface_telnet.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/objects/objects.h>
@@ -157,6 +158,22 @@ void CosmOS() {
     object_handle_t test_exe_obj;
     test_exe_obj = object_executable_create_from_presentation(object_presentation_create(load_test_binary()));
     object_process_create(test_exe_obj);
+
+    /*
+    * start telnet
+    */
+    /*
+    struct object* telnet = objectmgr_find_object_by_name("telnet0");
+    kprintf("\n");
+    kprintf("***** Starting Kernel Telnet *****\n");
+    kprintf("\n");
+    if (0 != telnet) {
+        struct objectinterface_telnet* telnet_api = (struct objectinterface_telnet*)telnet->api;
+        (*telnet_api->start)(telnet);
+    } else {
+        kprintf("Unable to find telnet0\n");
+    }
+*/
     sched_switch(task_select());
 }
 
