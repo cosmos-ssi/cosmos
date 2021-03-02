@@ -87,7 +87,9 @@ int serial_is_read_ready(struct object* obj) {
 
 uint8_t serial_readchar(struct object* obj) {
     ASSERT_NOT_NULL(obj);
-    return 0;
+    ASSERT_NOT_NULL(obj->object_data);
+    struct serial_objectdata* object_data = (struct serial_objectdata*)obj->object_data;
+    return (uint8_t)(uint64_t)ringbuffer_consume(object_data->buffer);
 }
 
 int serial_is_transmit_empty(struct object* obj) {
@@ -121,6 +123,7 @@ void serial_irq_handler_for_device(struct object* obj) {
 
     while (serial_is_read_ready(obj)) {
         uint8_t data = asm_in_b((uint64_t) & (comport->data));
+        ringbuffer_add(object_data->buffer, (void*)(uint64_t)data);
 
         // echo the data
         serial_writechar(obj, data);
