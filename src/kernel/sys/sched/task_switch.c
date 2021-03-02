@@ -4,3 +4,7 @@
  * Released under the stated terms in the file LICENSE           *
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
+
+void switch_to_task() {
+    return;
+}
