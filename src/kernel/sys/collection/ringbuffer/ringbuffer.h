@@ -25,5 +25,6 @@ void* ringbuffer_consume(struct ringbuffer* buffer);
 struct ringbuffer* ringbuffer_new(uint16_t size);
 void ringbuffer_delete(struct ringbuffer* buffer);
 uint16_t ringbuffer_size(struct ringbuffer* buffer);
+uint16_t ringbuffer_avail(struct ringbuffer* buffer);
 
 #endif
