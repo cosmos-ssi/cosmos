@@ -19,6 +19,7 @@ void proc_adjust_kernel_stack(pttentry cr3);
 pttentry proc_obtain_cr3();
 void proc_map_image(pttentry cr3, object_handle_t exe_obj);
 void proc_map_kernelspace(pttentry cr3);
+void proc_map_stack(pttentry cr3);
 void* proc_initial_brk(object_handle_t exe_obj);
 
 void proc_adjust_kernel_stack(pttentry cr3) {
@@ -85,6 +86,11 @@ void proc_map_kernelspace(pttentry cr3) {
     for (i = 256; i < 512; i++) {
         proc_pml4[i] = sys_pml4[i];
     }
+    return;
+}
+
+void proc_map_stack(pttentry cr3) {
+
     return;
 }
 
