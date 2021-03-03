@@ -10,10 +10,10 @@ UNAME := $(shell uname)
 ifeq ($(UNAME),Darwin)
 	MCOPY=mcopy
 	MMD=mmd
-	DOSFSTOOLS_MKFS_MSDOS=/usr/local/Cellar/dosfstools/4.2/sbin/mkfs.msdos
+	MFORMAT=mformat
 else
 	MCOPY=mcopy
 	MMD=mmd
-	DOSFSTOOLS_MKFS_MSDOS=mkfs.msdos
+	MFORMAT=mformat
 endif
 

@@ -30,8 +30,6 @@ CosmOS requires:
 
 `brew install mtools`
 
-`brew install dosfstools`
-
 OS X includes Clang.
 
 ## Ubuntu installation
@@ -53,8 +51,6 @@ On Ubuntu apt can be used on Linux to install the prerequisites
 `sudo apt install iwyu`
 
 `sudo apt install mtools`
-
-`sudo apt install dosfstools`
 
 # Building
 
