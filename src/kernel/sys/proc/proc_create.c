@@ -141,5 +141,9 @@ void setup_user_process(pid_t pid, object_handle_t exe_obj) {
 
     proc_map_stack(proc_table_get(pid)->cr3);
 
+    // No need to clear registers; struct is cleared on allocation.  So we just set rsp and rbp.
+    proc_table_get(pid)->rsp = USER_HALF_MAX_ADDR + 1;
+    proc_table_get(pid)->rbp = USER_HALF_MAX_ADDR + 1;
+
     return;
 }
