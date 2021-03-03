@@ -8,10 +8,10 @@
 # detect build platform
 UNAME := $(shell uname)
 ifeq ($(UNAME),Darwin)
-	MTOOLS=/usr/local/bin/mtools
+	MCOPY=mcopy
 	DOSFSTOOLS_MKFS_MSDOS=/usr/local/Cellar/dosfstools/4.2/sbin/mkfs.msdos
 else
-	MTOOLS=/usr/local/bin/mtools
+	MCOPY=mcopy
 	DOSFSTOOLS_MKFS_MSDOS=mkfs.msdos
 endif
 
