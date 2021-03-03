@@ -12,6 +12,6 @@ ifeq ($(UNAME),Darwin)
 	DOSFSTOOLS_MKFS_MSDOS=/usr/local/Cellar/dosfstools/4.2/sbin/mkfs.msdos
 else
 	MTOOLS=/usr/local/bin/mtools
-	DOSFSTOOLS_MKFS_MSDOS=/usr/local/Cellar/dosfstools/4.2/sbin/mkfs.msdos
+	DOSFSTOOLS_MKFS_MSDOS=mkfs.msdos
 endif
 
