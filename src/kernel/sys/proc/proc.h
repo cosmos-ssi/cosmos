@@ -76,7 +76,7 @@ typedef struct proc_info_T {
     xmm_reg xmm13;
     xmm_reg xmm14;
     xmm_reg xmm15;
-} proc_info_t;
+} __attribute__((packed)) proc_info_t;
 
 extern dtable proc_table;
 extern uint64_t next_pid;

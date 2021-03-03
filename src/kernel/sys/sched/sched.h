@@ -80,4 +80,7 @@ linkedlist* task_find(pid_t pid);
 // task_select.c
 linkedlist* task_select();
 
+// task_switch.c
+void switch_to_task(linkedlist* task);
+
 #endif

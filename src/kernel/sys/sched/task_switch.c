@@ -5,6 +5,18 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-void switch_to_task() {
+#include <sys/collection/linkedlist/linkedlist.h>
+#include <sys/objects/objects.h>
+#include <sys/proc/proc.h>
+#include <sys/sched/sched.h>
+
+void switch_to_task(linkedlist* task) {
+    uint64_t proc_obj;
+    pid_t pid;
+    pttentry cr3;
+
+    pid = TASK_DATA(task)->pid;
+    proc_obj = TASK_DATA(task)->obj;
+
     return;
 }
