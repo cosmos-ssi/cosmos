@@ -6,7 +6,6 @@
 // ****************************************************************
 
 #include <cosmos_logical_objs.h>
-#include <obj/logical/console/serial_console.h>
 #include <obj/logical/ethernet/ethernet.h>
 #include <obj/logical/fs/initrd/initrd.h>
 #include <obj/logical/fs/objfs/objfs.h>
@@ -23,7 +22,6 @@
 #include <obj/logical/tick/tick.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/object/object.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <types.h>
 

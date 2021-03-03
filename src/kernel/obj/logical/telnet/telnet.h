@@ -8,8 +8,6 @@
 #ifndef _TELNET_H
 #define _TELNET_H
 
-#include <types.h>
-
 struct object;
 
 struct object* telnet_attach(struct object* serial_device);

@@ -19,6 +19,7 @@
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/x86-64/idt/irq.h>
+#include <types.h>
 
 #define SERIAL_RINGBUFFER_SIZE 255
 

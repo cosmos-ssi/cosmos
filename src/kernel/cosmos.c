@@ -20,7 +20,6 @@
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/obj/objectinterface/objectinterface_telnet.h>
 #include <sys/obj/objectmgr/objectmgr.h>
-#include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>

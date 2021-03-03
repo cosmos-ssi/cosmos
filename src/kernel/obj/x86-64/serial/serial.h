@@ -8,8 +8,6 @@
 #ifndef _SERIAL_H
 #define _SERIAL_H
 
-#include <types.h>
-
 void serial_objectmgr_register_objects();
 
 #endif

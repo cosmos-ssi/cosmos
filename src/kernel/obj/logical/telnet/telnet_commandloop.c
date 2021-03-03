@@ -11,6 +11,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_serial.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>

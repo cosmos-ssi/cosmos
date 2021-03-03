@@ -7,13 +7,11 @@
 
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
 #include <sys/gui/gui.h>
 #include <sys/gui/window.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/video/bmp.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/video/canvas.h>
 #include <sys/video/psf.h>
 
