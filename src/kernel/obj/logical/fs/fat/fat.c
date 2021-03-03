@@ -19,7 +19,7 @@
 
 // https://wiki.osdev.org/FAT
 
-// Extended fat32 stuff=
+// Extended fat32 stuff
 struct fat_extBS_32 {
     uint32_t table_size_32;
     uint16_t extended_flags;
