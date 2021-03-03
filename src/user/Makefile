@@ -33,6 +33,8 @@ $(COSMOS_ROOT_IMAGE):
 	$(DD) if=/dev/zero of=$(COSMOS_ROOT_IMAGE) bs=32768 count=32768
 	$(DOSFSTOOLS_MKFS_MSDOS) -F 16 $(COSMOS_ROOT_IMAGE)
 	$(MCOPY) -s -i $(COSMOS_ROOT_IMAGE) fs/rootfs/* ::/
+	$(MMD) -i $(COSMOS_ROOT_IMAGE) lib
+	$(MCOPY) -s -i $(COSMOS_ROOT_IMAGE) lib/* ::/lib
 	mv $(COSMOS_ROOT_IMAGE) ../img/
 
 clean:
