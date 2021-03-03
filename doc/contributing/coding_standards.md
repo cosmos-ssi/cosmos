@@ -36,6 +36,8 @@ To scan for problems:
 To automatically fix problems (careful, you should commit first in case this goes bad):
 `make header-fix`
 
+IWYU is built on Make, which means it only acts on files which have changed. Since some code changes can impact headers in other files, it's a best practice to run `make clean; make header-check` before you commit.
+
 ## IWYU Mappings
 
 IWYU uses hard-coded defaults for common libc symbols, which we need to override manually for a freestanding build. This is done via the `iwyu_mapping.imp` file,
