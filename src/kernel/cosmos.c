@@ -153,6 +153,9 @@ void CosmOS() {
     test_exe_obj = object_executable_create_from_presentation(object_presentation_create(load_test_binary()));
     object_process_create(test_exe_obj);
 
+    // we never get here currently... well.... eventually the telnet over serial needs to be a on a thread
+    sched_switch(task_select());
+
     /*
     * start telnet
     */
@@ -167,9 +170,6 @@ void CosmOS() {
     } else {
         kprintf("Unable to find telnet0\n");
     }
-
-    // we never get here currently... well.... eventually the telnet over serial needs to be a on a thread
-    sched_switch(task_select());
 }
 
 filesystem_node_t* load_test_binary() {

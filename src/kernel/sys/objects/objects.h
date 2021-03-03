@@ -45,6 +45,8 @@ typedef struct object_t {
     char* name;
 
     void* data;
+
+    object_handle_t handle;
 } object_t;
 
 typedef struct object_executable_t {
