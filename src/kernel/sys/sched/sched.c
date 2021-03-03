@@ -28,6 +28,7 @@ void sched_switch(linkedlist* task) {
             OBJECT_DATA(body_obj, object_kernel_work_t)->work_func(OBJECT_DATA(body_obj, object_kernel_work_t)->arg);
             break;
         case OBJECT_EXECUTABLE:
+            //switch_to_task();
             break;
         default:
             PANIC("Invalid object type!")
