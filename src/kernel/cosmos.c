@@ -148,6 +148,7 @@ void CosmOS() {
     idle_kernel_work = object_kernel_work_create(&kernel_idle, NULL);
     idle_process = object_process_create(idle_kernel_work);
     idle_task = object_task_create(idle_process);
+    sched_set_state(idle_task, SCHED_LASTRESORT);
 
     object_handle_t test_exe;
     object_handle_t test_process;
