@@ -9,6 +9,7 @@
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
+#include <types.h>
 
 void switch_to_task(linkedlist* task) {
     uint64_t proc_obj;
