@@ -9,6 +9,19 @@
 #include <sys/panic/panic.h>
 #include <sys/sched/sched.h>
 
+void sched_set_state(object_handle_t obj, scheduler_state_t state) {
+    linkedlist* task;
+
+    if (object_type_(obj) != OBJECT_TASK) {
+        PANIC("Invalid object type!");
+    }
+
+    task = OBJECT_DATA(obj, object_task_t)->sched_task;
+    TASK_DATA(task)->state = state;
+
+    return;
+}
+
 void sched_switch(linkedlist* task) {
     object_handle_t proc_obj, body_obj;
 

@@ -149,9 +149,13 @@ void CosmOS() {
     idle_process = object_process_create(idle_kernel_work);
     idle_task = object_task_create(idle_process);
 
-    object_handle_t test_exe_obj;
-    test_exe_obj = object_executable_create_from_presentation(object_presentation_create(load_test_binary()));
-    object_process_create(test_exe_obj);
+    object_handle_t test_exe;
+    object_handle_t test_process;
+    object_handle_t test_task;
+
+    test_exe = object_executable_create_from_presentation(object_presentation_create(load_test_binary()));
+    test_process = object_process_create(test_exe);
+    test_task = object_task_create(test_process);
 
     // we never get here currently... well.... eventually the telnet over serial needs to be a on a thread
     sched_switch(task_select());
