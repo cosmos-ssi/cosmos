@@ -63,6 +63,7 @@ extern linkedlist*** current_task;
 extern linkedlist*** task_list;
 
 // sched.c
+void sched_set_state(object_handle_t obj, scheduler_state_t state);
 void sched_switch();
 
 // sched_add.c
@@ -77,7 +78,13 @@ void sched_terminate();
 // tasklist.c
 linkedlist* task_find(pid_t pid);
 
+// task_jump.asm
+void task_jump(proc_info_t* proc);
+
 // task_select.c
 linkedlist* task_select();
+
+// task_switch.c
+void switch_to_task(linkedlist* task);
 
 #endif

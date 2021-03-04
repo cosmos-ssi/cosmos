@@ -16,7 +16,7 @@ linkedlist* task_find(pid_t pid) {
     proc_info_t* p;
     linkedlist* cur;
 
-    p = dtable_get(proc_table, pid);
+    p = proc_table_get(pid);
 
     cpu = p->cpu;
     core = p->core;

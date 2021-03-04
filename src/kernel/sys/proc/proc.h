@@ -28,7 +28,7 @@ typedef uint64_t xmm_reg[2];
 
 typedef uint64_t pid_t;
 
-typedef struct proc_info_T {
+typedef struct proc_info_t {
     pid_t pid;
     pttentry cr3;
     void* brk;
@@ -76,7 +76,7 @@ typedef struct proc_info_T {
     xmm_reg xmm13;
     xmm_reg xmm14;
     xmm_reg xmm15;
-} proc_info_t;
+} __attribute__((packed)) proc_info_t;
 
 extern dtable proc_table;
 extern uint64_t next_pid;

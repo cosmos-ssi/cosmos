@@ -147,10 +147,15 @@ void CosmOS() {
     idle_kernel_work = object_kernel_work_create(&kernel_idle, NULL);
     idle_process = object_process_create(idle_kernel_work);
     idle_task = object_task_create(idle_process);
+    sched_set_state(idle_task, SCHED_LASTRESORT);
 
-    object_handle_t test_exe_obj;
-    test_exe_obj = object_executable_create_from_presentation(object_presentation_create(load_test_binary()));
-    object_process_create(test_exe_obj);
+    object_handle_t test_exe;
+    object_handle_t test_process;
+    object_handle_t test_task;
+
+    test_exe = object_executable_create_from_presentation(object_presentation_create(load_test_binary()));
+    test_process = object_process_create(test_exe);
+    test_task = object_task_create(test_process);
 
     /*
     * start telnet

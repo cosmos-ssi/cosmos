@@ -30,8 +30,10 @@ object_handle_t object_create(object_types_t type, void* object_data) {
      */
     dtable_set(object_table, object_table_next_idx - 1, obj);
 
-    // return value BEFORE increment
-    return object_table_next_idx++;
+    // object knows its own handle; we want the value BEFORE increment
+    obj->handle = object_table_next_idx++;
+
+    return obj->handle;
 }
 
 object_types_t object_type_(object_handle_t obj) {

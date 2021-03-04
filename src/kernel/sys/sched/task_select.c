@@ -56,7 +56,7 @@ linkedlist* task_select() {
     // If there are no schedulable tasks, then best_candidate will still be the
     // current process.  So we have to make sure it's schedulable; if not, we
     // return the idle process.
-    if ((TASK_DATA(best_candidate)->state != SCHED_SLEEPING) ||
+    if ((TASK_DATA(best_candidate)->state != SCHED_SLEEPING) &&
         (TASK_DATA(best_candidate)->state != SCHED_LASTRESORT)) {
         return idle;
     }
