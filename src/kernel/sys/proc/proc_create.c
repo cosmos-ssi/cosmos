@@ -129,6 +129,7 @@ void setup_user_process(pid_t pid, object_handle_t exe_obj) {
 
     proc_table_get(pid)->cr3 = proc_obtain_cr3();
     ASSERT_NOT_NULL(proc_table_get(pid)->cr3);
+    kprintf("cr3: 0x%llX\n", proc_table_get(pid)->cr3);
 
     proc_map_image(proc_table_get(pid)->cr3, exe_obj);
 
@@ -147,7 +148,7 @@ void setup_user_process(pid_t pid, object_handle_t exe_obj) {
 
     // and set RFLAGS
     // Bit 2 is reserved must be one, and EI flag is set; all others unset/0
-    proc_table_get(pid)->rflags = 0x000000020002;
+    proc_table_get(pid)->rflags = 0x000000000202;
 
     proc_table_get(pid)->rip = LOAD_BASE_VIRTUAL;
     return;
