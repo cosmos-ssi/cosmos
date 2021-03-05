@@ -21,7 +21,7 @@
 // https://wiki.osdev.org/FAT
 
 struct fat_objectdata {
-    struct object* partition_objice;
+    struct object* partition_object;
     struct fat_fs_parameters fs_parameters;
 };
 
@@ -103,8 +103,8 @@ uint8_t fat_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
-    // fat_read_fs_parameters(object_data->partition_objice, &(object_data->fs_parameters));
-    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
+    //fat_read_fs_parameters(object_data->partition_object, &(object_data->fs_parameters));
+    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     return 1;
 }
 
@@ -115,16 +115,16 @@ uint8_t fat_uninit(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
-    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
+    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     kfree(obj->api);
     kfree(obj->object_data);
     return 1;
 }
 
-struct object* fat_attach(struct object* partition_objice) {
-    ASSERT_NOT_NULL(partition_objice);
+struct object* fat_attach(struct object* partition_object) {
+    ASSERT_NOT_NULL(partition_object);
     // basically the device needs to implement deviceapi_block
-    ASSERT(1 == blockutil_is_block_object(partition_objice));
+    ASSERT(1 == blockutil_is_block_object(partition_object));
 
     /*
      * register device
@@ -147,7 +147,7 @@ struct object* fat_attach(struct object* partition_objice) {
      * device data
      */
     struct fat_objectdata* object_data = (struct fat_objectdata*)kmalloc(sizeof(struct fat_objectdata));
-    object_data->partition_objice = partition_objice;
+    object_data->partition_object = partition_object;
     objectinstance->object_data = object_data;
 
     /*
@@ -157,7 +157,7 @@ struct object* fat_attach(struct object* partition_objice) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_object_refcount(partition_objice);
+        objectmgr_increment_object_refcount(partition_object);
         /*
         * return device
         */
@@ -177,7 +177,7 @@ void fat_detach(struct object* obj) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(object_data->partition_objice);
+    objectmgr_decrement_object_refcount(object_data->partition_object);
     /*
     * detach
     */

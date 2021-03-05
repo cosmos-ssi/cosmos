@@ -72,7 +72,7 @@ struct cfs_blockmap {
 } __attribute__((packed));
 
 struct cfs_objectdata {
-    struct object* partition_objice;
+    struct object* partition_object;
 } __attribute__((packed));
 
 /*
@@ -131,7 +131,7 @@ void cfs_format(struct object* obj) {
     ASSERT_NOT_NULL(obj->object_data);
     struct cfs_objectdata* object_data = (struct cfs_objectdata*)obj->object_data;
 
-    uint32_t total_sectors_blockmap = cfs_total_sectormap_sectors(object_data->partition_objice);
+    uint32_t total_sectors_blockmap = cfs_total_sectormap_sectors(object_data->partition_object);
     // kprintf("Blockmap sectors %llu\n",total_sectors_blockmap);
     /*
      * superblock
@@ -143,14 +143,14 @@ void cfs_format(struct object* obj) {
     superblock.primary_data_space = 2;
     superblock.primary_presentation_space = 3;
     superblock.primary_group_directory = 4;
-    cfs_write_superblock(object_data->partition_objice, &superblock);
+    cfs_write_superblock(object_data->partition_object, &superblock);
     /*
      * blockmaps.  first one at lba 1.
      */
     for (uint32_t i = 0; i < total_sectors_blockmap; i++) {
         struct cfs_blockmap blockmap;
         memset((uint8_t*)&blockmap, 0, sizeof(struct cfs_superblock));
-        cfs_write_blockmap(object_data->partition_objice, &blockmap, 1 + i);
+        cfs_write_blockmap(object_data->partition_object, &blockmap, 1 + i);
     }
 }
 
@@ -161,7 +161,7 @@ uint8_t cfs_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct cfs_objectdata* object_data = (struct cfs_objectdata*)obj->object_data;
-    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
+    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     return 1;
 }
 
@@ -173,15 +173,15 @@ uint8_t cfs_uninit(struct object* obj) {
     ASSERT_NOT_NULL(obj->object_data);
     struct cfs_objectdata* object_data = (struct cfs_objectdata*)obj->object_data;
 
-    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
+    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     kfree(obj->api);
     kfree(obj->object_data);
     return 1;
 }
 
-struct object* cfs_attach(struct object* partition_objice) {
-    ASSERT_NOT_NULL(partition_objice);
-    ASSERT(1 == blockutil_is_block_object(partition_objice));
+struct object* cfs_attach(struct object* partition_object) {
+    ASSERT_NOT_NULL(partition_object);
+    ASSERT(1 == blockutil_is_block_object(partition_object));
 
     /*
      * register device
@@ -204,7 +204,7 @@ struct object* cfs_attach(struct object* partition_objice) {
      * device data
      */
     struct cfs_objectdata* object_data = (struct cfs_objectdata*)kmalloc(sizeof(struct cfs_objectdata));
-    object_data->partition_objice = partition_objice;
+    object_data->partition_object = partition_object;
     objectinstance->object_data = object_data;
     /*
      * register
@@ -213,7 +213,7 @@ struct object* cfs_attach(struct object* partition_objice) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_object_refcount(partition_objice);
+        objectmgr_increment_object_refcount(partition_object);
         /*
         * return device
         */
@@ -233,7 +233,7 @@ void cfs_detach(struct object* obj) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(object_data->partition_objice);
+    objectmgr_decrement_object_refcount(object_data->partition_object);
     /*
     * detach
     */

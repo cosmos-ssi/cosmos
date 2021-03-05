@@ -22,7 +22,7 @@
 #include <types.h>
 
 struct tfs_objectdata {
-    struct object* partition_objice;
+    struct object* partition_object;
 } __attribute__((packed));
 
 /*
@@ -36,15 +36,15 @@ void tfs_format(struct object* obj) {
     /*
      * figure out how many map blocks we need
      */
-    uint32_t number_map_blocks = tfs_map_block_count(object_data->partition_objice);
+    uint32_t number_map_blocks = tfs_map_block_count(object_data->partition_object);
     /*
      * create superblock
      */
     struct tfs_superblock_block superblock;
     memset((uint8_t*)&superblock, 0, sizeof(struct tfs_superblock_block));
     superblock.magic = TFS_MAGIC_SUPERBLOCK;
-    superblock.blocks_size = (uint64_t)blockutil_get_sector_size(object_data->partition_objice);
-    superblock.blocks_count = (uint64_t)blockutil_get_sector_count(object_data->partition_objice);
+    superblock.blocks_size = (uint64_t)blockutil_get_sector_size(object_data->partition_object);
+    superblock.blocks_count = (uint64_t)blockutil_get_sector_count(object_data->partition_object);
     superblock.number_map_blocks = number_map_blocks;
     superblock.root_dir = number_map_blocks + 1;  // sector one, since sector zero is the super-block
     kprintf("blocks_count %llu\n", superblock.blocks_count);
@@ -53,14 +53,14 @@ void tfs_format(struct object* obj) {
     /*
      * write superblock
      */
-    tfs_write_superblock(object_data->partition_objice, &superblock);
+    tfs_write_superblock(object_data->partition_object, &superblock);
     /*
      * create & write map blocks
      */
     for (uint32_t i = 0; i < number_map_blocks; i++) {
         struct tfs_map_block map_block;
         memset((uint8_t*)&map_block, 0, sizeof(struct tfs_map_block));
-        tfs_write_map_block(object_data->partition_objice, &map_block, i + 1);
+        tfs_write_map_block(object_data->partition_object, &map_block, i + 1);
         //    kprintf("map block: %llu\n",i+1);
     }
     /*
@@ -72,7 +72,7 @@ void tfs_format(struct object* obj) {
     /*
      * write root dir
      */
-    tfs_write_dir_block(object_data->partition_objice, &root_dir_block, superblock.root_dir);
+    tfs_write_dir_block(object_data->partition_object, &root_dir_block, superblock.root_dir);
     kprintf("dir block: %llu\n", superblock.root_dir);
 }
 
@@ -126,7 +126,7 @@ uint8_t tfs_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct tfs_objectdata* object_data = (struct tfs_objectdata*)obj->object_data;
-    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
+    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     return 1;
 }
 
@@ -138,20 +138,20 @@ uint8_t tfs_uninit(struct object* obj) {
     ASSERT_NOT_NULL(obj->object_data);
 
     struct tfs_objectdata* object_data = (struct tfs_objectdata*)obj->object_data;
-    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
+    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     kfree(obj->api);
     kfree(obj->object_data);
     return 1;
 }
 
-struct object* tfs_attach(struct object* partition_objice) {
+struct object* tfs_attach(struct object* partition_object) {
     ASSERT(sizeof(struct tfs_superblock_block) == TFS_BLOCK_SIZE);
     ASSERT(sizeof(struct tfs_dir_block) == TFS_BLOCK_SIZE);
     ASSERT(sizeof(struct tfs_file_block) == TFS_BLOCK_SIZE);
     ASSERT(sizeof(struct tfs_file_allocation_block) == TFS_BLOCK_SIZE);
     ASSERT(sizeof(struct tfs_map_block) == TFS_BLOCK_SIZE);
-    ASSERT_NOT_NULL(partition_objice);
-    ASSERT(1 == blockutil_is_block_object(partition_objice));
+    ASSERT_NOT_NULL(partition_object);
+    ASSERT(1 == blockutil_is_block_object(partition_object));
     /*
      * register device
      */
@@ -173,7 +173,7 @@ struct object* tfs_attach(struct object* partition_objice) {
      * device data
      */
     struct tfs_objectdata* object_data = (struct tfs_objectdata*)kmalloc(sizeof(struct tfs_objectdata));
-    object_data->partition_objice = partition_objice;
+    object_data->partition_object = partition_object;
     objectinstance->object_data = object_data;
 
     /*
@@ -183,7 +183,7 @@ struct object* tfs_attach(struct object* partition_objice) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_object_refcount(partition_objice);
+        objectmgr_increment_object_refcount(partition_object);
         /*
         * return device
         */
@@ -203,7 +203,7 @@ void tfs_detach(struct object* obj) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(object_data->partition_objice);
+    objectmgr_decrement_object_refcount(object_data->partition_object);
     /*
     * detach
     */
