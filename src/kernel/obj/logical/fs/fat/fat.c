@@ -8,6 +8,7 @@
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/fat/fat.h>
 #include <obj/logical/fs/fat/fat_support.h>
+#include <obj/logical/fs/node_util.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
@@ -23,6 +24,7 @@
 struct fat_objectdata {
     struct object* partition_object;
     struct fat_fs_parameters fs_parameters;
+    struct filesystem_node* root_node;
 };
 
 /*
@@ -103,6 +105,7 @@ uint8_t fat_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0);
     fat_read_fs_parameters(object_data->partition_object, &(object_data->fs_parameters));
     fat_dump_fat_fs_parameters(&(object_data->fs_parameters));
     kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
@@ -124,8 +127,9 @@ uint8_t fat_uninit(struct object* obj) {
 
 struct filesystem_node* fat_filesystem_get_root_node(struct object* filesystem_obj) {
     ASSERT_NOT_NULL(filesystem_obj);
-    PANIC("Not Implemented");
-    return 0;
+    ASSERT_NOT_NULL(filesystem_obj->object_data);
+    struct fat_objectdata* object_data = (struct fat_objectdata*)filesystem_obj->object_data;
+    return object_data->root_node;
 }
 
 uint32_t fat_filesystem_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
@@ -191,6 +195,7 @@ struct object* fat_attach(struct object* partition_object) {
      */
     struct fat_objectdata* object_data = (struct fat_objectdata*)kmalloc(sizeof(struct fat_objectdata));
     object_data->partition_object = partition_object;
+    object_data->root_node = 0;
     objectinstance->object_data = object_data;
 
     /*
@@ -206,6 +211,7 @@ struct object* fat_attach(struct object* partition_object) {
         */
         return objectinstance;
     } else {
+        kfree(object_data->root_node);
         kfree(object_data);
         kfree(api);
         kfree(objectinstance);
