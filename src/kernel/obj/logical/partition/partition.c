@@ -63,15 +63,16 @@ uint8_t partition_uninit(struct object* obj) {
 uint16_t partition_sector_size(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
+
     struct partition_objectdata* object_data = (struct partition_objectdata*)obj->object_data;
-    return partition_table_util_sector_size(obj, object_data->partition_index);
+    return partition_table_util_sector_size(object_data->partition_table_objice, object_data->partition_index);
 }
 
 uint32_t partition_total_size(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct partition_objectdata* object_data = (struct partition_objectdata*)obj->object_data;
-    return partition_table_util_total_size(obj, object_data->partition_index);
+    return partition_table_util_total_size(object_data->partition_table_objice, object_data->partition_index);
 }
 
 uint32_t partition_read_sectors(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
@@ -81,7 +82,8 @@ uint32_t partition_read_sectors(struct object* obj, uint8_t* data, uint32_t data
 
     ASSERT_NOT_NULL(obj->object_data);
     struct partition_objectdata* object_data = (struct partition_objectdata*)obj->object_data;
-    return partition_table_util_read_sectors(obj, object_data->partition_index, data, data_size, start_lba);
+    return partition_table_util_read_sectors(object_data->partition_table_objice, object_data->partition_index, data,
+                                             data_size, start_lba);
 }
 
 uint32_t partition_write_sectors(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
@@ -91,7 +93,8 @@ uint32_t partition_write_sectors(struct object* obj, uint8_t* data, uint32_t dat
 
     ASSERT_NOT_NULL(obj->object_data);
     struct partition_objectdata* object_data = (struct partition_objectdata*)obj->object_data;
-    return partition_table_util_write_sectors(obj, object_data->partition_index, data, data_size, start_lba);
+    return partition_table_util_write_sectors(object_data->partition_table_objice, object_data->partition_index, data,
+                                              data_size, start_lba);
 }
 
 struct object* partition_attach(struct object* partition_table_objice, uint8_t partition_index) {
