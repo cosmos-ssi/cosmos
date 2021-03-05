@@ -61,6 +61,8 @@ void objecttypes_init() {
     objecttypes_add(objecttype_new("kernelmap", OBJECT_TYPE_KERNELMAP));
     objecttypes_add(objecttype_new("udp", OBJECT_TYPE_UDP));
     objecttypes_add(objecttype_new("telnet", OBJECT_TYPE_TELNET));
+    objecttypes_add(objecttype_new("user", OBJECT_TYPE_USER));
+    objecttypes_add(objecttype_new("group", OBJECT_TYPE_GROUP));
 }
 
 uint32_t objecttypes_count() {
