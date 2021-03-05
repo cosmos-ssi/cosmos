@@ -122,6 +122,41 @@ uint8_t fat_uninit(struct object* obj) {
     return 1;
 }
 
+struct filesystem_node* fat_filesystem_get_root_node(struct object* filesystem_obj) {
+    ASSERT_NOT_NULL(filesystem_obj);
+    PANIC("Not Implemented");
+    return 0;
+}
+
+uint32_t fat_filesystem_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
+    PANIC("Not Implemented");
+    return 0;
+}
+
+uint32_t fat_filesystem_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
+    PANIC("Not Implemented");
+    return 0;
+}
+
+void fat_filesystem_open(struct filesystem_node* fs_node) {
+    PANIC("Not Implemented");
+}
+void fat_filesystem_close(struct filesystem_node* fs_node) {}
+
+struct filesystem_node* fat_filesystem_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
+    PANIC("Not Implemented");
+    return 0;
+}
+
+void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
+    PANIC("Not Implemented");
+}
+
+uint64_t fat_filesystem_size(struct filesystem_node* fs_node) {
+    PANIC("Not Implemented");
+    return 0;
+}
+
 struct object* fat_attach(struct object* partition_object) {
     ASSERT_NOT_NULL(partition_object);
     // basically the device needs to implement deviceapi_block
@@ -142,7 +177,14 @@ struct object* fat_attach(struct object* partition_object) {
     struct objectinterface_filesystem* api =
         (struct objectinterface_filesystem*)kmalloc(sizeof(struct objectinterface_filesystem));
     memzero((uint8_t*)api, sizeof(struct objectinterface_filesystem));
-    //  api->format = &fat_format;
+    api->close = &fat_filesystem_close;
+    api->find_id = &fat_filesystem_find_node_by_id;
+    api->list = &fat_filesystem_list_directory;
+    api->open = &fat_filesystem_open;
+    api->read = &fat_filesystem_read;
+    api->root = &fat_filesystem_get_root_node;
+    api->size = &fat_filesystem_size;
+    api->write = &fat_filesystem_write;
     objectinstance->api = api;
     /*
      * device data
