@@ -43,6 +43,8 @@ task_jump:
          ; now we can move rdi into place
          mov rdi, [rdi + (8 * 10)]
 
+         jmp [rel jmpaddr]
+
          jmp $
 
          jmpaddr: dq 0
