@@ -31,8 +31,8 @@ jobs:
       - name: lint
         run: cd src;make lint
 
-      - name: header-check
-        run: cd src;make header-check
+#      - name: header-check
+#        run: cd src;make header-check
 
       - name: build
         run: cd src;make
@@ -51,8 +51,8 @@ jobs:
       - name: lint
         run: cd src;make lint
 
-      - name: header-check
-        run: cd src;make header-check
+ #     - name: header-check
+ #       run: cd src;make header-check
 
       - name: build
         run: cd src;make
