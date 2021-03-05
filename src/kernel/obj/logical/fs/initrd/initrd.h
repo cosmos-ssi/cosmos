@@ -19,7 +19,7 @@ struct object;
 #define INITRD_NAME_SIZE 64
 #define INITRD_MAX_FILES 64
 
-struct object* initrd_attach(struct object* partition_objice, uint32_t lba);
+struct object* initrd_attach(struct object* partition_object, uint32_t lba);
 void initrd_detach(struct object* obj);
 
 uint64_t initrd_lba();

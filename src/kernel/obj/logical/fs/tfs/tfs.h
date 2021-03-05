@@ -10,7 +10,7 @@
 
 struct object;
 
-struct object* tfs_attach(struct object* partition_objice);
+struct object* tfs_attach(struct object* partition_object);
 void tfs_detach(struct object* obj);
 
 #endif

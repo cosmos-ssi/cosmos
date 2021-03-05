@@ -19,7 +19,7 @@
 #include <sys/string/mem.h>
 
 struct partition_objectdata {
-    struct object* partition_table_objice;
+    struct object* partition_table_object;
     uint8_t type[64];  // type string
     uint8_t partition_index;
 } __attribute__((packed));
@@ -33,10 +33,10 @@ uint8_t partition_init(struct object* obj) {
     struct partition_objectdata* object_data = (struct partition_objectdata*)obj->object_data;
 
     struct objectinterface_part_table* pt_api =
-        (struct objectinterface_part_table*)object_data->partition_table_objice->api;
-    (*pt_api->type)(object_data->partition_table_objice, object_data->partition_index, (object_data->type), 64);
+        (struct objectinterface_part_table*)object_data->partition_table_object->api;
+    (*pt_api->type)(object_data->partition_table_object, object_data->partition_index, (object_data->type), 64);
 
-    kprintf("Init %s on %s index %llu of type %s (%s)\n", obj->description, object_data->partition_table_objice->name,
+    kprintf("Init %s on %s index %llu of type %s (%s)\n", obj->description, object_data->partition_table_object->name,
             object_data->partition_index, object_data->type, obj->name);
 
     // attach fs
@@ -51,7 +51,7 @@ uint8_t partition_uninit(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct partition_objectdata* object_data = (struct partition_objectdata*)obj->object_data;
-    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_table_objice->name, obj->name);
+    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_table_object->name, obj->name);
     // detach fs
     fsutil_detach_fs(obj);
 
@@ -63,15 +63,16 @@ uint8_t partition_uninit(struct object* obj) {
 uint16_t partition_sector_size(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
+
     struct partition_objectdata* object_data = (struct partition_objectdata*)obj->object_data;
-    return partition_table_util_sector_size(obj, object_data->partition_index);
+    return partition_table_util_sector_size(object_data->partition_table_object, object_data->partition_index);
 }
 
 uint32_t partition_total_size(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct partition_objectdata* object_data = (struct partition_objectdata*)obj->object_data;
-    return partition_table_util_total_size(obj, object_data->partition_index);
+    return partition_table_util_total_size(object_data->partition_table_object, object_data->partition_index);
 }
 
 uint32_t partition_read_sectors(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
@@ -81,7 +82,8 @@ uint32_t partition_read_sectors(struct object* obj, uint8_t* data, uint32_t data
 
     ASSERT_NOT_NULL(obj->object_data);
     struct partition_objectdata* object_data = (struct partition_objectdata*)obj->object_data;
-    return partition_table_util_read_sectors(obj, object_data->partition_index, data, data_size, start_lba);
+    return partition_table_util_read_sectors(object_data->partition_table_object, object_data->partition_index, data,
+                                             data_size, start_lba);
 }
 
 uint32_t partition_write_sectors(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t start_lba) {
@@ -91,12 +93,13 @@ uint32_t partition_write_sectors(struct object* obj, uint8_t* data, uint32_t dat
 
     ASSERT_NOT_NULL(obj->object_data);
     struct partition_objectdata* object_data = (struct partition_objectdata*)obj->object_data;
-    return partition_table_util_write_sectors(obj, object_data->partition_index, data, data_size, start_lba);
+    return partition_table_util_write_sectors(object_data->partition_table_object, object_data->partition_index, data,
+                                              data_size, start_lba);
 }
 
-struct object* partition_attach(struct object* partition_table_objice, uint8_t partition_index) {
-    ASSERT_NOT_NULL(partition_table_objice);
-    ASSERT(partition_table_objice->objectype == OBJECT_TYPE_PARTITION_TABLE);
+struct object* partition_attach(struct object* partition_table_object, uint8_t partition_index) {
+    ASSERT_NOT_NULL(partition_table_object);
+    ASSERT(partition_table_object->objectype == OBJECT_TYPE_PARTITION_TABLE);
     /*
      * register device
      */
@@ -122,7 +125,7 @@ struct object* partition_attach(struct object* partition_table_objice, uint8_t p
     struct partition_objectdata* object_data =
         (struct partition_objectdata*)kmalloc(sizeof(struct partition_objectdata));
     memzero((uint8_t*)object_data, sizeof(struct partition_objectdata));
-    object_data->partition_table_objice = partition_table_objice;
+    object_data->partition_table_object = partition_table_object;
     object_data->partition_index = partition_index;
 
     objectinstance->object_data = object_data;
@@ -134,7 +137,7 @@ struct object* partition_attach(struct object* partition_table_objice, uint8_t p
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_object_refcount(partition_table_objice);
+        objectmgr_increment_object_refcount(partition_table_object);
         /*
         * return device
         */
@@ -154,7 +157,7 @@ void partition_detach(struct object* obj) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(object_data->partition_table_objice);
+    objectmgr_decrement_object_refcount(object_data->partition_table_object);
     /*
     * detach
     */

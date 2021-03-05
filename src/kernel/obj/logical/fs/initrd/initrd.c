@@ -32,7 +32,7 @@ struct initrd_header {
 };
 
 struct initrd_objectdata {
-    struct object* partition_objice;
+    struct object* partition_object;
     uint32_t lba;
     struct initrd_header header;
     struct filesystem_node* root_node;
@@ -51,10 +51,10 @@ uint8_t initrd_init(struct object* obj) {
     /*
     * read the header
     */
-    blockutil_read(object_data->partition_objice, (uint8_t*)&(object_data->header), sizeof(struct initrd_header),
+    blockutil_read(object_data->partition_object, (uint8_t*)&(object_data->header), sizeof(struct initrd_header),
                    object_data->lba, 0);
 
-    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
+    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     return 1;
 }
 
@@ -65,7 +65,7 @@ uint8_t initrd_uninit(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)obj->object_data;
-    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
+    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     kfree(obj->api);
     node_cache_delete(object_data->nc);
     kfree(object_data->root_node);
@@ -99,7 +99,7 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
         /*
         * get underlying sector size
         */
-        uint32_t sector_size = blockutil_get_sector_size(object_data->partition_objice);
+        uint32_t sector_size = blockutil_get_sector_size(object_data->partition_object);
 
         uint32_t offset = object_data->header.headers[fs_node->id].offset;
         ASSERT(offset > 0);
@@ -125,7 +125,7 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
         /*
         * read the blocks
         */
-        blockutil_read(object_data->partition_objice, data, data_size, target_lba, byte_offset);
+        blockutil_read(object_data->partition_object, data, data_size, target_lba, byte_offset);
 
         return 1;
     }
@@ -221,9 +221,9 @@ uint64_t initrd_size(struct filesystem_node* fs_node) {
     }
 }
 
-struct object* initrd_attach(struct object* partition_objice, uint32_t lba) {
-    ASSERT_NOT_NULL(partition_objice);
-    ASSERT(1 == blockutil_is_block_object(partition_objice));
+struct object* initrd_attach(struct object* partition_object, uint32_t lba) {
+    ASSERT_NOT_NULL(partition_object);
+    ASSERT(1 == blockutil_is_block_object(partition_object));
 
     /*
      * register device
@@ -255,7 +255,7 @@ struct object* initrd_attach(struct object* partition_objice, uint32_t lba) {
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)kmalloc(sizeof(struct initrd_objectdata));
     object_data->root_node = 0;
     object_data->lba = lba;
-    object_data->partition_objice = partition_objice;
+    object_data->partition_object = partition_object;
     object_data->nc = node_cache_new();
     objectinstance->object_data = object_data;
     /*
@@ -265,7 +265,7 @@ struct object* initrd_attach(struct object* partition_objice, uint32_t lba) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_object_refcount(partition_objice);
+        objectmgr_increment_object_refcount(partition_object);
         /*
         * return device
         */
@@ -287,7 +287,7 @@ void initrd_detach(struct object* obj) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(object_data->partition_objice);
+    objectmgr_decrement_object_refcount(object_data->partition_object);
     /*
     * detach
     */

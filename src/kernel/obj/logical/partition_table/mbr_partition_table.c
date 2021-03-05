@@ -162,6 +162,13 @@ uint32_t mbr_part_write_sectors(struct object* obj, uint8_t partition_index, uin
     return blockutil_write(object_data->block_device, data, data_size, lba + start_lba, 0);
 }
 
+uint16_t mbr_part_table_sector_size(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct mbr_pt_objectdata* object_data = (struct mbr_pt_objectdata*)obj->object_data;
+    return blockutil_get_sector_size(object_data->block_device);
+}
+
 struct object* mbr_pt_attach(struct object* block_device) {
     ASSERT(sizeof(struct mbr_pt_entry) == 16);
     ASSERT_NOT_NULL(block_device);
@@ -188,6 +195,7 @@ struct object* mbr_pt_attach(struct object* block_device) {
     api->detachable = &mbr_part_table_detachable;
     api->read = &mbr_part_read_sectors;
     api->write = &mbr_part_write_sectors;
+    api->sector_size = &mbr_part_table_sector_size;
     objectinstance->api = api;
     /*
      * device data

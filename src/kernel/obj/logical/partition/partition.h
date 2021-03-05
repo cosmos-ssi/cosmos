@@ -14,7 +14,7 @@
 
 struct object;
 
-struct object* partition_attach(struct object* partition_table_objice, uint8_t partition_index);
+struct object* partition_attach(struct object* partition_table_object, uint8_t partition_index);
 void partition_detach(struct object* obj);
 
 #endif

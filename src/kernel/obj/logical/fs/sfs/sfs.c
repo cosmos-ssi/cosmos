@@ -108,7 +108,7 @@ struct sfs_continuation_entry {
 } __attribute__((packed));
 
 struct sfs_objectdata {
-    struct object* partition_objice;
+    struct object* partition_object;
 } __attribute__((packed));
 
 /*
@@ -134,8 +134,8 @@ void sfs_format(struct object* obj) {
 
     // device parameters
     //    uint64_t total_size = blockutil_get_total_size(object_data->block_device);
-    uint32_t sector_size = blockutil_get_sector_size(object_data->partition_objice);
-    uint32_t total_sectors = blockutil_get_sector_count(object_data->partition_objice);
+    uint32_t sector_size = blockutil_get_sector_size(object_data->partition_object);
+    uint32_t total_sectors = blockutil_get_sector_count(object_data->partition_object);
 
     // create a superblock struct
     struct sfs_superblock superblock;
@@ -152,7 +152,7 @@ void sfs_format(struct object* obj) {
     superblock.block_size = (sector_size / 512) + 1;
 
     // write superblock
-    blockutil_write(object_data->partition_objice, (uint8_t*)&superblock, sizeof(struct sfs_superblock), 0, 0);
+    blockutil_write(object_data->partition_object, (uint8_t*)&superblock, sizeof(struct sfs_superblock), 0, 0);
 }
 
 /*
@@ -162,7 +162,7 @@ uint8_t sfs_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct sfs_objectdata* object_data = (struct sfs_objectdata*)obj->object_data;
-    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
+    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     return 1;
 }
 
@@ -174,15 +174,15 @@ uint8_t sfs_uninit(struct object* obj) {
     ASSERT_NOT_NULL(obj->object_data);
 
     struct sfs_objectdata* object_data = (struct sfs_objectdata*)obj->object_data;
-    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_objice->name, obj->name);
+    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     kfree(obj->api);
     kfree(obj->object_data);
     return 1;
 }
 
-struct object* sfs_attach(struct object* partition_objice) {
-    ASSERT_NOT_NULL(partition_objice);
-    ASSERT(1 == blockutil_is_block_object(partition_objice));
+struct object* sfs_attach(struct object* partition_object) {
+    ASSERT_NOT_NULL(partition_object);
+    ASSERT(1 == blockutil_is_block_object(partition_object));
     /*
      * register device
      */
@@ -204,7 +204,7 @@ struct object* sfs_attach(struct object* partition_objice) {
      * device data
      */
     struct sfs_objectdata* object_data = (struct sfs_objectdata*)kmalloc(sizeof(struct sfs_objectdata));
-    object_data->partition_objice = partition_objice;
+    object_data->partition_object = partition_object;
     objectinstance->object_data = object_data;
 
     /*
@@ -214,7 +214,7 @@ struct object* sfs_attach(struct object* partition_objice) {
         /*
         * increase ref count of underlying device
         */
-        objectmgr_increment_object_refcount(partition_objice);
+        objectmgr_increment_object_refcount(partition_object);
 
         /*
         * return device
@@ -235,7 +235,7 @@ void sfs_detach(struct object* obj) {
     /*
     * decrease ref count of underlying device
     */
-    objectmgr_decrement_object_refcount(object_data->partition_objice);
+    objectmgr_decrement_object_refcount(object_data->partition_object);
     /*
     * detach
     */

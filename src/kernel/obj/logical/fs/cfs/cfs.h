@@ -10,7 +10,7 @@
 
 struct object;
 
-struct object* cfs_attach(struct object* partition_objice);
+struct object* cfs_attach(struct object* partition_object);
 void cfs_detach(struct object* obj);
 
 #endif
