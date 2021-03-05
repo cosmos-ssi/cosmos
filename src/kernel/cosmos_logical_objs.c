@@ -89,11 +89,16 @@ void attach_logical_objects() {
     struct object* dsk = objectmgr_find_object_by_name(devicename);
     if (0 != dsk) {
         initrd_dev = initrd_attach(dsk, initrd_lba());
-
     } else {
         kprintf("Unable to find %s\n", devicename);
     }
-
+    /*
+    * fs0
+    */
+    struct object* fs0_dev = objectmgr_find_object_by_name("fs0");
+    if (0 == fs0_dev) {
+        kprintf("Unable to find %s\n", "fs0_dev");
+    }
     /*
     * voh
     */
