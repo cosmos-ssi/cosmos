@@ -106,6 +106,9 @@ void attach_logical_objects() {
     struct object* objfs_dev = objfs_attach();
     struct filesystem_node* fsnode_objfs = fsfacade_get_fs_rootnode(objfs_dev);
     struct filesystem_node* fsnode_initrd = fsfacade_get_fs_rootnode(initrd_dev);
+    struct filesystem_node* fsnode_fs0 = fsfacade_get_fs_rootnode(fs0_dev);
+
     voh_add_child(rootfs_obj, fsnode_objfs);
     voh_add_child(rootfs_obj, fsnode_initrd);
+    voh_add_child(rootfs_obj, fsnode_fs0);
 }

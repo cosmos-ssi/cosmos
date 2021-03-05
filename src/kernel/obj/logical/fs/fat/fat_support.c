@@ -121,3 +121,74 @@ uint32_t fat_fat16_next_cluster(struct object* obj, uint32_t current_cluster, st
 
     return *(unsigned short*)&FAT_table[ent_offset];
 }
+
+/*
+struct fs_directory_listing* fat_list_dir(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+
+    struct fs_directory_listing* ret = fs_directory_listing_new();
+
+    struct fat_fs_parameters fs_parameters;
+    fat_read_fs_parameters(obj, &fs_parameters);
+
+    if ((fs_parameters.type == FAT12) || (fs_parameters.type == FAT16)) {
+        uint32_t current_sector = fs_parameters.first_root_dir_sector;
+
+        bool more = true;
+        while (more) {
+            // read sector
+            uint8_t* buffer = kmalloc(fs_parameters.sector_size);
+            memset(buffer, 0, fs_parameters.sector_size);
+
+            // read first sector of root dir
+            blockutil_read_sector(obj, current_sector, buffer, 1);
+
+            // loop entries
+            for (uint16_t i = 0; i < fs_parameters.sector_size; i = i + sizeof(struct fat_dir)) {
+                struct fat_dir* entry = (struct fat_dir*)&(buffer[i]);
+                // entry ok
+                if (entry->name[0] != 0) {
+                    // entry is used
+                    if (entry->name[0] != 0xe5) {
+                        // not a long file name
+                        if (entry->name[10] != 0xFF) {
+                            kprintf("%s\n", entry->name);
+                            //		struct fs_directory* dir = (struct fs_directory*) kmalloc(sizeof(struct fs_directory));
+                            //		dir->flags=entry->attributes;
+                            //		memcpy(dir->name, entry->name,11);
+                            //			dir->name[12]=0;
+
+                            // dir->name = name;
+
+                            //		dir->size = entry->size;
+                            //		arraylist_add(ret->lst,dir);
+                            //		kprintf("FF%s\n",dir->name);
+                        }
+                    }
+                } else {
+                    // we done!
+                    more = false;
+                    break;
+                }
+            }
+            kfree(buffer);
+            current_sector = current_sector + 1;
+        }
+    } else {
+        PANIC("Unsupported FAT type");
+    }
+    return ret;
+}
+*/
+// if (fs_parameters.type==FAT12){
+// 	current_sector = current_sector +1;
+// 	uint64_t next_cluster = fat_fat12_next_cluster(obj, current_cluster, &fs_parameters);
+// 	kprintf("next cluster %llu\n",next_cluster);
+// 	current_sector = fat_first_sector_of_cluster(1, &fs_parameters);
+// 	kprintf("next sector %llu\n",current_sector);
+
+// 	// blah
+// //	current_sector=0;
+// } else if (fs_parameters.type==FAT16){
+
+// }
