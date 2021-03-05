@@ -13,19 +13,19 @@
 #include <sys/string/mem.h>
 
 void fat_dump_fat_fs_parameters(struct fat_fs_parameters* param) {
-    kprintf("sector size: %llu\n", param->sector_size);
-    kprintf("total size: %llu\n", param->total_size);
-    kprintf("total_sectors %llu\n", param->total_sectors);
-    kprintf("fat_size %llu\n", param->fat_size);
-    kprintf("root_dir_sectors %llu\n", param->root_dir_sectors);
-    kprintf("first_data_sector %llu\n", param->first_data_sector);
-    kprintf("first_fat_sector %llu\n", param->first_fat_sector);
-    kprintf("data_sectors %llu\n", param->data_sectors);
-    kprintf("total_clusters %llu\n", param->total_clusters);
-    kprintf("first_root_dir_sector %llu\n", param->first_root_dir_sector);
-    kprintf("root_cluster_32 %llu\n", param->root_cluster_32);
-    kprintf("type: %llu\n", param->type);
-    kprintf("sectors_per_cluster: %llu\n", param->sectors_per_cluster);
+    kprintf("  sector size: %llu\n", param->sector_size);
+    kprintf("  total size: %llu\n", param->total_size);
+    kprintf("  total_sectors %llu\n", param->total_sectors);
+    kprintf("  fat_size %llu\n", param->fat_size);
+    kprintf("  root_dir_sectors %llu\n", param->root_dir_sectors);
+    kprintf("  first_data_sector %llu\n", param->first_data_sector);
+    kprintf("  first_fat_sector %llu\n", param->first_fat_sector);
+    kprintf("  data_sectors %llu\n", param->data_sectors);
+    kprintf("  total_clusters %llu\n", param->total_clusters);
+    kprintf("  first_root_dir_sector %llu\n", param->first_root_dir_sector);
+    kprintf("  root_cluster_32 %llu\n", param->root_cluster_32);
+    kprintf("  type: %llu\n", param->type);
+    kprintf("  sectors_per_cluster: %llu\n", param->sectors_per_cluster);
 }
 
 void fat_dump_fat_extBS_16(struct fat_extBS_16* ebs) {
@@ -41,14 +41,8 @@ void fat_read_fs_parameters(struct object* obj, struct fat_fs_parameters* param)
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(param);
     ASSERT(1 == blockutil_is_block_object(obj));
-
-    kprintf("1\n");
     param->sector_size = blockutil_get_sector_size(obj);
-    kprintf("2\n");
-
     param->total_size = blockutil_get_total_size(obj);
-
-    kprintf("3\n");
     uint8_t* buffer = kmalloc(param->sector_size);
     memset(buffer, 0, param->sector_size);
 

@@ -234,6 +234,13 @@ uint32_t guid_part_write_sectors(struct object* obj, uint8_t partition_index, ui
     return blockutil_write(object_data->block_device, data, data_size, lba + start_lba, 0);
 }
 
+uint16_t guid_part_table_sector_size(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct guid_pt_objectdata* object_data = (struct guid_pt_objectdata*)obj->object_data;
+    return blockutil_get_sector_size(object_data->block_device);
+}
+
 struct object* guid_pt_attach(struct object* block_device) {
     ASSERT_NOT_NULL(block_device);
     ASSERT(1 == blockutil_is_block_object(block_device));
@@ -261,6 +268,7 @@ struct object* guid_pt_attach(struct object* block_device) {
     api->detachable = &guid_part_table_detachable;
     api->read = &guid_part_read_sectors;
     api->write = &guid_part_write_sectors;
+    api->sector_size = &guid_part_table_sector_size;
     objectinstance->api = api;
     /*
      * device data

@@ -19,5 +19,6 @@ uint32_t partition_table_util_write_sectors(struct object* partition_table_objec
                                             uint8_t* data, uint32_t data_size, uint32_t start_lba);
 uint32_t partition_table_util_read_sectors(struct object* partition_table_object, uint8_t partition_index,
                                            uint8_t* data, uint32_t data_size, uint32_t start_lba);
+uint64_t partition_table_util_get_sector_count(struct object* obj, uint8_t partition);
 
 #endif

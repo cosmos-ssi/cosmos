@@ -103,7 +103,8 @@ uint8_t fat_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
-    //fat_read_fs_parameters(object_data->partition_object, &(object_data->fs_parameters));
+    fat_read_fs_parameters(object_data->partition_object, &(object_data->fs_parameters));
+    fat_dump_fat_fs_parameters(&(object_data->fs_parameters));
     kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     return 1;
 }
