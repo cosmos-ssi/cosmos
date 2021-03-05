@@ -36,7 +36,6 @@ struct initrd_objectdata {
     uint32_t lba;
     struct initrd_header header;
     struct filesystem_node* root_node;
-    struct node_cache* nc;
 };
 
 /*
@@ -67,7 +66,6 @@ uint8_t initrd_uninit(struct object* obj) {
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)obj->object_data;
     kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
     kfree(obj->api);
-    node_cache_delete(object_data->nc);
     kfree(object_data->root_node);
     kfree(object_data);
     return 1;
@@ -170,15 +168,11 @@ struct filesystem_node* initrd_find_node_by_id(struct filesystem_node* fs_node, 
         /*
         * root node
         */
-        struct filesystem_node* ret = node_cache_find(object_data->nc, id);
-        if (0 == ret) {
-            ASSERT(id < object_data->header.number_files);
-            // the node id is the index into the headers
-            char* name = object_data->header.headers[id].name;
-            ret = filesystem_node_new(file, fs_node->filesystem_obj, name, id, 0);
-            node_cache_add(object_data->nc, ret);
-        }
-        return ret;
+
+        ASSERT(id < object_data->header.number_files);
+        // the node id is the index into the headers
+        char* name = object_data->header.headers[id].name;
+        return filesystem_node_new(file, fs_node->filesystem_obj, name, id, 0);
     } else {
         // devices are leaf nodes they have no children
         return 0;
@@ -256,7 +250,6 @@ struct object* initrd_attach(struct object* partition_object, uint32_t lba) {
     object_data->root_node = 0;
     object_data->lba = lba;
     object_data->partition_object = partition_object;
-    object_data->nc = node_cache_new();
     objectinstance->object_data = object_data;
     /*
      * register
@@ -271,7 +264,6 @@ struct object* initrd_attach(struct object* partition_object, uint32_t lba) {
         */
         return objectinstance;
     } else {
-        node_cache_delete(object_data->nc);
         kfree(object_data->root_node);
         kfree(object_data);
         kfree(api);
