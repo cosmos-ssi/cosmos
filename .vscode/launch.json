@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "cosmos gcc - x86_64",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/kernel/cosmos.elf",
+            "args": [
+                "target remote localhost:1234"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "linux": {
+                "MIMode": "gdb",
+                "MIDebuggerPath": "/usr/local/bin/x86_64-elf-gdb"
+            },
+            "osx": {
+                "MIMode": "lldb",
+                "MIDebuggerPath": "/usr/bin/lldb/lldb"
+            }
+        }
+    ]
+}

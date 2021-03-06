@@ -40,10 +40,10 @@ uint8_t* file_util_read_file(uint8_t* device_name, uint8_t* file_name, uint32_t*
             fsfacade_read(fs_node, ret, buffer_size);
             return ret;
         } else {
-            kprintf("Unable to find file %s for Font\n", file_name);
+            kprintf("Unable to find file %s\n", file_name);
         }
     } else {
-        kprintf("Unable to find fs device %s for Font\n", device_name);
+        kprintf("Unable to find fs device %s\n", device_name);
     }
     return 0;
 }

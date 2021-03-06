@@ -8,7 +8,9 @@
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/fat/fat.h>
 #include <obj/logical/fs/fat/fat_support.h>
+#include <obj/logical/fs/node_util.h>
 #include <sys/debug/assert.h>
+#include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
@@ -23,31 +25,88 @@
 struct fat_objectdata {
     struct object* partition_object;
     struct fat_fs_parameters fs_parameters;
+    struct filesystem_node* root_node;
 };
 
 /*
-struct fs_directory_listing* fat_list_dir(struct object* obj) {
+ * perform device instance specific init here
+ */
+uint8_t fat_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0);
+    fat_read_fs_parameters(object_data->partition_object, &(object_data->fs_parameters));
+    fat_dump_fat_fs_parameters(&(object_data->fs_parameters));
+    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
+    return 1;
+}
 
-    struct fs_directory_listing* ret = fs_directory_listing_new();
+/*
+ * perform device instance specific uninit here, like removing API structs and Device data
+ */
+uint8_t fat_uninit(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
+    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
+    kfree(obj->api);
+    kfree(obj->object_data);
+    return 1;
+}
 
-    struct fat_fs_parameters fs_parameters;
-    fat_read_fs_parameters(obj, &fs_parameters);
+struct filesystem_node* fat_filesystem_get_root_node(struct object* filesystem_obj) {
+    ASSERT_NOT_NULL(filesystem_obj);
+    ASSERT_NOT_NULL(filesystem_obj->object_data);
+    struct fat_objectdata* object_data = (struct fat_objectdata*)filesystem_obj->object_data;
+    return object_data->root_node;
+}
 
-    if ((fs_parameters.type == FAT12) || (fs_parameters.type == FAT16)) {
-        uint32_t current_sector = fs_parameters.first_root_dir_sector;
+uint32_t fat_filesystem_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
+    PANIC("Not Implemented");
+    return 0;
+}
+
+uint32_t fat_filesystem_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
+    PANIC("Not Implemented");
+    return 0;
+}
+
+void fat_filesystem_open(struct filesystem_node* fs_node) {
+    PANIC("Not Implemented");
+}
+void fat_filesystem_close(struct filesystem_node* fs_node) {}
+
+struct filesystem_node* fat_filesystem_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
+    PANIC("Not Implemented");
+    return 0;
+}
+
+void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
+    struct fat_objectdata* object_data = (struct fat_objectdata*)fs_node->filesystem_obj->object_data;
+
+    if ((object_data->fs_parameters.type == FAT12) || (object_data->fs_parameters.type == FAT16)) {
+        uint32_t current_sector = object_data->fs_parameters.first_root_dir_sector;
 
         bool more = true;
         while (more) {
             // read sector
-            uint8_t* buffer = kmalloc(fs_parameters.sector_size);
-            memset(buffer, 0, fs_parameters.sector_size);
+            uint8_t* buffer = kmalloc(object_data->fs_parameters.sector_size);
+            memset(buffer, 0, object_data->fs_parameters.sector_size);
+
+            kprintf("current_sector %llu\n", current_sector);
 
             // read first sector of root dir
-            blockutil_read_sector(obj, current_sector, buffer, 1);
+            blockutil_read(object_data->partition_object, buffer, object_data->fs_parameters.sector_size,
+                           current_sector, 0);
+
+            debug_show_memblock(buffer, object_data->fs_parameters.sector_size);
 
             // loop entries
-            for (uint16_t i = 0; i < fs_parameters.sector_size; i = i + sizeof(struct fat_dir)) {
+            for (uint16_t i = 0; i < object_data->fs_parameters.sector_size; i = i + sizeof(struct fat_dir)) {
                 struct fat_dir* entry = (struct fat_dir*)&(buffer[i]);
                 // entry ok
                 if (entry->name[0] != 0) {
@@ -80,76 +139,6 @@ struct fs_directory_listing* fat_list_dir(struct object* obj) {
     } else {
         PANIC("Unsupported FAT type");
     }
-    return ret;
-}
-*/
-// if (fs_parameters.type==FAT12){
-// 	current_sector = current_sector +1;
-// 	uint64_t next_cluster = fat_fat12_next_cluster(obj, current_cluster, &fs_parameters);
-// 	kprintf("next cluster %llu\n",next_cluster);
-// 	current_sector = fat_first_sector_of_cluster(1, &fs_parameters);
-// 	kprintf("next sector %llu\n",current_sector);
-
-// 	// blah
-// //	current_sector=0;
-// } else if (fs_parameters.type==FAT16){
-
-// }
-
-/*
- * perform device instance specific init here
- */
-uint8_t fat_init(struct object* obj) {
-    ASSERT_NOT_NULL(obj);
-    ASSERT_NOT_NULL(obj->object_data);
-    struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
-    fat_read_fs_parameters(object_data->partition_object, &(object_data->fs_parameters));
-    fat_dump_fat_fs_parameters(&(object_data->fs_parameters));
-    kprintf("Init %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
-    return 1;
-}
-
-/*
- * perform device instance specific uninit here, like removing API structs and Device data
- */
-uint8_t fat_uninit(struct object* obj) {
-    ASSERT_NOT_NULL(obj);
-    ASSERT_NOT_NULL(obj->object_data);
-    struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
-    kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
-    kfree(obj->api);
-    kfree(obj->object_data);
-    return 1;
-}
-
-struct filesystem_node* fat_filesystem_get_root_node(struct object* filesystem_obj) {
-    ASSERT_NOT_NULL(filesystem_obj);
-    PANIC("Not Implemented");
-    return 0;
-}
-
-uint32_t fat_filesystem_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
-    PANIC("Not Implemented");
-    return 0;
-}
-
-uint32_t fat_filesystem_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {
-    PANIC("Not Implemented");
-    return 0;
-}
-
-void fat_filesystem_open(struct filesystem_node* fs_node) {
-    PANIC("Not Implemented");
-}
-void fat_filesystem_close(struct filesystem_node* fs_node) {}
-
-struct filesystem_node* fat_filesystem_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
-    PANIC("Not Implemented");
-    return 0;
-}
-
-void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
-    PANIC("Not Implemented");
 }
 
 uint64_t fat_filesystem_size(struct filesystem_node* fs_node) {
@@ -191,6 +180,7 @@ struct object* fat_attach(struct object* partition_object) {
      */
     struct fat_objectdata* object_data = (struct fat_objectdata*)kmalloc(sizeof(struct fat_objectdata));
     object_data->partition_object = partition_object;
+    object_data->root_node = 0;
     objectinstance->object_data = object_data;
 
     /*
@@ -206,6 +196,7 @@ struct object* fat_attach(struct object* partition_object) {
         */
         return objectinstance;
     } else {
+        kfree(object_data->root_node);
         kfree(object_data);
         kfree(api);
         kfree(objectinstance);

@@ -30,7 +30,7 @@ $(COSMOS_INITRD_IMAGE): $(COSMOS_LIB_ARCHIVE)  $(COSMOS_TEST_BINARY)
 
 $(COSMOS_ROOT_IMAGE):
 	$(RM) $(COSMOS_ROOT_IMAGE)
-	$(DD) if=/dev/zero of=$(COSMOS_ROOT_IMAGE) bs=32768 count=32768
+	$(DD) if=/dev/zero of=$(COSMOS_ROOT_IMAGE) bs=32768 count=3200
 	$(MFORMAT) -v cosmos -i $(COSMOS_ROOT_IMAGE)
 	$(MCOPY) -s -i $(COSMOS_ROOT_IMAGE) fs/rootfs/* ::/
 	$(MMD) -i $(COSMOS_ROOT_IMAGE) lib

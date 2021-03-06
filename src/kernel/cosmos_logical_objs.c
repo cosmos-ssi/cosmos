@@ -10,6 +10,7 @@
 #include <obj/logical/fs/initrd/initrd.h>
 #include <obj/logical/fs/objfs/objfs.h>
 #include <obj/logical/fs/voh/voh.h>
+#include <obj/logical/group/group.h>
 #include <obj/logical/null/null.h>
 #include <obj/logical/ramdisk/ramdisk.h>
 #include <obj/logical/rand/rand.h>
@@ -20,6 +21,7 @@
 #include <obj/logical/tcpip/udp/udpdev.h>
 #include <obj/logical/telnet/telnet.h>
 #include <obj/logical/tick/tick.h>
+#include <obj/logical/user/user.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/objectmgr/objectmgr.h>
@@ -59,6 +61,19 @@ void attach_logical_objects() {
     * rand device
     */
     rand_attach();
+
+    /*
+    * add groups
+    */
+    group_attach("admin");
+    group_attach("users");
+    /*
+    * add users
+    */
+    user_attach("kurt");
+    user_attach("jeff");
+    user_attach("tom");
+
     /*
     * tick device
     */
@@ -89,11 +104,16 @@ void attach_logical_objects() {
     struct object* dsk = objectmgr_find_object_by_name(devicename);
     if (0 != dsk) {
         initrd_dev = initrd_attach(dsk, initrd_lba());
-
     } else {
         kprintf("Unable to find %s\n", devicename);
     }
-
+    /*
+    * fs0
+    */
+    struct object* fs0_dev = objectmgr_find_object_by_name("fs0");
+    if (0 == fs0_dev) {
+        kprintf("Unable to find %s\n", "fs0_dev");
+    }
     /*
     * voh
     */
@@ -101,6 +121,9 @@ void attach_logical_objects() {
     struct object* objfs_dev = objfs_attach();
     struct filesystem_node* fsnode_objfs = fsfacade_get_fs_rootnode(objfs_dev);
     struct filesystem_node* fsnode_initrd = fsfacade_get_fs_rootnode(initrd_dev);
+    //  struct filesystem_node* fsnode_fs0 = fsfacade_get_fs_rootnode(fs0_dev);
+
     voh_add_child(rootfs_obj, fsnode_objfs);
     voh_add_child(rootfs_obj, fsnode_initrd);
+    // voh_add_child(rootfs_obj, fsnode_fs0);
 }

@@ -20,6 +20,9 @@
 
 #define TELNET_LINE_LEN 255
 #define TELNET_COSMOS_PROMPT "CosmOS> "
+#define TELNET_CR 13
+#define TELNET_DEL 127
+#define TELNET_BACKSPACE 8
 
 void telnet_read_line(struct object* serial_object, uint8_t* line, uint16_t size) {
     ASSERT_NOT_NULL(serial_object);
@@ -31,17 +34,6 @@ void telnet_read_line(struct object* serial_object, uint8_t* line, uint16_t size
     uint8_t read_more = 1;
     uint8_t count = 0;
     while (1 == read_more) {
-        while (0 == (*serial_api->avail)(serial_object)) {
-            sleep_wait(100);
-        }
-        uint8_t c = (*serial_api->readchar)(serial_object);
-        if (c == 13) {
-            line[count] = 0;
-            return;
-        } else {
-            line[count] = c;
-            (*serial_api->writechar)(serial_object, c);
-        }
         /*
         * exit..
         */
@@ -49,7 +41,27 @@ void telnet_read_line(struct object* serial_object, uint8_t* line, uint16_t size
             line[size] = 0;
             return;
         }
-        count += 1;
+        /*
+        * read more
+        */
+        while (0 == (*serial_api->avail)(serial_object)) {
+            sleep_wait(100);
+        }
+        uint8_t c = (*serial_api->readchar)(serial_object);
+        if (c == TELNET_CR) {
+            line[count] = 0;
+            return;
+        } else if (c == TELNET_DEL) {
+            (*serial_api->writechar)(serial_object, TELNET_BACKSPACE);
+            if (count > 0) {
+                count -= 1;
+            }
+        } else {
+            //   kprintf("%llu\n", c);
+            line[count] = c;
+            (*serial_api->writechar)(serial_object, c);
+            count += 1;
+        }
     }
 }
 
