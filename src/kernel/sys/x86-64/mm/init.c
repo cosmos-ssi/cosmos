@@ -5,8 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/asm/misc.h>
+#include <sys/asm/asm.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
@@ -43,6 +44,8 @@ void mmu_init() {
     reserve_next_ptt(PDP, future_pt_expansion);
     reserve_next_ptt(PD, future_pt_expansion);
     reserve_next_ptt(PT, future_pt_expansion);
+
+    kprintf("gdt: 0x%llX\n", asm_sgdt());
 
     return;
 }
