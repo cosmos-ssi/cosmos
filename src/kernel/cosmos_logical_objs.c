@@ -14,6 +14,7 @@
 #include <obj/logical/null/null.h>
 #include <obj/logical/ramdisk/ramdisk.h>
 #include <obj/logical/rand/rand.h>
+#include <obj/logical/serializer/serializer.h>
 #include <obj/logical/tcpip/arp/arpdev.h>
 #include <obj/logical/tcpip/icmp/icmpdev.h>
 #include <obj/logical/tcpip/ip/ipdev.h>
@@ -61,7 +62,10 @@ void attach_logical_objects() {
     * rand device
     */
     rand_attach();
-
+    /*
+    * serializer
+    */
+    serializer_attach();
     /*
     * add groups
     */

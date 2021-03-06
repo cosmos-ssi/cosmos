@@ -20,7 +20,7 @@
  */
 uint8_t serializer_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
-    ASSERT_NOT_NULL(obj->object_data);
+    //  ASSERT_NOT_NULL(obj->object_data);
     kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
