@@ -2,56 +2,49 @@
 *.d
 
 # Object files
-*.o
-*.ko
-*.obj
-*.elf
-*.bin
-cosmos.img
-cosmos.elf
-cosmos.bin
-cosmos.map
-kernel/cosmos
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
+**/*.o
+**/*.ko
+**/*.obj
+**/*.elf
+**/*.bin
+**/*.map
+**/*.ilk
+**/*.exp
+**/*.gch
+**/*.pch
+**/cosmos.img
+**/cosmos
 
 # Libraries
-*.lib
-*.a
-*.ar
-*.la
-*.lo
+**/*.lib
+**/*.a
+**/*.ar
+**/*.la
+**/*.lo
 
 # Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+**/*.dll
+**/*.so
+**/*.so.*
+**/*.dylib
 
 # Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+**/*.exe
+**/*.out
+**/*.app
+**/*.i*86
+**/*.x86_64
+**/*.hex
 
 # Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+**/*.dSYM/
+**/*.su
+**/*.idb
+**/*.pdb
 
 # Kernel Module Compile Results
-*.mod*
-*.cmd
+**/*.mod*
+**/*.cmd
 .tmp_versions/
 modules.order
 Module.symvers
@@ -61,11 +54,13 @@ dkms.conf
 # Temp files
 *.un*
 *.~
+**/*~
 
 # image files we dont need
 **/hda.img
 **/blank.img
 **/initrd.img
+**/root.img
 
 # generated binaries
 src/user/cosmos_init
@@ -78,11 +73,9 @@ src/util/mkinitrd/mkinitrd
 **/dump.dat
 **/qemu.log
 **/net0.dat
-user/cosmos_init
+
+# userland executables
 util/mkinitrd/mkinitrd
 src/user/init/cosmos_init
-/src/user/apps/term/term
-/src/user/apps/init/init
-/src/img/root.img
-src/user/root.img
-src/mk/qemu.mk~
+src/user/apps/term/term
+src/user/apps/init/init
