@@ -13,9 +13,9 @@
 void serialize(struct object* serializer_object, struct object* obj, uint8_t* buffer, uint32_t size) {
     ASSERT_NOT_NULL(serializer_object);
     ASSERT_NOT_NULL(serializer_object->api);
-    ASSERT_NOT_NULL(serializer_object->serialize);
-    ASSERT_NOT_NULL(serializer_object->deserialize);
     ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->serialize);
+    ASSERT_NOT_NULL(obj->deserialize);
     ASSERT_NOT_NULL(buffer);
     ASSERT_NOT_NULL(size);
     struct objectinterface_serializer* api = (struct objectinterface_serializer*)serializer_object->api;
@@ -25,9 +25,9 @@ void serialize(struct object* serializer_object, struct object* obj, uint8_t* bu
 void deserialize(struct object* serializer_object, struct object* obj, uint8_t* buffer, uint32_t size) {
     ASSERT_NOT_NULL(serializer_object);
     ASSERT_NOT_NULL(serializer_object->api);
-    ASSERT_NOT_NULL(serializer_object->serialize);
-    ASSERT_NOT_NULL(serializer_object->deserialize);
     ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->serialize);
+    ASSERT_NOT_NULL(obj->deserialize);
     ASSERT_NOT_NULL(buffer);
     ASSERT_NOT_NULL(size);
     struct objectinterface_serializer* api = (struct objectinterface_serializer*)serializer_object->api;

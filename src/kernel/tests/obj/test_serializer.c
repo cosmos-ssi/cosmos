@@ -33,8 +33,8 @@ void test_serializer() {
      */
     struct object* serializer = objectmgr_find_object_by_name(devicename_serializer);
     if (0 != serializer) {
-        //     uint8_t buffer[1024];
-        //     serialize(serializer, user, buffer, 1024);
+        uint8_t buffer[1024];
+        serialize(serializer, user, buffer, 1024);
 
     } else {
         kprintf("Unable to find %s\n", devicename_serializer);

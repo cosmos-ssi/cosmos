@@ -18,7 +18,7 @@ typedef uint8_t (*obj_init)(struct object* obj);
 // return 1 is successful, 0 if failed to uninit, including if device refcount>0
 typedef uint8_t (*obj_uninit)(struct object* obj);
 
-typedef void (*object_serialize_function)(struct object* ob, uint8_t* buffer, uint32_t size);
+typedef void (*object_serialize_function)(struct object* obj, uint8_t* buffer, uint32_t size);
 typedef void (*object_deserialize_function)(struct object* obj, uint8_t* buffer, uint32_t size);
 
 struct object {
