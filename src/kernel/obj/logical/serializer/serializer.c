@@ -36,12 +36,13 @@ uint8_t serializer_uninit(struct object* obj) {
     return 1;
 }
 
-void serializer_serialize(struct object* obj, uint8_t* buffer, uint8_t size) {
+void serializer_serialize(struct object* obj, uint8_t* buffer, uint32_t size) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(buffer);
     ASSERT_NOT_NULL(size);
 }
-void serializer_deserialize(struct object* obj, uint8_t* buffer, uint8_t size) {
+
+void serializer_deserialize(struct object* obj, uint8_t* buffer, uint32_t size) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(buffer);
     ASSERT_NOT_NULL(size);

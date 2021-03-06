@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <obj/logical/serializer/serializer_util.h>
 #include <obj/x86-64/smbios/smbios.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
@@ -15,14 +16,27 @@
 
 void test_serializer() {
     kprintf("Testing Serializer\n");
-    uint8_t devicename[] = {"serializer0"};
+    uint8_t devicename_serializer[] = {"serializer0"};
+    uint8_t devicename_user[] = {"user0"};
+
+    /*
+    * find user0
+    */
+    struct object* user = objectmgr_find_object_by_name(devicename_user);
+    if (0 != user) {
+    } else {
+        kprintf("Unable to find %s\n", devicename_user);
+    }
 
     /*
      * find the serializer
      */
-    struct object* serializer = objectmgr_find_object_by_name(devicename);
+    struct object* serializer = objectmgr_find_object_by_name(devicename_serializer);
     if (0 != serializer) {
+        //     uint8_t buffer[1024];
+        //     serialize(serializer, user, buffer, 1024);
+
     } else {
-        kprintf("Unable to find %s\n", devicename);
+        kprintf("Unable to find %s\n", devicename_serializer);
     }
 }

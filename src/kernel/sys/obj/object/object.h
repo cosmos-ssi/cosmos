@@ -18,6 +18,9 @@ typedef uint8_t (*obj_init)(struct object* obj);
 // return 1 is successful, 0 if failed to uninit, including if device refcount>0
 typedef uint8_t (*obj_uninit)(struct object* obj);
 
+typedef void (*object_serialize_function)(struct object* ob, uint8_t* buffer, uint32_t size);
+typedef void (*object_deserialize_function)(struct object* obj, uint8_t* buffer, uint32_t size);
+
 struct object {
     /*
      * the combination of name (from object_type_names) and index
@@ -62,6 +65,11 @@ struct object {
     * handle. every instance has a unique handle
     */
     uint64_t handle;
+    /*
+    * serialization / deserialization
+    */
+    object_serialize_function serialize;
+    object_deserialize_function deserialize;
 };
 
 // new device, allocated on the kernel heap

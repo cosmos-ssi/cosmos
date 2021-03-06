@@ -12,7 +12,7 @@
 
 struct object;
 
-void serialize(struct object* serializer_object, struct object* obj, uint8_t* buffer, uint8_t size);
-void deserialize(struct object* serializer_object, struct object* obj, uint8_t* buffer, uint8_t size);
+void serialize(struct object* serializer_object, struct object* obj, uint8_t* buffer, uint32_t size);
+void deserialize(struct object* serializer_object, struct object* obj, uint8_t* buffer, uint32_t size);
 
 #endif

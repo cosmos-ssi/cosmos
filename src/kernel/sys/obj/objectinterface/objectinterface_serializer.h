@@ -14,8 +14,8 @@
 
 #include <types.h>
 
-typedef void (*serializer_serialize_function)(struct object* ob, uint8_t* buffer, uint8_t size);
-typedef void (*serializer_deserialize_function)(struct object* obj, uint8_t* buffer, uint8_t size);
+typedef void (*serializer_serialize_function)(struct object* ob, uint8_t* buffer, uint32_t size);
+typedef void (*serializer_deserialize_function)(struct object* obj, uint8_t* buffer, uint32_t size);
 
 struct objectinterface_serializer {
     serializer_serialize_function serialize;
