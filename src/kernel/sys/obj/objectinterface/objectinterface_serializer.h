@@ -10,12 +10,11 @@
 #ifndef _OBJECTTYPE_SERIALIZER_H
 #define _OBJECTTYPE_SERIALIZER_H
 
-#include <sys/obj/objectmgr/objectmgr.h>
-
+#include <sys/collection/dynabuffer/dynabuffer.h>
 #include <types.h>
 
-typedef void (*serializer_serialize_function)(struct object* ob, uint8_t* buffer, uint32_t size);
-typedef void (*serializer_deserialize_function)(struct object* obj, uint8_t* buffer, uint32_t size);
+typedef void (*serializer_serialize_function)(struct object* ob, struct dynabuffer* buffer);
+typedef void (*serializer_deserialize_function)(struct object* obj, struct dynabuffer* buffer);
 
 struct objectinterface_serializer {
     serializer_serialize_function serialize;
