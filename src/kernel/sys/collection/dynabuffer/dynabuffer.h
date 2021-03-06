@@ -14,9 +14,20 @@
 struct dynabuffer {
     uint8_t* data;
     uint32_t size;
+    uint32_t idx;
 };
 
 struct dynabuffer* dynabuffer_new();
 void dynabuffer_delete(struct dynabuffer* db);
+
+void dynabuffer_append_uint8_t(struct dynabuffer* db, uint8_t v);
+void dynabuffer_append_uint16_t(struct dynabuffer* db, uint16_t v);
+void dynabuffer_append_uint32_t(struct dynabuffer* db, uint32_t v);
+void dynabuffer_append_uint64_t(struct dynabuffer* db, uint64_t v);
+
+void dynabuffer_read_uint8_t(struct dynabuffer* db, uint8_t* v);
+void dynabuffer_read_uint16_t(struct dynabuffer* db, uint16_t* v);
+void dynabuffer_read_uint32_t(struct dynabuffer* db, uint32_t* v);
+void dynabuffer_read_uint64_t(struct dynabuffer* db, uint64_t* v);
 
 #endif
