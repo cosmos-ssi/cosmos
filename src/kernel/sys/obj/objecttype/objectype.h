@@ -60,6 +60,7 @@
 #define OBJECT_TYPE_TELNET 0x2D           // telnet0 objecttype_telnet
 #define OBJECT_TYPE_USER 0x2E             // user0 objecttype_user
 #define OBJECT_TYPE_GROUP 0x2F            // group0 objecttype_group
+#define OBJECT_TYPE_SERIALIZER 0x30       // serializer0 objecttype_serializer
 
 struct object_type {
     uint8_t name[OBJECT_TYPE_MAX_NAME];
