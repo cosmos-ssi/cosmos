@@ -16,6 +16,7 @@
 #include <tests/obj/test_null.h>
 #include <tests/obj/test_ramdisk.h>
 #include <tests/obj/test_rand.h>
+#include <tests/obj/test_serializer.h>
 #include <tests/obj/test_smbios.h>
 #include <tests/sys/test_array.h>
 #include <tests/sys/test_arraylist.h>
@@ -55,5 +56,6 @@ void tests_run() {
     test_init_loader();
     //test_objects();
     test_kernelmap();
+    test_serializer();
     //test_mm();
 }
