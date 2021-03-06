@@ -69,7 +69,7 @@ src/util/mkinitrd/mkinitrd
 # OS x resources
 **/*.DS_Store
 
-.vscode
+.vscode/settings.json
 **/dump.dat
 **/qemu.log
 **/net0.dat
