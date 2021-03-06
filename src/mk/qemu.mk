@@ -23,7 +23,7 @@ QEMUARGS=                                                 \
   -drive file=img/hda.img,index=0,format=raw              \
   -drive file=img/mbr_fat.img,index=1,format=raw           \
   -drive file=img/gpt_fat.img,index=2,format=raw          \
-  -drive file=img/blank.img,index=3,format=raw          \
+  -drive file=img/root.img,index=3,format=raw          \
   -device sdhci-pci                                     \
   -device virtio-net-pci,netdev=net0                   \
   -netdev user,id=net0,hostfwd=tcp::8080-:80             \
