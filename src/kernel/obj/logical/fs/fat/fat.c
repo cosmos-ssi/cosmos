@@ -98,13 +98,13 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
             uint8_t* buffer = kmalloc(object_data->fs_parameters.sector_size);
             memset(buffer, 0, object_data->fs_parameters.sector_size);
 
-            kprintf("current_sector %llu\n", current_sector);
+            // kprintf("current_sector %llu\n", current_sector);
 
             // read first sector of root dir
             blockutil_read(object_data->partition_object, buffer, object_data->fs_parameters.sector_size,
                            current_sector, 0);
 
-            debug_show_memblock(buffer, object_data->fs_parameters.sector_size);
+            // debug_show_memblock(buffer, object_data->fs_parameters.sector_size);
 
             // loop entries
             for (uint16_t i = 0; i < object_data->fs_parameters.sector_size; i = i + sizeof(struct fat_dir)) {
