@@ -10,7 +10,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_rand.h>
-#include <sys/obj/objectinterface/objectinterface_rtc.h>
+#include <sys/obj/objectinterface/objectinterface_time.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
@@ -60,17 +60,17 @@ uint64_t rand_read(struct object* obj) {
     return object_data->last;
 }
 
-uint64_t rand_get_rtc_value(struct object* rtc) {
-    struct objectinterface_rtc* api = (struct objectinterface_rtc*)rtc->api;
-    struct rtc_time_t t = (*api->rtc_time)(rtc);
-    //kprintf("s %#llX, m %#llX, h %#llX, d %#llX\n", t.second, t.minute, t.hour, t.monthday);
+uint64_t rand_get_time_value(struct object* time) {
+    struct objectinterface_time* api = (struct objectinterface_time*)time->api;
+    struct time_time_t t = (*api->time)(time);
+    //  kprintf("s %#llX, m %#llX, h %#llX, d %#llX\n", t.second, t.minute, t.hour, t.monthday);
     uint64_t x1 = t.second | (t.minute << 8) | (t.hour << 16) | (t.monthday << 24);
     return rand_next(x1);
 }
 
-struct object* rand_attach(struct object* rtc) {
-    ASSERT_NOT_NULL(rtc);
-    ASSERT(rtc->objectype = OBJECT_TYPE_RTC);
+struct object* rand_attach(struct object* time) {
+    ASSERT_NOT_NULL(time);
+    ASSERT(time->objectype = OBJECT_TYPE_TIME);
 
     /*
      * register device
@@ -92,7 +92,7 @@ struct object* rand_attach(struct object* rtc) {
      * device data
      */
     struct rand_objectdata* object_data = (struct rand_objectdata*)kmalloc(sizeof(struct rand_objectdata));
-    object_data->last = rand_get_rtc_value(rtc);
+    object_data->last = rand_get_time_value(time);
     objectinstance->object_data = object_data;
     /*
      * register

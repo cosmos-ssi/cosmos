@@ -65,10 +65,11 @@ void attach_logical_objects() {
     */
     struct object* rtc = objectmgr_find_object_by_name("rtc0");
     if (0 != rtc) {
-        // make a rand device seeded from rtc0
-        rand_attach(rtc);
         // make a platform independent time device that wraps rtc0
-        time_attach(rtc);
+        struct object* time = time_attach(rtc);
+
+        // make a rand device seeded from time0
+        rand_attach(time);
     } else {
         kprintf("Unable to find %s\n", "rtc0");
     }
