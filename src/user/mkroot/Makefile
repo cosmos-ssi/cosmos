@@ -14,7 +14,7 @@ mkfat16: mkmtemp
 	export MTOOLSRC=$(MTEMP) && \
 	$(MPARTITION) -v -I -s 63 -t 20 -h 16 c: && \
 	$(MPARTITION) -capv -s 63 -t 20 -h 16 c: && \
-	$(MFORMAT) c:
+	$(MFORMAT) -v cosmos c:
 
 copyfiles: mkmtemp
 	export MTOOLSRC=$(MTEMP) && \
