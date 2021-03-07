@@ -5,16 +5,16 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/logical/telnet/commands/show_object_types/show_object_types.h>
+#include <obj/logical/telnet/commands/show_objects_command/show_objects_command.h>
 #include <sys/kmalloc/kmalloc.h>
-#include <sys/obj/objecttypes/objecttypes.h>
+#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/string/string.h>
 
-uint8_t show_object_types_function() {
-    objecttypes_dump();
+uint8_t show_objects_function() {
+    objectmgr_dump_objects();
     return 1;
 }
 
-struct telnet_command* show_object_types_new() {
-    return telnet_command_new("show_object_types", "Show Object Types", &show_object_types_function);
+struct telnet_command* show_objects_new() {
+    return telnet_command_new("show_objects", "Show Objects", &show_objects_function);
 }

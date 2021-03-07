@@ -5,16 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/logical/telnet/commands/show_voh/show_voh.h>
-#include <sys/fs/fs_facade.h>
-#include <sys/kmalloc/kmalloc.h>
-#include <sys/string/string.h>
+#ifndef _TEST_COMMAND_H
+#define _TEST_COMMAND_H
 
-uint8_t show_voh_function() {
-    dump_VOH();
-    return 1;
-}
+#include <obj/logical/telnet/commands/telnet_command.h>
 
-struct telnet_command* show_voh_new() {
-    return telnet_command_new("show_voh", "Show VOH", &show_voh_function);
-}
+struct telnet_command* test_new();
+
+#endif

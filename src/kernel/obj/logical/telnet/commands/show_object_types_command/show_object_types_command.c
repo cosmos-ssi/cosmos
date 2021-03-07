@@ -5,14 +5,16 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/logical/telnet/commands/exit_command/exit_command.h>
+#include <obj/logical/telnet/commands/show_object_types_command/show_object_types_command.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/string/string.h>
 
-uint8_t exit_function() {
-    return 0;
+uint8_t show_object_types_function() {
+    objecttypes_dump();
+    return 1;
 }
 
-struct telnet_command* exit_new() {
-    return telnet_command_new("exit", "exit", &exit_function);
+struct telnet_command* show_object_types_new() {
+    return telnet_command_new("show_object_types", "Show Object Types", &show_object_types_function);
 }

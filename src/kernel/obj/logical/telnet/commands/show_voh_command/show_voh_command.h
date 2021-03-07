@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _SHOW_VOH_H
-#define _SHOW_VOH_H
+#ifndef _SHOW_VOH_COMMAND_H
+#define _SHOW_VOH_COMMAND_H
 
 #include <obj/logical/telnet/commands/telnet_command.h>
 

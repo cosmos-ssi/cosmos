@@ -6,10 +6,10 @@
 // ****************************************************************
 
 #include <obj/logical/telnet/commands/exit_command/exit_command.h>
-#include <obj/logical/telnet/commands/show_object_types/show_object_types.h>
-#include <obj/logical/telnet/commands/show_objects/show_objects.h>
-#include <obj/logical/telnet/commands/show_voh/show_voh.h>
-
+#include <obj/logical/telnet/commands/show_object_types_command/show_object_types_command.h>
+#include <obj/logical/telnet/commands/show_objects_command/show_objects_command.h>
+#include <obj/logical/telnet/commands/show_voh_command/show_voh_command.h>
+#include <obj/logical/telnet/commands/test_command/test_command.h>
 #include <obj/logical/telnet/telnet.h>
 #include <obj/logical/telnet/telnet_commandloop.h>
 #include <sys/collection/arraylist/arraylist.h>
@@ -69,6 +69,7 @@ void telnet_add_commands(struct object* obj) {
     arraylist_add(object_data->commands, show_objects_new());
     arraylist_add(object_data->commands, show_object_types_new());
     arraylist_add(object_data->commands, exit_new());
+    arraylist_add(object_data->commands, test_new());
 }
 
 struct object* telnet_attach(struct object* serial_device) {

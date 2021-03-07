@@ -5,14 +5,16 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/logical/telnet/commands/exit_command/exit_command.h>
+#include <obj/logical/telnet/commands/test_command/test_command.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/string/string.h>
+#include <tests/tests.h>
 
-uint8_t exit_function() {
-    return 0;
+uint8_t test_function() {
+    tests_run();
+    return 1;
 }
 
-struct telnet_command* exit_new() {
-    return telnet_command_new("exit", "exit", &exit_function);
+struct telnet_command* test_new() {
+    return telnet_command_new("test", "run tests", &test_function);
 }
