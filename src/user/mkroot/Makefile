@@ -14,6 +14,11 @@ buildfs:
 	$(RM) -r $(ROOT_FS_TEMP)
 	mkdir $(ROOT_FS_TEMP)
 	cp -R ../fs/rootfs/* $(ROOT_FS_TEMP)
+	mkdir $(ROOT_FS_TEMP)/lib
+	cp ../lib/libcosmos.a $(ROOT_FS_TEMP)/lib/
+	mkdir $(ROOT_FS_TEMP)/bin
+	cp ../apps/init/init $(ROOT_FS_TEMP)/bin/
+	cp ../apps/term/term $(ROOT_FS_TEMP)/bin/
 
 mkfat16: mkmtemp
 	$(DD) if=/dev/zero of=$(FAT16_ROOT) bs=512 count=20000 && \
