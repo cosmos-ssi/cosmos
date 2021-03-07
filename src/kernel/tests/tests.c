@@ -26,7 +26,6 @@
 #include <tests/sys/test_iobuffers.h>
 #include <tests/sys/test_linkedlist.h>
 #include <tests/sys/test_malloc.h>
-#include <tests/sys/test_ntree.h>
 #include <tests/sys/test_ringbuffer.h>
 #include <tests/sys/test_string.h>
 #include <tests/sys/test_tree.h>
@@ -39,7 +38,6 @@ void tests_run() {
     test_ringbuffer();
     test_linkedlist();
     test_tree();
-    test_ntree();
     test_string();
     test_bitmap();
     test_iobuffers();
