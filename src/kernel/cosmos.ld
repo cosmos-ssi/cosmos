@@ -30,6 +30,7 @@ SECTIONS
 		_debug_start = .;
 		*(.debug)
 		*(.stab)
+		*(.comment)
 		_debug_end = .;
 		. = ALIGN(4096);
 	}

@@ -92,6 +92,17 @@ uint8_t user_validate_pwd(struct object* obj, uint8_t* name, uint8_t* pwd) {
     return 0;
 }
 
+void user_serialize(struct object* obj, uint8_t* buffer, uint32_t size) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(buffer);
+    ASSERT_NOT_NULL(size);
+}
+void user_deserialize(struct object* obj, uint8_t* buffer, uint32_t size) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(buffer);
+    ASSERT_NOT_NULL(size);
+}
+
 struct object* user_attach(uint8_t* name) {
     ASSERT_NOT_NULL(name);
     ASSERT(strlen(name) < USER_MAX_NAME);
@@ -114,6 +125,8 @@ struct object* user_attach(uint8_t* name) {
     api->set_pwd = &user_set_pwd;
     api->validate_pwd = &user_validate_pwd;
     objectinstance->api = api;
+    objectinstance->deserialize = &user_deserialize;
+    objectinstance->serialize = &user_serialize;
     /*
      * device data
      */

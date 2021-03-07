@@ -11,7 +11,8 @@
 #include <types.h>
 
 struct object;
+struct arraylist;
 
-uint8_t telnet_command_loop(struct object* telnet_object);
+uint8_t telnet_command_loop(struct object* serial_object, struct arraylist* commands);
 
 #endif

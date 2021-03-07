@@ -63,6 +63,7 @@ void objecttypes_init() {
     objecttypes_add(objecttype_new("telnet", OBJECT_TYPE_TELNET));
     objecttypes_add(objecttype_new("user", OBJECT_TYPE_USER));
     objecttypes_add(objecttype_new("group", OBJECT_TYPE_GROUP));
+    objecttypes_add(objecttype_new("serializer", OBJECT_TYPE_SERIALIZER));
 }
 
 uint32_t objecttypes_count() {

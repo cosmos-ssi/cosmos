@@ -1,29 +1,29 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "cosmos gcc - x86_64",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/src/kernel/cosmos.elf",
-            "args": [
-                "target remote localhost:1234"
-            ],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "linux": {
-                "MIMode": "gdb",
-                "MIDebuggerPath": "/usr/local/bin/x86_64-elf-gdb"
-            },
-            "osx": {
-                "MIMode": "lldb",
-                "MIDebuggerPath": "/usr/bin/lldb/lldb"
-            }
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "gdb",
+      "request": "attach",
+      "name": "Cosmos GDB Linux - attach to qemu",
+      "executable": "src/kernel/cosmos.elf",
+      "target": ":1234",
+      "remote": true,
+      "cwd": "${workspaceRoot}",
+      "valuesFormatting": "parseText"
+    },
+    {
+      // this configuration works on OS X Big Sur
+      // https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb
+      // https://github.com/vadimcn/vscode-lldb/blob/v1.6.1/MANUAL.md#remote-debugging
+      "type": "lldb",
+      "request": "custom",
+      "name": "Cosmos LLDB OS X- attach to qemu",
+      "targetCreateCommands": [
+        "target create ${workspaceRoot}/src/kernel/cosmos.elf"
+      ],
+      "processCreateCommands": [
+        "gdb-remote localhost:1234"
+      ]
+    }
+  ]
 }

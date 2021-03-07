@@ -5,14 +5,13 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <obj/logical/telnet/commands/telnet_command.h>
 #include <obj/logical/telnet/telnet_commandloop.h>
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
-#include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_serial.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-#include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
@@ -65,29 +64,38 @@ void telnet_read_line(struct object* serial_object, uint8_t* line, uint16_t size
     }
 }
 
-uint8_t telnet_process_line(uint8_t* line) {
+void telnet_show_help(struct arraylist* commands) {
+    for (uint16_t i = 0; i < arraylist_count(commands); i++) {
+        struct telnet_command* cmd = (struct telnet_command*)arraylist_get(commands, i);
+        kprintf("   %s : %s\n", cmd->name, cmd->desc);
+    }
+    kprintf("   help : Show this help\n");
+}
+
+uint8_t telnet_process_line(uint8_t* line, struct arraylist* commands) {
     ASSERT_NOT_NULL(line);
-    if (0 != line) {
-        if (strcmp(line, "exit") == 0) {
-            return 0;
-        } else if (strcmp(line, "show_voh") == 0) {
-            dump_VOH();
-        } else if (strcmp(line, "show_object_types") == 0) {
-            objecttypes_dump();
-        } else if (strcmp(line, "show_objects") == 0) {
-            objectmgr_dump_objects();
+    ASSERT_NOT_NULL(commands);
+    for (uint16_t i = 0; i < arraylist_count(commands); i++) {
+        struct telnet_command* cmd = (struct telnet_command*)arraylist_get(commands, i);
+        if (strcmp(line, cmd->name) == 0) {
+            telnet_command_function fn = cmd->command;
+            return (*fn)();
+        }
+    }
+    if (strlen(line) > 0) {
+        if ((strcmp(line, "?") == 0) || (strcmp(line, "help") == 0)) {
+            telnet_show_help(commands);
         } else {
-            kprintf("Type 'show_voh' to show VOH\n");
-            kprintf("Type 'show_object_types' to show object types\n");
-            kprintf("Type 'show_objects' to show objects\n");
-            kprintf("Type 'exit' to exit");
-            return 1;
+            /*
+        * no command was found
+        */
+            kprintf("Unknown command '%s' press '?' for help\n", line);
         }
     }
     return 1;
 }
 
-uint8_t telnet_command_loop(struct object* serial_object) {
+uint8_t telnet_command_loop(struct object* serial_object, struct arraylist* commands) {
     ASSERT_NOT_NULL(serial_object);
 
     struct objectinterface_serial* serial_api = (struct objectinterface_serial*)serial_object->api;
@@ -100,7 +108,7 @@ uint8_t telnet_command_loop(struct object* serial_object) {
         memzero(line, TELNET_LINE_LEN);
         telnet_read_line(serial_object, line, TELNET_LINE_LEN);
         kprintf("\n");
-        go = telnet_process_line(line);
+        go = telnet_process_line(line, commands);
         kprintf("\n");
     }
     return 0;
