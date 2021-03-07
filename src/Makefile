@@ -45,6 +45,7 @@ user-subsystem:
 
 utils:
 	cd util/mkinitrd && $(MAKE)
+	cd util/mkfat16 && $(MAKE)
 
 clean: boot-clean kernel-clean user-clean util-clean
 	$(RM) $(BOOTIMAGE)
@@ -62,6 +63,7 @@ user-clean:
 
 util-clean:
 	cd util/mkinitrd && $(MAKE) clean
+	cd util/mkfat16 && $(MAKE) clean
 
 qemu: bootimage
 	$(QEMU) $(QEMUARGS)

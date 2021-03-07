@@ -11,9 +11,13 @@ ifeq ($(UNAME),Darwin)
 	MCOPY=mcopy
 	MMD=mmd
 	MFORMAT=mformat
+	MPARTITION=mpartition
+	MDIR=mdir
 else
 	MCOPY=mcopy
 	MMD=mmd
 	MFORMAT=mformat
+	MPARTITION=mpartition
+	MDIR=mdir
 endif
 

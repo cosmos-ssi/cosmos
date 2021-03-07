@@ -55,12 +55,14 @@ dkms.conf
 *.un*
 *.~
 **/*~
+.tmp_mtools
 
 # image files we dont need
 **/hda.img
 **/blank.img
 **/initrd.img
 **/root.img
+**/mbr_fat.img
 
 # generated binaries
 src/user/cosmos_init
