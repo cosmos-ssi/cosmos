@@ -52,7 +52,8 @@ void mmu_init() {
     // Move GDT to an address in direct map area. We don't actually move the GDT
     // itself, we just change the pointer in the GDTR register to point to the
     // direct-map equivalent of the physical/identity-mapped address set by the
-    // bootloader.
+    // bootloader.  This way we can replace the identity-map area when we set up
+    // page tables for user processes.
     system_gdt = asm_sgdt();
     gdt_len = *((uint16_t*)system_gdt);
     gdt_base = *((uint64_t*)&system_gdt[2]);
