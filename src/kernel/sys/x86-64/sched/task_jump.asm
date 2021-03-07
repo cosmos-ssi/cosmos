@@ -6,20 +6,24 @@ task_jump:
          mov rax, [rdi + 8]   ; cr3
          mov cr3, rax
 
-         ; rflags
-         mov rax, [rdi + (8 * 22)]
-         push rax
-         popfq
+         ; We need to set the stack pointers first, to make sure that we're
+         ; pushing onto the stack that iretq will be seeing later on
 
-         ; We can't load rip directly, and we don't want to anyway because we
-         ; still have work to do.  Can't put it in a register because that
-         ; would clobber it, so we put it in a memory area we've specified
-         ; so we can access it after we set the saved rdi value.  And since we
-         ; also can't do a memory-to-memory mov, we move it into rax and then
-         ; into that location
+         mov rsp, [rdi + (8 * 11)]
+         mov rbp, [rdi + (8 * 12)]
 
-         mov rax, [rdi + (8 * 21)]
-         mov [rel jmpaddr], rax
+         ; We also need to save rsp in a register, so that the current
+         ; rsp gets set after the iretq--since our pushes will modify it
+         mov rax, rsp
+
+         ; Now we push what iretq expects to find on the stack:
+         push qword 0x23   ; SS descriptor + privilege level 3
+         push rax          ; where we placed the saved rsp value earlier
+         push qword [rdi + (8 * 22)]   ; RFLAGS
+         push qword 0x1b   ; CS descriptor + privilege level 3
+         push qword [rdi + (8 * 21)]   ; RIP
+
+         ; Now we set the rest of the registers to their saved values
 
          mov rax, [rdi + (8 * 5)]
          mov rbx, [rdi + (8 * 6)]
@@ -29,8 +33,6 @@ task_jump:
 
          ; skip rdi for now, since we need it as-is to continue filling out
          ; the rest of the registers
-         mov rsp, [rdi + (8 * 11)]
-         mov rbp, [rdi + (8 * 12)]
          mov r8, [rdi + (8 * 13)]
          mov r9, [rdi + (8 * 14)]
          mov r10, [rdi + (8 * 15)]
@@ -39,13 +41,6 @@ task_jump:
          mov r13, [rdi + (8 * 18)]
          mov r14, [rdi + (8 * 19)]
          mov r15, [rdi + (8 * 20)]
-
-         ; now we can move rdi into place
-         mov rdi, [rdi + (8 * 10)]
-
-         jmp [rel jmpaddr]
-
-         jmp $
-
-         jmpaddr: dq 0
+         
+         iretq
 ret

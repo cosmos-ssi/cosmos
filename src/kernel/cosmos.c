@@ -161,6 +161,9 @@ void CosmOS() {
     * start telnet
     */
 
+    // we never get here currently... well.... eventually the telnet over serial needs to be a on a thread
+    sched_switch(task_select());
+
     struct object* telnet = objectmgr_find_object_by_name("telnet0");
     kprintf("\n");
     kprintf("***** Starting Kernel Telnet *****\n");
@@ -171,9 +174,6 @@ void CosmOS() {
     } else {
         kprintf("Unable to find telnet0\n");
     }
-
-    // we never get here currently... well.... eventually the telnet over serial needs to be a on a thread
-    sched_switch(task_select());
 }
 
 filesystem_node_t* load_test_binary() {

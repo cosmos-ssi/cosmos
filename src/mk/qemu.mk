@@ -19,7 +19,6 @@ QEMUARGS=                                                 \
   -cpu core2duo                                           \
   -m 4096                                                \
   -smp 1                                                  \
-  -no-reboot                                              \
   -drive file=img/hda.img,index=0,format=raw              \
   -drive file=img/mbr_fat.img,index=1,format=raw           \
   -drive file=img/gpt_fat.img,index=2,format=raw          \
