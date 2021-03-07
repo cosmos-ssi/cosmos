@@ -68,12 +68,13 @@ RTC          | read            | 2100       | deviceapi_rtc
 Tick         | read            | 2200       | deviceapi_tick
 Serial       | readchar        | 2300       | deviceapi_serial
 Serial       | writechar       | 2301       | deviceapi_serial
-Memory		 | malloc		   | 2401		| to-be deviceapi_memory
-Memory		 | free		       | 2402		| to-be deviceapi_memory
-Memory		 | realloc		   | 2403		| to-be deviceapi_memory
-User		 | get_name		   | 2501		| deviceapi_user
-User		 | set_name		   | 2502		| 
-User		 | set_pwd		   | 2503		| 
-User		 | validate_pwd    | 2504		| 
-Group        | get_name        | 2601       |
-HostID       | get_id          | 2701       | deviceapi_hostid
+Memory		 | malloc		   | 2400		| to-be deviceapi_memory
+Memory		 | free		       | 2401		| to-be deviceapi_memory
+Memory		 | realloc		   | 2402		| to-be deviceapi_memory
+User		 | get_name		   | 2500		| deviceapi_user
+User		 | set_name		   | 2501		| 
+User		 | set_pwd		   | 2502		| 
+User		 | validate_pwd    | 2503		| 
+Group        | get_name        | 2600       |
+HostID       | get_id          | 2700       | deviceapi_hostid
+
