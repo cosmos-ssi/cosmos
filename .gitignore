@@ -85,3 +85,4 @@ src/user/init/cosmos_init
 src/user/root.img
 src/mk/qemu.mk~
 /src/user/mkroot/.rootfs
+/doc/doxygen
