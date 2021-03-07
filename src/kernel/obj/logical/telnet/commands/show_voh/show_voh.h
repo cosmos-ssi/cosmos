@@ -5,14 +5,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _TELNET_COMMANDLOOP_H
-#define _TELNET_COMMANDLOOP_H
+#ifndef _SHOW_VOH_H
+#define _SHOW_VOH_H
 
-#include <types.h>
+#include <obj/logical/telnet/commands/telnet_command.h>
 
-struct object;
-struct arraylist;
-
-uint8_t telnet_command_loop(struct object* serial_object, struct arraylist* commands);
+struct telnet_command* show_voh_new();
 
 #endif
