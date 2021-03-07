@@ -21,6 +21,8 @@ void switch_to_task(linkedlist* task) {
 
     proc = proc_table_get(pid);
 
+    current_task[CUR_CPU][CUR_CORE] = task;
+
     task_jump(proc);
 
     return;
