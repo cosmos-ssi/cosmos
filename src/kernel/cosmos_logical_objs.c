@@ -62,7 +62,12 @@ void attach_logical_objects() {
     /*
     * rand device
     */
-    rand_attach();
+    struct object* rtc = objectmgr_find_object_by_name("rtc0");
+    if (0 != rtc) {
+        rand_attach(rtc);
+    } else {
+        kprintf("Unable to find %s\n", "rtc0");
+    }
     /*
     * serializer
     */
@@ -89,6 +94,8 @@ void attach_logical_objects() {
     struct object* pit = objectmgr_find_object_by_name("pit0");
     if (0 != pit) {
         tick_attach(pit);
+    } else {
+        kprintf("Unable to find %s\n", "pit0");
     }
     /*
     * tcp/ip

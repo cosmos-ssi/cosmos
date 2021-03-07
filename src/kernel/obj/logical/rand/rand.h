@@ -12,7 +12,7 @@
 
 struct object;
 
-struct object* rand_attach();
+struct object* rand_attach(struct object* rtc);
 void rand_detach(struct object* obj);
 
 #endif
