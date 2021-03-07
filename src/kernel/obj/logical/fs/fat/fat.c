@@ -115,7 +115,11 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
                     if (entry->name[0] != 0xe5) {
                         // not a long file name
                         if (entry->name[10] != 0xFF) {
-                            kprintf("%s\n", entry->name);
+
+                            uint8_t fn[32];
+                            fat_filename_from_fat(entry->name, fn, 32);
+
+                            kprintf("fn %s\n", fn);
                             //		struct fs_directory* dir = (struct fs_directory*) kmalloc(sizeof(struct fs_directory));
                             //		dir->flags=entry->attributes;
                             //		memcpy(dir->name, entry->name,11);

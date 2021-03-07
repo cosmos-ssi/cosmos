@@ -11,6 +11,7 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
+#include <sys/string/string.h>
 
 void fat_dump_fat_fs_parameters(struct fat_fs_parameters* param) {
     kprintf("  sector size: %llu\n", param->sector_size);
@@ -80,6 +81,28 @@ void fat_read_fs_parameters(struct object* obj, struct fat_fs_parameters* param)
     kfree(buffer);
 }
 
+void fat_filename_from_fat(uint8_t* fat_name, uint8_t* normal_name, uint16_t size) {
+    ASSERT_NOT_NULL(fat_name);
+    ASSERT_NOT_NULL(normal_name);
+    ASSERT(size >= 11);
+    uint8_t j = 0;
+    for (uint8_t i = 0; i < 8; i++) {
+        if (fat_name[i] != ' ') {
+            normal_name[j++] = fat_name[i];
+        }
+    }
+    if ((' ' != fat_name[8]) && (' ' != fat_name[9]) && (' ' != fat_name[10])) {
+        normal_name[j++] = '.';
+        normal_name[j++] = fat_name[8];
+        normal_name[j++] = fat_name[9];
+        normal_name[j++] = fat_name[10];
+    }
+    normal_name[j] = 0;
+}
+
+void fat_filename_to_fat(uint8_t* normal_name, uint8_t* fat_name, uint16_t size) {
+    PANIC("not implemented");
+}
 /*
  * find first sector of cluster
  */
