@@ -3,11 +3,17 @@ include ../../mk/build.mk
 
 FAT16_ROOT=root.img
 MTEMP=$(PWD)/.tmp_mtools
+ROOT_FS_TEMP=./.rootfs
 
-all: mkfat16 copyfiles dirfiles
+all: buildfs mkfat16 copyfiles dirfiles
 
 mkmtemp:
 	echo 'drive c: file="./$(FAT16_ROOT)" partition=1' > $(MTEMP)
+
+buildfs:
+	$(RM) -r $(ROOT_FS_TEMP)
+	mkdir $(ROOT_FS_TEMP)
+	cp -R ../fs/rootfs/* $(ROOT_FS_TEMP)
 
 mkfat16: mkmtemp
 	$(DD) if=/dev/zero of=$(FAT16_ROOT) bs=512 count=20000 && \
@@ -18,7 +24,7 @@ mkfat16: mkmtemp
 
 copyfiles: mkmtemp
 	export MTOOLSRC=$(MTEMP) && \
-	$(MCOPY) -spmv ../fs/rootfs/* c:
+	$(MCOPY) -spmv $(ROOT_FS_TEMP)/* c:
 	cp $(FAT16_ROOT) ../../img/
 
 dirfiles: mkmtemp
@@ -26,5 +32,6 @@ dirfiles: mkmtemp
 	$(MDIR) -/ -a c:
 
 clean:
-	rm $(MTEMP)
-	rm $(FAT16_ROOT)
+	$(RM) $(MTEMP)
+	$(RM) $(FAT16_ROOT)
+	$(RM) -r $(ROOT_FS_TEMP)
