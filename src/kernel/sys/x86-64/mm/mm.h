@@ -79,6 +79,7 @@ int_15_map* read_int_15_map(uint8_t* num_blocks, uint8_t* lrg_block);
 
 // init.c
 extern uint64_t future_pt_expansion[3];
+extern uint8_t* system_gdt;
 void mmu_init();
 
 // mm.c

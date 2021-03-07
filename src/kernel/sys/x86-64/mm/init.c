@@ -8,11 +8,13 @@
 #include <sys/asm/asm.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/string/mem.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
 
 uint64_t future_pt_expansion[3];
+uint8_t* system_gdt;
 
 void mmu_init() {
     int_15_map* map;
@@ -20,6 +22,8 @@ void mmu_init() {
     //  uint8_t i;
     //   mem_block* b;
     page_directory_t* page_directory_start;
+    uint16_t gdt_len;
+    uint64_t gdt_base;
 
     brk = &_end;
     //   kprintf("   brk: 0x%llX\n", (uint64_t)brk);
@@ -45,7 +49,18 @@ void mmu_init() {
     reserve_next_ptt(PD, future_pt_expansion);
     reserve_next_ptt(PT, future_pt_expansion);
 
-    kprintf("gdt: 0x%llX\n", asm_sgdt());
+    // Move GDT to an address in direct map area. We don't actually move the GDT
+    // itself, we just change the pointer in the GDTR register to point to the
+    // direct-map equivalent of the physical/identity-mapped address set by the
+    // bootloader.
+    system_gdt = asm_sgdt();
+    gdt_len = *((uint16_t*)system_gdt);
+    gdt_base = *((uint64_t*)&system_gdt[2]);
+    gdt_base = (uint64_t)CONV_PHYS_ADDR(gdt_base);
+    memcpy(system_gdt, (uint8_t*)&gdt_len, sizeof(uint16_t));
+    memcpy(&system_gdt[2], (uint8_t*)&gdt_base, sizeof(uint64_t));
+
+    asm_lgdt(system_gdt);
 
     return;
 }
