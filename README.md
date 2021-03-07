@@ -22,10 +22,6 @@ CosmOS will be an [SSI](https://en.wikipedia.org/wiki/Single_system_image) opera
 
 - [Userland](doc/developer/userland.md)
 
-## Doxygen
-
-- Doxygen documentation is available [here](doc/doxygen/html/index.html)
-
 ## Kernel Documentation
 
 - [Source Tree](doc/developer/source_tree.md)
