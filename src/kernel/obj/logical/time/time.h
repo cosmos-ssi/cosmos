@@ -5,18 +5,18 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 /*
-* one could reasonably ask why we need a tick device when we have pit.  
-* pit is platform dependent while tick is not.
-* we can have a slighly differnet implementation of pit on ARM that tick uses, and wrap it.
+* one could reasonably ask why we need a time device when we have rtc.  
+* time is platform dependent while rtc is not.
+* we can have a slighly differnet implementation of rtc on ARM that time uses, and wrap it.
 */
-#ifndef _TICK_H
-#define _TICK_H
+#ifndef _TIME_H
+#define _TIME_H
 
 #include <types.h>
 
 struct object;
 
-struct object* tick_attach(struct object* pit_device);
-void tick_detach(struct object* obj);
+struct object* time_attach(struct object* rtc_device);
+void time_detach(struct object* obj);
 
 #endif
