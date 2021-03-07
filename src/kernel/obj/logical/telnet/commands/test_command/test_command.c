@@ -5,14 +5,16 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _TELNET_COMMANDLOOP_H
-#define _TELNET_COMMANDLOOP_H
+#include <obj/logical/telnet/commands/test_command/test_command.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/string/string.h>
+#include <tests/tests.h>
 
-#include <types.h>
+uint8_t test_function() {
+    tests_run();
+    return 1;
+}
 
-struct object;
-struct arraylist;
-
-uint8_t telnet_command_loop(struct object* serial_object, struct arraylist* commands);
-
-#endif
+struct telnet_command* test_new() {
+    return telnet_command_new("test", "run tests", &test_function);
+}

@@ -5,8 +5,14 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <obj/logical/telnet/commands/exit_command/exit_command.h>
+#include <obj/logical/telnet/commands/show_object_types_command/show_object_types_command.h>
+#include <obj/logical/telnet/commands/show_objects_command/show_objects_command.h>
+#include <obj/logical/telnet/commands/show_voh_command/show_voh_command.h>
+#include <obj/logical/telnet/commands/test_command/test_command.h>
 #include <obj/logical/telnet/telnet.h>
 #include <obj/logical/telnet/telnet_commandloop.h>
+#include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
@@ -19,6 +25,8 @@
 
 struct telnet_objectdata {
     struct object* serial_device;
+    struct arraylist* commands;
+
 } __attribute__((packed));
 
 /*
@@ -49,7 +57,19 @@ void telnet_start(struct object* obj) {
     ASSERT_NOT_NULL(obj->object_data);
     struct telnet_objectdata* object_data = (struct telnet_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(object_data->serial_device);
-    telnet_command_loop(object_data->serial_device);
+    telnet_command_loop(object_data->serial_device, object_data->commands);
+}
+
+void telnet_add_commands(struct object* obj) {
+    ASSERT_NOT_NULL(obj);
+    ASSERT_NOT_NULL(obj->object_data);
+    struct telnet_objectdata* object_data = (struct telnet_objectdata*)obj->object_data;
+    ASSERT_NOT_NULL(object_data->commands);
+    arraylist_add(object_data->commands, show_voh_new());
+    arraylist_add(object_data->commands, show_objects_new());
+    arraylist_add(object_data->commands, show_object_types_new());
+    arraylist_add(object_data->commands, exit_new());
+    arraylist_add(object_data->commands, test_new());
 }
 
 struct object* telnet_attach(struct object* serial_device) {
@@ -77,7 +97,10 @@ struct object* telnet_attach(struct object* serial_device) {
      */
     struct telnet_objectdata* object_data = (struct telnet_objectdata*)kmalloc(sizeof(struct telnet_objectdata));
     object_data->serial_device = serial_device;
+    object_data->commands = arraylist_new();
     objectinstance->object_data = object_data;
+    telnet_add_commands(objectinstance);
+
     /*
      * register
      */

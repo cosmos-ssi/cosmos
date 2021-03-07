@@ -5,14 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _TELNET_COMMANDLOOP_H
-#define _TELNET_COMMANDLOOP_H
+#ifndef __TEST_DYNABUFFER_H
+#define __TEST_DYNABUFFER_H
 
-#include <types.h>
-
-struct object;
-struct arraylist;
-
-uint8_t telnet_command_loop(struct object* serial_object, struct arraylist* commands);
+void test_dynabuffer();
 
 #endif

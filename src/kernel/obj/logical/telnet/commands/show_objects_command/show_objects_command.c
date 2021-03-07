@@ -5,14 +5,16 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _TELNET_COMMANDLOOP_H
-#define _TELNET_COMMANDLOOP_H
+#include <obj/logical/telnet/commands/show_objects_command/show_objects_command.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/string/string.h>
 
-#include <types.h>
+uint8_t show_objects_function() {
+    objectmgr_dump_objects();
+    return 1;
+}
 
-struct object;
-struct arraylist;
-
-uint8_t telnet_command_loop(struct object* serial_object, struct arraylist* commands);
-
-#endif
+struct telnet_command* show_objects_new() {
+    return telnet_command_new("show_objects", "Show Objects", &show_objects_function);
+}

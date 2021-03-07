@@ -21,6 +21,7 @@
 #include <tests/sys/test_array.h>
 #include <tests/sys/test_arraylist.h>
 #include <tests/sys/test_bitmap.h>
+#include <tests/sys/test_dynabuffer.h>
 #include <tests/sys/test_init_loader.h>
 #include <tests/sys/test_iobuffers.h>
 #include <tests/sys/test_linkedlist.h>
@@ -56,6 +57,7 @@ void tests_run() {
     test_init_loader();
     //test_objects();
     test_kernelmap();
+    test_dynabuffer();
     test_serializer();
     //test_mm();
 }

@@ -5,14 +5,14 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _TELNET_COMMANDLOOP_H
-#define _TELNET_COMMANDLOOP_H
+#include <obj/logical/telnet/commands/exit_command/exit_command.h>
+#include <sys/kmalloc/kmalloc.h>
+#include <sys/string/string.h>
 
-#include <types.h>
+uint8_t exit_function() {
+    return 0;
+}
 
-struct object;
-struct arraylist;
-
-uint8_t telnet_command_loop(struct object* serial_object, struct arraylist* commands);
-
-#endif
+struct telnet_command* exit_new() {
+    return telnet_command_new("exit", "exit", &exit_function);
+}

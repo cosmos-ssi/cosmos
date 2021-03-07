@@ -4,12 +4,26 @@
     {
       "type": "gdb",
       "request": "attach",
-      "name": "Attach to gdbserver",
+      "name": "Cosmos GDB Linux - attach to qemu",
       "executable": "src/kernel/cosmos.elf",
       "target": ":1234",
       "remote": true,
       "cwd": "${workspaceRoot}",
       "valuesFormatting": "parseText"
+    },
+    {
+      // this configuration works on OS X Big Sur
+      // https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb
+      // https://github.com/vadimcn/vscode-lldb/blob/v1.6.1/MANUAL.md#remote-debugging
+      "type": "lldb",
+      "request": "custom",
+      "name": "Cosmos LLDB OS X- attach to qemu",
+      "targetCreateCommands": [
+        "target create ${workspaceRoot}/src/kernel/cosmos.elf"
+      ],
+      "processCreateCommands": [
+        "gdb-remote localhost:1234"
+      ]
     }
   ]
 }
