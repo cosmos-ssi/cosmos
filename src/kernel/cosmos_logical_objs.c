@@ -11,6 +11,7 @@
 #include <obj/logical/fs/objfs/objfs.h>
 #include <obj/logical/fs/voh/voh.h>
 #include <obj/logical/group/group.h>
+#include <obj/logical/hostid/hostid.h>
 #include <obj/logical/null/null.h>
 #include <obj/logical/ramdisk/ramdisk.h>
 #include <obj/logical/rand/rand.h>
@@ -66,6 +67,10 @@ void attach_logical_objects() {
     * serializer
     */
     serializer_attach();
+    /*
+    * hostid.  how other cosmos nodes know this node
+    */
+    hostid_attach();
     /*
     * add groups
     */

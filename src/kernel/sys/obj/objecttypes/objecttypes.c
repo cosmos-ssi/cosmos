@@ -64,6 +64,7 @@ void objecttypes_init() {
     objecttypes_add(objecttype_new("user", OBJECT_TYPE_USER));
     objecttypes_add(objecttype_new("group", OBJECT_TYPE_GROUP));
     objecttypes_add(objecttype_new("serializer", OBJECT_TYPE_SERIALIZER));
+    objecttypes_add(objecttype_new("hostid", OBJECT_TYPE_HOSTID));
 }
 
 uint32_t objecttypes_count() {

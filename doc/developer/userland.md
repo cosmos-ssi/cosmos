@@ -76,6 +76,4 @@ User		 | set_name		   | 2502		|
 User		 | set_pwd		   | 2503		| 
 User		 | validate_pwd    | 2504		| 
 Group        | get_name        | 2601       |
-
-
-
+HostID       | get_id          | 2701       | deviceapi_hostid
