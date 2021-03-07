@@ -33,4 +33,7 @@ uint16_t dynabuffer_read_uint16_t(struct dynabuffer* db);
 uint32_t dynabuffer_read_uint32_t(struct dynabuffer* db);
 uint64_t dynabuffer_read_uint64_t(struct dynabuffer* db);
 
+void dynabuffer_append_string(struct dynabuffer* db, uint8_t* str);
+void dynabuffer_read_string(struct dynabuffer* db, uint8_t* str, uint32_t size);
+
 #endif

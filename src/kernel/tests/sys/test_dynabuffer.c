@@ -9,8 +9,11 @@
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/string/string.h>
 #include <tests/sys/test_dynabuffer.h>
 #include <types.h>
+
+#define DYNABUFFER_TEST_DAVES "the daves i know"
 
 void test_dynabuffer() {
     kprintf("Testing Dynabuffer\n");
@@ -28,6 +31,7 @@ void test_dynabuffer() {
     uint64_t h = 0x1234567899991007;
 
     dynabuffer_append_uint8_t(db, a);
+    //  dynabuffer_append_string(db, DYNABUFFER_TEST_DAVES);
     dynabuffer_append_uint8_t(db, b);
     dynabuffer_append_uint8_t(db, c);
     dynabuffer_append_uint16_t(db, d);
@@ -36,10 +40,15 @@ void test_dynabuffer() {
     dynabuffer_append_uint32_t(db, g);
     dynabuffer_append_uint64_t(db, h);
 
-    //  debug_show_memblock(db->data, db->size);
+    // debug_show_memblock(db->data, db->size);
 
     dynabuffer_reset(db);
     ASSERT(dynabuffer_read_uint8_t(db) == 12);
+    //  uint8_t buffer[32];
+    //    debug_show_memblock(db->data, db->size);
+
+    //  dynabuffer_read_string(db, buffer, 32);
+    //  ASSERT(strcmp(DYNABUFFER_TEST_DAVES, buffer) == 0);
     ASSERT(dynabuffer_read_uint8_t(db) == 17);
     ASSERT(dynabuffer_read_uint8_t(db) == 120);
     ASSERT(dynabuffer_read_uint16_t(db) == 0x1000);
