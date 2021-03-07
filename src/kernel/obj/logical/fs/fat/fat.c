@@ -79,6 +79,9 @@ void fat_filesystem_open(struct filesystem_node* fs_node) {
 void fat_filesystem_close(struct filesystem_node* fs_node) {}
 
 struct filesystem_node* fat_filesystem_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
     PANIC("Not Implemented");
     return 0;
 }
