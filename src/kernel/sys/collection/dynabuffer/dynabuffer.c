@@ -33,38 +33,55 @@ void dynabuffer_delete(struct dynabuffer* db) {
 
 void dynabuffer_reset(struct dynabuffer* db) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
     db->idx = 0;
 }
 
 uint32_t dynabuffer_size(struct dynabuffer* db) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
     return db->size;
 }
 uint32_t dynabuffer_idx(struct dynabuffer* db) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
     return db->idx;
+}
+
+uint8_t* dynabuffer_data(struct dynabuffer* db) {
+    ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+    return db->data;
 }
 
 void dynabuffer_append_uint8_t(struct dynabuffer* db, uint8_t v) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+
     ASSERT(db->idx + sizeof(uint8_t) < db->size);
     db->data[db->idx] = v;
     db->idx += sizeof(uint8_t);
 }
 void dynabuffer_append_uint16_t(struct dynabuffer* db, uint16_t v) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+
     ASSERT(db->idx + sizeof(uint16_t) < db->size);
     ((uint16_t*)db->data)[db->idx] = v;
     db->idx += sizeof(uint16_t);
 }
 void dynabuffer_append_uint32_t(struct dynabuffer* db, uint32_t v) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+
     ASSERT(db->idx + sizeof(uint32_t) < db->size);
     ((uint32_t*)db->data)[db->idx] = v;
     db->idx += sizeof(uint32_t);
 }
 void dynabuffer_append_uint64_t(struct dynabuffer* db, uint64_t v) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+
     ASSERT(db->idx + sizeof(uint64_t) < db->size);
     ASSERT_NOT_NULL(v);
     ((uint64_t*)db->data)[db->idx] = v;
@@ -73,6 +90,8 @@ void dynabuffer_append_uint64_t(struct dynabuffer* db, uint64_t v) {
 
 uint8_t dynabuffer_read_uint8_t(struct dynabuffer* db) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+
     ASSERT(db->idx < db->size - sizeof(uint8_t));
     uint8_t ret = db->data[db->idx];
     db->idx += sizeof(uint8_t);
@@ -80,6 +99,8 @@ uint8_t dynabuffer_read_uint8_t(struct dynabuffer* db) {
 }
 uint16_t dynabuffer_read_uint16_t(struct dynabuffer* db) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+
     ASSERT(db->idx < db->size - sizeof(uint16_t));
     uint16_t ret = ((uint16_t*)db->data)[db->idx];
     db->idx += sizeof(uint16_t);
@@ -88,6 +109,8 @@ uint16_t dynabuffer_read_uint16_t(struct dynabuffer* db) {
 
 uint32_t dynabuffer_read_uint32_t(struct dynabuffer* db) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+
     ASSERT(db->idx < db->size - sizeof(uint32_t));
     uint32_t ret = ((uint32_t*)db->data)[db->idx];
     //   kprintf("idx2 %llu\n", db->idx);
@@ -97,6 +120,8 @@ uint32_t dynabuffer_read_uint32_t(struct dynabuffer* db) {
 }
 uint64_t dynabuffer_read_uint64_t(struct dynabuffer* db) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+
     ASSERT(db->idx < db->size - sizeof(uint64_t));
     uint64_t ret = ((uint64_t*)db->data)[db->idx];
     db->idx += sizeof(uint64_t);
@@ -108,6 +133,8 @@ uint64_t dynabuffer_read_uint64_t(struct dynabuffer* db) {
 */
 void dynabuffer_append_string(struct dynabuffer* db, uint8_t* str) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+
     ASSERT_NOT_NULL(str);
     uint32_t len = strlen(str);
     kprintf("len %llu\n", len);
@@ -122,6 +149,8 @@ void dynabuffer_append_string(struct dynabuffer* db, uint8_t* str) {
 
 void dynabuffer_read_string(struct dynabuffer* db, uint8_t* str, uint32_t size) {
     ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+
     ASSERT_NOT_NULL(str);
     kprintf("idx %llu\n", db->idx);
 
