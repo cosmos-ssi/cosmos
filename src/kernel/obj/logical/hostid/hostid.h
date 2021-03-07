@@ -14,7 +14,7 @@
 
 struct object;
 
-struct object* hostid_attach();
+struct object* hostid_attach(struct object* rand);
 void hostid_detach(struct object* obj);
 
 #endif

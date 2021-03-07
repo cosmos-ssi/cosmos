@@ -11,6 +11,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_hostid.h>
+#include <sys/obj/objectinterface/objectinterface_rand.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
@@ -50,7 +51,17 @@ uint64_t hostid_read(struct object* obj) {
     return object_data->hostid;
 }
 
-struct object* hostid_attach() {
+uint64_t hostid_get_rand(struct object* rand) {
+    ASSERT_NOT_NULL(rand);
+    ASSERT_NOT_NULL(rand->api);
+    ASSERT(rand->objectype = OBJECT_TYPE_RAND);
+    struct objectinterface_rand* api = (struct objectinterface_rand*)rand->api;
+    return (*api->read)(rand);
+}
+
+struct object* hostid_attach(struct object* rand) {
+    ASSERT_NOT_NULL(rand);
+    ASSERT(rand->objectype = OBJECT_TYPE_RAND);
     /*
      * register device
      */
@@ -71,7 +82,7 @@ struct object* hostid_attach() {
      * device data
      */
     struct hostid_objectdata* object_data = (struct hostid_objectdata*)kmalloc(sizeof(struct hostid_objectdata));
-    object_data->hostid = 12;
+    object_data->hostid = hostid_get_rand(rand);
     objectinstance->object_data = object_data;
     /*
      * register

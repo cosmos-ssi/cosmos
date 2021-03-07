@@ -75,7 +75,13 @@ void attach_logical_objects() {
     /*
     * hostid.  how other cosmos nodes know this node
     */
-    hostid_attach();
+    struct object* rand = objectmgr_find_object_by_name("rand0");
+    if (0 != rand) {
+        hostid_attach(rand);
+    } else {
+        kprintf("Unable to find %s\n", "rand0");
+    }
+
     /*
     * add groups
     */
