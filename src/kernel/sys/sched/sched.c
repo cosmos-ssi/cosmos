@@ -39,24 +39,33 @@ void sched_switch(linkedlist* task) {
 
     body_obj = OBJECT_DATA(proc_obj, object_process_t)->body;
 
-    spinlock_acquire(task_list_lock);
-
     switch (object_type_(body_obj)) {
         case OBJECT_KERNEL_WORK:
+            spinlock_acquire(&task_list_lock);
+
             current_task[CUR_CPU][CUR_CORE] = task;
             sched_set_state(task_obj, SCHED_RUNNING);
+
+            spinlock_release(&task_list_lock);
+
             OBJECT_DATA(body_obj, object_kernel_work_t)->work_func(OBJECT_DATA(body_obj, object_kernel_work_t)->arg);
             break;
         case OBJECT_EXECUTABLE:
+            spinlock_acquire(&task_list_lock);
+
             current_task[CUR_CPU][CUR_CORE] = task;
             sched_set_state(task_obj, SCHED_RUNNING);
+
+            // We have to release BEFORE switch_to_task because switch_to_task
+            // never actually returns--the chosen task will return control to
+            // the kernel via interrupt or syscall.
+            spinlock_release(&task_list_lock);
+
             switch_to_task(task);
             break;
         default:
             PANIC("Invalid object type!")
     }
-
-    spinlock_release(task_list_lock);
 
     return;
 }
