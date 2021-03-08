@@ -7,6 +7,7 @@
 
 #include <sys/collection/dynabuffer/dynabuffer.h>
 #include <sys/debug/assert.h>
+#include <sys/debug/debug.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/string/mem.h>
@@ -42,6 +43,7 @@ uint32_t dynabuffer_size(struct dynabuffer* db) {
     ASSERT_NOT_NULL(db->data);
     return db->size;
 }
+
 uint32_t dynabuffer_idx(struct dynabuffer* db) {
     ASSERT_NOT_NULL(db);
     ASSERT_NOT_NULL(db->data);
@@ -62,6 +64,7 @@ void dynabuffer_append_uint8_t(struct dynabuffer* db, uint8_t v) {
     db->data[db->idx] = v;
     db->idx += sizeof(uint8_t);
 }
+
 void dynabuffer_append_uint16_t(struct dynabuffer* db, uint16_t v) {
     ASSERT_NOT_NULL(db);
     ASSERT_NOT_NULL(db->data);
@@ -70,6 +73,7 @@ void dynabuffer_append_uint16_t(struct dynabuffer* db, uint16_t v) {
     ((uint16_t*)db->data)[db->idx] = v;
     db->idx += sizeof(uint16_t);
 }
+
 void dynabuffer_append_uint32_t(struct dynabuffer* db, uint32_t v) {
     ASSERT_NOT_NULL(db);
     ASSERT_NOT_NULL(db->data);
@@ -78,6 +82,7 @@ void dynabuffer_append_uint32_t(struct dynabuffer* db, uint32_t v) {
     ((uint32_t*)db->data)[db->idx] = v;
     db->idx += sizeof(uint32_t);
 }
+
 void dynabuffer_append_uint64_t(struct dynabuffer* db, uint64_t v) {
     ASSERT_NOT_NULL(db);
     ASSERT_NOT_NULL(db->data);
@@ -97,6 +102,7 @@ uint8_t dynabuffer_read_uint8_t(struct dynabuffer* db) {
     db->idx += sizeof(uint8_t);
     return ret;
 }
+
 uint16_t dynabuffer_read_uint16_t(struct dynabuffer* db) {
     ASSERT_NOT_NULL(db);
     ASSERT_NOT_NULL(db->data);
@@ -118,6 +124,7 @@ uint32_t dynabuffer_read_uint32_t(struct dynabuffer* db) {
     db->idx += sizeof(uint32_t);
     return ret;
 }
+
 uint64_t dynabuffer_read_uint64_t(struct dynabuffer* db) {
     ASSERT_NOT_NULL(db);
     ASSERT_NOT_NULL(db->data);
@@ -126,43 +133,6 @@ uint64_t dynabuffer_read_uint64_t(struct dynabuffer* db) {
     uint64_t ret = ((uint64_t*)db->data)[db->idx];
     db->idx += sizeof(uint64_t);
     return ret;
-}
-
-/*
-* strings are stored pascal-style
-*/
-void dynabuffer_append_string(struct dynabuffer* db, uint8_t* str) {
-    ASSERT_NOT_NULL(db);
-    ASSERT_NOT_NULL(db->data);
-
-    ASSERT_NOT_NULL(str);
-    uint32_t len = strlen(str);
-    kprintf("len %llu\n", len);
-    kprintf("idx %llu\n", db->idx);
-
-    ASSERT(db->idx < db->size - (len + sizeof(uint32_t)));
-    dynabuffer_append_uint32_t(db, len);
-    memcpy(&(db->data[db->idx]), str, len);
-    db->idx += len;
-    kprintf("idx %llu\n", db->idx);
-}
-
-void dynabuffer_read_string(struct dynabuffer* db, uint8_t* str, uint32_t size) {
-    ASSERT_NOT_NULL(db);
-    ASSERT_NOT_NULL(db->data);
-
-    ASSERT_NOT_NULL(str);
-    kprintf("idx %llu\n", db->idx);
-
-    uint32_t len = dynabuffer_read_uint32_t(db);
-    kprintf("len %llu\n", len);
-    kprintf("idx %llu\n", db->idx);
-
-    ASSERT(len < size - 1);
-    memcpy(str, &(db->data[db->idx]), len);
-    db->idx += len;
-    str[len + 1] = 0;
-    kprintf("idx %llu\n", db->idx);
 }
 
 void dynabuffer_append_bytes(struct dynabuffer* db, uint8_t* buffer, uint32_t size) {
@@ -174,6 +144,7 @@ void dynabuffer_append_bytes(struct dynabuffer* db, uint8_t* buffer, uint32_t si
     memcpy(&(db->data[db->idx]), buffer, size);
     db->idx += size;
 }
+
 void dynabuffer_read_bytes(struct dynabuffer* db, uint8_t* buffer, uint32_t size) {
     ASSERT_NOT_NULL(db);
     ASSERT_NOT_NULL(db->data);
@@ -182,4 +153,26 @@ void dynabuffer_read_bytes(struct dynabuffer* db, uint8_t* buffer, uint32_t size
     ASSERT(((db->size) - (db->idx)) >= size);
     memcpy(buffer, &(db->data[db->idx]), size);
     db->idx += size;
+}
+
+/*
+* strings are stored pascal-style, with a null termination too
+*/
+void dynabuffer_append_string(struct dynabuffer* db, uint8_t* str) {
+    ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+    ASSERT_NOT_NULL(str);
+    uint32_t len = strlen(str);
+    dynabuffer_append_uint32_t(db, len);
+    dynabuffer_append_bytes(db, str, len + 1);
+}
+
+void dynabuffer_read_string(struct dynabuffer* db, uint8_t* str, uint32_t size) {
+    ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+    ASSERT_NOT_NULL(str);
+    uint32_t len = dynabuffer_read_uint32_t(db);
+    dynabuffer_read_bytes(db, str, len + 1);
+    // check that we did get the null termination
+    ASSERT(str[len] == 0);
 }

@@ -13,7 +13,7 @@
 #include <tests/sys/test_dynabuffer.h>
 #include <types.h>
 
-#define DYNABUFFER_TEST_DAVES "the daves i know"
+#define DYNABUFFER_TEST_DAVES "cat"
 
 void test_dynabuffer_atomic_types() {
     struct dynabuffer* db = dynabuffer_new();
@@ -29,7 +29,6 @@ void test_dynabuffer_atomic_types() {
     uint64_t h = 0x1234567899991007;
 
     dynabuffer_append_uint8_t(db, a);
-    //  dynabuffer_append_string(db, DYNABUFFER_TEST_DAVES);
     dynabuffer_append_uint8_t(db, b);
     dynabuffer_append_uint8_t(db, c);
     dynabuffer_append_uint16_t(db, d);
@@ -38,15 +37,8 @@ void test_dynabuffer_atomic_types() {
     dynabuffer_append_uint32_t(db, g);
     dynabuffer_append_uint64_t(db, h);
 
-    // debug_show_memblock(db->data, db->size);
-
     dynabuffer_reset(db);
     ASSERT(dynabuffer_read_uint8_t(db) == 12);
-    //  uint8_t buffer[32];
-    //    debug_show_memblock(db->data, db->size);
-
-    //  dynabuffer_read_string(db, buffer, 32);
-    //  ASSERT(strcmp(DYNABUFFER_TEST_DAVES, buffer) == 0);
     ASSERT(dynabuffer_read_uint8_t(db) == 17);
     ASSERT(dynabuffer_read_uint8_t(db) == 120);
     ASSERT(dynabuffer_read_uint16_t(db) == 0x1000);
@@ -81,10 +73,23 @@ void test_dynabuffer_byte_arrays() {
     ASSERT(a2[2] == 0x05);
     ASSERT(a2[3] == 0x03);
     ASSERT(db->idx == 4);
+    dynabuffer_delete(db);
+}
+
+void test_dynabuffer_strings() {
+    uint8_t buffer[32];
+    struct dynabuffer* db = dynabuffer_new();
+    ASSERT_NOT_NULL(db);
+    dynabuffer_append_string(db, DYNABUFFER_TEST_DAVES);
+    dynabuffer_reset(db);
+    dynabuffer_read_string(db, buffer, 32);
+    ASSERT(strcmp(DYNABUFFER_TEST_DAVES, buffer) == 0);
+    dynabuffer_delete(db);
 }
 
 void test_dynabuffer() {
     kprintf("Testing Dynabuffer\n");
     test_dynabuffer_atomic_types();
     test_dynabuffer_byte_arrays();
+    test_dynabuffer_strings();
 }
