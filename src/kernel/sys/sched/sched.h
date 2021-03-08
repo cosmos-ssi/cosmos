@@ -49,6 +49,7 @@ typedef struct scheduler_task_t {
      */
     uint64_t times_skipped;
 
+    // Task object
     object_handle_t obj;
 } scheduler_task_t;
 
@@ -73,9 +74,10 @@ linkedlist* sched_add(uint64_t cpu, uint64_t core, pid_t pid, object_handle_t ob
 void sched_init();
 
 // sched_terminate.c
-void sched_terminate();
+void sched_terminate(pid_t pid);
 
 // tasklist.c
+linkedlist* get_current_task(uint64_t cpu, uint64_t core);
 linkedlist* task_find(pid_t pid);
 
 // task_jump.asm
