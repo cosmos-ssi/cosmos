@@ -23,7 +23,13 @@ uint64_t syscall_exit(uint64_t syscall_id, void* args) {
     // exit
     linkedlist* task;
 
+    uint64_t exit_code;
+
+    exit_code = *(uint64_t*)args;
+
     task = get_current_task(CUR_CPU, CUR_CORE);
+
+    TASK_DATA(task)->exit_code = exit_code;
 
     sched_terminate(TASK_DATA(task)->pid);
     sched_switch(task_select());
