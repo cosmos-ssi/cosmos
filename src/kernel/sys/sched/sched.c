@@ -23,16 +23,18 @@ void sched_set_state(object_handle_t obj, scheduler_state_t state) {
 }
 
 void sched_switch(linkedlist* task) {
-    object_handle_t proc_obj, body_obj;
+    object_handle_t task_obj, proc_obj, body_obj;
 
-    proc_obj = TASK_DATA(task)->obj;
+    task_obj = TASK_DATA(task)->obj;
 
-    switch (object_type_(proc_obj)) {
-        case OBJECT_PROCESS:
+    switch (object_type_(task_obj)) {
+        case OBJECT_TASK:
             break;
         default:
             PANIC("Invalid object type!");
     }
+
+    proc_obj = OBJECT_DATA(task_obj, object_task_t)->process;
 
     body_obj = OBJECT_DATA(proc_obj, object_process_t)->body;
 
