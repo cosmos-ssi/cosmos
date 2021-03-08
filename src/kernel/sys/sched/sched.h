@@ -49,6 +49,7 @@ typedef struct scheduler_task_t {
      */
     uint64_t times_skipped;
 
+    // Task object
     object_handle_t obj;
 } scheduler_task_t;
 

@@ -15,6 +15,7 @@ object_handle_t object_task_create(object_handle_t proc) {
     linkedlist* sched_task;
     pid_t pid;
     object_task_t* obj;
+    object_handle_t handle;
 
     obj = (object_task_t*)kmalloc(sizeof(object_task_t));
 
@@ -22,8 +23,10 @@ object_handle_t object_task_create(object_handle_t proc) {
 
     pid = (OBJECT_DATA(proc, object_process_t))->pid;
 
-    sched_task = sched_add(CUR_CPU, CUR_CORE, pid, proc);
+    handle = object_create(OBJECT_TASK, (void*)obj);
+
+    sched_task = sched_add(CUR_CPU, CUR_CORE, pid, handle);
     obj->sched_task = sched_task;
 
-    return object_create(OBJECT_TASK, (void*)obj);
+    return handle;
 }
