@@ -11,6 +11,10 @@
 #include <sys/sched/sched.h>
 #include <types.h>
 
+linkedlist* get_current_task(uint64_t cpu, uint64_t core) {
+    return current_task[cpu][core];
+}
+
 linkedlist* task_find(pid_t pid) {
     uint64_t cpu, core;
     proc_info_t* p;
