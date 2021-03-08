@@ -25,8 +25,8 @@ uint64_t syscall_exit(uint64_t syscall_id, void* args) {
 
     task = get_current_task(CUR_CPU, CUR_CORE);
     kprintf("Task, PID: 0x%llX, %llu\n", task, TASK_DATA(task)->pid);
-    //sched_terminate(TASK_DATA(task)->pid);
-    //sched_switch(task_select());
+    sched_terminate(TASK_DATA(task)->pid);
+    sched_switch(task_select());
     kprintf("Exit!\n");
 
     return 0;
