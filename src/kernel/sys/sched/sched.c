@@ -38,9 +38,11 @@ void sched_switch(linkedlist* task) {
 
     switch (object_type_(body_obj)) {
         case OBJECT_KERNEL_WORK:
+            current_task[CUR_CPU][CUR_CORE] = task;
             OBJECT_DATA(body_obj, object_kernel_work_t)->work_func(OBJECT_DATA(body_obj, object_kernel_work_t)->arg);
             break;
         case OBJECT_EXECUTABLE:
+            current_task[CUR_CPU][CUR_CORE] = task;
             switch_to_task(task);
             break;
         default:
