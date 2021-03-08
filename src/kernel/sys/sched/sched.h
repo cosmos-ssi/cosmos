@@ -76,6 +76,7 @@ void sched_init();
 void sched_terminate(pid_t pid);
 
 // tasklist.c
+linkedlist* get_current_task(uint64_t cpu, uint64_t core);
 linkedlist* task_find(pid_t pid);
 
 // task_jump.asm

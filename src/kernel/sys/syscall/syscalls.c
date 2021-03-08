@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_console.h>
@@ -14,13 +15,18 @@
 
 uint64_t invalid_syscall(uint64_t syscall_id, void* args) {
     kprintf("Invalid syscall %llu\n", syscall_id);
-    sched_terminate();
-    sched_switch(task_select());
+
     return 0;
 }
 
 uint64_t syscall_exit(uint64_t syscall_id, void* args) {
     // exit
+    linkedlist* task;
+
+    task = get_current_task(CUR_CPU, CUR_CORE);
+    kprintf("Task, PID: 0x%llX, %llu\n", task, TASK_DATA(task)->pid);
+    //sched_terminate(TASK_DATA(task)->pid);
+    //sched_switch(task_select());
     kprintf("Exit!\n");
 
     return 0;
