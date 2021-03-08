@@ -8,6 +8,7 @@
 #include <sys/objects/objects.h>
 #include <sys/panic/panic.h>
 #include <sys/sched/sched.h>
+#include <sys/sync/sync.h>
 
 void sched_set_state(object_handle_t obj, scheduler_state_t state) {
     linkedlist* task;
@@ -38,18 +39,24 @@ void sched_switch(linkedlist* task) {
 
     body_obj = OBJECT_DATA(proc_obj, object_process_t)->body;
 
+    spinlock_acquire(task_list_lock);
+
     switch (object_type_(body_obj)) {
         case OBJECT_KERNEL_WORK:
             current_task[CUR_CPU][CUR_CORE] = task;
+            sched_set_state(task_obj, SCHED_RUNNING);
             OBJECT_DATA(body_obj, object_kernel_work_t)->work_func(OBJECT_DATA(body_obj, object_kernel_work_t)->arg);
             break;
         case OBJECT_EXECUTABLE:
             current_task[CUR_CPU][CUR_CORE] = task;
+            sched_set_state(task_obj, SCHED_RUNNING);
             switch_to_task(task);
             break;
         default:
             PANIC("Invalid object type!")
     }
+
+    spinlock_release(task_list_lock);
 
     return;
 }
