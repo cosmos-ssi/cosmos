@@ -15,9 +15,7 @@
 
 #define DYNABUFFER_TEST_DAVES "the daves i know"
 
-void test_dynabuffer() {
-    kprintf("Testing Dynabuffer\n");
-
+void test_dynabuffer_atomic_types() {
     struct dynabuffer* db = dynabuffer_new();
     ASSERT_NOT_NULL(db);
 
@@ -58,4 +56,35 @@ void test_dynabuffer() {
     ASSERT(dynabuffer_read_uint64_t(db) == 0x1234567899991007);
 
     dynabuffer_delete(db);
+}
+
+void test_dynabuffer_byte_arrays() {
+    struct dynabuffer* db = dynabuffer_new();
+    ASSERT_NOT_NULL(db);
+
+    uint8_t a1[4] = {0x09, 0x07, 0x05, 0x03};
+    uint8_t a2[4] = {0x00, 0x00, 0x00, 0x00};
+
+    dynabuffer_append_bytes(db, a1, 4);
+    ASSERT(db->data[0] == 0x09);
+    ASSERT(db->data[1] == 0x07);
+    ASSERT(db->data[2] == 0x05);
+    ASSERT(db->data[3] == 0x03);
+    ASSERT(db->idx == 4);
+
+    dynabuffer_reset(db);
+    ASSERT(db->idx == 0);
+
+    dynabuffer_read_bytes(db, a2, 4);
+    ASSERT(a2[0] == 0x09);
+    ASSERT(a2[1] == 0x07);
+    ASSERT(a2[2] == 0x05);
+    ASSERT(a2[3] == 0x03);
+    ASSERT(db->idx == 4);
+}
+
+void test_dynabuffer() {
+    kprintf("Testing Dynabuffer\n");
+    test_dynabuffer_atomic_types();
+    test_dynabuffer_byte_arrays();
 }

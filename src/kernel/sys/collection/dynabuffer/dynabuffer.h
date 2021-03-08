@@ -37,4 +37,9 @@ uint64_t dynabuffer_read_uint64_t(struct dynabuffer* db);
 void dynabuffer_append_string(struct dynabuffer* db, uint8_t* str);
 void dynabuffer_read_string(struct dynabuffer* db, uint8_t* str, uint32_t size);
 
+// append a fixed size array of bytes
+void dynabuffer_append_bytes(struct dynabuffer* db, uint8_t* buffer, uint32_t size);
+// read a fixed size array of bytes
+void dynabuffer_read_bytes(struct dynabuffer* db, uint8_t* buffer, uint32_t size);
+
 #endif

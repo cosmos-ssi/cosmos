@@ -164,3 +164,22 @@ void dynabuffer_read_string(struct dynabuffer* db, uint8_t* str, uint32_t size) 
     str[len + 1] = 0;
     kprintf("idx %llu\n", db->idx);
 }
+
+void dynabuffer_append_bytes(struct dynabuffer* db, uint8_t* buffer, uint32_t size) {
+    ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+    ASSERT_NOT_NULL(buffer);
+    ASSERT_NOT_NULL(size);
+    ASSERT((size + (db->idx)) <= db->size);
+    memcpy(&(db->data[db->idx]), buffer, size);
+    db->idx += size;
+}
+void dynabuffer_read_bytes(struct dynabuffer* db, uint8_t* buffer, uint32_t size) {
+    ASSERT_NOT_NULL(db);
+    ASSERT_NOT_NULL(db->data);
+    ASSERT_NOT_NULL(buffer);
+    ASSERT_NOT_NULL(size);
+    ASSERT(((db->size) - (db->idx)) >= size);
+    memcpy(buffer, &(db->data[db->idx]), size);
+    db->idx += size;
+}
