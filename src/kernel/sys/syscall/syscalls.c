@@ -9,15 +9,20 @@
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_console.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/sched/sched.h>
 #include <sys/syscall/syscalls.h>
 
 uint64_t invalid_syscall(uint64_t syscall_id, void* args) {
     kprintf("Invalid syscall %llu\n", syscall_id);
+    sched_terminate();
+    sched_switch(task_select());
     return 0;
 }
 
 uint64_t syscall_exit(uint64_t syscall_id, void* args) {
     // exit
+    kprintf("Exit!\n");
+
     return 0;
 }
 
