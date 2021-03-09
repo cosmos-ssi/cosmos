@@ -73,6 +73,24 @@ typedef struct int_15_map {
     uint32_t acpi;
 } __attribute__((packed)) int_15_map;
 
+typedef struct tss64_t {
+    DWORD reserved;  // always = 0
+    QWORD rsp0;
+    QWORD rsp1;
+    QWORD rsp2;
+    QWORD reserved2;  // always = 0
+    QWORD ist1;
+    QWORD ist2;
+    QWORD ist3;
+    QWORD ist4;
+    QWORD ist5;
+    QWORD ist6;
+    QWORD ist7;
+    QWORD reserved3;
+    WORD reserved4;
+    WORD iopb;
+} __attribute__((packed)) tss64_t;
+
 // blockmgmt.c
 mem_block* find_containing_block(void* addr, mem_block* list);
 int_15_map* read_int_15_map(uint8_t* num_blocks, uint8_t* lrg_block);

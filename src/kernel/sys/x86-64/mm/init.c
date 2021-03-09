@@ -16,14 +16,15 @@
 uint64_t future_pt_expansion[3];
 uint8_t* system_gdt;
 
+void move_gdt();
+void setup_tss();
+
 void mmu_init() {
     int_15_map* map;
     uint8_t num_blocks, lrg_block;
     //  uint8_t i;
     //   mem_block* b;
     page_directory_t* page_directory_start;
-    uint16_t gdt_len;
-    uint64_t gdt_base;
 
     brk = &_end;
     //   kprintf("   brk: 0x%llX\n", (uint64_t)brk);
@@ -49,12 +50,23 @@ void mmu_init() {
     reserve_next_ptt(PD, future_pt_expansion);
     reserve_next_ptt(PT, future_pt_expansion);
 
+    move_gdt();
+
+    return;
+}
+
+void move_gdt() {
     // Move GDT to an address in direct map area. We don't actually move the GDT
     // itself, we just change the pointer in the GDTR register to point to the
     // direct-map equivalent of the physical/identity-mapped address set by the
     // bootloader.  This way we can replace the identity-map area when we set up
     // page tables for user processes.
+
+    uint16_t gdt_len;
+    uint64_t gdt_base;
+
     system_gdt = asm_sgdt();
+
     gdt_len = *((uint16_t*)system_gdt);
     gdt_base = *((uint64_t*)&system_gdt[2]);
     gdt_base = (uint64_t)CONV_PHYS_ADDR(gdt_base);
@@ -62,6 +74,8 @@ void mmu_init() {
     memcpy(&system_gdt[2], (uint8_t*)&gdt_base, sizeof(uint64_t));
 
     asm_lgdt(system_gdt);
+}
 
+void setup_tss() {
     return;
 }
