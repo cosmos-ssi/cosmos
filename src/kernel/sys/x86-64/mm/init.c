@@ -52,6 +52,8 @@ void mmu_init() {
 
     move_gdt();
 
+    setup_tss();
+
     return;
 }
 
@@ -77,5 +79,6 @@ void move_gdt() {
 }
 
 void setup_tss() {
+    kprintf("system_gdt: 0x%llX\n", (uint64_t)system_gdt);
     return;
 }

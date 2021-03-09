@@ -73,6 +73,11 @@ typedef struct int_15_map {
     uint32_t acpi;
 } __attribute__((packed)) int_15_map;
 
+typedef struct gdt_pointer_t {
+    DWORD len;
+    void* base;
+} __attribute__((packed)) gdt_pointer_t;
+
 typedef struct tss64_t {
     DWORD reserved;  // always = 0
     QWORD rsp0;
