@@ -37,7 +37,7 @@ void proc_adjust_kernel_stack(pttentry cr3) {
 
     for (i = 0; i < 4; i++) {
         stack_page = slab_allocate(1, PDT_INUSE);
-        map_page_at(stack_page, (void*)(DEFAULT_PROC_KERNEL_STACK_START + (i * PAGE_SIZE)), cr3, true);
+        map_page_at(stack_page, (void*)(DEFAULT_PROC_KERNEL_STACK_START + (i * PAGE_SIZE)), cr3, false);
     }
 
     return;
