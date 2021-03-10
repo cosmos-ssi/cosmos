@@ -11,6 +11,7 @@
 #include <types.h>
 
 void asm_lgdt(void* gdt);
+void asm_ltr(uint16_t selector);
 uint8_t* asm_sgdt();
 
 #endif

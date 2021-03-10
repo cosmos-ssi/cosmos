@@ -390,6 +390,10 @@ GDT64:                           ; Global Descriptor Table (64-bit).
     db 11110010b                 ; Access (read/write). (0xF2)
     db 00000000b                 ; Granularity.
     db 0                         ; Base (high).
+	.tss1: equ $ - GDT64
+	dq 0
+	.tss2: equ $ - GDT64
+	dq 0
     .Pointer:                    ; The GDT-pointer.
     dw $ - GDT64 - 1             ; Limit.
     dq GDT64                     ; Base.

@@ -5,14 +5,14 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _RAND_H
-#define _RAND_H
+#include <ls.hpp>
 
-#include <types.h>
+ls::ls() {}
 
-struct object;
+void ls::run() {}
 
-struct object* rand_attach(struct object* time);
-void rand_detach(struct object* obj);
-
-#endif
+int main(int argc, char* argv[]) {
+    //   Term* term = new Term();
+    // term->run();
+    return 0;
+}

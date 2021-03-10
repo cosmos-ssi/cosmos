@@ -79,6 +79,9 @@ void fat_filesystem_open(struct filesystem_node* fs_node) {
 void fat_filesystem_close(struct filesystem_node* fs_node) {}
 
 struct filesystem_node* fat_filesystem_find_node_by_id(struct filesystem_node* fs_node, uint64_t id) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
     PANIC("Not Implemented");
     return 0;
 }
@@ -115,7 +118,11 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
                     if (entry->name[0] != 0xe5) {
                         // not a long file name
                         if (entry->name[10] != 0xFF) {
-                            kprintf("%s\n", entry->name);
+
+                            uint8_t fn[32];
+                            fat_filename_from_fat(entry->name, fn, 32);
+
+                            kprintf("fn %s\n", fn);
                             //		struct fs_directory* dir = (struct fs_directory*) kmalloc(sizeof(struct fs_directory));
                             //		dir->flags=entry->attributes;
                             //		memcpy(dir->name, entry->name,11);

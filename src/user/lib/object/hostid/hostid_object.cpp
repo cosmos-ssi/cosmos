@@ -1,3 +1,4 @@
+
 //*****************************************************************
 // This file is part of CosmOS                                    *
 // Copyright (C) 2020-2021 Tom Everett                            *
@@ -5,9 +6,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef __TEST_NTREE_H
-#define __TEST_NTREE_H
+#include <object/hostid/hostid_object.hpp>
 
-void test_ntree();
-
-#endif
+uint64_t HostIdObject::get_id() {
+    return 0;
+}

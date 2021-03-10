@@ -1,30 +1,22 @@
-
 //*****************************************************************
 // This file is part of CosmOS                                    *
 // Copyright (C) 2020-2021 Tom Everett                            *
 // Released under the stated terms in the file LICENSE            *
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
-
-#ifndef _NTREE_H
-#define _NTREE_H
-
 /*
- * an n-ary tree
- */
+* one could reasonably ask why we need a time device when we have rtc.  
+* time is platform dependent while rtc is not.
+* we can have a slighly differnet implementation of rtc on ARM that time uses, and wrap it.
+*/
+#ifndef _TIME_H
+#define _TIME_H
 
 #include <types.h>
 
-struct ntree {
-    void* data;
-    struct arraylist* children;
-};
+struct object;
 
-struct ntree* ntree_new();
-void ntree_delete(struct ntree* nt);
-uint32_t ntree_childcount(struct ntree* nt);
-void ntree_add_child(struct ntree* nt, struct ntree* child);
-struct ntree* ntree_get_child(struct ntree* nt, uint32_t idx);
-void ntree_remove_child(struct ntree* nt, uint32_t idx);
+struct object* time_attach(struct object* rtc_device);
+void time_detach(struct object* obj);
 
 #endif

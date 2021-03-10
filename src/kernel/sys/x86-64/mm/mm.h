@@ -36,6 +36,8 @@
 #define PFE_ERROR_WRITE_R 8
 #define PFE_ERROR_FETCH_INS 16
 
+#define TSS_SELECTOR 40
+
 // defined in cosmos.ld
 extern uint64_t _end;
 
@@ -72,6 +74,35 @@ typedef struct int_15_map {
         type;  // read this as int_15_map_region_type, but we store it as uint32_t in the struct to get the size right
     uint32_t acpi;
 } __attribute__((packed)) int_15_map;
+
+typedef struct tss64_t {
+    DWORD reserved;  // always = 0
+    QWORD rsp0;
+    QWORD rsp1;
+    QWORD rsp2;
+    QWORD reserved2;  // always = 0
+    QWORD ist1;
+    QWORD ist2;
+    QWORD ist3;
+    QWORD ist4;
+    QWORD ist5;
+    QWORD ist6;
+    QWORD ist7;
+    QWORD reserved3;
+    WORD reserved4;
+    WORD iopb;
+} __attribute__((packed)) tss64_t;
+
+typedef struct tss64_descriptor_t {
+    WORD limit_0_15;
+    WORD base_0_15;
+    BYTE base_16_23;
+    BYTE flags_type;
+    BYTE flags_limit_16_19;
+    BYTE base_24_31;
+    DWORD base_32_63;
+    DWORD reserved;  // always = 0
+} __attribute__((packed)) tss64_descriptor_t;
 
 // blockmgmt.c
 mem_block* find_containing_block(void* addr, mem_block* list);

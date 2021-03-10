@@ -22,6 +22,7 @@ void dynabuffer_delete(struct dynabuffer* db);
 void dynabuffer_reset(struct dynabuffer* db);
 uint32_t dynabuffer_size(struct dynabuffer* db);
 uint32_t dynabuffer_idx(struct dynabuffer* db);
+uint8_t* dynabuffer_data(struct dynabuffer* db);
 
 void dynabuffer_append_uint8_t(struct dynabuffer* db, uint8_t v);
 void dynabuffer_append_uint16_t(struct dynabuffer* db, uint16_t v);
@@ -35,5 +36,10 @@ uint64_t dynabuffer_read_uint64_t(struct dynabuffer* db);
 
 void dynabuffer_append_string(struct dynabuffer* db, uint8_t* str);
 void dynabuffer_read_string(struct dynabuffer* db, uint8_t* str, uint32_t size);
+
+// append a fixed size array of bytes
+void dynabuffer_append_bytes(struct dynabuffer* db, uint8_t* buffer, uint32_t size);
+// read a fixed size array of bytes
+void dynabuffer_read_bytes(struct dynabuffer* db, uint8_t* buffer, uint32_t size);
 
 #endif

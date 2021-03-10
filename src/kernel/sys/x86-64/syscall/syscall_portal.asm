@@ -1,10 +1,11 @@
 BITS 64
 
+; we do not push or pop rax, since that's where the return value goes
 %macro pushaq 0
-push rax
 push rbx
 push rcx
 push rdx
+push rsp
 push rbp
 push rdi
 push rsi
@@ -30,10 +31,10 @@ pop r8
 pop rsi
 pop rdi
 pop rbp
+pop rsp
 pop rdx
 pop rcx
 pop rbx
-pop rax
 %endmacro
 
 global syscall_portal;
@@ -42,9 +43,6 @@ extern syscall_dispatcher;
 
 syscall_portal:
          pushaq
-
-         ;push rcx
-         ;push r11
 
          mov rdi, rax
          mov rsi, rbx
@@ -55,9 +53,6 @@ syscall_portal:
          ;syscall_dispatcher into rax, which is also where it goes in
          ;CosmOS syscall ABI
          
-
-         ;pop r11
-         ;pop rcx
          popaq
 
          o64 sysret

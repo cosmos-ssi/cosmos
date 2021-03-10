@@ -109,5 +109,7 @@ void fat_read_fs_parameters(struct object* obj, struct fat_fs_parameters* param)
 uint64_t fat_first_sector_of_cluster(uint32_t cluster, struct fat_fs_parameters* fs_parameters);
 uint32_t fat_fat12_next_cluster(struct object* obj, uint32_t current_cluster, struct fat_fs_parameters* fs_parameters);
 uint32_t fat_fat16_next_cluster(struct object* obj, uint32_t current_cluster, struct fat_fs_parameters* fs_parameters);
+void fat_filename_from_fat(uint8_t* fat_name, uint8_t* normal_name, uint16_t size);
+void fat_filename_to_fat(uint8_t* normal_name, uint8_t* fat_name, uint16_t size);
 
 #endif

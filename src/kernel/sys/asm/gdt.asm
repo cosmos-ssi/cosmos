@@ -37,10 +37,19 @@ pop rax
 %endmacro
 
 global asm_lgdt;
+global asm_ltr;
 global asm_sgdt;
 
 asm_lgdt:
+         pushaq
          lgdt [rdi]
+         popaq
+         ret
+
+asm_ltr:
+         pushaq
+         ltr di
+         popaq
          ret
 
 asm_sgdt:

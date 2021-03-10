@@ -5,14 +5,15 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _RAND_H
-#define _RAND_H
+#ifndef _HOSTID_OBJECT_HPP
+#define _HOSTID_OBJECT_HPP
 
+#include <object/object.hpp>
 #include <types.h>
 
-struct object;
-
-struct object* rand_attach(struct object* time);
-void rand_detach(struct object* obj);
+class HostIdObject : public Object {
+  public:
+    uint64_t get_id();
+};
 
 #endif

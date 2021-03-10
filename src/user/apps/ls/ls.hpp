@@ -5,14 +5,22 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/collection/ntree/ntree.h>
-#include <sys/kprintf/kprintf.h>
-#include <tests/sys/test_ntree.h>
+/*
+* ls
+*/
 
-void test_ntree() {
-    kprintf("Testing ntree\n");
+#ifndef _LS_HPP
+#define _LS_HPP
 
-    struct ntree* nt = ntree_new();
+#include <cosmos.hpp>
 
-    ntree_delete(nt);
-}
+class ls {
+  private:
+  public:
+    ls();
+    void run();
+};
+
+int main(int argc, char* argv[]);
+
+#endif

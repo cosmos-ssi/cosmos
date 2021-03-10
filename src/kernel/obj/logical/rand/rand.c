@@ -10,6 +10,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_rand.h>
+#include <sys/obj/objectinterface/objectinterface_time.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
@@ -27,7 +28,8 @@ struct rand_objectdata {
 uint8_t rand_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
-    kprintf("Init %s (%s)\n", obj->description, obj->name);
+    struct rand_objectdata* object_data = (struct rand_objectdata*)obj->object_data;
+    kprintf("Init %s (%s) with seed %#llX\n", obj->description, obj->name, object_data->last);
     return 1;
 }
 
@@ -42,6 +44,11 @@ uint8_t rand_uninit(struct object* obj) {
     kfree(obj->api);
     return 1;
 }
+
+uint64_t rand_next(uint64_t x) {
+    return (x * 214013 + 2531011) & RAND_MAX >> 16;
+}
+
 /*
 * https://rosettacode.org/wiki/Linear_congruential_generator#C
 */
@@ -49,11 +56,22 @@ uint64_t rand_read(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct rand_objectdata* object_data = (struct rand_objectdata*)obj->object_data;
-    object_data->last = (object_data->last * 214013 + 2531011) & RAND_MAX >> 16;
+    object_data->last = rand_next(object_data->last);
     return object_data->last;
 }
 
-struct object* rand_attach() {
+uint64_t rand_get_time_value(struct object* time) {
+    struct objectinterface_time* api = (struct objectinterface_time*)time->api;
+    struct time_time_t t = (*api->time)(time);
+    //  kprintf("s %#llX, m %#llX, h %#llX, d %#llX\n", t.second, t.minute, t.hour, t.monthday);
+    uint64_t x1 = t.second | (t.minute << 8) | (t.hour << 16) | (t.monthday << 24);
+    return rand_next(x1);
+}
+
+struct object* rand_attach(struct object* time) {
+    ASSERT_NOT_NULL(time);
+    ASSERT(time->objectype = OBJECT_TYPE_TIME);
+
     /*
      * register device
      */
@@ -74,7 +92,7 @@ struct object* rand_attach() {
      * device data
      */
     struct rand_objectdata* object_data = (struct rand_objectdata*)kmalloc(sizeof(struct rand_objectdata));
-    object_data->last = 7;
+    object_data->last = rand_get_time_value(time);
     objectinstance->object_data = object_data;
     /*
      * register

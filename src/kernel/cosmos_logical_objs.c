@@ -11,6 +11,7 @@
 #include <obj/logical/fs/objfs/objfs.h>
 #include <obj/logical/fs/voh/voh.h>
 #include <obj/logical/group/group.h>
+#include <obj/logical/hostid/hostid.h>
 #include <obj/logical/null/null.h>
 #include <obj/logical/ramdisk/ramdisk.h>
 #include <obj/logical/rand/rand.h>
@@ -22,6 +23,7 @@
 #include <obj/logical/tcpip/udp/udpdev.h>
 #include <obj/logical/telnet/telnet.h>
 #include <obj/logical/tick/tick.h>
+#include <obj/logical/time/time.h>
 #include <obj/logical/user/user.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kprintf/kprintf.h>
@@ -61,11 +63,30 @@ void attach_logical_objects() {
     /*
     * rand device
     */
-    rand_attach();
+    struct object* rtc = objectmgr_find_object_by_name("rtc0");
+    if (0 != rtc) {
+        // make a platform independent time device that wraps rtc0
+        struct object* time = time_attach(rtc);
+
+        // make a rand device seeded from time0
+        rand_attach(time);
+    } else {
+        kprintf("Unable to find %s\n", "rtc0");
+    }
     /*
     * serializer
     */
     serializer_attach();
+    /*
+    * hostid.  how other cosmos nodes know this node
+    */
+    struct object* rand = objectmgr_find_object_by_name("rand0");
+    if (0 != rand) {
+        hostid_attach(rand);
+    } else {
+        kprintf("Unable to find %s\n", "rand0");
+    }
+
     /*
     * add groups
     */
@@ -84,6 +105,8 @@ void attach_logical_objects() {
     struct object* pit = objectmgr_find_object_by_name("pit0");
     if (0 != pit) {
         tick_attach(pit);
+    } else {
+        kprintf("Unable to find %s\n", "pit0");
     }
     /*
     * tcp/ip

@@ -30,8 +30,8 @@ void test_smbios() {
         ASSERT(smbios_entry->entry_point_string[1] == 'S');
         ASSERT(smbios_entry->entry_point_string[2] == 'M');
         ASSERT(smbios_entry->entry_point_string[3] == '_');
-        kprintf("structures %llu, table len %llu, table address %#hX\n", smbios_entry->number_of_structures,
-                smbios_entry->table_length, smbios_entry->table_address);
+        //     kprintf("structures %llu, table len %llu, table address %#hX\n", smbios_entry->number_of_structures,
+        //            smbios_entry->table_length, smbios_entry->table_address);
     } else {
         kprintf("Unable to find %s\n", devicename);
     }

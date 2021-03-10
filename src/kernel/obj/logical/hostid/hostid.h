@@ -4,15 +4,17 @@
 // Released under the stated terms in the file LICENSE            *
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
-
-#ifndef _RAND_H
-#define _RAND_H
+/*
+* every cosmos host in the cluster needs an id.  this object provides that id
+*/
+#ifndef _HOSTID_H
+#define _HOSTID_H
 
 #include <types.h>
 
 struct object;
 
-struct object* rand_attach(struct object* time);
-void rand_detach(struct object* obj);
+struct object* hostid_attach(struct object* rand);
+void hostid_detach(struct object* obj);
 
 #endif
