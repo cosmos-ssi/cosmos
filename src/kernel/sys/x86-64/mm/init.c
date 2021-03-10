@@ -79,6 +79,22 @@ void move_gdt() {
 }
 
 void setup_tss() {
-    kprintf("system_gdt: 0x%llX\n", (uint64_t)system_gdt);
+    void* gdt_base = 0;
+    tss64_t tss;
+
+    memcpy((uint8_t*)&gdt_base, &system_gdt[2], sizeof(void*));
+    kprintf("gdt_base: 0x%llX\n", (uint64_t)gdt_base);
+
+    gdt_base += TSS_SELECTOR;  // TSS area starts at byte offset 40 (0x28)
+    kprintf("gdt_base: 0x%llX\n", (uint64_t)gdt_base);
+
+    memset((uint8_t*)&tss, 0, sizeof(tss64_t));
+
+    tss.rsp0 = 0;
+    tss.rsp1 = 0;
+    tss.rsp2 = 0;
+
+    //memcpy((uint8_t*)gdt_base, (uint8_t*)&tss, sizeof(tss64_t));
+
     return;
 }
