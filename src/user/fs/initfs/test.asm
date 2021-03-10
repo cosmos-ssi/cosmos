@@ -5,7 +5,7 @@ add rax, 5
 
 push 55
 
-mov rax, 0
+mov rax, 1
 mov rbx, rsp
 syscall
 

@@ -117,6 +117,7 @@ void setup_tss() {
     kprintf("base 32-63: 0x%lX\n", tss_d.base_32_63);
 
     memcpy((uint8_t*)gdt_base, (uint8_t*)&tss_d, sizeof(tss64_descriptor_t));
+    asm_ltr(TSS_SELECTOR);
 
     return;
 }
