@@ -45,7 +45,7 @@ asm_lgdt:
          ret
 
 asm_ltr:
-         ltr [rdi]
+         ltr di
          ret
 
 asm_sgdt:
