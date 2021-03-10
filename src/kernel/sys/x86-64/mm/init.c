@@ -116,5 +116,7 @@ void setup_tss() {
     kprintf("base 24-31: 0x%hX\n", tss_d.base_24_31);
     kprintf("base 32-63: 0x%lX\n", tss_d.base_32_63);
 
+    memcpy((uint8_t*)gdt_base, (uint8_t*)&tss_d, sizeof(tss64_descriptor_t));
+
     return;
 }
