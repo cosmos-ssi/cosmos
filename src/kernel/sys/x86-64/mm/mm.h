@@ -93,6 +93,17 @@ typedef struct tss64_t {
     WORD iopb;
 } __attribute__((packed)) tss64_t;
 
+typedef struct tss64_descriptor_t {
+    WORD limit_0_15;
+    WORD base_0_15;
+    BYTE base_16_23;
+    BYTE flags_type;
+    BYTE flags_limit_16_19;
+    BYTE base_24_31;
+    DWORD base_32_63;
+    DWORD reserved;  // always = 0
+} __attribute__((packed)) tss64_descriptor_t;
+
 // blockmgmt.c
 mem_block* find_containing_block(void* addr, mem_block* list);
 int_15_map* read_int_15_map(uint8_t* num_blocks, uint8_t* lrg_block);

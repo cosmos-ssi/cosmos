@@ -80,7 +80,8 @@ void move_gdt() {
 
 void setup_tss() {
     void* gdt_base = 0;
-    tss64_t tss;
+    tss64_t* tss;
+    tss64_descriptor_t tss_d;
 
     memcpy((uint8_t*)&gdt_base, &system_gdt[2], sizeof(void*));
     kprintf("gdt_base: 0x%llX\n", (uint64_t)gdt_base);
@@ -88,13 +89,32 @@ void setup_tss() {
     gdt_base += TSS_SELECTOR;  // TSS area starts at byte offset 40 (0x28)
     kprintf("gdt_base: 0x%llX\n", (uint64_t)gdt_base);
 
-    memset((uint8_t*)&tss, 0, sizeof(tss64_t));
+    tss = (tss64_t*)kmalloc(sizeof(tss64_t));
 
-    tss.rsp0 = 0;
-    tss.rsp1 = 0;
-    tss.rsp2 = 0;
+    memset((uint8_t*)tss, 0, sizeof(tss64_t));
+    kprintf("size: %llu\n", (uint64_t)sizeof(tss64_descriptor_t));
+    kprintf("tss: 0x%llX\n", (uint64_t)tss);
 
-    //memcpy((uint8_t*)gdt_base, (uint8_t*)&tss, sizeof(tss64_t));
+    tss->rsp0 = 0;
+    tss->rsp1 = 0;
+    tss->rsp2 = 0;
+
+    tss_d.limit_0_15 = (WORD)(sizeof(tss64_t) & 0xFFFF);
+    tss_d.base_0_15 = (WORD)((uint64_t)tss & 0xFFFF);
+    tss_d.base_16_23 = (BYTE)(((uint64_t)tss >> 16) & 0xFF);
+    tss_d.flags_type = 0x89;  // high-order nibble is flags, 8 = P; low-order nibble is type, 9 = TSS
+    tss_d.flags_limit_16_19 = (BYTE)((sizeof(tss64_t) >> 16) & 0xF);
+    tss_d.base_24_31 = (BYTE)(((uint64_t)tss >> 24) & 0xFF);
+    tss_d.base_32_63 = (DWORD)(((uint64_t)tss >> 32) & 0xFFFFFFFF);
+    tss_d.reserved = 0;
+
+    kprintf("limit 0-15: 0x%X\n", tss_d.limit_0_15);
+    kprintf("base 0-15: 0x%X\n", tss_d.base_0_15);
+    kprintf("base 16-23: 0x%X\n", tss_d.base_16_23);
+    kprintf("flags-type: 0x%hX\n", tss_d.flags_type);
+    kprintf("flags-limit 16-19: 0x%hX\n", tss_d.flags_limit_16_19);
+    kprintf("base 24-31: 0x%hX\n", tss_d.base_24_31);
+    kprintf("base 32-63: 0x%lX\n", tss_d.base_32_63);
 
     return;
 }
