@@ -37,6 +37,7 @@ pop rax
 %endmacro
 
 global asm_lgdt;
+global asm_ltr;
 global asm_sgdt;
 
 asm_lgdt:
