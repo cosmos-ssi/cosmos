@@ -9,6 +9,10 @@ mov rax, 1
 mov rbx, rsp
 syscall
 
+mov rax, 0
+mov rbx, rsp
+syscall
+
 mov rax, 6
 add rax, 9
 
