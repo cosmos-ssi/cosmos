@@ -43,6 +43,10 @@ asm_lgdt:
          lgdt [rdi]
          ret
 
+asm_ltr:
+         ltr [rdi]
+         ret
+
 asm_sgdt:
          pushaq
          sgdt [rel sgdt_val]
