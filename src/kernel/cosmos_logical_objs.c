@@ -46,7 +46,7 @@ void attach_logical_objects() {
     */
     struct object* serial = objectmgr_find_object_by_name("serial0");
     if (0 != serial) {
-        // this makes "console1"
+        // this makes "con0"
         serial_console_attach(serial);
     }
     /*
