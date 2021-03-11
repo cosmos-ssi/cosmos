@@ -6,6 +6,7 @@
 // ****************************************************************
 
 #include <cosmos_logical_objs.h>
+#include <obj/logical/console/serial_console.h>
 #include <obj/logical/ethernet/ethernet.h>
 #include <obj/logical/fs/initrd/initrd.h>
 #include <obj/logical/fs/objfs/objfs.h>
@@ -35,19 +36,19 @@ void attach_logical_objects() {
     * kernel telnet
     * 
     */
-    struct object* serial2 = objectmgr_find_object_by_name("serial0");
+    /*struct object* serial2 = objectmgr_find_object_by_name("serial0");
     struct object* telnet = 0;
     if (0 != serial2) {
         telnet = telnet_attach(serial2);
-    }
+    }*/
     /*
     * console
     */
-    //   struct object* serial = objectmgr_find_object_by_name("serial0");
-    //   if (0 != serial) {
-    // this makes "console1"
-    //       serial_console_attach(serial);
-    //   }
+    struct object* serial = objectmgr_find_object_by_name("serial0");
+    if (0 != serial) {
+        // this makes "console1"
+        serial_console_attach(serial);
+    }
     /*
     * ramdisks
     */
