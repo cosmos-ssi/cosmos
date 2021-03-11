@@ -84,16 +84,12 @@ void setup_tss() {
     tss64_descriptor_t tss_d;
 
     memcpy((uint8_t*)&gdt_base, &system_gdt[2], sizeof(void*));
-    kprintf("gdt_base: 0x%llX\n", (uint64_t)gdt_base);
 
     gdt_base += TSS_SELECTOR;  // TSS area starts at byte offset 40 (0x28)
-    kprintf("gdt_base: 0x%llX\n", (uint64_t)gdt_base);
 
     tss = (tss64_t*)kmalloc(sizeof(tss64_t));
 
     memset((uint8_t*)tss, 0, sizeof(tss64_t));
-    kprintf("size: %llu\n", (uint64_t)sizeof(tss64_descriptor_t));
-    kprintf("tss: 0x%llX\n", (uint64_t)tss);
 
     tss->rsp0 = 0;
     tss->rsp1 = 0;
@@ -107,14 +103,6 @@ void setup_tss() {
     tss_d.base_24_31 = (BYTE)(((uint64_t)tss >> 24) & 0xFF);
     tss_d.base_32_63 = (DWORD)(((uint64_t)tss >> 32) & 0xFFFFFFFF);
     tss_d.reserved = 0;
-
-    kprintf("limit 0-15: 0x%X\n", tss_d.limit_0_15);
-    kprintf("base 0-15: 0x%X\n", tss_d.base_0_15);
-    kprintf("base 16-23: 0x%X\n", tss_d.base_16_23);
-    kprintf("flags-type: 0x%hX\n", tss_d.flags_type);
-    kprintf("flags-limit 16-19: 0x%hX\n", tss_d.flags_limit_16_19);
-    kprintf("base 24-31: 0x%hX\n", tss_d.base_24_31);
-    kprintf("base 32-63: 0x%lX\n", tss_d.base_32_63);
 
     memcpy((uint8_t*)gdt_base, (uint8_t*)&tss_d, sizeof(tss64_descriptor_t));
     asm_ltr(TSS_SELECTOR);
