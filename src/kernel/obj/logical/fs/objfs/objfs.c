@@ -38,7 +38,7 @@ uint8_t objfs_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)obj->object_data;
-    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0);
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0, 0);
     kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
@@ -122,7 +122,7 @@ struct filesystem_node* objfs_find_node_by_id(struct filesystem_node* fs_node, u
         struct object* obj = objectregistry_find_object_by_handle(id);
         ASSERT_NOT_NULL(obj);
         // there is a node with that id, we need to make a fs entry and cache it
-        this_node = filesystem_node_new(object, fs_node->filesystem_obj, obj->name, obj->handle, 0);
+        this_node = filesystem_node_new(object, fs_node->filesystem_obj, obj->name, obj->handle, 0, 0);
         node_cache_add(object_data->nc, this_node);
     } else {
         //    kprintf("found in cache %llu\n", id);
@@ -161,7 +161,7 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
                     struct filesystem_node* this_node = node_cache_find(object_data->nc, obj->handle);
                     if (0 == this_node) {
                         //             kprintf("node_id %#llX %#llX\n", i, objfs_node_id(i, 0));
-                        this_node = filesystem_node_new(object, fs_node->filesystem_obj, obj->name, obj->handle, 0);
+                        this_node = filesystem_node_new(object, fs_node->filesystem_obj, obj->name, obj->handle, 0, 0);
                         node_cache_add(object_data->nc, this_node);
                     }
                     ASSERT_NOT_NULL(this_node->id);  // there is no object type 0, so this can't be zero

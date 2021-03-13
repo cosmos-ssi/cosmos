@@ -45,7 +45,7 @@ uint8_t initrd_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)obj->object_data;
-    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0);
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0, 0);
 
     /*
     * read the header
@@ -168,11 +168,10 @@ struct filesystem_node* initrd_find_node_by_id(struct filesystem_node* fs_node, 
         /*
         * root node
         */
-
         ASSERT(id < object_data->header.number_files);
         // the node id is the index into the headers
         char* name = object_data->header.headers[id].name;
-        return filesystem_node_new(file, fs_node->filesystem_obj, name, id, 0);
+        return filesystem_node_new(file, fs_node->filesystem_obj, name, id, 0, 0);
     } else {
         // devices are leaf nodes they have no children
         return 0;

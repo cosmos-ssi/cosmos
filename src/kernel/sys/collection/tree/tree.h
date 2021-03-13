@@ -13,7 +13,7 @@
 
 typedef void (*tree_iterator)(void* value);
 typedef uint8_t (*tree_comparator)(void* value1, void* value2);
-uint8_t tree_string_comparator(void* e1, void* e2);
+uint8_t tree_string_comparator(void* criteria, void* value);
 
 struct tree {
     void* value;

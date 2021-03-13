@@ -99,10 +99,10 @@ void tree_iterate(struct tree* t, tree_iterator iter) {
 /*
 * a comparator for strings
 */
-uint8_t tree_string_comparator(void* e1, void* e2) {
-    ASSERT_NOT_NULL(e1);
-    ASSERT_NOT_NULL(e2);
-    if (strcmp((uint8_t*)e1, (uint8_t*)e2) == 1) {
+uint8_t tree_string_comparator(void* criteria, void* value) {
+    ASSERT_NOT_NULL(criteria);
+    ASSERT_NOT_NULL(value);
+    if (strcmp((uint8_t*)criteria, (uint8_t*)value) == 1) {
         return 1;
     }
     return 0;
