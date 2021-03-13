@@ -6,6 +6,7 @@
 // ****************************************************************
 
 #include <obj/logical/fs/block_util.h>
+#include <obj/logical/fs/filesystem_node_map.h>
 #include <obj/logical/fs/initrd/initrd.h>
 #include <obj/logical/fs/node_cache.h>
 #include <obj/logical/fs/node_util.h>
@@ -36,6 +37,8 @@ struct initrd_objectdata {
     uint32_t lba;
     struct initrd_header header;
     struct filesystem_node* root_node;
+    struct filesystem_node_map* filesystem_nodes;
+    uint64_t next_filesystem_node_id;
 };
 
 /*
@@ -65,6 +68,8 @@ uint8_t initrd_uninit(struct object* obj) {
     ASSERT_NOT_NULL(obj->object_data);
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)obj->object_data;
     kprintf("Uninit %s on %s (%s)\n", obj->description, object_data->partition_object->name, obj->name);
+    filesystem_node_map_clear(object_data->filesystem_nodes);
+    filesystem_node_map_delete(object_data->filesystem_nodes);
     kfree(obj->api);
     kfree(object_data->root_node);
     kfree(object_data);
@@ -84,7 +89,6 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
-
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)fs_node->filesystem_obj->object_data;
@@ -94,14 +98,15 @@ uint32_t initrd_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t da
         */
         return 0;
     } else {
+        uint32_t idx = (uint32_t)(uint64_t)fs_node->node_data;
+
         /*
         * get underlying sector size
         */
         uint32_t sector_size = blockutil_get_sector_size(object_data->partition_object);
-
-        uint32_t offset = object_data->header.headers[fs_node->id].offset;
+        uint32_t offset = object_data->header.headers[idx].offset;
         ASSERT(offset > 0);
-        uint32_t length = object_data->header.headers[fs_node->id].length;
+        uint32_t length = object_data->header.headers[idx].length;
         ASSERT(data_size >= length);
         //  kprintf("offset %llu length %llu\n", offset, length);
 
@@ -133,10 +138,8 @@ uint32_t initrd_write(struct filesystem_node* fs_node, const uint8_t* data, uint
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
-
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
-
     /*
     * cant write to initrd fs
     */
@@ -164,18 +167,12 @@ struct filesystem_node* initrd_find_node_by_id(struct filesystem_node* fs_node, 
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)fs_node->filesystem_obj->object_data;
-    if (fs_node == object_data->root_node) {
-        /*
-        * root node
-        */
-        ASSERT(id < object_data->header.number_files);
-        // the node id is the index into the headers
-        char* name = object_data->header.headers[id].name;
-        return filesystem_node_new(file, fs_node->filesystem_obj, name, id, 0, 0);
-    } else {
-        // devices are leaf nodes they have no children
-        return 0;
+    //   kprintf("finding node id: %llu\n", id);
+    struct filesystem_node* ret = filesystem_node_map_find_id(object_data->filesystem_nodes, id);
+    if (0 != ret) {
+        //       kprintf("node %llu has name %s\n", id, ret->name);
     }
+    return ret;
 }
 
 void initrd_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
@@ -184,14 +181,25 @@ void initrd_list_directory(struct filesystem_node* fs_node, struct filesystem_di
     ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
     ASSERT_NOT_NULL(dir);
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)fs_node->filesystem_obj->object_data;
+    /*
+    * root node
+    */
     if (fs_node == object_data->root_node) {
-        /*
-        * root node
-        */
-        dir->count = object_data->header.number_files;
-        for (uint32_t i = 0; i < object_data->header.number_files; i++) {
-            // node id is the index into the header table
-            dir->ids[i] = i;
+        dir->count = 0;
+        for (uint64_t i = 0; i < object_data->header.number_files; i++) {
+            uint8_t* name = object_data->header.headers[i].name;
+            uint64_t node_id = filesystem_node_map_find_name(object_data->filesystem_nodes, name);
+            if (0 == node_id) {
+                // node_data is the index into the header table
+                struct filesystem_node* node = filesystem_node_new(file, fs_node->filesystem_obj, name,
+                                                                   object_data->next_filesystem_node_id, (void*)i, 0);
+                object_data->next_filesystem_node_id += 1;
+                filesystem_node_map_insert(object_data->filesystem_nodes, node);
+                //       kprintf("new node %llu with name %s\n", node->id, node->name);
+                node_id = node->id;
+            }
+            dir->ids[dir->count] = node_id;
+            dir->count += 1;
         }
     } else {
         dir->count = 0;
@@ -210,7 +218,8 @@ uint64_t initrd_size(struct filesystem_node* fs_node) {
         */
         return 0;
     } else {
-        return object_data->header.headers[fs_node->id].length;
+        uint32_t idx = (uint32_t)(uint64_t)fs_node->node_data;
+        return object_data->header.headers[idx].length;
     }
 }
 
@@ -249,6 +258,8 @@ struct object* initrd_attach(struct object* partition_object, uint32_t lba) {
     object_data->root_node = 0;
     object_data->lba = lba;
     object_data->partition_object = partition_object;
+    object_data->next_filesystem_node_id = 1;
+    object_data->filesystem_nodes = filesystem_node_map_new();
     objectinstance->object_data = object_data;
     /*
      * register

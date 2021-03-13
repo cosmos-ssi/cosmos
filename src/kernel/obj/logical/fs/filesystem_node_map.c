@@ -29,8 +29,9 @@ void filesystem_node_map_delete(struct filesystem_node_map* map) {
 }
 
 void filesystem_delete_tree_iterator(void* value) {
-    ASSERT_NOT_NULL(value);
-    kfree(value);
+    if (0 != value) {
+        kfree(value);
+    }
 }
 
 void filesystem_node_map_clear(struct filesystem_node_map* map) {
