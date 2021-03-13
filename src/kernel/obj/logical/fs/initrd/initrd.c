@@ -8,7 +8,6 @@
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/filesystem_node_map.h>
 #include <obj/logical/fs/initrd/initrd.h>
-#include <obj/logical/fs/node_cache.h>
 #include <obj/logical/fs/node_util.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
