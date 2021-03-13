@@ -221,6 +221,8 @@ struct object* fat_attach(struct object* block_object) {
         */
         return objectinstance;
     } else {
+        filesystem_node_map_clear(object_data->filesystem_nodes);
+        filesystem_node_map_delete(object_data->filesystem_nodes);
         kfree(object_data->root_node);
         kfree(object_data);
         kfree(api);

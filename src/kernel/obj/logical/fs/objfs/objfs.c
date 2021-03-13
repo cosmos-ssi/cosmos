@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <obj/logical/fs/filesystem_node_map.h>
 #include <obj/logical/fs/node_cache.h>
 #include <obj/logical/fs/node_util.h>
 #include <obj/logical/fs/objfs/objfs.h>
@@ -20,6 +21,7 @@
 #include <sys/panic/panic.h>
 #include <sys/string/mem.h>
 #include <types.h>
+
 /*
 * node ids are the object handles
 */
@@ -28,7 +30,8 @@
 */
 struct objfs_objectdata {
     struct filesystem_node* root_node;
-    struct node_cache* nc;
+    struct filesystem_node_map* filesystem_nodes;
+    uint64_t next_filesystem_node_id;
 };
 
 /*
@@ -38,7 +41,9 @@ uint8_t objfs_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)obj->object_data;
-    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0, 0);
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, object_data->next_filesystem_node_id, 0, 0);
+    object_data->next_filesystem_node_id += 1;
+
     kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
@@ -52,9 +57,10 @@ uint8_t objfs_uninit(struct object* obj) {
 
     kprintf("Uninit %s  (%s)\n", obj->description, obj->name);
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)obj->object_data;
+    filesystem_node_map_clear(object_data->filesystem_nodes);
+    filesystem_node_map_delete(object_data->filesystem_nodes);
     kfree(obj->api);
     kfree(object_data->root_node);
-    node_cache_delete(object_data->nc);
     kfree(object_data);
     return 1;
 }
@@ -112,62 +118,49 @@ struct filesystem_node* objfs_find_node_by_id(struct filesystem_node* fs_node, u
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)fs_node->filesystem_obj->object_data;
-    //  kprintf("finding %#llX in %s\n", id, fs_node->name);
-
-    /*
-    * check the cache
-    */
-    struct filesystem_node* this_node = node_cache_find(object_data->nc, id);
-    if (0 == this_node) {
-        struct object* obj = objectregistry_find_object_by_handle(id);
-        ASSERT_NOT_NULL(obj);
-        // there is a node with that id, we need to make a fs entry and cache it
-        this_node = filesystem_node_new(object, fs_node->filesystem_obj, obj->name, obj->handle, 0, 0);
-        node_cache_add(object_data->nc, this_node);
-    } else {
-        //    kprintf("found in cache %llu\n", id);
+    //   kprintf("finding node id: %llu\n", id);
+    struct filesystem_node* ret = filesystem_node_map_find_id(object_data->filesystem_nodes, id);
+    if (0 != ret) {
+        //       kprintf("node %llu has name %s\n", id, ret->name);
     }
-    if (0 == this_node) {
-        kprintf("no node with id %#llX\n", id);
-    }
-    return this_node;
+    return ret;
 }
 
 void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
-    //   kprintf("objfs_list_directory %s\n", fs_node->name);
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
     ASSERT_NOT_NULL(dir);
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)fs_node->filesystem_obj->object_data;
+    /*
+    * root node
+    */
     if (fs_node == object_data->root_node) {
-        /*
-        * root node
-        */
-        dir->count = objectregistry_objectcount();
-        uint32_t obj_count = 0;
-        /*
-        * every object has a handle, so it becomes the node id
-        */
-        /*
-       * walk the types
-       */
+        dir->count = 0;
         for (uint32_t i = 0; i < objecttypes_count(); i++) {
             struct object_type* ot = objecttypes_get(i);
             ASSERT_NOT_NULL(ot);
             if (0 != ot) {
                 for (uint32_t j = 0; j < objectregistry_objectcount_type(ot->id); j++) {
                     struct object* obj = objectregistry_get_object(ot->id, j);
-                    struct filesystem_node* this_node = node_cache_find(object_data->nc, obj->handle);
-                    if (0 == this_node) {
-                        //             kprintf("node_id %#llX %#llX\n", i, objfs_node_id(i, 0));
-                        this_node = filesystem_node_new(object, fs_node->filesystem_obj, obj->name, obj->handle, 0, 0);
-                        node_cache_add(object_data->nc, this_node);
+                    uint64_t node_id = filesystem_node_map_find_name(object_data->filesystem_nodes, obj->name);
+                    if (0 == node_id) {
+                        // object_data is the obhect handle
+                        struct filesystem_node* node =
+                            filesystem_node_new(file, fs_node->filesystem_obj, obj->name,
+                                                object_data->next_filesystem_node_id, (void*)obj->handle, 0);
+                        object_data->next_filesystem_node_id += 1;
+                        filesystem_node_map_insert(object_data->filesystem_nodes, node);
+                        kprintf("new node %llu\n", node->id);
+                        node_id = node->id;
                     }
-                    ASSERT_NOT_NULL(this_node->id);  // there is no object type 0, so this can't be zero
-                    dir->ids[obj_count] = this_node->id;
-                    obj_count += 1;
+                    //     kprintf("count %llu, id %llu\n", dir->count, node_id);
+                    dir->ids[dir->count] = node_id;
+                    dir->count += 1;
                 }
+            } else {
+                dir->count = 0;
+                // devices are leaf nodes they have no children
             }
         }
     } else {
@@ -214,7 +207,8 @@ struct object* objfs_attach() {
      */
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)kmalloc(sizeof(struct objfs_objectdata));
     object_data->root_node = 0;
-    object_data->nc = node_cache_new();
+    object_data->next_filesystem_node_id = 1;
+    object_data->filesystem_nodes = filesystem_node_map_new();
     objectinstance->object_data = object_data;
     /*
      * register
@@ -225,7 +219,8 @@ struct object* objfs_attach() {
         */
         return objectinstance;
     } else {
-        node_cache_delete(object_data->nc);
+        filesystem_node_map_clear(object_data->filesystem_nodes);
+        filesystem_node_map_delete(object_data->filesystem_nodes);
         kfree(object_data->root_node);
         kfree(object_data);
         kfree(api);

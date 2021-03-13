@@ -48,7 +48,8 @@ uint8_t initrd_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)obj->object_data;
-    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0, 0);
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, object_data->next_filesystem_node_id, 0, 0);
+    object_data->next_filesystem_node_id += 1;
 
     /*
     * read the header
@@ -274,6 +275,8 @@ struct object* initrd_attach(struct object* partition_object, uint32_t lba) {
         */
         return objectinstance;
     } else {
+        filesystem_node_map_clear(object_data->filesystem_nodes);
+        filesystem_node_map_delete(object_data->filesystem_nodes);
         kfree(object_data->root_node);
         kfree(object_data);
         kfree(api);
