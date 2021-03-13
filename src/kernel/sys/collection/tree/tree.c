@@ -9,6 +9,7 @@
 #include <sys/collection/tree/tree.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
+#include <sys/string/string.h>
 
 struct tree* tree_new() {
     struct tree* ret = (struct tree*)kmalloc(sizeof(struct tree));
@@ -77,4 +78,54 @@ void* tree_search(struct tree* t, uint64_t key) {
             return 0;
         }
     }
+}
+
+/*
+ * warning, recursive
+ */
+void tree_iterate(struct tree* t, tree_iterator iter) {
+    ASSERT_NOT_NULL(t);
+    ASSERT_NOT_NULL(iter);
+
+    (*iter)(t->value);
+    if (0 != t->left) {
+        tree_iterate(t->left, iter);
+    }
+    if (0 != t->right) {
+        tree_iterate(t->right, iter);
+    }
+}
+
+/*
+* a comparator for strings
+*/
+uint8_t tree_string_comparator(void* e1, void* e2) {
+    ASSERT_NOT_NULL(e1);
+    ASSERT_NOT_NULL(e2);
+    if (strcmp((uint8_t*)e1, (uint8_t*)e2) == 1) {
+        return 1;
+    }
+    return 0;
+}
+
+/*
+ * warning, recursive and O(n)
+ */
+uint64_t tree_find(struct tree* t, tree_comparator comparator, void* value) {
+    ASSERT_NOT_NULL(t);
+    ASSERT_NOT_NULL(comparator);
+    ASSERT_NOT_NULL(value);
+
+    if (0 != t->value) {
+        if (1 == (*comparator)(value, t->value)) {
+            return t->key;
+        }
+    }
+    if (0 != t->left) {
+        return tree_find(t->left, comparator, value);
+    }
+    if (0 != t->right) {
+        return tree_find(t->right, comparator, value);
+    }
+    return 0;
 }
