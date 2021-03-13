@@ -117,8 +117,8 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
                                current_sector, 0);
 
                 // loop entries
-                for (uint16_t i = 0; i < object_data->fs_parameters.sector_size; i = i + sizeof(struct fat_dir)) {
-                    struct fat_dir* entry = (struct fat_dir*)&(buffer[i]);
+                for (uint16_t i = 0; i < object_data->fs_parameters.sector_size; i = i + sizeof(struct fat_dir_entry)) {
+                    struct fat_dir_entry* entry = (struct fat_dir_entry*)&(buffer[i]);
                     // entry ok
                     if (entry->name[0] != 0) {
                         // entry is used

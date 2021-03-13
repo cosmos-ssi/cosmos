@@ -61,7 +61,7 @@ struct fat_BS {
     uint8_t extended_section[54];
 } __attribute__((packed));
 
-struct fat_dir {
+struct fat_dir_entry {
     uint8_t name[11];
     uint8_t attributes;
     uint8_t reserved;
