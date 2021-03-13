@@ -150,7 +150,7 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
                                                 object_data->next_filesystem_node_id, (void*)obj->handle, 0);
                         object_data->next_filesystem_node_id += 1;
                         filesystem_node_map_insert(object_data->filesystem_nodes, node);
-                        kprintf("new node %llu\n", node->id);
+                        //    kprintf("new node %llu\n", node->id);
                         node_id = node->id;
                     }
                     //     kprintf("count %llu, id %llu\n", dir->count, node_id);
