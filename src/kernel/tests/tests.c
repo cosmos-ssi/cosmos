@@ -51,13 +51,13 @@ void tests_run() {
     test_swap();
     test_rand();
     test_null();
-    test_initrd();
+    //    test_initrd();
     test_ata();
-    test_init_loader();
+    //  test_init_loader();
     //test_objects();
     test_kernelmap();
     test_dynabuffer();
     test_serializer();
     //test_mm();
-    test_fat();
+    //test_fat();
 }

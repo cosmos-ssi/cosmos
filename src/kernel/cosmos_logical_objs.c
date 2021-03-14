@@ -36,11 +36,11 @@ void attach_logical_objects() {
     * kernel telnet
     * 
     */
-    /*struct object* serial2 = objectmgr_find_object_by_name("serial0");
+    struct object* serial2 = objectmgr_find_object_by_name("serial0");
     struct object* telnet = 0;
     if (0 != serial2) {
         telnet = telnet_attach(serial2);
-    }*/
+    }
     /*
     * console
     */

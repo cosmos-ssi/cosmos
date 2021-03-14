@@ -173,6 +173,11 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
                                                                        (void*)(uint64_t)node_sector, fs_node->id);
                                         }
                                         if (0 != node) {
+
+                                            //   uint8_t node_full_name[1024];
+                                            // filesystem_node_map_get_node_name(object_data->filesystem_nodes, node,
+                                            //                                 node_full_name, 1024);
+
                                             object_data->next_filesystem_node_id += 1;
                                             filesystem_node_map_insert(object_data->filesystem_nodes, node);
                                             //           kprintf("new node %llu\n", node->id);

@@ -131,11 +131,11 @@ void CosmOS() {
     dev_tests();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
-    kprintf("\n");
-    kprintf("***** Loading Userland init from %s *****\n", "disk0");
-    kprintf("\n");
+    //   kprintf("\n");
+    //   kprintf("***** Loading Userland init from %s *****\n", "disk0");
+    //   kprintf("\n");
 
-    load_init_binary();
+    // load_init_binary();
 
     gui_init();
     gui_draw();
@@ -186,7 +186,7 @@ filesystem_node_t* load_test_binary() {
     voh_node = fsfacade_get_fs_rootnode(voh_dev);
     ASSERT_NOT_NULL(voh_node);
 
-    initrd_node = fsfacade_find_node_by_name(voh_node, "fs2");
+    initrd_node = fsfacade_find_node_by_name(voh_node, "fs0");
     ASSERT_NOT_NULL(initrd_node);
 
     file_node = fsfacade_find_node_by_name(initrd_node, "test.bin");

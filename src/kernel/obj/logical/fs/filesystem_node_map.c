@@ -76,20 +76,22 @@ uint64_t filesystem_node_map_find_name(struct filesystem_node_map* map, uint8_t*
     return tree_find(map->filesystem_nodes_by_id, &filesystem_node_map_name_comparator, name);
 }
 
-void filesystem_node_map_get_node_name(struct filesystem_node_map* map, uint64_t filesystem_node_id,
+void filesystem_node_map_get_node_name(struct filesystem_node_map* map, struct filesystem_node* node,
                                        const uint8_t* name, uint32_t name_size) {
     ASSERT_NOT_NULL(map);
     ASSERT_NOT_NULL(map->filesystem_nodes_by_id);
     ASSERT_NOT_NULL(name);
     ASSERT_NOT_NULL(name_size);
+    ASSERT_NOT_NULL(node);
+    ASSERT_NOT_NULL(node->id);
 
-    struct filesystem_node* thisNode = filesystem_node_map_find_id(map, filesystem_node_id);
-    ASSERT_NOT_NULL(thisNode);
+    struct filesystem_node* thisNode = node;
     struct arraylist* lst = arraylist_new();
 
     // make a list
     while (0 != thisNode) {
         arraylist_add(lst, (void*)thisNode->id);
+        kprintf("id: %llu\n", thisNode->id);
         uint64_t parentId = thisNode->parent;
         if (0 != parentId) {
             thisNode = filesystem_node_map_find_id(map, parentId);
