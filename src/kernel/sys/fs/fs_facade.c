@@ -53,11 +53,8 @@ void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traver
         for (uint32_t i = 0; i < dir.count; i++) {
             //    kprintf("dir %s index: %llu child id: %#llX\n", fs_node->name, i, dir.ids[i]);
             struct filesystem_node* child = fsfacade_find_node_by_id(fs_node, dir.ids[i]);
-            for (int32_t i = 0; i < depth; i++) {
-                kprintf("  ");
-            }
+
             ASSERT_NOT_NULL(child);
-            fsfacade_dump_node(child);
             fsfacade_traverse_internal(child, f, depth + 1);
         }
     }
@@ -79,6 +76,11 @@ void fsfacade_voh_dump_traverse_function(struct filesystem_node* fs_node, uint32
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
+
+    for (int32_t i = 0; i < depth; i++) {
+        kprintf("  ");
+    }
+    fsfacade_dump_node(fs_node);
 
     //   for (int32_t i = 0; i < depth; i++) {
     //       kprintf(" ");
