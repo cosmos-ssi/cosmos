@@ -146,6 +146,8 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
                                 // get name
                                 uint8_t fn[32];
                                 fat_filename_from_fat(entry->name, fn, 32);
+                                tolower(fn);
+                                //      kprintf("name: %s\n", fn);
                                 if ((0 != strcmp(fn, ".")) && (0 != strcmp(fn, ".."))) {
 
                                     //       kprintf("fn %s\n", fn);

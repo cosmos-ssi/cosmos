@@ -143,3 +143,11 @@ uint8_t* substr(const uint8_t* str1, uint32_t start, uint32_t end, uint8_t* str2
     str2[str2_len] = 0;
     return str2;
 }
+
+uint8_t* tolower(uint8_t* str) {
+    ASSERT_NOT_NULL(str);
+    for (uint8_t* p = str; *p; ++p) {
+        *p = *p >= 'A' && *p <= 'Z' ? *p | 0x60 : *p;
+    }
+    return str;
+}

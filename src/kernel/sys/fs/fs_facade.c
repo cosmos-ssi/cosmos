@@ -26,7 +26,7 @@ void fsfacade_dump_node(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
 
-    kprintf("%s (%llu)\n", fs_node->name, fs_node->id);
+    kprintf("%s (id: %llu, size: %llu, parent: %llu)\n", fs_node->name, fs_node->id, fs_node->size, fs_node->parent);
 
     // kprintf("FS Node Name: %s\n", fs_node->name);
     //   kprintf("FS Node ID: %#llX\n", fs_node->id);

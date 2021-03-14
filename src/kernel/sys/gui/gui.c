@@ -20,7 +20,7 @@ struct gui_state_data* gui_state;
 #define VGA_DEVICE_NAME "bga0"
 #define INIT_DEVICE_NAME "fs0"
 #define WALLPAPER_NAME "cosmos.bmp"
-#define FONT_NAME "ZAP-VG~1.PSF"
+#define FONT_NAME "zap-vg~1.psf"
 
 void gui_init() {
     struct object* bga = objectmgr_find_object_by_name(VGA_DEVICE_NAME);
