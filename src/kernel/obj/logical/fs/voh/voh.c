@@ -184,7 +184,7 @@ struct object* voh_attach(uint8_t* name) {
      * device data
      */
     struct voh_objectdata* object_data = (struct voh_objectdata*)kmalloc(sizeof(struct voh_objectdata));
-    object_data->root_node = filesystem_node_new(folder, objectinstance, name, 0, 0, 0, 0);
+    object_data->root_node = filesystem_node_new(folder, objectinstance, name, 0, 0, 0);
     object_data->children = arraylist_new();
     objectinstance->object_data = object_data;
     /*

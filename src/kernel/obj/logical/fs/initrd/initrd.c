@@ -37,7 +37,6 @@ struct initrd_objectdata {
     struct initrd_header header;
     struct filesystem_node* root_node;
     struct filesystem_node_map* filesystem_nodes;
-    uint64_t next_filesystem_node_id;
 };
 
 /*
@@ -47,8 +46,7 @@ uint8_t initrd_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)obj->object_data;
-    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, object_data->next_filesystem_node_id, 0, 0);
-    object_data->next_filesystem_node_id += 1;
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0, 0);
 
     /*
     * read the header
@@ -191,10 +189,8 @@ void initrd_list_directory(struct filesystem_node* fs_node, struct filesystem_di
             uint64_t node_id = filesystem_node_map_find_name(object_data->filesystem_nodes, name);
             if (0 == node_id) {
                 // node_data is the index into the header table
-                struct filesystem_node* node =
-                    filesystem_node_new(file, fs_node->filesystem_obj, name, object_data->header.headers[i].length,
-                                        object_data->next_filesystem_node_id, (void*)i, fs_node->id);
-                object_data->next_filesystem_node_id += 1;
+                struct filesystem_node* node = filesystem_node_new(
+                    file, fs_node->filesystem_obj, name, object_data->header.headers[i].length, (void*)i, fs_node->id);
                 filesystem_node_map_insert(object_data->filesystem_nodes, node);
                 //       kprintf("new node %llu with name %s\n", node->id, node->name);
                 node_id = node->id;
@@ -242,7 +238,6 @@ struct object* initrd_attach(struct object* partition_object, uint32_t lba) {
     object_data->root_node = 0;
     object_data->lba = lba;
     object_data->partition_object = partition_object;
-    object_data->next_filesystem_node_id = 1;
     object_data->filesystem_nodes = filesystem_node_map_new();
     objectinstance->object_data = object_data;
     /*

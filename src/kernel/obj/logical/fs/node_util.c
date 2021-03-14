@@ -13,8 +13,10 @@
 
 struct object;
 
+uint64_t next_filesystem_node_id = 0x80;
+
 struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, struct object* obj, const uint8_t* name,
-                                            uint64_t size, uint64_t id, void* node_data, uint64_t parent) {
+                                            uint64_t size, void* node_data, uint64_t parent) {
 
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(name);
@@ -23,7 +25,8 @@ struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, stru
     ret->type = type;
     ret->filesystem_obj = obj;
     strncpy(ret->name, name, FILESYSTEM_MAX_NAME);
-    ret->id = id;
+    ret->id = next_filesystem_node_id;
+    next_filesystem_node_id += 1;
     ret->parent = parent;
     ret->node_data = node_data;
     ret->size = size;

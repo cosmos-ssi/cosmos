@@ -34,7 +34,6 @@ struct fat_objectdata {
     struct fat_fs_parameters fs_parameters;
     struct filesystem_node* root_node;
     struct filesystem_node_map* filesystem_nodes;
-    uint64_t next_filesystem_node_id;
 };
 
 /*
@@ -46,9 +45,7 @@ uint8_t fat_init(struct object* obj) {
     struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
     fat_read_fs_parameters(object_data->block_object, &(object_data->fs_parameters));
     uint64_t first_dir_sector = (uint64_t)object_data->fs_parameters.first_root_dir_sector;
-    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, object_data->next_filesystem_node_id,
-                                                 (void*)first_dir_sector, 0);
-    object_data->next_filesystem_node_id += 1;
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, (void*)first_dir_sector, 0);
     fat_dump_fat_fs_parameters(&(object_data->fs_parameters));
     kprintf("Init %s on %s (%s)\n", obj->description, object_data->block_object->name, obj->name);
     return 1;
@@ -163,13 +160,12 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
                                             //                    kprintf("new folder %s at sector %llu\n", fn, node_sector);
 
                                             node = filesystem_node_new(folder, fs_node->filesystem_obj, fn, entry->size,
-                                                                       object_data->next_filesystem_node_id,
+
                                                                        (void*)(uint64_t)node_sector, fs_node->id);
                                         } else if (0 == (entry->attributes & FAT_IGNORE)) {
                                             //                  kprintf("new file %s at sector %llu\n", fn, node_sector);
 
                                             node = filesystem_node_new(file, fs_node->filesystem_obj, fn, entry->size,
-                                                                       object_data->next_filesystem_node_id,
                                                                        (void*)(uint64_t)node_sector, fs_node->id);
                                         }
                                         if (0 != node) {
@@ -178,7 +174,6 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
                                             //                                           filesystem_node_map_get_node_name(object_data->filesystem_nodes, node,
                                             //                                                                           node_full_name, FILESYSTEM_MAX_PATH);
 
-                                            object_data->next_filesystem_node_id += 1;
                                             filesystem_node_map_insert(object_data->filesystem_nodes, node);
                                             //           kprintf("new node %llu\n", node->id);
                                             node_id = node->id;
@@ -244,7 +239,6 @@ struct object* fat_attach(struct object* block_object) {
     object_data->block_object = block_object;
     object_data->root_node = 0;
     object_data->filesystem_nodes = filesystem_node_map_new();
-    object_data->next_filesystem_node_id = 1;
     objectinstance->object_data = object_data;
 
     /*

@@ -14,6 +14,6 @@
 struct object;
 
 struct filesystem_node* filesystem_node_new(enum filesystem_node_type type, struct object*, const uint8_t* name,
-                                            uint64_t size, uint64_t id, void* node_data, uint64_t parent);
+                                            uint64_t size, void* node_data, uint64_t parent);
 
 #endif

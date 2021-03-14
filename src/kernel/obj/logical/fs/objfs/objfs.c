@@ -30,7 +30,6 @@
 struct objfs_objectdata {
     struct filesystem_node* root_node;
     struct filesystem_node_map* filesystem_nodes;
-    uint64_t next_filesystem_node_id;
 };
 
 /*
@@ -40,8 +39,7 @@ uint8_t objfs_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)obj->object_data;
-    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, object_data->next_filesystem_node_id, 0, 0);
-    object_data->next_filesystem_node_id += 1;
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0, 0);
 
     kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
@@ -145,10 +143,8 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
                     uint64_t node_id = filesystem_node_map_find_name(object_data->filesystem_nodes, obj->name);
                     if (0 == node_id) {
                         // object_data is the obhect handle
-                        struct filesystem_node* node =
-                            filesystem_node_new(file, fs_node->filesystem_obj, obj->name, 0,
-                                                object_data->next_filesystem_node_id, (void*)obj->handle, fs_node->id);
-                        object_data->next_filesystem_node_id += 1;
+                        struct filesystem_node* node = filesystem_node_new(file, fs_node->filesystem_obj, obj->name, 0,
+                                                                           (void*)obj->handle, fs_node->id);
                         filesystem_node_map_insert(object_data->filesystem_nodes, node);
                         //    kprintf("new node %llu\n", node->id);
                         node_id = node->id;
@@ -197,7 +193,6 @@ struct object* objfs_attach() {
      */
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)kmalloc(sizeof(struct objfs_objectdata));
     object_data->root_node = 0;
-    object_data->next_filesystem_node_id = 1;
     object_data->filesystem_nodes = filesystem_node_map_new();
     objectinstance->object_data = object_data;
     /*
