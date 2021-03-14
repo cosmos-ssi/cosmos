@@ -56,8 +56,8 @@ void fsfacade_traverse_internal(struct filesystem_node* fs_node, fsfacade_traver
             for (int32_t i = 0; i < depth; i++) {
                 kprintf("  ");
             }
-            fsfacade_dump_node(child);
             ASSERT_NOT_NULL(child);
+            fsfacade_dump_node(child);
             fsfacade_traverse_internal(child, f, depth + 1);
         }
     }
