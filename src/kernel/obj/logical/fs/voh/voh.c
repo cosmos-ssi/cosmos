@@ -210,6 +210,8 @@ void voh_add_child(struct object* voh_device, struct filesystem_node* child_node
     ASSERT_NOT_NULL(object_data);
     ASSERT_NOT_NULL(object_data->children);
 
+    // connect up the parent field of the filesystem root node
+    child_node->parent = object_data->root_node->id;
     filesystem_node_map_insert(object_data->filesystem_nodes, child_node);
     arraylist_add(object_data->children, child_node);
     //    kprintf("adding voh child id %llu with name %s \n", child_node->id, child_node->name);
