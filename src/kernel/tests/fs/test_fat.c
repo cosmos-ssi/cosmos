@@ -16,6 +16,8 @@
 #include <types.h>
 
 void test_fat() {
+    kprintf("Testing FAT\n");
+
     uint8_t devicename[] = {"fs0"};
 
     struct object* fatfs = objectmgr_find_object_by_name(devicename);

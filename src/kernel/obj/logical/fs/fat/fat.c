@@ -78,8 +78,14 @@ struct filesystem_node* fat_filesystem_get_root_node(struct object* filesystem_o
 }
 
 uint32_t fat_filesystem_read(struct filesystem_node* fs_node, uint8_t* data, uint32_t data_size) {
-    PANIC("Not Implemented");
-    return 0;
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
+    ASSERT(data_size >= fs_node->size);
+    uint64_t start_sector = (uint64_t)fs_node->node_data;
+    struct fat_objectdata* object_data = (struct fat_objectdata*)fs_node->filesystem_obj->object_data;
+
+    return blockutil_read(object_data->block_object, data, data_size, start_sector, 0);
 }
 
 uint32_t fat_filesystem_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_t data_size) {

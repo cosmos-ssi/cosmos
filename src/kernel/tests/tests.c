@@ -59,5 +59,5 @@ void tests_run() {
     test_dynabuffer();
     test_serializer();
     //test_mm();
-    //   test_fat();
+    test_fat();
 }
