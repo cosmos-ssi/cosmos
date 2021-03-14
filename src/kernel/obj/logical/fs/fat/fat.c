@@ -20,7 +20,12 @@
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/panic/panic.h>
 #include <sys/string/mem.h>
+#include <sys/string/string.h>
 #include <types.h>
+
+/*
+* the filesystem_node field "node_data" field for FAT folder objects contains the starting cluster
+*/
 
 // https://wiki.osdev.org/FAT
 
@@ -39,9 +44,11 @@ uint8_t fat_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
-    object_data->root_node = filesystem_node_new(folder, obj, obj->name, object_data->next_filesystem_node_id, 0, 0);
-    object_data->next_filesystem_node_id += 1;
     fat_read_fs_parameters(object_data->block_object, &(object_data->fs_parameters));
+    uint64_t first_dir_sector = (uint64_t)object_data->fs_parameters.first_root_dir_sector;
+    object_data->root_node =
+        filesystem_node_new(folder, obj, obj->name, object_data->next_filesystem_node_id, (void*)first_dir_sector, 0);
+    object_data->next_filesystem_node_id += 1;
     fat_dump_fat_fs_parameters(&(object_data->fs_parameters));
     kprintf("Init %s on %s (%s)\n", obj->description, object_data->block_object->name, obj->name);
     return 1;
@@ -89,6 +96,7 @@ struct filesystem_node* fat_filesystem_find_node_by_id(struct filesystem_node* f
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
+
     struct fat_objectdata* object_data = (struct fat_objectdata*)fs_node->filesystem_obj->object_data;
     //  kprintf("finding node id: %llu\n", id);
     return filesystem_node_map_find_id(object_data->filesystem_nodes, id);
@@ -101,10 +109,12 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
     struct fat_objectdata* object_data = (struct fat_objectdata*)fs_node->filesystem_obj->object_data;
 
     if (fs_node->type == folder) {
+        //    kprintf("listing folder %s\n", fs_node->name);
 
         dir->count = 0;
         if ((object_data->fs_parameters.type == FAT12) || (object_data->fs_parameters.type == FAT16)) {
-            uint32_t current_sector = object_data->fs_parameters.first_root_dir_sector;
+            uint64_t current_sector = (uint64_t)fs_node->node_data;
+            //      kprintf("cs: %llu\n", current_sector);
 
             bool more = true;
             while (more) {
@@ -119,6 +129,7 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
                 // loop entries
                 for (uint16_t i = 0; i < object_data->fs_parameters.sector_size; i = i + sizeof(struct fat_dir_entry)) {
                     struct fat_dir_entry* entry = (struct fat_dir_entry*)&(buffer[i]);
+
                     // entry ok
                     if (entry->name[0] != 0) {
                         // entry is used
@@ -126,25 +137,46 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
                             // not a long file name
                             if (entry->name[10] != 0xFF) {
 
+                                // get name
                                 uint8_t fn[32];
                                 fat_filename_from_fat(entry->name, fn, 32);
+                                if ((0 != strcmp(fn, ".")) && (0 != strcmp(fn, ".."))) {
 
-                                //       kprintf("fn %s\n", fn);
-                                uint64_t node_id = filesystem_node_map_find_name(object_data->filesystem_nodes, fn);
-                                if (0 != node_id) {
-                                    //          kprintf("found node %llu\n", node_id);
-                                } else {
-                                    // new node with id 0.  node_map will assign the id.  note the incomplete fn. :( TODO
-                                    struct filesystem_node* node = filesystem_node_new(
-                                        file, fs_node->filesystem_obj, fn, object_data->next_filesystem_node_id, 0, 0);
-                                    object_data->next_filesystem_node_id += 1;
-                                    filesystem_node_map_insert(object_data->filesystem_nodes, node);
-                                    //           kprintf("new node %llu\n", node->id);
-                                    node_id = node->id;
+                                    //       kprintf("fn %s\n", fn);
+                                    uint64_t node_id = filesystem_node_map_find_name(object_data->filesystem_nodes, fn);
+
+                                    uint32_t node_sector =
+                                        ((entry->cluster_low - 2) * object_data->fs_parameters.sectors_per_cluster) +
+                                        object_data->fs_parameters.first_data_sector;
+
+                                    if (0 == node_id) {
+                                        struct filesystem_node* node = 0;
+                                        if (entry->attributes & FAT_DIRECTORY) {
+                                            //                    kprintf("new folder %s at sector %llu\n", fn, node_sector);
+
+                                            node = filesystem_node_new(folder, fs_node->filesystem_obj, fn,
+                                                                       object_data->next_filesystem_node_id,
+                                                                       (void*)(uint64_t)node_sector, fs_node->id);
+                                        } else if (0 == (entry->attributes & FAT_IGNORE)) {
+                                            //                  kprintf("new file %s at sector %llu\n", fn, node_sector);
+
+                                            node = filesystem_node_new(file, fs_node->filesystem_obj, fn,
+                                                                       object_data->next_filesystem_node_id,
+                                                                       (void*)(uint64_t)node_sector, fs_node->id);
+                                        }
+                                        if (0 != node) {
+                                            object_data->next_filesystem_node_id += 1;
+                                            filesystem_node_map_insert(object_data->filesystem_nodes, node);
+                                            //           kprintf("new node %llu\n", node->id);
+                                            node_id = node->id;
+                                        }
+                                    }
+                                    if (0 != node_id) {
+                                        //     kprintf("count %llu, id %llu\n", dir->count, node_id);
+                                        dir->ids[dir->count] = node_id;
+                                        dir->count += 1;
+                                    }
                                 }
-                                //     kprintf("count %llu, id %llu\n", dir->count, node_id);
-                                dir->ids[dir->count] = node_id;
-                                dir->count += 1;
                             }
                         }
                     } else {

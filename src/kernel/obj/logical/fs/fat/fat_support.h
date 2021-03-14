@@ -14,6 +14,15 @@ struct object;
 
 // https://wiki.osdev.org/FAT
 
+#define FAT_READ_ONLY 0x01
+#define FAT_HIDDEN 0x02
+#define FAT_SYSTEM 0x04
+#define FAT_VOLUME_ID 0x08
+#define FAT_DIRECTORY 0x10
+#define FAT_ARCHIVE 0x20
+#define FAT_LFN (FAT_READ_ONLY | FAT_HIDDEN | FAT_SYSTEM | FAT_VOLUME_ID)
+#define FAT_IGNORE (FAT_HIDDEN | FAT_SYSTEM | FAT_VOLUME_ID)
+
 // Extended fat32 stuff
 struct fat_extBS_32 {
     uint32_t table_size_32;

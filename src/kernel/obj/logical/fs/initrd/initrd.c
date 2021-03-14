@@ -191,8 +191,8 @@ void initrd_list_directory(struct filesystem_node* fs_node, struct filesystem_di
             uint64_t node_id = filesystem_node_map_find_name(object_data->filesystem_nodes, name);
             if (0 == node_id) {
                 // node_data is the index into the header table
-                struct filesystem_node* node = filesystem_node_new(file, fs_node->filesystem_obj, name,
-                                                                   object_data->next_filesystem_node_id, (void*)i, 0);
+                struct filesystem_node* node = filesystem_node_new(
+                    file, fs_node->filesystem_obj, name, object_data->next_filesystem_node_id, (void*)i, fs_node->id);
                 object_data->next_filesystem_node_id += 1;
                 filesystem_node_map_insert(object_data->filesystem_nodes, node);
                 //       kprintf("new node %llu with name %s\n", node->id, node->name);

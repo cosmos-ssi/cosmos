@@ -147,7 +147,7 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
                         // object_data is the obhect handle
                         struct filesystem_node* node =
                             filesystem_node_new(file, fs_node->filesystem_obj, obj->name,
-                                                object_data->next_filesystem_node_id, (void*)obj->handle, 0);
+                                                object_data->next_filesystem_node_id, (void*)obj->handle, fs_node->id);
                         object_data->next_filesystem_node_id += 1;
                         filesystem_node_map_insert(object_data->filesystem_nodes, node);
                         //    kprintf("new node %llu\n", node->id);
