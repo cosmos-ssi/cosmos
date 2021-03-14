@@ -170,10 +170,11 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
                                         }
                                         if (0 != node) {
 
-                                            //                                            uint8_t node_full_name[FILESYSTEM_MAX_PATH];
-                                            //                                           filesystem_node_map_get_node_name(object_data->filesystem_nodes, node,
-                                            //                                                                           node_full_name, FILESYSTEM_MAX_PATH);
+                                            //   uint8_t node_full_name[FILESYSTEM_MAX_PATH];
+                                            //   filesystem_node_map_get_node_name(object_data->filesystem_nodes, node,
+                                            //    node_full_name, FILESYSTEM_MAX_PATH);
 
+                                            //   kprintf("node_full_name: %s\n", node_full_name);
                                             filesystem_node_map_insert(object_data->filesystem_nodes, node);
                                             //           kprintf("new node %llu\n", node->id);
                                             node_id = node->id;

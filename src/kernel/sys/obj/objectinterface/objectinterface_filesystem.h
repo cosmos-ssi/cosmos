@@ -49,7 +49,6 @@ typedef struct filesystem_node {
     * size
     */
     uint64_t size;
-
 } filesystem_node_t;
 
 struct filesystem_directory {

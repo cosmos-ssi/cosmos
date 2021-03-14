@@ -13,6 +13,7 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
+#include <sys/string/mem.h>
 #include <sys/string/string.h>
 
 struct filesystem_node_map* filesystem_node_map_new() {
@@ -76,14 +77,17 @@ uint64_t filesystem_node_map_find_name(struct filesystem_node_map* map, uint8_t*
     return tree_find(map->filesystem_nodes_by_id, &filesystem_node_map_name_comparator, name);
 }
 
-void filesystem_node_map_get_node_name(struct filesystem_node_map* map, struct filesystem_node* node,
-                                       const uint8_t* name, uint32_t name_size) {
+void filesystem_node_map_get_node_name(struct filesystem_node_map* map, struct filesystem_node* node, uint8_t* name,
+                                       uint32_t name_size) {
     ASSERT_NOT_NULL(map);
     ASSERT_NOT_NULL(map->filesystem_nodes_by_id);
     ASSERT_NOT_NULL(name);
     ASSERT_NOT_NULL(name_size);
     ASSERT_NOT_NULL(node);
     ASSERT_NOT_NULL(node->id);
+
+    // can't be too careful
+    memzero(name, name_size);
 
     struct filesystem_node* thisNode = node;
     struct arraylist* lst = arraylist_new();
@@ -99,9 +103,18 @@ void filesystem_node_map_get_node_name(struct filesystem_node_map* map, struct f
             thisNode = 0;
         }
     }
+
     // walk the list back down, making a name
     for (uint64_t i = 0; i < arraylist_count(lst); i++) {
         uint64_t id = (uint64_t)arraylist_get(lst, i);
-        kprintf("id %llu\n", id);
+        kprintf("id: %llu\n", id);
+        struct filesystem_node* n = filesystem_node_map_find_id(map, id);
+        if (n != 0) {
+            if (strlen(name) == 0) {
+                strncpy(name, n->name, name_size);
+            } else {
+                strncat(name, n->name, name_size);
+            }
+        }
     }
 }

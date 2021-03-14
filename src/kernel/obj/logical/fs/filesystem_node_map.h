@@ -30,6 +30,6 @@ void filesystem_node_map_insert(struct filesystem_node_map* map, struct filesyst
 struct filesystem_node* filesystem_node_map_find_id(struct filesystem_node_map* map, uint64_t id);
 uint64_t filesystem_node_map_find_name(struct filesystem_node_map* map, uint8_t* name);
 
-void filesystem_node_map_get_node_name(struct filesystem_node_map* map, struct filesystem_node* node,
-                                       const uint8_t* name, uint32_t name_size);
+void filesystem_node_map_get_node_name(struct filesystem_node_map* map, struct filesystem_node* node, uint8_t* name,
+                                       uint32_t name_size);
 #endif
