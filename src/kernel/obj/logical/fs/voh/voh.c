@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <obj/logical/fs/filesystem_node_map.h>
 #include <obj/logical/fs/node_util.h>
 #include <obj/logical/fs/voh/voh.h>
 #include <sys/collection/arraylist/arraylist.h>
@@ -21,6 +22,7 @@
 struct voh_objectdata {
     struct arraylist* children;
     struct filesystem_node* root_node;
+    struct filesystem_node_map* filesystem_nodes;
 };
 
 /*
@@ -28,6 +30,8 @@ struct voh_objectdata {
  */
 uint8_t voh_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
+    struct voh_objectdata* object_data = (struct voh_objectdata*)obj->object_data;
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0, 0);
     kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
@@ -39,7 +43,8 @@ uint8_t voh_uninit(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     kprintf("Uninit %s  (%s)\n", obj->description, obj->name);
     struct voh_objectdata* object_data = (struct voh_objectdata*)obj->object_data;
-
+    filesystem_node_map_clear(object_data->filesystem_nodes);
+    filesystem_node_map_delete(object_data->filesystem_nodes);
     kfree(obj->api);
     kfree(object_data->root_node);
     kfree(object_data->children);
@@ -74,7 +79,6 @@ uint32_t voh_write(struct filesystem_node* fs_node, const uint8_t* data, uint32_
     ASSERT_NOT_NULL(data);
     ASSERT_NOT_NULL(data_size);
     // write to node. we cant write to the root node, but we can find underlying file and folder nodes
-
     PANIC("not implemented");
     return 0;
 }
@@ -83,7 +87,6 @@ void voh_open(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
-
     PANIC("not implemented");
 }
 
@@ -91,7 +94,6 @@ void voh_close(struct filesystem_node* fs_node) {
     ASSERT_NOT_NULL(fs_node);
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
-
     PANIC("not implemented");
 }
 
@@ -100,30 +102,12 @@ struct filesystem_node* voh_find_node_by_id(struct filesystem_node* fs_node, uin
     ASSERT_NOT_NULL(fs_node->filesystem_obj);
     ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
     struct voh_objectdata* object_data = (struct voh_objectdata*)fs_node->filesystem_obj->object_data;
-    //  kprintf("voh_find_node_by_id node id %llu of node %s\n", id, fs_node->name);
-    if (fs_node == object_data->root_node) {
-        /*
-        * root node
-        */
-        if (0 == object_data->children) {
-            //   kprintf("no chilren\n");
-            return 0;
-        } else {
-            uint32_t child_count = arraylist_count(object_data->children);
-            ASSERT(id < child_count);
-            for (uint32_t i = 0; i < child_count; i++) {
-                struct filesystem_node* n = (struct filesystem_node*)arraylist_get(object_data->children, i);
-                //     kprintf("n %llu\n", n->id);
-                if (n->id == id) {
-                    return n;
-                }
-            }
-            return 0;
-        }
-    } else {
-        kprintf("voh nodes dont have chilren\n");
-        return 0;
-    }
+    //  kprintf("finding node id: %llu\n", id);
+    struct filesystem_node* ret = filesystem_node_map_find_id(object_data->filesystem_nodes, id);
+    //  if (0 != ret) {
+    //      kprintf("node %llu has name %s\n", id, ret->name);
+    //  }
+    return ret;
 }
 
 void voh_list_directory(struct filesystem_node* fs_node, struct filesystem_directory* dir) {
@@ -136,19 +120,21 @@ void voh_list_directory(struct filesystem_node* fs_node, struct filesystem_direc
         /*
         * root node
         */
-        if (0 == object_data->children) {
-            dir->count = 0;
-        } else {
-            dir->count = arraylist_count(object_data->children);
-            for (uint32_t i = 0; i < dir->count; i++) {
-                // node id is the index into the array list
-                dir->ids[i] = i;
+        dir->count = 0;
+        if (0 != object_data->children) {
+            uint32_t child_count = arraylist_count(object_data->children);
+            for (uint32_t i = 0; i < child_count; i++) {
+                struct filesystem_node* this_node = (struct filesystem_node*)arraylist_get(object_data->children, i);
+                ASSERT_NOT_NULL(this_node);
+                //      kprintf("dir node: %llu %s\n", this_node->id, this_node->name);
+                dir->ids[dir->count] = this_node->id;
+                dir->count += 1;
             }
         }
     } else {
         dir->count = 0;
         /*
-        * return  here.  vohdev has no concept of folders, therefore every node
+        * vohdev has no concept of folders, therefore every node
         * is at the top level; a child of the root
         */
     }
@@ -184,8 +170,9 @@ struct object* voh_attach(uint8_t* name) {
      * device data
      */
     struct voh_objectdata* object_data = (struct voh_objectdata*)kmalloc(sizeof(struct voh_objectdata));
-    object_data->root_node = filesystem_node_new(folder, objectinstance, name, 0, 0, 0);
+    object_data->root_node = 0;
     object_data->children = arraylist_new();
+    object_data->filesystem_nodes = filesystem_node_map_new();
     objectinstance->object_data = object_data;
     /*
      * register
@@ -196,6 +183,8 @@ struct object* voh_attach(uint8_t* name) {
         */
         return objectinstance;
     } else {
+        filesystem_node_map_clear(object_data->filesystem_nodes);
+        filesystem_node_map_delete(object_data->filesystem_nodes);
         kfree(object_data->children);
         kfree(object_data->root_node);
         kfree(object_data);
@@ -220,9 +209,10 @@ void voh_add_child(struct object* voh_device, struct filesystem_node* child_node
     struct voh_objectdata* object_data = (struct voh_objectdata*)voh_device->object_data;
     ASSERT_NOT_NULL(object_data);
     ASSERT_NOT_NULL(object_data->children);
-    // the node id will be it's position in teh array
-    child_node->id = arraylist_count(object_data->children);
+
+    filesystem_node_map_insert(object_data->filesystem_nodes, child_node);
     arraylist_add(object_data->children, child_node);
+    //    kprintf("adding voh child id %llu with name %s \n", child_node->id, child_node->name);
 }
 
 void voh_remove_child(struct object* voh_device, uint64_t id) {
