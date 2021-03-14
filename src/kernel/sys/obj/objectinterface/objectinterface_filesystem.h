@@ -44,6 +44,11 @@ typedef struct filesystem_node {
     * parent node id.  zero for root node
     */
     uint64_t parent;
+    /*
+    * size
+    */
+    uint64_t size;
+
 } filesystem_node_t;
 
 struct filesystem_directory {
@@ -74,10 +79,6 @@ typedef struct filesystem_node* (*filesystem_find_node_by_id_function)(struct fi
 * get directory list.  fills struct. 
 */
 typedef void (*filesystem_list_directory_function)(struct filesystem_node* fs_node, struct filesystem_directory* dir);
-/*
-* get file size 
-*/
-typedef uint64_t (*filesystem_size_function)(struct filesystem_node* fs_node);
 
 struct objectinterface_filesystem {
     filesystem_get_root_node_function root;
@@ -87,7 +88,6 @@ struct objectinterface_filesystem {
     filesystem_close_function close;
     filesystem_find_node_by_id_function find_id;
     filesystem_list_directory_function list;
-    filesystem_size_function size;
 };
 
 #endif

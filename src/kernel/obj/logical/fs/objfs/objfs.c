@@ -40,7 +40,7 @@ uint8_t objfs_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)obj->object_data;
-    object_data->root_node = filesystem_node_new(folder, obj, obj->name, object_data->next_filesystem_node_id, 0, 0);
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, object_data->next_filesystem_node_id, 0, 0);
     object_data->next_filesystem_node_id += 1;
 
     kprintf("Init %s (%s)\n", obj->description, obj->name);
@@ -146,7 +146,7 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
                     if (0 == node_id) {
                         // object_data is the obhect handle
                         struct filesystem_node* node =
-                            filesystem_node_new(file, fs_node->filesystem_obj, obj->name,
+                            filesystem_node_new(file, fs_node->filesystem_obj, obj->name, 0,
                                                 object_data->next_filesystem_node_id, (void*)obj->handle, fs_node->id);
                         object_data->next_filesystem_node_id += 1;
                         filesystem_node_map_insert(object_data->filesystem_nodes, node);
@@ -165,14 +165,6 @@ void objfs_list_directory(struct filesystem_node* fs_node, struct filesystem_dir
     } else {
         dir->count = 0;
     }
-}
-
-uint64_t objfs_size(struct filesystem_node* fs_node) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_obj);
-    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
-    // devices have no size
-    return 0;
 }
 
 struct object* objfs_attach() {
@@ -199,7 +191,6 @@ struct object* objfs_attach() {
     api->write = &objfs_write;
     api->read = &objfs_read;
     api->list = &objfs_list_directory;
-    api->size = &objfs_size;
     objectinstance->api = api;
     /*
      * object data

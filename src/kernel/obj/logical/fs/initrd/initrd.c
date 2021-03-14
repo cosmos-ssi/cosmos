@@ -47,7 +47,7 @@ uint8_t initrd_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct initrd_objectdata* object_data = (struct initrd_objectdata*)obj->object_data;
-    object_data->root_node = filesystem_node_new(folder, obj, obj->name, object_data->next_filesystem_node_id, 0, 0);
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, object_data->next_filesystem_node_id, 0, 0);
     object_data->next_filesystem_node_id += 1;
 
     /*
@@ -191,8 +191,9 @@ void initrd_list_directory(struct filesystem_node* fs_node, struct filesystem_di
             uint64_t node_id = filesystem_node_map_find_name(object_data->filesystem_nodes, name);
             if (0 == node_id) {
                 // node_data is the index into the header table
-                struct filesystem_node* node = filesystem_node_new(
-                    file, fs_node->filesystem_obj, name, object_data->next_filesystem_node_id, (void*)i, fs_node->id);
+                struct filesystem_node* node =
+                    filesystem_node_new(file, fs_node->filesystem_obj, name, object_data->header.headers[i].length,
+                                        object_data->next_filesystem_node_id, (void*)i, fs_node->id);
                 object_data->next_filesystem_node_id += 1;
                 filesystem_node_map_insert(object_data->filesystem_nodes, node);
                 //       kprintf("new node %llu with name %s\n", node->id, node->name);
@@ -204,22 +205,6 @@ void initrd_list_directory(struct filesystem_node* fs_node, struct filesystem_di
     } else {
         dir->count = 0;
         // devices are leaf nodes they have no children
-    }
-}
-
-uint64_t initrd_size(struct filesystem_node* fs_node) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_obj);
-    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
-    struct initrd_objectdata* object_data = (struct initrd_objectdata*)fs_node->filesystem_obj->object_data;
-    if (fs_node == object_data->root_node) {
-        /*
-        * cant read or write root node
-        */
-        return 0;
-    } else {
-        uint32_t idx = (uint32_t)(uint64_t)fs_node->node_data;
-        return object_data->header.headers[idx].length;
     }
 }
 
@@ -249,7 +234,6 @@ struct object* initrd_attach(struct object* partition_object, uint32_t lba) {
     api->write = &initrd_write;
     api->read = &initrd_read;
     api->list = &initrd_list_directory;
-    api->size = &initrd_size;
     objectinstance->api = api;
     /*
      * device data

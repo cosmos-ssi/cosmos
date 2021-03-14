@@ -120,14 +120,7 @@ struct filesystem_node* fsfacade_find_node_by_id(struct filesystem_node* fs_node
 }
 
 uint64_t fsfacade_size(struct filesystem_node* fs_node) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_obj);
-    ASSERT_NOT_NULL(fs_node->filesystem_obj->api);
-    struct objectinterface_filesystem* fs_api = (struct objectinterface_filesystem*)fs_node->filesystem_obj->api;
-    if (0 != fs_api->size) {
-        return (*fs_api->size)(fs_node);
-    }
-    return 0;
+    return fs_node->size;
 }
 
 struct filesystem_node* fsfacade_find_node_by_name(struct filesystem_node* fs_node, char* name) {

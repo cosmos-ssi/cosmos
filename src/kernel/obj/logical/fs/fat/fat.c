@@ -46,8 +46,8 @@ uint8_t fat_init(struct object* obj) {
     struct fat_objectdata* object_data = (struct fat_objectdata*)obj->object_data;
     fat_read_fs_parameters(object_data->block_object, &(object_data->fs_parameters));
     uint64_t first_dir_sector = (uint64_t)object_data->fs_parameters.first_root_dir_sector;
-    object_data->root_node =
-        filesystem_node_new(folder, obj, obj->name, object_data->next_filesystem_node_id, (void*)first_dir_sector, 0);
+    object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, object_data->next_filesystem_node_id,
+                                                 (void*)first_dir_sector, 0);
     object_data->next_filesystem_node_id += 1;
     fat_dump_fat_fs_parameters(&(object_data->fs_parameters));
     kprintf("Init %s on %s (%s)\n", obj->description, object_data->block_object->name, obj->name);
@@ -154,13 +154,13 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
                                         if (entry->attributes & FAT_DIRECTORY) {
                                             //                    kprintf("new folder %s at sector %llu\n", fn, node_sector);
 
-                                            node = filesystem_node_new(folder, fs_node->filesystem_obj, fn,
+                                            node = filesystem_node_new(folder, fs_node->filesystem_obj, fn, entry->size,
                                                                        object_data->next_filesystem_node_id,
                                                                        (void*)(uint64_t)node_sector, fs_node->id);
                                         } else if (0 == (entry->attributes & FAT_IGNORE)) {
                                             //                  kprintf("new file %s at sector %llu\n", fn, node_sector);
 
-                                            node = filesystem_node_new(file, fs_node->filesystem_obj, fn,
+                                            node = filesystem_node_new(file, fs_node->filesystem_obj, fn, entry->size,
                                                                        object_data->next_filesystem_node_id,
                                                                        (void*)(uint64_t)node_sector, fs_node->id);
                                         }
@@ -196,21 +196,6 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
     }
 }
 
-uint64_t fat_filesystem_size(struct filesystem_node* fs_node) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_obj);
-    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
-    //struct fat_objectdata* object_data = (struct fat_objectdata*)fs_node->filesystem_obj->object_data;
-
-    if (fs_node->type == file) {
-        ASSERT(0 != fs_node->parent);
-        //     struct filesystem_node* parent = filesystem_node_map_find_id(object_data->filesystem_nodes, fs_node->parent);
-    }
-    PANIC("Not Implemented");
-
-    return 0;
-}
-
 struct object* fat_attach(struct object* block_object) {
     ASSERT_NOT_NULL(block_object);
     // basically the device needs to implement deviceapi_block
@@ -237,7 +222,6 @@ struct object* fat_attach(struct object* block_object) {
     api->open = &fat_filesystem_open;
     api->read = &fat_filesystem_read;
     api->root = &fat_filesystem_get_root_node;
-    api->size = &fat_filesystem_size;
     api->write = &fat_filesystem_write;
     objectinstance->api = api;
     /*

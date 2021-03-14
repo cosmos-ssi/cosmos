@@ -154,14 +154,6 @@ void voh_list_directory(struct filesystem_node* fs_node, struct filesystem_direc
     }
 }
 
-uint64_t voh_size(struct filesystem_node* fs_node) {
-    ASSERT_NOT_NULL(fs_node);
-    ASSERT_NOT_NULL(fs_node->filesystem_obj);
-    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
-    // voh nodes have no size
-    return 0;
-}
-
 struct object* voh_attach(uint8_t* name) {
     ASSERT_NOT_NULL(name);
     /*
@@ -187,13 +179,12 @@ struct object* voh_attach(uint8_t* name) {
     api->write = &voh_write;
     api->read = &voh_read;
     api->list = &voh_list_directory;
-    api->size = &voh_size;
     objectinstance->api = api;
     /*
      * device data
      */
     struct voh_objectdata* object_data = (struct voh_objectdata*)kmalloc(sizeof(struct voh_objectdata));
-    object_data->root_node = filesystem_node_new(folder, objectinstance, name, 0, 0, 0);
+    object_data->root_node = filesystem_node_new(folder, objectinstance, name, 0, 0, 0, 0);
     object_data->children = arraylist_new();
     objectinstance->object_data = object_data;
     /*
