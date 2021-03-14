@@ -6,6 +6,7 @@
 // ****************************************************************
 
 #include <tests/fs/test_devfs.h>
+#include <tests/fs/test_fat.h>
 #include <tests/fs/test_gpt.h>
 #include <tests/fs/test_initrd.h>
 #include <tests/fs/test_swap.h>
@@ -58,4 +59,5 @@ void tests_run() {
     test_dynabuffer();
     test_serializer();
     //test_mm();
+    //   test_fat();
 }

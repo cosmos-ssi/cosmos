@@ -197,7 +197,17 @@ void fat_filesystem_list_directory(struct filesystem_node* fs_node, struct files
 }
 
 uint64_t fat_filesystem_size(struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(fs_node);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj);
+    ASSERT_NOT_NULL(fs_node->filesystem_obj->object_data);
+    //struct fat_objectdata* object_data = (struct fat_objectdata*)fs_node->filesystem_obj->object_data;
+
+    if (fs_node->type == file) {
+        ASSERT(0 != fs_node->parent);
+        //     struct filesystem_node* parent = filesystem_node_map_find_id(object_data->filesystem_nodes, fs_node->parent);
+    }
     PANIC("Not Implemented");
+
     return 0;
 }
 
