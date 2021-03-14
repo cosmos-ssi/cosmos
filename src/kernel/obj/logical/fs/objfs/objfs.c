@@ -40,7 +40,6 @@ uint8_t objfs_init(struct object* obj) {
     ASSERT_NOT_NULL(obj->object_data);
     struct objfs_objectdata* object_data = (struct objfs_objectdata*)obj->object_data;
     object_data->root_node = filesystem_node_new(folder, obj, obj->name, 0, 0, 0);
-
     kprintf("Init %s (%s)\n", obj->description, obj->name);
     return 1;
 }
