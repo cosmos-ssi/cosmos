@@ -32,6 +32,8 @@ uint8_t init_load(uint8_t* initrd_disk_name, uint8_t* initrd_binary_name) {
         PANIC("oops!");
     }
 
+    elf_dump(file_data, file_len);
+
     // exec
 
     // done with data
