@@ -14,20 +14,6 @@
 
 #define ELF_NIDENT 16
 
-/*
-* cosmos struct to represent an elf section
-*/
-struct elf_section {
-    uint8_t name[64];
-};
-/*
-* cosmos struct to represent elf file
-*/
-struct elf_file {
-    uint8_t section_count;
-    struct elf_section sections[64];
-};
-
 struct elf_section_header {
     uint32_t sh_name;
     uint32_t sh_type;
@@ -63,5 +49,5 @@ struct elf_header {
 
 uint8_t elf_is_elf_binary(uint8_t* binary, uint32_t len);
 void elf_dump(uint8_t* binary, uint32_t len);
-uint8_t elf_parse(uint8_t* binary, uint32_t len, struct elf_file* elf);
+uint64_t elf_get_text_section(uint8_t* binary);
 #endif

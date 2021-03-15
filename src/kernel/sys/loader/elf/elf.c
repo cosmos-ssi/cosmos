@@ -48,29 +48,13 @@ void elf_dump(uint8_t* binary, uint32_t len) {
             header->e_shnum);
 }
 
-uint8_t elf_parse(uint8_t* binary, uint32_t len, struct elf_file* elf) {
+uint64_t elf_get_text_section(uint8_t* binary) {
     ASSERT_NOT_NULL(binary);
-    ASSERT_NOT_NULL(elf);
-    ASSERT(0 != len);
-    ASSERT(len >= sizeof(struct elf_header));
-    /*
-    * make sure its elf
-    */
-    if (1 != elf_is_elf_binary(binary, len)) {
-        // not elf
-        return 0;
-    }
     /*
     * set section count
     */
     struct elf_header* header = (struct elf_header*)binary;
-    elf->section_count = header->e_shnum;
-    /*
-    * iterate sections
-    */
-    for (uint8_t i = 0; i < elf->section_count; i++) {
-    }
+    ASSERT_NOT_NULL(header);
 
-    //  elf_dump(binary, len);
-    return 1;
+    return 0;
 }

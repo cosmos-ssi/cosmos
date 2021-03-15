@@ -135,7 +135,7 @@ void CosmOS() {
     //   kprintf("***** Loading Userland init from %s *****\n", "disk0");
     //   kprintf("\n");
 
-    // load_init_binary();
+    load_init_binary();
 
     gui_init();
     gui_draw();
@@ -199,9 +199,9 @@ filesystem_node_t* load_test_binary() {
 * load the init binary from the initrd fs
 */
 void load_init_binary() {
-    uint8_t init_binary_name[] = {"init"};
-    init_load(INITRD_DISK, init_binary_name);
-    kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, INITRD_DISK);
+    uint8_t init_binary_name[] = {"test.elf"};
+    init_load("fs0", init_binary_name);
+    kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, "fs0");
 }
 
 /*
