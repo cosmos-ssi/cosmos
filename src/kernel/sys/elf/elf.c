@@ -29,10 +29,21 @@ uint8_t elf_is_elf_binary(uint8_t* binary, uint32_t len) {
     }
 
     /*
-    * check version
+    * check version (we expect elf v1)
     */
-    if (0x01 != header->version) {
-        // we expect elf v1
+    if (0x01 != header->elf_version) {
+        return 0;
+    }
+    /*
+    * check class (we expect 64 bit code)
+    */
+    if (0x02 != header->class) {
+        return 0;
+    }
+    /*
+    * check endianness (we expect little endian)
+    */
+    if (0x01 != header->endian) {
         return 0;
     }
     return 1;
@@ -112,7 +123,6 @@ uint64_t elf_get_section_size(uint8_t* binary, uint32_t len, uint16_t idx) {
     ASSERT_NOT_NULL(binary);
     ASSERT_NOT_NULL(len);
     ASSERT(idx < elf_count_section_headers(binary, len));
-
     struct elf_section_header* section_header = elf_get_section_header(binary, len, idx);
     ASSERT_NOT_NULL(section_header);
     return section_header->size;
@@ -144,7 +154,6 @@ uint8_t* elf_get_section_name(uint8_t* binary, uint32_t len, uint16_t idx) {
     ASSERT_NOT_NULL(binary);
     ASSERT_NOT_NULL(len);
     ASSERT(idx < elf_count_section_headers(binary, len));
-
     struct elf_section_header* section_header = elf_get_section_header(binary, len, idx);
     ASSERT_NOT_NULL(section_header);
     return elf_get_string(binary, len, section_header->name);
