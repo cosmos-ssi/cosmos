@@ -33,7 +33,7 @@ uint8_t init_load(uint8_t* fs_name, uint8_t* binary_name) {
         PANIC("oops!");
     }
 
-    uint16_t text_section = elf_get_section_by_name(file_data, file_len, ".text");
+    uint16_t text_section = elf_get_section_by_name(file_data, file_len, ELF_SECTION_TEXT);
     ASSERT_NOT_NULL(text_section);
     kprintf(".text is section %llu\n", text_section);
 

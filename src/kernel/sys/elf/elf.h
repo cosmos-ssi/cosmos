@@ -12,6 +12,10 @@
 
 #include <types.h>
 
+#define ELF_SECTION_TEXT ".text"
+#define ELF_SECTION_BSS ".bss"
+#define ELF_SECTION_DATA ".data"
+
 struct elf_section_header {
     uint32_t name;
     uint32_t type;
