@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-uint8_t init_load(uint8_t* initrd_disk_name, uint8_t* initrd_binary_name);
+uint8_t init_load(uint8_t* fs_name, uint8_t* binary_name);
 
 #endif
