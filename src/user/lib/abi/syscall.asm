@@ -6,8 +6,8 @@ global syscall
 
 syscall:
     
-    mov rax, rdi   ; the syscall #
-    mov rbx, rsi   ; stack pointer
+    mov rax, rax   ; the syscall #
+    mov rbx, rsp   ; stack pointer
     syscall
 
     ret
