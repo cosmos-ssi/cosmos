@@ -30,7 +30,6 @@
 #include <tests/tests.h>
 #include <types.h>
 
-void dev_tests();
 void load_init_binary();
 void dump_VOH();
 void video_write(const uint8_t* s);
@@ -127,9 +126,6 @@ void CosmOS() {
     kprintf("***** Welcome to CosmOS! *****\n");
     kprintf("\n");
 
-    // any dev tests we want to run
-    dev_tests();
-
     // load the init binary.  next step here would be to map it into memory and jump to userland
     //   kprintf("\n");
     //   kprintf("***** Loading Userland init from %s *****\n", "disk0");
@@ -211,34 +207,4 @@ void video_write(const uint8_t* s) {
     struct object* vga_console = objectmgr_find_object_by_name("console0");
     struct objectinterface_console* console0_api = (struct objectinterface_console*)vga_console->api;
     (*console0_api->write)(vga_console, s);
-}
-
-void dev_tests() {
-    //	floppyread();
-    //	test_ata();
-    //	test_vblock();
-    //	test_ata();
-    //	test_ramdisk();
-    //  test_cfs();
-    //  test_sfs();
-    //  test_tfs();
-    //  test_fat();
-    //	test_list();
-    //
-    //  test_parallel();
-    //    test_rtl8139();
-    // test_gpt();
-    //   test_ramdisk();
-    //  test_swap();
-    // test_serial_console_dev();
-    // test_vga_console_dev();
-    // test_display();
-    //  test_mbr();
-    // test_trap();
-    //  test_sb16();
-    // test_gpt();
-    // test_initrd();
-    //  test_acpi();
-    // test_virtio_virtqueue();
-    // test_virtio_vnic();
 }

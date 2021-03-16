@@ -7,12 +7,13 @@
 
 #include <obj/logical/fs/initrd/initrd.h>
 #include <sys/debug/assert.h>
+#include <sys/debug/debug.h>
+#include <sys/elf/elf.h>
 #include <sys/fs/file_util.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/init/init.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/loader/elf/elf.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/panic/panic.h>
 #include <sys/string/mem.h>
@@ -32,7 +33,19 @@ uint8_t init_load(uint8_t* initrd_disk_name, uint8_t* initrd_binary_name) {
         PANIC("oops!");
     }
 
-    elf_dump(file_data, file_len);
+    uint16_t text_section = elf_get_section_by_name(file_data, file_len, ".text");
+    ASSERT_NOT_NULL(text_section);
+    kprintf(".text is section %llu\n", text_section);
+
+    uint64_t text_size = elf_get_section_size(file_data, file_len, text_section);
+    ASSERT_NOT_NULL(text_size);
+    kprintf(".text section length %llu\n", text_size);
+
+    uint8_t* text_data_aka_the_program = elf_get_section(file_data, file_len, text_section);
+    ASSERT_NOT_NULL(text_data_aka_the_program);
+    debug_show_memblock(text_data_aka_the_program, text_size);
+
+    //    elf_dump(file_data, file_len);
 
     // exec
 
