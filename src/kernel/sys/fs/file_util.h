@@ -12,9 +12,12 @@
 
 #include <types.h>
 
+struct filesystem_node;
 /*
 * read a file. this kmallocs new memory and returns it.  The file len is populated into len
 */
 uint8_t* file_util_read_file(uint8_t* device_name, uint8_t* file_name, uint32_t* len);
+
+struct filesystem_node* file_util_find_file(uint8_t* device_name, uint8_t* file_name);
 
 #endif

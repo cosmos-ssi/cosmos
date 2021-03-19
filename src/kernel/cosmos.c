@@ -9,6 +9,7 @@
 #include <obj/logical/fs/initrd/initrd.h>
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
+#include <sys/fs/file_util.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/gui/gui.h>
 #include <sys/init/init.h>
@@ -33,7 +34,6 @@
 void load_init_binary();
 void dump_VOH();
 void video_write(const uint8_t* s);
-filesystem_node_t* load_test_binary();
 
 void CosmOS() {
     /*
@@ -149,7 +149,9 @@ void CosmOS() {
     object_handle_t test_process;
     object_handle_t test_task;
 
-    test_exe = object_executable_create_from_presentation(object_presentation_create(load_test_binary()));
+    struct filesystem_node* test_binary_node = file_util_find_file("fs0", "test.bin");
+    ASSERT_NOT_NULL(test_binary_node);
+    test_exe = object_executable_create_from_presentation(object_presentation_create(test_binary_node));
     test_process = object_process_create(test_exe);
     test_task = object_task_create(test_process);
 
@@ -170,25 +172,6 @@ void CosmOS() {
 
     // we never get here currently... well.... eventually the telnet over serial needs to be a on a thread
     sched_switch(task_select());
-}
-
-filesystem_node_t* load_test_binary() {
-    struct object* voh_dev;
-    filesystem_node_t *voh_node, *initrd_node, *file_node;
-
-    voh_dev = objectmgr_find_object_by_name("voh0");
-    ASSERT_NOT_NULL(voh_dev);
-
-    voh_node = fsfacade_get_fs_rootnode(voh_dev);
-    ASSERT_NOT_NULL(voh_node);
-
-    initrd_node = fsfacade_find_node_by_name(voh_node, "fs0");
-    ASSERT_NOT_NULL(initrd_node);
-
-    file_node = fsfacade_find_node_by_name(initrd_node, "test.bin");
-    ASSERT_NOT_NULL(file_node);
-
-    return file_node;
 }
 
 /*
