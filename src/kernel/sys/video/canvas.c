@@ -276,3 +276,22 @@ void canvas_draw_bitmap(struct canvas* cvs, struct bmp* bitmap, uint32_t x, uint
         }
     }
 }
+
+/*
+* draw a targa
+*/
+void canvas_draw_targa(struct canvas* cvs, struct tga* targa, uint32_t x, uint32_t y) {
+    ASSERT_NOT_NULL(cvs);
+    ASSERT_NOT_NULL(targa);
+    ASSERT(x < cvs->resolution.width);
+    ASSERT(y < cvs->resolution.height);
+
+    //   kprintf("offset %llu, w %llu h %llu\n", bitmap->file_header->offset, bitmap->info_header->width,
+    //           bitmap->info_header->height);
+    //   for (uint32_t i = 0; i < bitmap->info_header->width; i++) {
+    //      for (uint32_t j = 0; j < bitmap->info_header->height; j++) {
+    //         uint32_t pixel = bitmap->bitdata[(i * bitmap->info_header->width) + j];
+    //         canvas_draw_pixel(cvs, i, j, pixel);
+    //     }
+    // }
+}

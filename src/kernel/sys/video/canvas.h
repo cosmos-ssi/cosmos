@@ -18,6 +18,7 @@
 struct object;
 struct psf1_font;
 struct bmp;
+struct tga;
 
 struct canvas {
     uint8_t* buffer;
@@ -61,5 +62,10 @@ void canvas_draw_letters(struct canvas* cvs, struct psf1_font* font, uint32_t x,
 * draw a bitmap
 */
 void canvas_draw_bitmap(struct canvas* cvs, struct bmp* bitmap, uint32_t x, uint32_t y);
+
+/*
+* draw a targa
+*/
+void canvas_draw_targa(struct canvas* cvs, struct tga* targa, uint32_t x, uint32_t y);
 
 #endif
