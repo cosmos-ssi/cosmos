@@ -13,6 +13,7 @@
 #include <sys/video/canvas.h>
 #include <sys/video/psf.h>
 #include <sys/video/rgb.h>
+#include <sys/video/tga.h>
 #include <sys/video/video_util.h>
 
 struct canvas* canvas_new(struct object* obj) {
@@ -285,8 +286,7 @@ void canvas_draw_targa(struct canvas* cvs, struct tga* targa, uint32_t x, uint32
     ASSERT_NOT_NULL(targa);
     ASSERT(x < cvs->resolution.width);
     ASSERT(y < cvs->resolution.height);
-
-    //   kprintf("offset %llu, w %llu h %llu\n", bitmap->file_header->offset, bitmap->info_header->width,
+    tga_dump(targa);
     //           bitmap->info_header->height);
     //   for (uint32_t i = 0; i < bitmap->info_header->width; i++) {
     //      for (uint32_t j = 0; j < bitmap->info_header->height; j++) {

@@ -156,3 +156,8 @@ void tga_delete(struct tga* targa) {
     }
     kfree(targa);
 }
+
+void tga_dump(struct tga* targa) {
+    ASSERT_NOT_NULL(targa);
+    kprintf("w %llu h %llu x %llu y %llu\n", targa->buffer->w, targa->buffer->h, targa->buffer->x, targa->buffer->y);
+}

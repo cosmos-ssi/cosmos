@@ -36,5 +36,6 @@ struct tga_header {
 
 struct tga* tga_load(uint8_t* devname, uint8_t* filename);
 void tga_delete(struct tga* targa);
+void tga_dump(struct tga* targa);
 
 #endif

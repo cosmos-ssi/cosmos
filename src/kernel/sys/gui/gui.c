@@ -14,12 +14,13 @@
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/video/canvas.h>
 #include <sys/video/psf.h>
+#include <sys/video/tga.h>
 
 struct gui_state_data* gui_state;
 
 #define VGA_DEVICE_NAME "bga0"
 #define INIT_DEVICE_NAME "fs0"
-#define WALLPAPER_NAME "cosmos.bmp"
+#define WALLPAPER_NAME "19921.tga"
 #define FONT_NAME "zap-vg~1.psf"
 
 void gui_init() {
@@ -31,8 +32,10 @@ void gui_init() {
         gui_state->font = psf_load(INIT_DEVICE_NAME, FONT_NAME);
         ASSERT_NOT_NULL(gui_state->font);
         gui_state->windows = arraylist_new();
-        //   gui_state->background_image = bmp_load(INIT_DEVICE_NAME, WALLPAPER_NAME);
-        gui_state->background_image = 0;
+
+        gui_state->background_image = tga_load(INIT_DEVICE_NAME, WALLPAPER_NAME);
+        ASSERT_NOT_NULL(gui_state->background_image);
+        //    gui_state->background_image = 0;
         // canvas_dump(gui_state->canvas);
         //    psf_dump(gui_state->font);
 
@@ -57,7 +60,7 @@ void gui_draw() {
     canvas_clear(gui_state->canvas, gui_state->background_color);
     canvas_blt(gui_state->canvas);
     if (0 != gui_state->background_image) {
-        canvas_draw_bitmap(gui_state->canvas, gui_state->background_image, 0, 0);
+        canvas_draw_targa(gui_state->canvas, gui_state->background_image, 0, 0);
     }
     for (uint32_t i = 0; i < arraylist_count(gui_state->windows); i++) {
         struct window* w = (struct window*)arraylist_get(gui_state->windows, i);

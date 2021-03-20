@@ -12,6 +12,8 @@
 #define _GUI_H
 
 #include <types.h>
+struct tga;
+struct bmp;
 
 extern struct gui_state_data* gui_state;
 
@@ -20,7 +22,7 @@ struct gui_state_data {
     struct canvas* canvas;
     struct psf1_font* font;
     struct arraylist* windows;
-    struct bmp* background_image;
+    struct tga* background_image;
 };
 
 void gui_init();
