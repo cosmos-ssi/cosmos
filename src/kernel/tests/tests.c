@@ -27,6 +27,7 @@
 #include <tests/sys/test_iobuffers.h>
 #include <tests/sys/test_linkedlist.h>
 #include <tests/sys/test_malloc.h>
+#include <tests/sys/test_props.h>
 #include <tests/sys/test_ringbuffer.h>
 #include <tests/sys/test_string.h>
 #include <tests/sys/test_tree.h>
@@ -60,4 +61,5 @@ void tests_run() {
     test_serializer();
     //test_mm();
     //test_fat();
+    test_props();
 }
