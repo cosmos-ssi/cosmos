@@ -33,9 +33,9 @@ void gui_init() {
         ASSERT_NOT_NULL(gui_state->font);
         gui_state->windows = arraylist_new();
 
-        gui_state->background_image = tga_load(INIT_DEVICE_NAME, WALLPAPER_NAME);
-        ASSERT_NOT_NULL(gui_state->background_image);
-        //    gui_state->background_image = 0;
+        //  gui_state->background_image = tga_load(INIT_DEVICE_NAME, WALLPAPER_NAME);
+        //  ASSERT_NOT_NULL(gui_state->background_image);
+        gui_state->background_image = 0;
         // canvas_dump(gui_state->canvas);
         //    psf_dump(gui_state->font);
 

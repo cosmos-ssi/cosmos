@@ -17,7 +17,9 @@
 #include <types.h>
 
 struct tga {
-    struct tga_header* buffer;
+    uint8_t* buffer;
+    struct tga_header* header;
+    uint32_t* data;
 };
 
 struct tga_header {
@@ -28,8 +30,8 @@ struct tga_header {
     uint8_t cmapent;             // must be zero
     uint16_t x;                  // must be zero
     uint16_t y;                  // image's height
-    uint16_t h;                  // image's height
-    uint16_t w;                  // image's width
+    uint16_t w;                  // image's height
+    uint16_t h;                  // image's width
     uint8_t bpp;                 // must be 32
     uint8_t pixeltype;           // must be 40
 } __attribute__((packed));

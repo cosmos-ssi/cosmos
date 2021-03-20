@@ -42,8 +42,8 @@ uint32_t canvas_pixel_offset(struct canvas* cvs, uint32_t x, uint32_t y) {
     ASSERT_NOT_NULL(cvs);
     ASSERT_NOT_NULL(cvs->resolution.width);
     ASSERT_NOT_NULL(cvs->resolution.height);
-    ASSERT(x < cvs->resolution.width);
-    ASSERT(y < cvs->resolution.height);
+    ASSERT(x <= cvs->resolution.width);
+    ASSERT(y <= cvs->resolution.height);
     ASSERT(cvs->bytes_per_pixel > 0);
     return cvs->bytes_per_pixel * ((cvs->resolution.width * y) + x);
 }
@@ -90,8 +90,10 @@ void canvas_clear(struct canvas* cvs, uint32_t rgb) {
 
 void canvas_draw_pixel(struct canvas* cvs, uint32_t x, uint32_t y, uint32_t rgb) {
     ASSERT_NOT_NULL(cvs);
-    ASSERT(x < cvs->resolution.width);
-    ASSERT(y < cvs->resolution.height);
+    //   kprintf("x %#llX, y%#llX, w %#llX, h %#llX\n", x, y, cvs->resolution.width, cvs->resolution.height);
+
+    ASSERT(x <= cvs->resolution.width);
+    ASSERT(y <= cvs->resolution.height);
 
     uint32_t offset = canvas_pixel_offset(cvs, x, y);
     //  kprintf("offset %#llX,\n", offset);
@@ -265,8 +267,8 @@ void canvas_draw_letter(struct canvas* cvs, struct psf1_font* font, uint32_t x, 
 void canvas_draw_bitmap(struct canvas* cvs, struct bmp* bitmap, uint32_t x, uint32_t y) {
     ASSERT_NOT_NULL(cvs);
     ASSERT_NOT_NULL(bitmap);
-    ASSERT(x < cvs->resolution.width);
-    ASSERT(y < cvs->resolution.height);
+    ASSERT(x <= cvs->resolution.width);
+    ASSERT(y <= cvs->resolution.height);
 
     kprintf("offset %llu, w %llu h %llu\n", bitmap->file_header->offset, bitmap->info_header->width,
             bitmap->info_header->height);
@@ -284,14 +286,14 @@ void canvas_draw_bitmap(struct canvas* cvs, struct bmp* bitmap, uint32_t x, uint
 void canvas_draw_targa(struct canvas* cvs, struct tga* targa, uint32_t x, uint32_t y) {
     ASSERT_NOT_NULL(cvs);
     ASSERT_NOT_NULL(targa);
-    ASSERT(x < cvs->resolution.width);
-    ASSERT(y < cvs->resolution.height);
+    ASSERT(x <= cvs->resolution.width);
+    ASSERT(y <= cvs->resolution.height);
     tga_dump(targa);
-    //           bitmap->info_header->height);
-    //   for (uint32_t i = 0; i < bitmap->info_header->width; i++) {
-    //      for (uint32_t j = 0; j < bitmap->info_header->height; j++) {
-    //         uint32_t pixel = bitmap->bitdata[(i * bitmap->info_header->width) + j];
-    //         canvas_draw_pixel(cvs, i, j, pixel);
-    //     }
-    // }
+
+    for (uint32_t i = 0; i < targa->header->w; i++) {
+        for (uint32_t j = 0; j < targa->header->h; j++) {
+            uint32_t pixel = targa->data[(i * targa->header->w) + j];
+            canvas_draw_pixel(cvs, i, j, pixel);
+        }
+    }
 }

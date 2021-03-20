@@ -145,7 +145,17 @@ struct tga* tga_load(uint8_t* devname, uint8_t* filename) {
     uint32_t len;
     uint8_t* data = file_util_read_file(devname, filename, &len);
     //  kprintf("bmp size %llu\n", len);
-    ret->buffer = (struct tga_header*)data;
+    ret->buffer = data;
+    ret->header = (struct tga_header*)data;
+    ret->data = (uint32_t*)&(data[sizeof(struct tga_header)]);
+    kprintf("bpp %llu\n", ret->header->bpp);
+    kprintf("encoding %llu\n", ret->header->encoding);
+
+    ASSERT(ret->header->colormap == 0);
+    ASSERT(ret->header->encoding == 2);
+    ASSERT(ret->header->bpp == 32);
+    ASSERT(ret->header->pixeltype == 40);
+
     return ret;
 }
 
@@ -159,5 +169,7 @@ void tga_delete(struct tga* targa) {
 
 void tga_dump(struct tga* targa) {
     ASSERT_NOT_NULL(targa);
-    kprintf("w %llu h %llu x %llu y %llu\n", targa->buffer->w, targa->buffer->h, targa->buffer->x, targa->buffer->y);
+    kprintf("w %llu h %llu x %llu y %llu\n", targa->header->w, targa->header->h, targa->header->x, targa->header->y);
+    kprintf("encoding %llu\n", targa->header->encoding);
+    kprintf("bpp %llu\n", targa->header->bpp);
 }

@@ -1,0 +1,1 @@
+ffmpeg -i 19921.jpg -vf scale=1280:1024,setsar=1:1 -c:v targa -pix_fmt bgra 19921.tga
