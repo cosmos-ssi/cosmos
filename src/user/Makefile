@@ -19,12 +19,12 @@ all: $(COSMOS_INITRD_IMAGE) rootfs
 $(COSMOS_LIB_ARCHIVE):
 	make -C lib
 
-$(COSMOS_TEST_BINARY): fs/rootfs/test.asm
-	$(NASM) $(NASMARGSFLAT) -o $(COSMOS_TEST_BINARY) fs/rootfs/test.asm
-
-$(COSMOS_TEST_BINARY_ELF): fs/rootfs/test.asm
-	$(NASM) $(NASMARGS) -o fs/rootfs/test.o fs/rootfs/test.asm
-	$(LD) -m elf_x86_64 -o $(COSMOS_TEST_BINARY_ELF) fs/rootfs/test.o
+$(COSMOS_TEST_BINARY): fs/rootfs/test.c fs/rootfs/syscall.asm
+	$(RM) fs/rootfs/*.o
+	$(NASM) $(NASMARGS) -o fs/rootfs/syscall.o fs/rootfs/syscall.asm
+	$(CC) $(USER_CFLAGS) $(EXTRA_CFLAGS) -c -o fs/rootfs/test.o fs/rootfs/test.c
+	$(LD) -m elf_x86_64 -o $(COSMOS_TEST_BINARY_ELF) fs/rootfs/test.o fs/rootfs/syscall.o   
+	$(OBJCOPY) -O binary $(COSMOS_TEST_BINARY_ELF) $(COSMOS_TEST_BINARY)  
 
 $(COSMOS_INITRD_IMAGE): $(COSMOS_LIB_ARCHIVE) $(COSMOS_TEST_BINARY) $(COSMOS_TEST_BINARY_ELF)
 	$(RM) $(COSMOS_INITRD_IMAGE)
