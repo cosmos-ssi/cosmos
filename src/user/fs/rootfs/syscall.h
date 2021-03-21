@@ -10,7 +10,9 @@
 
 #include <lib/types.h>
 
-void syscall(uint64_t syscall, void* param);
+void syscall0(uint64_t syscall);
+void syscall1(uint64_t syscall, void* param);
+
 void tge();
 
 #endif

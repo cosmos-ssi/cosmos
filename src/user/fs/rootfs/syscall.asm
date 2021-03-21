@@ -25,25 +25,22 @@ SYSCALL_MEMORY_REALLOC          EQU	2402
 ; hostid
 SYSCALL_HOSTID_GETID            EQU	2700
 
-global sycall;
+global syscall0;
+global syscall1;
 global tge;
 
-sycall:
+syscall0:
+  ;  pop rax;
     mov rax, SYSCALL_PROCESS_EXIT
     mov rbx, rsp
     syscall
     ret
 
-tge:
+syscall1:
     push rax
-
     mov rax, SYSCALL_CONSOLE_WRITE
     mov rbx, rsp
     syscall
+    pop rax
+    ret
 
-    mov rax, SYSCALL_PROCESS_EXIT
-    mov rbx, rsp
-    syscall
-
-    loop:
-    jmp loop
