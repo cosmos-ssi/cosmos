@@ -22,7 +22,4 @@ arrays) must be referenced by a pointer.  Userspace system call wrappers may
 accept a structure directly; they will still transform it into a pointer to that
 structure "under the hood."
 
-## System Call Numbers
-Call mnemonic|#|Handler function and file|Arguments
--------------|-|-------------------------|---------
-exit|0|sys/syscall/exit.c: sys_exit()|uint64_t exit_code
+Syscall numbers are documented in [useland.md](userland.md)

@@ -38,10 +38,10 @@ void syscall_add(uint64_t syscall_num, syscall_handler handler) {
 }
 
 void syscall_dispatcher_init() {
-    syscall_add(SYSCALL_EXIT, &syscall_exit);
-    syscall_add(SYSCALL_PRINT_CONSOLE, &syscall_print_console);
-    syscall_add(SYSCALL_MALLOC, &syscall_malloc);
-    syscall_add(SYSCALL_FREE, &syscall_free);
-    syscall_add(SYSCALL_REALLOC, &syscall_realloc);
-    syscall_add(SYSCALL_SLEEP, &syscall_sleep);
+    syscall_add(SYSCALL_PROCESS_EXIT, &syscall_process_exit);
+    syscall_add(SYSCALL_PROCESS_SLEEP, &syscall_process_sleep);
+    syscall_add(SYSCALL_CONSOLE_WRITE, &syscall_console_write);
+    syscall_add(SYSCALL_MEMORY_MALLOC, &syscall_memory_malloc);
+    syscall_add(SYSCALL_MEMORY_FREE, &syscall_memory_free);
+    syscall_add(SYSCALL_MEMORY_REALLOC, &syscall_memory_realloc);
 }

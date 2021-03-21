@@ -19,7 +19,7 @@ uint64_t invalid_syscall(uint64_t syscall_id, void* args) {
     return 0;
 }
 
-uint64_t syscall_exit(uint64_t syscall_id, void* args) {
+uint64_t syscall_process_exit(uint64_t syscall_id, void* args) {
     // exit
     linkedlist* task;
 
@@ -37,7 +37,12 @@ uint64_t syscall_exit(uint64_t syscall_id, void* args) {
     return 0;
 }
 
-uint64_t syscall_print_console(uint64_t syscall_id, void* args) {
+uint64_t syscall_process_sleep(uint64_t syscall_id, void* args) {
+    kprintf("syscall %llu\n not implemented", syscall_id);
+    return 0;
+}
+
+uint64_t syscall_console_write(uint64_t syscall_id, void* args) {
     struct object* console_obj = objectmgr_find_object_by_name("con0");
     if (0 != console_obj) {
         struct objectinterface_console* api = (struct objectinterface_console*)console_obj->api;
@@ -46,21 +51,16 @@ uint64_t syscall_print_console(uint64_t syscall_id, void* args) {
     return 0;
 }
 
-uint64_t syscall_malloc(uint64_t syscall_id, void* args) {
+uint64_t syscall_memory_malloc(uint64_t syscall_id, void* args) {
     kprintf("syscall %llu\n not implemented", syscall_id);
     return 0;
 }
 
-uint64_t syscall_free(uint64_t syscall_id, void* args) {
+uint64_t syscall_memory_free(uint64_t syscall_id, void* args) {
     kprintf("syscall %llu\n not implemented", syscall_id);
     return 0;
 }
-uint64_t syscall_realloc(uint64_t syscall_id, void* args) {
-    kprintf("syscall %llu\n not implemented", syscall_id);
-    return 0;
-}
-
-uint64_t syscall_sleep(uint64_t syscall_id, void* args) {
+uint64_t syscall_memory_realloc(uint64_t syscall_id, void* args) {
     kprintf("syscall %llu\n not implemented", syscall_id);
     return 0;
 }
