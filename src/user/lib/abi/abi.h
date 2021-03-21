@@ -14,10 +14,15 @@
 
 #include <types.h>
 
-uint64_t syscall_exit();
-uint64_t syscall_print_console();
-uint64_t syscall_malloc(uint64_t size);
-uint64_t syscall_free(void* mem);
-uint64_t syscall_realloc(void* mem, uint64_t size);
-uint64_t syscall_sleep(uint64_t time);
+// process
+uint64_t syscall_process_exit();
+uint64_t syscall_process_sleep(uint64_t time);
+
+// console
+uint64_t syscall_console_write(uint8_t* str);
+
+// memory
+uint64_t syscall_memory_malloc(uint64_t size);
+uint64_t syscall_memory_free(void* mem);
+uint64_t syscall_memory_realloc(void* mem, uint64_t size);
 #endif

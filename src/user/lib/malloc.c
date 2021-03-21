@@ -9,9 +9,9 @@
 #include <malloc.h>
 
 void* malloc(uint64_t size) {
-    return (void*)syscall_malloc(size);
+    return (void*)syscall_memory_malloc(size);
 }
 
 void free(void* ptr) {
-    syscall_free(ptr);
+    syscall_memory_free(ptr);
 }
