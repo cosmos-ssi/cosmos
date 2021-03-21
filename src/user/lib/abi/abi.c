@@ -9,7 +9,7 @@
 #include <abi/syscall.h>
 
 uint64_t syscall_process_exit() {
-    return 0;
+    return syscall0(SYSCALL_PROCESS_EXIT);
 }
 
 uint64_t syscall_process_sleep(uint64_t time) {
@@ -17,7 +17,7 @@ uint64_t syscall_process_sleep(uint64_t time) {
 }
 
 uint64_t syscall_console_write(uint8_t* str) {
-    return 0;
+    return syscall1(SYSCALL_CONSOLE_WRITE, str);
 }
 
 uint64_t syscall_memory_malloc(uint64_t size) {
