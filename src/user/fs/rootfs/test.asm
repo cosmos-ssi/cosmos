@@ -1,15 +1,17 @@
 [BITS 64]
 
+%include 'fs/rootfs/syscall.asm'
+
 mov rax, 1
 add rax, 5
 
 push 55
 
-mov rax, 1401
+mov rax, SYSCALL_CONSOLE_WRITE
 mov rbx, rsp
 syscall
 
-mov rax, 1101
+mov rax, SYSCALL_SYSTEM_EXIT
 mov rbx, rsp
 syscall
 

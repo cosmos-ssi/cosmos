@@ -10,6 +10,7 @@
 
 #include <types.h>
 
+// syscall numbers are defined in userland.md, syscall.asm (userland) and syscalls.h (kernel)
 typedef enum syscalls {
     SYSCALL_PROCESS_EXIT = 1101,
     SYSCALL_PROCESS_SLEEP = 1100,

@@ -34,6 +34,7 @@ libcosmos.a also includes wrapper classes for device types, including
 
 The userland API is object-oriented.  As a result, there is a mapping of syscalls to C++ method.  Each C++ userland class is assigned a block of 100 64-bit syscall numbers.
 
+Syscall numbers are defined in userland.md, syscall.asm (userland) and syscalls.h (kernel)
 
 ## System Call Numbers
 Class        | Method          | syscall #  | Kernel API   
