@@ -1,13 +1,22 @@
+[BITS 64]
 
-BITS 64
-DEFAULT REL
+global syscall0;
+global syscall1;
 
-global syscall
-
-syscall:
-    
-    mov rax, rax   ; the syscall #
-    mov rbx, rsp   ; stack pointer
+; https://wiki.osdev.org/Calling_Conventions
+; function parameters are rdi, rsi, rdx, rcx, r8, r9
+; function return value in rax, rdx
+syscall0:
+    mov rax, rdi
+    mov rbx, rsp
     syscall
+    pop rax
+    ret
 
+syscall1:
+    push rax
+    mov rax, rdi
+    mov rbx, rsp
+    syscall
+    pop rax
     ret

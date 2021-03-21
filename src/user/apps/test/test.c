@@ -1,5 +1,5 @@
 
-#include "syscall.h"
+#include "../../lib/abi/syscall.h"
 
 void _start() {
     syscall1(SYSCALL_CONSOLE_WRITE, "Beer\n");

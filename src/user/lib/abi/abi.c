@@ -14,15 +14,18 @@ uint64_t exit() {
 }
 
 uint64_t syscall_print_console(uint8_t* str) {
-    return syscall(1, str);
+    //  return syscall(1, str);
+    return 0;
 }
 
 uint64_t syscall_malloc(uint64_t size) {
-    return syscall(2, (void*)size);
+    //  return syscall(2, (void*)size);
+    return 0;
 }
 
 uint64_t syscall_free(void* mem) {
-    return syscall(3, mem);
+    //  return syscall(3, mem);
+    return 0;
 }
 
 uint64_t syscall_realloc(void* mem, uint64_t size) {
@@ -31,5 +34,6 @@ uint64_t syscall_realloc(void* mem, uint64_t size) {
 }
 
 uint64_t syscall_sleep(uint64_t time) {
-    return syscall(5, (void*)time);
+    //   return syscall(5, (void*)time);
+    return 0;
 }
