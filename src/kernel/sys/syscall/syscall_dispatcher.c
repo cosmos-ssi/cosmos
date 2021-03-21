@@ -8,7 +8,10 @@
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/syscall/syscall.h>
-#include <sys/syscall/syscalls.h>
+#include <sys/syscall/syscall_dispatcher.h>
+#include <sys/syscall/syscalls_console.h>
+#include <sys/syscall/syscalls_memory.h>
+#include <sys/syscall/syscalls_process.h>
 #include <types.h>
 
 syscall_handler syscall_table[SYSCALL_MAX];

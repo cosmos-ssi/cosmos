@@ -7,6 +7,7 @@
 
 #include <sys/asm/msr.h>
 #include <sys/syscall/syscall.h>
+#include <sys/syscall/syscall_dispatcher.h>
 #include <sys/x86-64/gdt/gdt.h>
 #include <sys/x86-64/syscall/syscall.h>
 #include <types.h>

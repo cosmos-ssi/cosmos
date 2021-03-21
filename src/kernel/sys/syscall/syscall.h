@@ -8,11 +8,21 @@
 #ifndef _SYSCALL_H
 #define _SYSCALL_H
 
-#include <sys/syscall/syscalls.h>
 #include <types.h>
 
-// syscall_dispatcher.c
-void syscall_add(uint64_t syscall_num, syscall_handler handler);
-void syscall_dispatcher_init();
+// syscall numbers are defined in userland.md, syscall.asm (userland) and syscalls.h (kernel)
+typedef enum syscalls {
+    SYSCALL_PROCESS_EXIT = 1101,
+    SYSCALL_PROCESS_SLEEP = 1100,
+    SYSCALL_CONSOLE_WRITE = 1401,
+    SYSCALL_MEMORY_MALLOC = 2400,
+    SYSCALL_MEMORY_FREE = 2401,
+    SYSCALL_MEMORY_REALLOC = 2402,
+    SYSCALL_MAX
+} syscalls;
+
+typedef uint64_t (*syscall_handler)(uint64_t syscall_num, void* args);
+
+uint64_t invalid_syscall(uint64_t syscall_id, void* args);
 
 #endif
