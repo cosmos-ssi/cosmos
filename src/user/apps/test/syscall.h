@@ -8,7 +8,7 @@
 #ifndef _SYSCALL_H
 #define _SYSCALL_H
 
-#include <lib/types.h>
+#include <../../lib/types.h>
 
 // syscall numbers are defined in userland.md, syscall.h (userland) and syscall.h (kernel)
 // process
