@@ -1,10 +1,9 @@
 
-#include "../../lib/abi/syscall.h"
+#include "../../lib/abi/abi.h"
 
 void _start() {
-    syscall1(SYSCALL_CONSOLE_WRITE, "Beer\n");
-    syscall1(SYSCALL_CONSOLE_WRITE, "Beer2\n");
+    syscall_console_write("beer\n");
+    syscall_console_write("beer2\n");
 
-    syscall0(SYSCALL_PROCESS_EXIT);
-    //    tge();
+    syscall_process_exit();
 }
