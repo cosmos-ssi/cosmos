@@ -5,13 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _SYSCALLS_MEMORY_H
-#define _SYSCALLS_MEMORY_H
+#ifndef _SYSCALLS_SERIAL_H
+#define _SYSCALLS_SERIAL_H
 
 #include <types.h>
 
-uint64_t syscall_memory_malloc(uint64_t syscall_id, void* args);
-uint64_t syscall_memory_free(uint64_t syscall_id, void* args);
-uint64_t syscall_memory_realloc(uint64_t syscall_id, void* args);
+uint64_t syscall_serial_readchar(uint64_t syscall_id, void* args);
+uint64_t syscall_serial_writechar(uint64_t syscall_id, void* args);
 
 #endif

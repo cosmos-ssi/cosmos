@@ -10,7 +10,6 @@
 
 #include <types.h>
 
-// console
 uint64_t syscall_console_write(uint64_t syscall_id, void* args);
 
 #endif

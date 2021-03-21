@@ -12,6 +12,7 @@
 #include <sys/syscall/syscalls_console.h>
 #include <sys/syscall/syscalls_memory.h>
 #include <sys/syscall/syscalls_process.h>
+#include <sys/syscall/syscalls_serial.h>
 #include <types.h>
 
 syscall_handler syscall_table[SYSCALL_MAX];
@@ -41,9 +42,15 @@ void syscall_add(uint64_t syscall_num, syscall_handler handler) {
 }
 
 void syscall_dispatcher_init() {
+    // process
     syscall_add(SYSCALL_PROCESS_EXIT, &syscall_process_exit);
     syscall_add(SYSCALL_PROCESS_SLEEP, &syscall_process_sleep);
+    // console
     syscall_add(SYSCALL_CONSOLE_WRITE, &syscall_console_write);
+    // serial
+    syscall_add(SYSCALL_SERIAL_READCHAR, &syscall_serial_readchar);
+    syscall_add(SYSCALL_SERIAL_WRITECHAR, &syscall_serial_writechar);
+    // memory
     syscall_add(SYSCALL_MEMORY_MALLOC, &syscall_memory_malloc);
     syscall_add(SYSCALL_MEMORY_FREE, &syscall_memory_free);
     syscall_add(SYSCALL_MEMORY_REALLOC, &syscall_memory_realloc);

@@ -12,9 +12,15 @@
 
 // syscall numbers are defined in userland.md, syscall.asm (userland) and syscalls.h (kernel)
 typedef enum syscalls {
+    // process
     SYSCALL_PROCESS_EXIT = 1101,
     SYSCALL_PROCESS_SLEEP = 1100,
+    // console
     SYSCALL_CONSOLE_WRITE = 1401,
+    // serial
+    SYSCALL_SERIAL_READCHAR = 2300,
+    SYSCALL_SERIAL_WRITECHAR = 2301,
+    // memory
     SYSCALL_MEMORY_MALLOC = 2400,
     SYSCALL_MEMORY_FREE = 2401,
     SYSCALL_MEMORY_REALLOC = 2402,
