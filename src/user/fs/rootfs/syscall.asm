@@ -11,6 +11,7 @@ syscall0:
     mov rax, rdi
     mov rbx, rsp
     syscall
+    pop rax
     ret
 
 syscall1:
