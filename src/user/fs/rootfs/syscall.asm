@@ -35,7 +35,7 @@ sycall:
     ret
 
 tge:
-    push 55
+    push rax
 
     mov rax, SYSCALL_CONSOLE_WRITE
     mov rbx, rsp
