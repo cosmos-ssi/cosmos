@@ -2,7 +2,6 @@
 
 global syscall0;
 global syscall1;
-global tge;
 
 ; https://wiki.osdev.org/Calling_Conventions
 ; function parameters are rdi, rsi, rdx, rcx, r8, r9
