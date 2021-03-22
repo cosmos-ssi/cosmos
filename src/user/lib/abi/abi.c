@@ -33,7 +33,7 @@ uint64_t syscall_memory_realloc(void* mem, uint64_t size) {
 }
 
 uint64_t syscall_serial_writechar(uint64_t c) {
-    return syscall1(SYSCALL_SERIAL_READCHAR, (void*)c);
+    return syscall1(SYSCALL_SERIAL_WRITECHAR, (void*)c);
 }
 uint64_t syscall_serial_readchar() {
     return syscall0(SYSCALL_SERIAL_READCHAR);
