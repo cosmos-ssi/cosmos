@@ -6,17 +6,23 @@ global syscall1;
 ; https://wiki.osdev.org/Calling_Conventions
 ; function parameters are rdi, rsi, rdx, rcx, r8, r9
 ; function return value in rax, rdx
+
 syscall0:
-    mov rax, rdi
-    mov rbx, rsp
+    push rbx        ; preserve rbx
+
+    mov rax, rdi    ; 1st param from userland function is in rdi: the syscall #
+    mov rbx, rsp    ; put the stack pointer into rbx
     syscall
-    pop rax
-    ret
+
+    pop rbx         ; restore rbx
+    ret             ; return value is in rax
 
 syscall1:
-    push rax
-    mov rax, rdi
-    mov rbx, rsp
+    push rbx        ; preserve rbx
+
+    mov rax, rdi    ; 1st param from userland function is in rdi: the syscall #
+    mov rbx, rsp    ; put the stack pointer into rbx
     syscall
-    pop rax
-    ret
+
+    pop rbx         ; restore rbx
+    ret             ; return value is in rax
