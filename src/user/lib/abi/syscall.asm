@@ -16,4 +16,3 @@ syscall:
 
     pop rbx         ; restore rbx
     ret             ; return value is in rax
-

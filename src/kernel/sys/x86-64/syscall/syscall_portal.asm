@@ -61,6 +61,7 @@ syscall_portal:
          
          popaq
 
-         cli                ; clear interrupts
+         ;cli                ; clear interrupts
 
          o64 sysret
+         
