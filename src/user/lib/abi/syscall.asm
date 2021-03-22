@@ -19,10 +19,12 @@ syscall0:
 
 syscall1:
     push rbx        ; preserve rbx
+    push rsi        ; push the second parameter of the user function.  This is the 1st parameter of the syscall
 
     mov rax, rdi    ; 1st param from userland function is in rdi: the syscall #
     mov rbx, rsp    ; put the stack pointer into rbx
     syscall
 
+    pop rsi         ; remove the parameter from the stack
     pop rbx         ; restore rbx
     ret             ; return value is in rax
