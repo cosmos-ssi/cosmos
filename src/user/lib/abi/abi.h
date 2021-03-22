@@ -21,6 +21,10 @@ uint64_t syscall_process_sleep(uint64_t time);
 // console
 uint64_t syscall_console_write(uint8_t* str);
 
+// serial (these apis need to be changed to pass a serial device handle, some day.....)
+uint64_t syscall_serial_writechar(uint64_t c);
+uint64_t syscall_serial_readchar();
+
 // memory
 uint64_t syscall_memory_malloc(uint64_t size);
 uint64_t syscall_memory_free(void* mem);

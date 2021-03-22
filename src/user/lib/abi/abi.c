@@ -31,3 +31,10 @@ uint64_t syscall_memory_free(void* mem) {
 uint64_t syscall_memory_realloc(void* mem, uint64_t size) {
     return syscall2(SYSCALL_MEMORY_REALLOC, (void*)mem, (void*)size);
 }
+
+uint64_t syscall_serial_writechar(uint64_t c) {
+    return syscall1(SYSCALL_SERIAL_READCHAR, (void*)c);
+}
+uint64_t syscall_serial_readchar() {
+    return syscall0(SYSCALL_SERIAL_READCHAR);
+}
