@@ -10,8 +10,8 @@
 
 #include <types.h>
 
-uint64_t syscall_memory_malloc(uint64_t syscall_id, void* args);
-uint64_t syscall_memory_free(uint64_t syscall_id, void* args);
-uint64_t syscall_memory_realloc(uint64_t syscall_id, void* args);
+uint64_t syscall_memory_malloc(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3);
+uint64_t syscall_memory_free(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3);
+uint64_t syscall_memory_realloc(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3);
 
 #endif

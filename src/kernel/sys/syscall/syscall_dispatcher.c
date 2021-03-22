@@ -17,7 +17,7 @@
 
 syscall_handler syscall_table[SYSCALL_MAX];
 
-uint64_t syscall_dispatcher(uint64_t syscall_num, void* args) {
+uint64_t syscall_dispatcher(uint64_t syscall_num, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
 
     /*
      * I'm not using ASSERT macro here--my understanding is that those macros will
@@ -25,13 +25,13 @@ uint64_t syscall_dispatcher(uint64_t syscall_num, void* args) {
      * data from userspace, we can't trust it.
      */
     if (syscall_num >= SYSCALL_MAX) {
-        return invalid_syscall(syscall_num, args);
+        return invalid_syscall(syscall_num, arg1, arg2, arg3);
     }
 
     if (0 != syscall_table[syscall_num]) {
-        return syscall_table[syscall_num](syscall_num, args);
+        return syscall_table[syscall_num](syscall_num, arg1, arg2, arg3);
     } else {
-        return invalid_syscall(syscall_num, args);
+        return invalid_syscall(syscall_num, arg1, arg2, arg3);
     }
 }
 

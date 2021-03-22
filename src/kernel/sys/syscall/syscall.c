@@ -7,7 +7,7 @@
 
 #include <sys/kprintf/kprintf.h>
 
-uint64_t invalid_syscall(uint64_t syscall_id, void* args) {
+uint64_t invalid_syscall(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
     kprintf("Invalid syscall %llu\n", syscall_id);
     return 0;
 }

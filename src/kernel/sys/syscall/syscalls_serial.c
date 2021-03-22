@@ -10,7 +10,7 @@
 #include <sys/obj/objectinterface/objectinterface_serial.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 
-uint64_t syscall_serial_readchar(uint64_t syscall_id, void* args) {
+uint64_t syscall_serial_readchar(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
     struct object* serial_obj = objectmgr_find_object_by_name("serial0");
     if (0 != serial_obj) {
         struct objectinterface_serial* api = (struct objectinterface_serial*)serial_obj->api;
@@ -18,12 +18,12 @@ uint64_t syscall_serial_readchar(uint64_t syscall_id, void* args) {
     }
     return 0;
 }
-uint64_t syscall_serial_writechar(uint64_t syscall_id, void* args) {
-    kprintf("args: %#llX\n", (uint64_t)args);
+uint64_t syscall_serial_writechar(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
+    kprintf("arg1: %#llX\n", arg1);
     struct object* serial_obj = objectmgr_find_object_by_name("serial0");
     if (0 != serial_obj) {
         struct objectinterface_serial* api = (struct objectinterface_serial*)serial_obj->api;
-        (*api->writechar)(serial_obj, (uint64_t)args);
+        (*api->writechar)(serial_obj, arg1);
     }
     return 0;
 }

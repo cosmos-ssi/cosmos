@@ -9,32 +9,32 @@
 #include <abi/syscall.h>
 
 uint64_t syscall_process_exit() {
-    return syscall0(SYSCALL_PROCESS_EXIT);
+    return syscall(SYSCALL_PROCESS_EXIT, 0, 0, 0);
 }
 
 uint64_t syscall_process_sleep(uint64_t time) {
-    return syscall1(SYSCALL_PROCESS_SLEEP, (void*)time);
+    return syscall(SYSCALL_PROCESS_SLEEP, time, 0, 0);
 }
 
 uint64_t syscall_console_write(uint8_t* str) {
-    return syscall1(SYSCALL_CONSOLE_WRITE, str);
+    return syscall(SYSCALL_CONSOLE_WRITE, (uint64_t)str, 0, 0);
 }
 
 uint64_t syscall_memory_malloc(uint64_t size) {
-    return syscall1(SYSCALL_MEMORY_MALLOC, (void*)size);
+    return syscall(SYSCALL_MEMORY_MALLOC, size, 0, 0);
 }
 
 uint64_t syscall_memory_free(void* mem) {
-    return syscall1(SYSCALL_MEMORY_FREE, (void*)mem);
+    return syscall(SYSCALL_MEMORY_FREE, (uint64_t)mem, 0, 0);
 }
 
 uint64_t syscall_memory_realloc(void* mem, uint64_t size) {
-    return syscall2(SYSCALL_MEMORY_REALLOC, (void*)mem, (void*)size);
+    return syscall(SYSCALL_MEMORY_REALLOC, (uint64_t)mem, size, 0);
 }
 
 uint64_t syscall_serial_writechar(uint64_t c) {
-    return syscall1(SYSCALL_SERIAL_WRITECHAR, (void*)c);
+    return syscall(SYSCALL_SERIAL_WRITECHAR, c, 0, 0);
 }
 uint64_t syscall_serial_readchar() {
-    return syscall0(SYSCALL_SERIAL_READCHAR);
+    return syscall(SYSCALL_SERIAL_READCHAR, 0, 0, 0);
 }

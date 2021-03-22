@@ -10,7 +10,7 @@
 #include <sys/obj/objectinterface/objectinterface_console.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 
-uint64_t syscall_console_write(uint64_t syscall_id, void* args) {
+uint64_t syscall_console_write(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
     struct object* console_obj = objectmgr_find_object_by_name("con0");
     if (0 != console_obj) {
         struct objectinterface_console* api = (struct objectinterface_console*)console_obj->api;
