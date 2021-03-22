@@ -13,7 +13,7 @@ uint64_t syscall_process_exit() {
 }
 
 uint64_t syscall_process_sleep(uint64_t time) {
-    return 0;
+    return syscall1(SYSCALL_PROCESS_SLEEP, (void*)time);
 }
 
 uint64_t syscall_console_write(uint8_t* str) {
@@ -21,13 +21,13 @@ uint64_t syscall_console_write(uint8_t* str) {
 }
 
 uint64_t syscall_memory_malloc(uint64_t size) {
-    return 0;
+    return syscall1(SYSCALL_MEMORY_MALLOC, (void*)size);
 }
 
 uint64_t syscall_memory_free(void* mem) {
-    return 0;
+    return syscall1(SYSCALL_MEMORY_FREE, (void*)mem);
 }
 
 uint64_t syscall_memory_realloc(void* mem, uint64_t size) {
-    return 0;
+    return syscall2(SYSCALL_MEMORY_REALLOC, (void*)mem, (void*)size);
 }

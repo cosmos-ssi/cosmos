@@ -37,5 +37,6 @@
 
 uint64_t syscall0(uint64_t syscall);
 uint64_t syscall1(uint64_t syscall, void* param);
+uint64_t syscall2(uint64_t syscall, void* param1, void* param2);
 
 #endif
