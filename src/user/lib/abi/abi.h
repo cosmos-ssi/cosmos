@@ -15,7 +15,7 @@
 #include <types.h>
 
 // process
-uint64_t syscall_process_exit();
+uint64_t syscall_process_exit(uint64_t ret);
 uint64_t syscall_process_sleep(uint64_t time);
 
 // console

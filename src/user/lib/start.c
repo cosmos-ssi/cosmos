@@ -13,9 +13,7 @@
 extern int main(int argc, char* argv[]);
 
 // this is the entry point
-/*
-*
-*/
 void _start() {
-    main(0, 0);
+    uint64_t ret = main(0, 0);
+    syscall_process_exit(ret);
 }

@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     //  writestring("beer\n");
 
     //  syscall_serial_writechar('X');
-    syscall_process_exit();
+    syscall_process_exit(0);
 
     return 0;
 }

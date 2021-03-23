@@ -8,8 +8,8 @@
 #include <abi/abi.h>
 #include <abi/syscall.h>
 
-uint64_t syscall_process_exit() {
-    return syscall(SYSCALL_PROCESS_EXIT, 0, 0, 0);
+uint64_t syscall_process_exit(uint64_t ret) {
+    return syscall(SYSCALL_PROCESS_EXIT, ret, 0, 0);
 }
 
 uint64_t syscall_process_sleep(uint64_t time) {
