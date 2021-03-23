@@ -6,11 +6,11 @@ SRC_DIR=.
 
 all: $(APPNAME).bin
 
-$(APPNAME).o: $(APPNAME).c
-	$(CC) $(USER_CFLAGS) $(EXTRA_CFLAGS) -c -o $(APPNAME).o $(APPNAME).c
+$(APPNAME).o: $(APPNAME).cpp
+	$(CC) $(USER_CFLAGS) $(EXTRA_CFLAGS) -c -o $(APPNAME).o $(APPNAME).cpp
 
 $(APPNAME).elf: $(APPNAME).o
-	$(LD) -m elf_x86_64 -o $(APPNAME).elf $(APPNAME).o ../../lib/abi/syscall.o ../../lib/abi/abi.o
+	$(LD) -m elf_x86_64 -o $(APPNAME).elf $(APPNAME).o $(COSMOS_ABI_ARCHIVE)
 	
 $(APPNAME).bin: $(APPNAME).elf
 	$(OBJCOPY) -O binary $(APPNAME).elf $(APPNAME).bin  

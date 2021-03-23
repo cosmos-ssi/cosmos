@@ -1,7 +1,9 @@
 
+extern "C" {
 #include <abi/abi.h>
+}
 
-void _start() {
+int main(int argc, char* argv[]) {
     syscall_serial_writechar('A');
     syscall_serial_writechar('B');
     syscall_serial_writechar('C');
@@ -12,6 +14,7 @@ void _start() {
 
     //  syscall_serial_writechar('X');
     syscall_process_exit();
+    return 0;
 }
 
 void writestring(uint8_t* str) {
