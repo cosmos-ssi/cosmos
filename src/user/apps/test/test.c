@@ -1,5 +1,5 @@
 
-#include "../../lib/abi/abi.h"
+#include <abi/abi.h>
 
 void _start() {
     syscall_serial_writechar('A');

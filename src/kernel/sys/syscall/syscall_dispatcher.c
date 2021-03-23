@@ -11,6 +11,7 @@
 #include <sys/syscall/syscall_dispatcher.h>
 #include <sys/syscall/syscalls_console.h>
 #include <sys/syscall/syscalls_memory.h>
+#include <sys/syscall/syscalls_objectmgr.h>
 #include <sys/syscall/syscalls_process.h>
 #include <sys/syscall/syscalls_serial.h>
 #include <types.h>
@@ -54,4 +55,7 @@ void syscall_dispatcher_init() {
     syscall_add(SYSCALL_MEMORY_MALLOC, &syscall_memory_malloc);
     syscall_add(SYSCALL_MEMORY_FREE, &syscall_memory_free);
     syscall_add(SYSCALL_MEMORY_REALLOC, &syscall_memory_realloc);
+    // objectmgr
+    syscall_add(SYSCALL_OBJMGR_GET_DEVICE_BY_NAME, &syscall_objectmgr_get_device_by_name);
+    syscall_add(SYSCALL_OBJMGR_GET_DEVICE_BY_HANDLE, &syscall_objectmgr_get_device_by_handle);
 }

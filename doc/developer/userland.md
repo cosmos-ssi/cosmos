@@ -78,4 +78,8 @@ User		 | set_pwd		   | 2502		|
 User		 | validate_pwd    | 2503		| 
 Group        | get_name        | 2600       |
 HostID       | get_id          | 2700       | deviceapi_hostid
+ObjectMgr    | find_name       | 2800       |
+ObjectMgr    | find_handle     | 2801       |
+
+
 

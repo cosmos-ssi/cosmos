@@ -5,17 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <abi/abi.h>
-#include <object/object.hpp>
+#ifndef _SYSCALLS_OBJMGR_H
+#define _SYSCALLS_OBJMGR_H
 
-Object* Object::find(String name) {
-    return 0;
-}
+#include <types.h>
 
-Object* Object::find(const char* name) {
-    return 0;
-}
+uint64_t syscall_objectmgr_get_device_by_name(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3);
+uint64_t syscall_objectmgr_get_device_by_handle(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3);
 
-Object* find(uint64_t handle) {
-    return 0;
-}
+#endif

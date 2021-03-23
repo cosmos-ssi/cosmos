@@ -5,17 +5,14 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <abi/abi.h>
-#include <object/object.hpp>
+#include <sys/kprintf/kprintf.h>
 
-Object* Object::find(String name) {
+uint64_t syscall_objectmgr_get_device_by_name(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
+    kprintf("syscall %llu\n not implemented", syscall_id);
     return 0;
 }
 
-Object* Object::find(const char* name) {
-    return 0;
-}
-
-Object* find(uint64_t handle) {
+uint64_t syscall_objectmgr_get_device_by_handle(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
+    kprintf("syscall %llu\n not implemented", syscall_id);
     return 0;
 }

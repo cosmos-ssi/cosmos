@@ -38,3 +38,11 @@ uint64_t syscall_serial_writechar(uint64_t c) {
 uint64_t syscall_serial_readchar() {
     return syscall(SYSCALL_SERIAL_READCHAR, 0, 0, 0);
 }
+
+uint64_t syscall_objectmgr_get_device_by_name(uint8_t* name) {
+    return syscall(SYSCALL_OBJMGR_GET_DEVICE_BY_NAME, (uint64_t)name, 0, 0);
+}
+
+uint64_t syscall_objectmgr_get_device_by_handle(uint64_t handle) {
+    return syscall(SYSCALL_OBJMGR_GET_DEVICE_BY_HANDLE, handle, 0, 0);
+}

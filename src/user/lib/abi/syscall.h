@@ -34,6 +34,9 @@
 #define SYSCALL_MEMORY_REALLOC 2402
 // hostid
 #define SYSCALL_HOSTID_GETID 2700
+// object mgr
+#define SYSCALL_OBJMGR_GET_DEVICE_BY_NAME 2800
+#define SYSCALL_OBJMGR_GET_DEVICE_BY_HANDLE 2801
 
 uint64_t syscall(uint64_t syscall, uint64_t param1, uint64_t param2, uint64_t param3);
 

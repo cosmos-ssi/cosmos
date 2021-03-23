@@ -24,6 +24,10 @@ typedef enum syscalls {
     SYSCALL_MEMORY_MALLOC = 2400,
     SYSCALL_MEMORY_FREE = 2401,
     SYSCALL_MEMORY_REALLOC = 2402,
+    // object mgr
+    SYSCALL_OBJMGR_GET_DEVICE_BY_NAME = 2800,
+    SYSCALL_OBJMGR_GET_DEVICE_BY_HANDLE = 2801,
+    // max
     SYSCALL_MAX
 } syscalls;
 

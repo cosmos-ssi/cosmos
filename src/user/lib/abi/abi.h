@@ -29,4 +29,9 @@ uint64_t syscall_serial_readchar();
 uint64_t syscall_memory_malloc(uint64_t size);
 uint64_t syscall_memory_free(void* mem);
 uint64_t syscall_memory_realloc(void* mem, uint64_t size);
+
+// object manager
+uint64_t syscall_objectmgr_get_device_by_name(uint8_t* name);
+uint64_t syscall_objectmgr_get_device_by_handle(uint64_t handle);
+
 #endif
