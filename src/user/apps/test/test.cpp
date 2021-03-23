@@ -14,16 +14,6 @@ int main(int argc, char* argv[]) {
 
     //  syscall_serial_writechar('X');
     syscall_process_exit();
-    return 0;
-}
 
-void writestring(uint8_t* str) {
-    syscall_serial_writechar('L');
-    uint16_t i = 0;
-    uint8_t c = str[i];
-    while (c != 0) {
-        syscall_serial_writechar(c);
-        i += 1;
-        c = str[i];
-    }
+    return 0;
 }

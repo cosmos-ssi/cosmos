@@ -11,6 +11,6 @@
 #define _START_H
 
 // the linker looks for this symbol....
-int _start();
+void _start();
 
 #endif

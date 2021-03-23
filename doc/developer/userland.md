@@ -30,6 +30,10 @@ libcosmos.a also includes wrapper classes for device types, including
 * block
 * console
 
+## How userland starts
+
+Userland start code is in /src/user/lib/start.c.  The symbol _start is the entry point for userland programs.  _start calls the userland main(argc, argv) and also calls `syscall_process_exit`.
+
 ## Syscalls
 
 The userland API is object-oriented.  As a result, there is a mapping of syscalls to C++ method.  Each C++ userland class is assigned a block of 100 64-bit syscall numbers.

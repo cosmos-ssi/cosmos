@@ -6,6 +6,7 @@
 
 // https://wiki.osdev.org/Creating_a_C_Library
 
+#include <abi/abi.h>
 #include <start.h>
 
 // "main" exported by the userland application
@@ -15,8 +16,6 @@ extern int main(int argc, char* argv[]);
 /*
 *
 */
-int _start() {
-    int ret = main(0, 0);
-    // call exit() syscall here
-    return ret;
+void _start() {
+    main(0, 0);
 }
