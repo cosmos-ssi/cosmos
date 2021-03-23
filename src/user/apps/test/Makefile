@@ -9,9 +9,6 @@ all: test.bin
 test.o: test.c
 	$(CC) $(USER_CFLAGS) $(EXTRA_CFLAGS) -c -o test.o test.c
 
-#syscall.o: syscall.asm
-#	$(NASM) $(NASMARGS) -o syscall.o syscall.asm
-
 test.elf: test.o
 	$(LD) -m elf_x86_64 -o test.elf test.o ../../lib/abi/syscall.o ../../lib/abi/abi.o
 	
