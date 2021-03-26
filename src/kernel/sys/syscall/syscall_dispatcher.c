@@ -10,10 +10,12 @@
 #include <sys/syscall/syscall.h>
 #include <sys/syscall/syscall_dispatcher.h>
 #include <sys/syscall/syscalls_console.h>
+#include <sys/syscall/syscalls_keyboard.h>
 #include <sys/syscall/syscalls_memory.h>
 #include <sys/syscall/syscalls_objectmgr.h>
 #include <sys/syscall/syscalls_process.h>
 #include <sys/syscall/syscalls_serial.h>
+
 #include <types.h>
 
 syscall_handler syscall_table[SYSCALL_MAX];
@@ -58,4 +60,6 @@ void syscall_dispatcher_init() {
     // objectmgr
     syscall_add(SYSCALL_OBJMGR_GET_DEVICE_BY_NAME, &syscall_objectmgr_get_device_by_name);
     syscall_add(SYSCALL_OBJMGR_GET_DEVICE_BY_HANDLE, &syscall_objectmgr_get_device_by_handle);
+    // keyboard
+    syscall_add(SYSCALL_KEYBOARD_READ, &syscall_keyboard_read);
 }

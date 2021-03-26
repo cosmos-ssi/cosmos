@@ -17,6 +17,8 @@ typedef enum syscalls {
     SYSCALL_PROCESS_SLEEP = 1100,
     // console
     SYSCALL_CONSOLE_WRITE = 1401,
+    // keyboard
+    SYSCALL_KEYBOARD_READ = 1600,
     // serial
     SYSCALL_SERIAL_READCHAR = 2300,
     SYSCALL_SERIAL_WRITECHAR = 2301,

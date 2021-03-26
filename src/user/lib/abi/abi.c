@@ -16,8 +16,8 @@ uint64_t syscall_process_sleep(uint64_t time) {
     return syscall(SYSCALL_PROCESS_SLEEP, time, 0, 0);
 }
 
-uint64_t syscall_console_write(uint8_t* str) {
-    return syscall(SYSCALL_CONSOLE_WRITE, (uint64_t)str, 0, 0);
+uint64_t syscall_console_write(uint64_t handle, uint8_t* str) {
+    return syscall(SYSCALL_CONSOLE_WRITE, handle, (uint64_t)str, 0);
 }
 
 uint64_t syscall_memory_malloc(uint64_t size) {
@@ -45,4 +45,8 @@ uint64_t syscall_objectmgr_get_device_by_name(const char* name) {
 
 uint64_t syscall_objectmgr_get_device_by_handle(uint64_t handle) {
     return syscall(SYSCALL_OBJMGR_GET_DEVICE_BY_HANDLE, handle, 0, 0);
+}
+
+uint64_t syscall_keyboard_read(uint64_t handle) {
+    return syscall(SYSCALL_KEYBOARD_READ, handle, 0, 0);
 }
