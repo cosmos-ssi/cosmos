@@ -22,8 +22,8 @@ uint64_t syscall_process_sleep(uint64_t time);
 uint64_t syscall_console_write(uint8_t* str);
 
 // serial (these apis need to be changed to pass a serial device handle, some day.....)
-uint64_t syscall_serial_writechar(uint64_t c);
-uint64_t syscall_serial_readchar();
+uint64_t syscall_serial_writechar(uint64_t object, uint64_t c);
+uint64_t syscall_serial_readchar(uint64_t object);
 
 // memory
 uint64_t syscall_memory_malloc(uint64_t size);
@@ -31,7 +31,7 @@ uint64_t syscall_memory_free(void* mem);
 uint64_t syscall_memory_realloc(void* mem, uint64_t size);
 
 // object manager
-uint64_t syscall_objectmgr_get_device_by_name(uint8_t* name);
+uint64_t syscall_objectmgr_get_device_by_name(const char* name);
 uint64_t syscall_objectmgr_get_device_by_handle(uint64_t handle);
 
 #endif

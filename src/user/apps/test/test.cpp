@@ -4,9 +4,13 @@ extern "C" {
 }
 
 int main(int argc, char* argv[]) {
-    syscall_serial_writechar('A');
-    syscall_serial_writechar('B');
-    syscall_serial_writechar('C');
+    uint64_t serial0_device_handle = syscall_objectmgr_get_device_by_name("serial0");
+
+    syscall_serial_writechar(serial0_device_handle, 'A');
+    syscall_serial_writechar(serial0_device_handle, 'B');
+    syscall_serial_writechar(serial0_device_handle, 'C');
+
+    //    syscall_serial_writechar(serial0_device_handle);
 
     //    syscall_console_write("beer2\n");
 

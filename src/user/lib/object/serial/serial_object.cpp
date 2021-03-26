@@ -16,7 +16,7 @@ uint8_t SerialObject::readChar() {
     return 0;
 }
 void SerialObject::writeChar(uint8_t c) {
-    syscall_serial_writechar(c);
+    syscall_serial_writechar(this->handle, c);
 }
 
 void SerialObject::writestring(const uint8_t* str) {

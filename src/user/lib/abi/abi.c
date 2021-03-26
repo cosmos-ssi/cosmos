@@ -32,14 +32,14 @@ uint64_t syscall_memory_realloc(void* mem, uint64_t size) {
     return syscall(SYSCALL_MEMORY_REALLOC, (uint64_t)mem, size, 0);
 }
 
-uint64_t syscall_serial_writechar(uint64_t c) {
-    return syscall(SYSCALL_SERIAL_WRITECHAR, c, 0, 0);
+uint64_t syscall_serial_writechar(uint64_t object, uint64_t c) {
+    return syscall(SYSCALL_SERIAL_WRITECHAR, object, c, 0);
 }
-uint64_t syscall_serial_readchar() {
-    return syscall(SYSCALL_SERIAL_READCHAR, 0, 0, 0);
+uint64_t syscall_serial_readchar(uint64_t object) {
+    return syscall(SYSCALL_SERIAL_READCHAR, object, 0, 0);
 }
 
-uint64_t syscall_objectmgr_get_device_by_name(uint8_t* name) {
+uint64_t syscall_objectmgr_get_device_by_name(const char* name) {
     return syscall(SYSCALL_OBJMGR_GET_DEVICE_BY_NAME, (uint64_t)name, 0, 0);
 }
 

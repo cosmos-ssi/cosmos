@@ -6,9 +6,16 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/object/object.h>
+#include <sys/obj/objectmgr/objectmgr.h>
+
+#define SYSCALL_SERIAL_DEVICE "serial0"
 
 uint64_t syscall_objectmgr_get_device_by_name(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
-    kprintf("syscall %llu\n not implemented", syscall_id);
+    struct object* obj = objectmgr_find_object_by_name(SYSCALL_SERIAL_DEVICE);
+    if (0 != obj) {
+        return obj->handle;
+    }
     return 0;
 }
 
