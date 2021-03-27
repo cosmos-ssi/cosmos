@@ -24,7 +24,6 @@ uint64_t syscall_bga_set_resolution_function(uint64_t syscall_id, uint64_t arg1,
     struct object* bga_obj = objectmgr_find_object_by_handle(arg1);
     if (0 != bga_obj) {
         struct objectinterface_resolution* res = (struct objectinterface_resolution*)arg2;
-
         struct objectinterface_bga* api = (struct objectinterface_bga*)bga_obj->api;
         (*api->set_resolution)(bga_obj, res);
     }
