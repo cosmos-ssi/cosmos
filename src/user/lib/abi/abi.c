@@ -51,11 +51,11 @@ uint64_t syscall_keyboard_read(uint64_t object) {
     return syscall(SYSCALL_KEYBOARD_READ, object, 0, 0);
 }
 
-uint64_t syscall_bga_get_resolution_function(uint64_t object, struct objectinterface_resolution* res) {
+uint64_t syscall_bga_get_resolution_function(uint64_t object, struct syscall_objectinterface_resolution* res) {
     return syscall(SYSCALL_BGA_GETRESOLUTION, object, (uint64_t)res, 0);
 }
 
-uint64_t syscall_bga_set_resolution_function(uint64_t object, struct objectinterface_resolution* res) {
+uint64_t syscall_bga_set_resolution_function(uint64_t object, struct syscall_objectinterface_resolution* res) {
     return syscall(SYSCALL_BGA_SETRESOLUTION, object, (uint64_t)res, 0);
 }
 
