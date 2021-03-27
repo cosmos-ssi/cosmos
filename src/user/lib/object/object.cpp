@@ -5,6 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#include <abi/abi.h>
 #include <object/object.hpp>
 
 Object* Object::find(String name) {

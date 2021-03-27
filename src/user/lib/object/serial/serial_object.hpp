@@ -16,6 +16,7 @@ class SerialObject : public Object {
     void writeln(const char* str);
     uint8_t readChar();
     void writeChar(uint8_t c);
+    void writestring(const uint8_t* str);
 };
 
 #endif

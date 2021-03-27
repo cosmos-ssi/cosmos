@@ -1,14 +1,15 @@
 include ../../mk/flags.mk
 include ../../mk/build.mk
 
-all: term/term init/init
-
-term/term:
+all:
 	cd term && make all
-
-init/init:
 	cd init && make all
-	
+	cd test && make all
+	cd ls && make all
+
 clean:
 	cd term && make clean
 	cd init && make clean
+	cd test && make clean
+	cd ls && make clean
+

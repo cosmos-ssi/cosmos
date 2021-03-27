@@ -1,13 +1,18 @@
+[BITS 64]
 
-BITS 64
-DEFAULT REL
+global syscall;
 
-global syscall
+; https://wiki.osdev.org/Calling_Conventions
+; function parameters are rdi, rsi, rdx, rcx, r8, r9
+; function return value in rax, rdx
 
 syscall:
-    
-    mov rax, rax   ; the syscall #
-    mov rbx, rsp   ; stack pointer
+    push rbx        ; preserve rbx   
+
+    mov rax, rdi    ; 1st param from userland function is in rdi: the syscall #
+    mov rbx, rsi    ; put the 2nd param from userland function into rbx
+                    ; rdx and rcx already contain userland function parameters 3, and 4
     syscall
 
-    ret
+    pop rbx         ; restore rbx
+    ret             ; return value is in rax

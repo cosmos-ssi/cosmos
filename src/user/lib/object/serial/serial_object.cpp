@@ -5,6 +5,9 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+extern "C" {
+#include <abi/abi.h>
+}
 #include <object/serial/serial_object.hpp>
 
 void SerialObject::writeln(const char* str) {}
@@ -12,4 +15,16 @@ void SerialObject::writeln(const char* str) {}
 uint8_t SerialObject::readChar() {
     return 0;
 }
-void SerialObject::writeChar(uint8_t c) {}
+void SerialObject::writeChar(uint8_t c) {
+    syscall_serial_writechar(this->handle, c);
+}
+
+void SerialObject::writestring(const uint8_t* str) {
+    uint16_t i = 0;
+    uint8_t c = str[i];
+    while (c != 0) {
+        writeChar(c);
+        i += 1;
+        c = str[i];
+    }
+}

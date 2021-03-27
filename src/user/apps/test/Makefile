@@ -1,3 +1,3 @@
-APPNAME=term
+APPNAME=test
 
 include ../app.mk

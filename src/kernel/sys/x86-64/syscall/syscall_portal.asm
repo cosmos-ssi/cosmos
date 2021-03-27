@@ -42,25 +42,27 @@ global syscall_portal;
 extern syscall_dispatcher;
 
 syscall_portal:
-         pushaq
 
-         mov rdi, rax
-         mov rsi, rbx
+    cli
+    pushaq
 
-         mov rax, rsp
-         mov rsp, 0
-         push rax
+    mov rdi, rax       ; move syscall number into 1st parameter
+    mov rsi, rbx       ; move 1st parameter of user function into second parameter of kernel handler
+                    ; rdx and rcx contain user function parameters 3 and 4
+    mov rax, rsp       ; move stack pointer into rax
+    mov rsp, 0         ; stack pointer zero
+    push rax           ; save stack pointer
 
-         call syscall_dispatcher
+    call syscall_dispatcher
+    
+    ;no need to move return value--SysV ABI will place return from
+    ;syscall_dispatcher into rax, which is also where it goes in
+    ;CosmOS syscall ABI
+
+    pop rsp            ; get back the stack pointer
+    
+    popaq
+
+    sti
+    o64 sysret
          
-         ;no need to move return value--SysV ABI will place return from
-         ;syscall_dispatcher into rax, which is also where it goes in
-         ;CosmOS syscall ABI
-
-         cli
-
-         pop rsp
-         
-         popaq
-
-         o64 sysret
