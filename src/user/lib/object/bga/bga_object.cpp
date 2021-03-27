@@ -6,8 +6,11 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+extern "C" {
 #include <abi/abi.h>
 #include <assert.h>
+}
+
 #include <object/bga/bga_object.hpp>
 
 void BGAObject::getResolution(struct syscall_objectinterface_resolution* resolution) {
