@@ -9,6 +9,7 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/syscall/syscall.h>
 #include <sys/syscall/syscall_dispatcher.h>
+#include <sys/syscall/syscalls_bga.h>
 #include <sys/syscall/syscalls_console.h>
 #include <sys/syscall/syscalls_keyboard.h>
 #include <sys/syscall/syscalls_memory.h>
@@ -48,6 +49,11 @@ void syscall_dispatcher_init() {
     // process
     syscall_add(SYSCALL_PROCESS_EXIT, &syscall_process_exit);
     syscall_add(SYSCALL_PROCESS_SLEEP, &syscall_process_sleep);
+    // bga
+    syscall_add(SYSCALL_BGA_GET_RESOLUTION, &syscall_bga_get_resolution_function);
+    syscall_add(SYSCALL_BGA_SET_RESOLUTION, &syscall_bga_set_resolution_function);
+    syscall_add(SYSCALL_BGA_GET_BUFFERSIZE, &syscall_bga_get_buffersize_function);
+    syscall_add(SYSCALL_BGA_BLT, &syscall_bga_blt_function);
     // console
     syscall_add(SYSCALL_CONSOLE_WRITE, &syscall_console_write);
     // serial

@@ -35,6 +35,18 @@ uint64_t syscall_objectmgr_get_device_by_name(const char* name);
 uint64_t syscall_objectmgr_get_device_by_handle(uint64_t handle);
 
 // keyboard
-uint64_t syscall_keyboard_read(uint64_t handle);
+uint64_t syscall_keyboard_read(uint64_t object);
+
+struct objectinterface_resolution {
+    uint32_t width;
+    uint32_t height;
+    uint32_t color_depth;
+};
+
+// bga
+uint64_t syscall_bga_get_resolution_function(uint64_t object, struct objectinterface_resolution* res);
+uint64_t syscall_bga_set_resolution_function(uint64_t object, struct objectinterface_resolution* res);
+uint64_t syscall_bga_get_buffersize_function(uint64_t object);
+uint64_t syscall_bga_blt_function(uint64_t object, uint8_t* buffer, uint64_t size);
 
 #endif

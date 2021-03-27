@@ -15,6 +15,11 @@ typedef enum syscalls {
     // process
     SYSCALL_PROCESS_EXIT = 1101,
     SYSCALL_PROCESS_SLEEP = 1100,
+    // bga
+    SYSCALL_BGA_GET_RESOLUTION = 1200,
+    SYSCALL_BGA_SET_RESOLUTION = 1201,
+    SYSCALL_BGA_GET_BUFFERSIZE = 1202,
+    SYSCALL_BGA_BLT = 1203,
     // console
     SYSCALL_CONSOLE_WRITE = 1401,
     // keyboard
