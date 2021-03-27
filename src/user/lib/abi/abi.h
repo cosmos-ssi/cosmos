@@ -44,9 +44,9 @@ struct syscall_objectinterface_resolution {
 };
 
 // bga
-uint64_t syscall_bga_get_resolution_function(uint64_t object, struct syscall_objectinterface_resolution* res);
-uint64_t syscall_bga_set_resolution_function(uint64_t object, struct syscall_objectinterface_resolution* res);
-uint64_t syscall_bga_get_buffersize_function(uint64_t object);
-uint64_t syscall_bga_blt_function(uint64_t object, uint8_t* buffer, uint64_t size);
+uint64_t syscall_bga_get_resolution(uint64_t object, struct syscall_objectinterface_resolution* res);
+uint64_t syscall_bga_set_resolution(uint64_t object, struct syscall_objectinterface_resolution* res);
+uint64_t syscall_bga_get_buffersize(uint64_t object);
+uint64_t syscall_bga_blt(uint64_t object, uint8_t* buffer, uint64_t size);
 
 #endif
