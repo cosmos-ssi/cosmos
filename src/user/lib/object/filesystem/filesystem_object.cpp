@@ -31,3 +31,7 @@ void FilesystemObject::listDirectory(struct fs_node* node, struct filesystem_dir
 uint64_t FilesystemObject::size(struct fs_node* node) {
     return 0;
 }
+
+uint8_t* FilesystemObject::read_file(uint8_t* device_name, uint8_t* file_name, uint32_t* len) {
+    return 0;
+}

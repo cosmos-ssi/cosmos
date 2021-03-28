@@ -73,6 +73,11 @@ class FilesystemObject : public Object {
     * get file size 
     */
     uint64_t size(struct fs_node* node);
+
+    /*
+    * read a file. this mallocs new memory and returns it.  The file len is populated into len
+    */
+    static uint8_t* read_file(uint8_t* device_name, uint8_t* file_name, uint32_t* len);
 };
 
 #endif

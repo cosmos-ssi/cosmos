@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <assert.h>
+#include <assert.hpp>
 #include <malloc.h>
 #include <string.hpp>
 
@@ -162,7 +162,7 @@ uint8_t* String::substr(const uint8_t* str1, uint32_t start, uint32_t end, uint8
     ASSERT_NOT_NULL(str1);
     ASSERT_NOT_NULL(str2);
     ASSERT_NOT_NULL(size);
-    //   uint32_t str1_len = strlen(str1);
+    uint32_t str1_len = strlen(str1);
     uint32_t str2_len = (end - start);
     ASSERT(start < str1_len);
     ASSERT(end <= str1_len);

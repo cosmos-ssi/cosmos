@@ -7,7 +7,7 @@
 
 extern "C" {
 #include <abi/abi.h>
-#include <assert.h>
+#include <assert.hpp>
 }
 #include <object/keyboard/keyboard_object.hpp>
 

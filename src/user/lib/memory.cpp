@@ -6,7 +6,7 @@
 // ****************************************************************
 
 #include <abi/abi.h>
-#include <assert.h>
+#include <assert.hpp>
 #include <memory.hpp>
 
 void Memory::free(void* ptr) {

@@ -20,14 +20,14 @@ class String {
     const uint64_t getSize();
     const uint8_t* getData();
 
-    uint64_t strlen(const uint8_t* s);
-    uint8_t* strtrim(const uint8_t* s);
-    uint8_t* strncpy(uint8_t* dest, const uint8_t* src, uint64_t len);
-    uint8_t* strncat(uint8_t* dest, const uint8_t* src, uint64_t len);
-    uint8_t strcmp(const uint8_t* str1, const uint8_t* str2);
-    uint8_t strncmp(const uint8_t* str1, const uint8_t* str2, uint64_t len);
-    uint32_t strstr(const uint8_t* str1, uint32_t start, const uint8_t* str2);
-    uint8_t* substr(const uint8_t* str1, uint32_t start, uint32_t end, uint8_t* str2, uint32_t size);
+    static uint64_t strlen(const uint8_t* s);
+    static uint8_t* strtrim(const uint8_t* s);
+    static uint8_t* strncpy(uint8_t* dest, const uint8_t* src, uint64_t len);
+    static uint8_t* strncat(uint8_t* dest, const uint8_t* src, uint64_t len);
+    static uint8_t strcmp(const uint8_t* str1, const uint8_t* str2);
+    static uint8_t strncmp(const uint8_t* str1, const uint8_t* str2, uint64_t len);
+    static uint32_t strstr(const uint8_t* str1, uint32_t start, const uint8_t* str2);
+    static uint8_t* substr(const uint8_t* str1, uint32_t start, uint32_t end, uint8_t* str2, uint32_t size);
 
   private:
     uint64_t sz;
