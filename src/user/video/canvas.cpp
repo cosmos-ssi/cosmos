@@ -15,7 +15,7 @@ extern "C" {
 #include <rgb.hpp>
 #include <tga.hpp>
 
-canvas::canvas(BGAObject* bga) {
+Canvas::Canvas(BGAObject* bga) {
     ASSERT_NOT_NULL(bga);
     this->bga = bga;
     /*
@@ -28,12 +28,12 @@ canvas::canvas(BGAObject* bga) {
     this->bytes_per_pixel = this->resolution.color_depth / 8;
 }
 
-canvas::~canvas() {
+Canvas::~Canvas() {
     ASSERT_NOT_NULL(this->buffer);
     free(this->buffer);
 }
 
-uint32_t canvas::pixel_offset(uint32_t x, uint32_t y) {
+uint32_t Canvas::pixel_offset(uint32_t x, uint32_t y) {
     ASSERT_NOT_NULL(this->resolution.width);
     ASSERT_NOT_NULL(this->resolution.height);
     ASSERT(x <= this->resolution.width);
@@ -42,17 +42,17 @@ uint32_t canvas::pixel_offset(uint32_t x, uint32_t y) {
     return this->bytes_per_pixel * ((this->resolution.width * y) + x);
 }
 
-void canvas::dump() {
+void Canvas::dump() {
 
     //   kprintf("width %llu, height %llu depth %llu size %llu\n", this->resolution.width, this->resolution.height,
     //         this->resolution.color_depth, this->buffer_size);
 }
 
-void canvas::blt() {
+void Canvas::blt() {
     this->bga->blt(this->buffer, this->buffer_size);
 }
 
-void canvas::clear(uint32_t rgb) {
+void Canvas::clear(uint32_t rgb) {
     /*
     * components
     */
@@ -70,7 +70,7 @@ void canvas::clear(uint32_t rgb) {
     delete components;
 }
 
-void canvas::draw_pixel(uint32_t x, uint32_t y, uint32_t rgb) {
+void Canvas::draw_pixel(uint32_t x, uint32_t y, uint32_t rgb) {
     //   kprintf("x %#llX, y%#llX, w %#llX, h %#llX\n", x, y, this->resolution.width, this->resolution.height);
 
     ASSERT(x <= this->resolution.width);
@@ -89,7 +89,7 @@ void canvas::draw_pixel(uint32_t x, uint32_t y, uint32_t rgb) {
     delete components;
 }
 
-uint32_t canvas::abs_diff(uint32_t x1, uint32_t x2) {
+uint32_t Canvas::abs_diff(uint32_t x1, uint32_t x2) {
     if (x2 > x1) {
         return x2 - x1;
     }
@@ -99,7 +99,7 @@ uint32_t canvas::abs_diff(uint32_t x1, uint32_t x2) {
 /*
 * https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 */
-void canvas::draw_sloped_line(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
+void Canvas::draw_sloped_line(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
     ASSERT(x0 < this->resolution.width);
     ASSERT(y0 < this->resolution.height);
     ASSERT(x1 < this->resolution.width);
@@ -133,7 +133,7 @@ void canvas::draw_sloped_line(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1
     }
 }
 
-void canvas::draw_line(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
+void Canvas::draw_line(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
     ASSERT(x0 < this->resolution.width);
     ASSERT(y0 < this->resolution.height);
     ASSERT(x1 < this->resolution.width);
@@ -166,7 +166,7 @@ void canvas::draw_line(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint3
     }
 }
 
-void canvas::fill(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
+void Canvas::fill(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb) {
     ASSERT(x0 < this->resolution.width);
     ASSERT(y0 < this->resolution.height);
     ASSERT(x1 < this->resolution.width);
@@ -198,7 +198,7 @@ void canvas::fill(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t r
     }
 }
 
-void canvas::draw_letters(psf1_font* font, uint32_t x, uint32_t y, uint8_t* str, uint32_t color) {
+void Canvas::draw_letters(psf1_font* font, uint32_t x, uint32_t y, uint8_t* str, uint32_t color) {
     ASSERT_NOT_NULL(font);
     ASSERT_NOT_NULL(str);
     ASSERT(x < this->resolution.width);
@@ -216,7 +216,7 @@ void canvas::draw_letters(psf1_font* font, uint32_t x, uint32_t y, uint8_t* str,
     }
 }
 
-void canvas::draw_letter(psf1_font* font, uint32_t x, uint32_t y, uint8_t c, uint32_t color) {
+void Canvas::draw_letter(psf1_font* font, uint32_t x, uint32_t y, uint8_t c, uint32_t color) {
     ASSERT_NOT_NULL(font);
     ASSERT(x < this->resolution.width);
     ASSERT(y < this->resolution.height);
@@ -241,7 +241,7 @@ void canvas::draw_letter(psf1_font* font, uint32_t x, uint32_t y, uint8_t c, uin
 /*
 * draw a bitmap
 */
-void canvas::draw_bitmap(bmp* bitmap, uint32_t x, uint32_t y) {
+void Canvas::draw_bitmap(bmp* bitmap, uint32_t x, uint32_t y) {
     ASSERT_NOT_NULL(bitmap);
     ASSERT(x <= this->resolution.width);
     ASSERT(y <= this->resolution.height);
@@ -259,7 +259,7 @@ void canvas::draw_bitmap(bmp* bitmap, uint32_t x, uint32_t y) {
 /*
 * draw a targa
 */
-void canvas::draw_targa(tga* targa, uint32_t x, uint32_t y) {
+void Canvas::draw_targa(tga* targa, uint32_t x, uint32_t y) {
     ASSERT_NOT_NULL(targa);
     ASSERT(x <= this->resolution.width);
     ASSERT(y <= this->resolution.height);

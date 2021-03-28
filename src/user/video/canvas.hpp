@@ -21,7 +21,7 @@ class psf1_font;
 class bmp;
 class tga;
 
-class canvas {
+class Canvas {
   private:
     uint8_t* buffer;
     struct BGAObject* bga;
@@ -34,8 +34,8 @@ class canvas {
     void draw_sloped_line(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1, uint32_t rgb);
 
   public:
-    canvas(BGAObject* bga);
-    ~canvas();
+    Canvas(BGAObject* bga);
+    ~Canvas();
     /*
     * draw a line from x0,y0 to x1,y1
     */

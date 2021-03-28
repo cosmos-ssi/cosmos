@@ -5,6 +5,7 @@ include ../mk/mtools.mk
 COSMOS_INITRD_IMAGE=initrd.img
 COSMOS_LIB_ARCHIVE=lib/libcosmos.a
 COSMOS_VIDEO_ARCHIVE=video/libvideo.a
+COSMOS_GUI_ARCHIVE=gui/libgui.a
 
 MKINITRD=../util/mkinitrd/mkinitrd
 
@@ -19,6 +20,9 @@ $(COSMOS_LIB_ARCHIVE):
 
 $(COSMOS_VIDEO_ARCHIVE):
 	make -C video
+
+$(COSMOS_GUI_ARCHIVE):
+	make -C gui
 
 $(COSMOS_INITRD_IMAGE): $(COSMOS_LIB_ARCHIVE) $(COSMOS_VIDEO_ARCHIVE)
 	$(RM) $(COSMOS_INITRD_IMAGE)
@@ -41,4 +45,4 @@ clean:
 	cd apps; make clean
 	cd lib; make clean
 	cd video; make clean
-	
+	cd gui; make clean
