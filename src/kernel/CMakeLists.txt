@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(kernel)
+project(kernel LANGUAGES C ASM_NASM)
 
 set(TARGET_PLATFORM "x86-64")
 
@@ -17,8 +17,10 @@ file(GLOB_RECURSE GENERIC_SRCS CONFIGURE_DEPENDS
 )
 list (REMOVE_ITEM GENERIC_SRCS ${ALL_PLATFORM_SRCS}})
 
-message("${GENERIC_SRCS}")
 # Now set up our environment
+add_library(kernel STATIC ${PLATFORM_SRCS} ${GENERIC_SRCS})
+target_include_directories (kernel PRIVATE .)
+
 # ADD_EXECUTABLE(kernel ${PLATFORM_SRCS} ${ISA_SRCS} ${GENERIC_SRCS})
  
 # SET(CMAKE_ASM-ATT_COMPILE_OBJECT 
