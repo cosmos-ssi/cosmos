@@ -7,10 +7,13 @@
 
 extern "C" {
 #include <abi/abi.h>
+#include <assert.hpp>
 }
 #include <object/serial/serial_object.hpp>
 
-void SerialObject::writeln(const char* str) {}
+void SerialObject::writeln(const char* str) {
+    ASSERT_NOT_NULL(str);
+}
 
 uint8_t SerialObject::readChar() {
     return 0;
@@ -20,6 +23,8 @@ void SerialObject::writeChar(uint8_t c) {
 }
 
 void SerialObject::writestring(const uint8_t* str) {
+    ASSERT_NOT_NULL(str);
+
     uint16_t i = 0;
     uint8_t c = str[i];
     while (c != 0) {

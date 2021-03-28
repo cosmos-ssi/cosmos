@@ -11,12 +11,12 @@
 #include <sys/syscall/syscall_dispatcher.h>
 #include <sys/syscall/syscalls_bga.h>
 #include <sys/syscall/syscalls_console.h>
+#include <sys/syscall/syscalls_filesystem.h>
 #include <sys/syscall/syscalls_keyboard.h>
 #include <sys/syscall/syscalls_memory.h>
 #include <sys/syscall/syscalls_objectmgr.h>
 #include <sys/syscall/syscalls_process.h>
 #include <sys/syscall/syscalls_serial.h>
-
 #include <types.h>
 
 syscall_handler syscall_table[SYSCALL_MAX];
@@ -50,12 +50,20 @@ void syscall_dispatcher_init() {
     syscall_add(SYSCALL_PROCESS_EXIT, &syscall_process_exit);
     syscall_add(SYSCALL_PROCESS_SLEEP, &syscall_process_sleep);
     // bga
-    syscall_add(SYSCALL_BGA_GET_RESOLUTION, &syscall_bga_get_resolution_function);
-    syscall_add(SYSCALL_BGA_SET_RESOLUTION, &syscall_bga_set_resolution_function);
-    syscall_add(SYSCALL_BGA_GET_BUFFERSIZE, &syscall_bga_get_buffersize_function);
-    syscall_add(SYSCALL_BGA_BLT, &syscall_bga_blt_function);
+    syscall_add(SYSCALL_BGA_GET_RESOLUTION, &syscall_bga_get_resolution);
+    syscall_add(SYSCALL_BGA_SET_RESOLUTION, &syscall_bga_set_resolution);
+    syscall_add(SYSCALL_BGA_GET_BUFFERSIZE, &syscall_bga_get_buffersize);
+    syscall_add(SYSCALL_BGA_BLT, &syscall_bga_blt);
     // console
     syscall_add(SYSCALL_CONSOLE_WRITE, &syscall_console_write);
+    // filesystem
+    syscall_add(SYSCALL_FILESYSTEM_GET_ROOT_NODE, &syscall_filesystem_get_root_node);
+    syscall_add(SYSCALL_FILESYSTEM_READ, &syscall_filesystem_read);
+    syscall_add(SYSCALL_FILESYSTEM_WRITE, &syscall_filesystem_write);
+    syscall_add(SYSCALL_FILESYSTEM_OPEN, &syscall_filesystem_open);
+    syscall_add(SYSCALL_FILESYSTEM_CLOSE, &syscall_filesystem_close);
+    syscall_add(SYSCALL_FILESYSTEM_LIST_DIRECTORY, &syscall_filesystem_list_directory);
+    syscall_add(SYSCALL_FILESYSTEM_FIND_NODE_BY_ID, &syscall_filesystem_find_node_by_id);
     // serial
     syscall_add(SYSCALL_SERIAL_READCHAR, &syscall_serial_readchar);
     syscall_add(SYSCALL_SERIAL_WRITECHAR, &syscall_serial_writechar);

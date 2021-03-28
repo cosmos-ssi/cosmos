@@ -1,13 +1,14 @@
 include ../../mk/flags.mk
 include ../../mk/build.mk
 
-COSMOS_LIB_ARCHIVE=libcosmos.a
+COSMOS_VIDEO_ARCHIVE=libvideo.a
 
-EXTRA_CFLAGS= -I.
+LIB=../lib
+EXTRA_CFLAGS= -I. -I$(LIB)/
 
 SRC_DIR=.
 
-all: $(COSMOS_LIB_ARCHIVE)
+all: $(COSMOS_VIDEO_ARCHIVE)
 
 # sources
 SRCS_C=$(shell find $(SRC_DIR) -type f -iname '*.c')
@@ -22,8 +23,8 @@ OBJS_CPP=$(subst $(SRC_DIR)/, , $(SRCS_CPP:.cpp=.o))
 OBJS_ASM=$(subst $(SRC_DIR)/, , $(SRCS_ASM:.asm=.o))
 OBJS=$(OBJS_C) $(OBJS_CPP) $(OBJS_ASM)
 
-$(COSMOS_LIB_ARCHIVE): $(OBJS)
-	$(AR) crv $(COSMOS_LIB_ARCHIVE) $(OBJS)
+$(COSMOS_VIDEO_ARCHIVE): $(OBJS)
+	$(AR) crv $(COSMOS_VIDEO_ARCHIVE) $(OBJS)
 
 # set search paths
 vpath %.c .
@@ -47,4 +48,4 @@ vpath %.asm .
 clean:
 	$(RM) *.o
 	$(RM) $(OBJS)
-	$(RM) $(COSMOS_LIB_ARCHIVE)
+	$(RM) $(COSMOS_VIDEO_ARCHIVE)

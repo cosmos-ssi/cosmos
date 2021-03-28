@@ -13,8 +13,8 @@
 
 class BGAObject : public Object {
   public:
-    void getResolution(struct objectinterface_resolution* resolution);
-    void setResolution(struct objectinterface_resolution* resolution);
+    void getResolution(struct syscall_objectinterface_resolution* resolution);
+    void setResolution(struct syscall_objectinterface_resolution* resolution);
     uint32_t getBuffersize();
     void blt(uint8_t* buffer, uint32_t buffer_size);
 };

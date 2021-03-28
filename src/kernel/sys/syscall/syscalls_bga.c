@@ -10,7 +10,7 @@
 #include <sys/obj/objectinterface/objectinterface_bga.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 
-uint64_t syscall_bga_get_resolution_function(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
+uint64_t syscall_bga_get_resolution(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
     struct object* bga_obj = objectmgr_find_object_by_handle(arg1);
     if (0 != bga_obj) {
         struct objectinterface_resolution* res = (struct objectinterface_resolution*)arg2;
@@ -20,7 +20,7 @@ uint64_t syscall_bga_get_resolution_function(uint64_t syscall_id, uint64_t arg1,
     return 0;
 }
 
-uint64_t syscall_bga_set_resolution_function(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
+uint64_t syscall_bga_set_resolution(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
     struct object* bga_obj = objectmgr_find_object_by_handle(arg1);
     if (0 != bga_obj) {
         struct objectinterface_resolution* res = (struct objectinterface_resolution*)arg2;
@@ -30,7 +30,7 @@ uint64_t syscall_bga_set_resolution_function(uint64_t syscall_id, uint64_t arg1,
     return 0;
 }
 
-uint64_t syscall_bga_get_buffersize_function(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
+uint64_t syscall_bga_get_buffersize(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
     struct object* bga_obj = objectmgr_find_object_by_handle(arg1);
     if (0 != bga_obj) {
         struct objectinterface_bga* api = (struct objectinterface_bga*)bga_obj->api;
@@ -39,7 +39,7 @@ uint64_t syscall_bga_get_buffersize_function(uint64_t syscall_id, uint64_t arg1,
     return 0;
 }
 
-uint64_t syscall_bga_blt_function(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
+uint64_t syscall_bga_blt(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
     struct object* bga_obj = objectmgr_find_object_by_handle(arg1);
     if (0 != bga_obj) {
         struct objectinterface_bga* api = (struct objectinterface_bga*)bga_obj->api;

@@ -8,6 +8,7 @@
 #ifndef _DEVICES_HPP
 #define _DEVICES_HPP
 
+#include <object/bga/bga_object.hpp>
 #include <object/console/console_object.hpp>
 #include <object/filesystem/filesystem_object.hpp>
 #include <object/keyboard/keyboard_object.hpp>

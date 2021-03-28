@@ -8,13 +8,15 @@
 #ifndef _COSMOS_HPP
 #define _COSMOS_HPP
 
-#include <assert.h>
-#include <heap.hpp>
+extern "C" {
 #include <malloc.h>
+#include <types.h>
+}
+#include <assert.hpp>
+#include <heap.hpp>
 #include <new.hpp>
 #include <object/objects.hpp>
 #include <process.hpp>
 #include <string.hpp>
-#include <types.h>
 
 #endif
