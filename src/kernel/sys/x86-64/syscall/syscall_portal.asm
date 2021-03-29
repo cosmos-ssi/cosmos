@@ -42,8 +42,6 @@ global syscall_portal;
 extern syscall_dispatcher;
 
 syscall_portal:
-
-    cli
     pushaq
 
     mov rdi, rax       ; move syscall number into 1st parameter
@@ -63,6 +61,5 @@ syscall_portal:
     
     popaq
 
-    sti
     o64 sysret
          
