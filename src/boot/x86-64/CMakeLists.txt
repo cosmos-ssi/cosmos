@@ -14,7 +14,7 @@ add_library(boot2 OBJECT boot2.asm)
 add_library(boot3 OBJECT boot3.asm)
 
 # define a custom command to concatenate the object files in sequence into a bootimage.
-set(BOOTIMAGE_FILE bootloader.bin)
+set(BOOTIMAGE_FILE bootimage.bin)
 add_custom_command(
     OUTPUT ${BOOTIMAGE_FILE}
 	
@@ -32,7 +32,17 @@ add_custom_command(
 )
 
 # create a target for the output of the custom command.
-add_custom_target(bootimage
-    ALL     
-    DEPENDS "${BOOTIMAGE_FILE}"
+add_custom_target(bootimage_target
+    ALL
+    DEPENDS ${BOOTIMAGE_FILE}
+)
+
+# Create an library target out of the library compilation result
+add_library(bootimage STATIC IMPORTED GLOBAL)
+add_dependencies(bootimage bootimage_target)
+
+# Specify where the library is located
+set_target_properties(bootimage
+    PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/${BOOTIMAGE_FILE}
 )
