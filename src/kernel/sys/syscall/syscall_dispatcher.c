@@ -21,7 +21,10 @@
 
 syscall_handler syscall_table[SYSCALL_MAX];
 
-uint64_t syscall_dispatcher(uint64_t syscall_num, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
+uint64_t syscall_dispatcher(uint64_t syscall_num, struct syscall_args* args) {
+
+    //    kprintf("Syscall %llu\n", syscall_num);
+    //    kprintf("Arg1 %#llX, Arg2 %#llX, Arg3 %#llX\n", args->arg1, args->arg2, args->arg3);
 
     /*
      * I'm not using ASSERT macro here--my understanding is that those macros will
@@ -29,13 +32,13 @@ uint64_t syscall_dispatcher(uint64_t syscall_num, uint64_t arg1, uint64_t arg2, 
      * data from userspace, we can't trust it.
      */
     if (syscall_num >= SYSCALL_MAX) {
-        return invalid_syscall(syscall_num, arg1, arg2, arg3);
+        return invalid_syscall(syscall_num, args);
     }
 
     if (0 != syscall_table[syscall_num]) {
-        return syscall_table[syscall_num](syscall_num, arg1, arg2, arg3);
+        return syscall_table[syscall_num](syscall_num, args);
     } else {
-        return invalid_syscall(syscall_num, arg1, arg2, arg3);
+        return invalid_syscall(syscall_num, args);
     }
 }
 

@@ -9,29 +9,30 @@
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_bga.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/syscall/syscalls_bga.h>
 
-uint64_t syscall_bga_get_resolution(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
-    struct object* bga_obj = objectmgr_find_object_by_handle(arg1);
+uint64_t syscall_bga_get_resolution(uint64_t syscall_id, struct syscall_args* args) {
+    struct object* bga_obj = objectmgr_find_object_by_handle(args->arg1);
     if (0 != bga_obj) {
-        struct objectinterface_resolution* res = (struct objectinterface_resolution*)arg2;
+        struct objectinterface_resolution* res = (struct objectinterface_resolution*)args->arg2;
         struct objectinterface_bga* api = (struct objectinterface_bga*)bga_obj->api;
         (*api->get_resolution)(bga_obj, res);
     }
     return 0;
 }
 
-uint64_t syscall_bga_set_resolution(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
-    struct object* bga_obj = objectmgr_find_object_by_handle(arg1);
+uint64_t syscall_bga_set_resolution(uint64_t syscall_id, struct syscall_args* args) {
+    struct object* bga_obj = objectmgr_find_object_by_handle(args->arg1);
     if (0 != bga_obj) {
-        struct objectinterface_resolution* res = (struct objectinterface_resolution*)arg2;
+        struct objectinterface_resolution* res = (struct objectinterface_resolution*)args->arg2;
         struct objectinterface_bga* api = (struct objectinterface_bga*)bga_obj->api;
         (*api->set_resolution)(bga_obj, res);
     }
     return 0;
 }
 
-uint64_t syscall_bga_get_buffersize(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
-    struct object* bga_obj = objectmgr_find_object_by_handle(arg1);
+uint64_t syscall_bga_get_buffersize(uint64_t syscall_id, struct syscall_args* args) {
+    struct object* bga_obj = objectmgr_find_object_by_handle(args->arg1);
     if (0 != bga_obj) {
         struct objectinterface_bga* api = (struct objectinterface_bga*)bga_obj->api;
         return (*api->get_buffersize)(bga_obj);
@@ -39,11 +40,11 @@ uint64_t syscall_bga_get_buffersize(uint64_t syscall_id, uint64_t arg1, uint64_t
     return 0;
 }
 
-uint64_t syscall_bga_blt(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
-    struct object* bga_obj = objectmgr_find_object_by_handle(arg1);
+uint64_t syscall_bga_blt(uint64_t syscall_id, struct syscall_args* args) {
+    struct object* bga_obj = objectmgr_find_object_by_handle(args->arg1);
     if (0 != bga_obj) {
         struct objectinterface_bga* api = (struct objectinterface_bga*)bga_obj->api;
-        (*api->blt)(bga_obj, (uint8_t*)arg2, arg3);
+        (*api->blt)(bga_obj, (uint8_t*)args->arg2, args->arg3);
     }
     return 0;
 }

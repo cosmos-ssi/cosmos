@@ -6,17 +6,18 @@
 // ****************************************************************
 
 #include <sys/kprintf/kprintf.h>
+#include <sys/syscall/syscalls_memory.h>
 
-uint64_t syscall_memory_malloc(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
+uint64_t syscall_memory_malloc(uint64_t syscall_id, struct syscall_args* args) {
     kprintf("syscall %llu\n not implemented", syscall_id);
     return 0;
 }
 
-uint64_t syscall_memory_free(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
+uint64_t syscall_memory_free(uint64_t syscall_id, struct syscall_args* args) {
     kprintf("syscall %llu\n not implemented", syscall_id);
     return 0;
 }
-uint64_t syscall_memory_realloc(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
+uint64_t syscall_memory_realloc(uint64_t syscall_id, struct syscall_args* args) {
     kprintf("syscall %llu\n not implemented", syscall_id);
     return 0;
 }
