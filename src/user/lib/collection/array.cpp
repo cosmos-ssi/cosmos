@@ -9,8 +9,8 @@ extern "C" {
 #include <malloc.h>
 }
 
-#include <array.hpp>
 #include <assert.hpp>
+#include <collection/array.hpp>
 
 template <typename T> Array<T>::Array(uint32_t size) {
     this->byte_size = sizeof(T*) * size;

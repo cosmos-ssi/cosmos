@@ -8,7 +8,7 @@
 #ifndef _ARRAYLIST_HPP
 #define _ARRAYLIST_HPP
 
-#include <array.hpp>
+#include <collection/array.hpp>
 #include <types.h>
 
 template <typename T> class ArrayList {

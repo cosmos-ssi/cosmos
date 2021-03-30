@@ -9,8 +9,8 @@ extern "C" {
 #include <malloc.h>
 }
 
-#include <arraylist.hpp>
 #include <assert.hpp>
+#include <collection/arraylist.hpp>
 
 #define EXPAND_SIZE 64
 #define START_SIZE 16
