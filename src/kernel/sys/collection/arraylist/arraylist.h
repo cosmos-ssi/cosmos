@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _LIST_H
-#define _LIST_H
+#ifndef _ARRAYLIST_H
+#define _ARRAYLIST_H
 
 #include <types.h>
 

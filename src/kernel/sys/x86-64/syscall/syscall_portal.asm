@@ -42,13 +42,10 @@ global syscall_portal;
 extern syscall_dispatcher;
 
 syscall_portal:
-
-    cli
     pushaq
 
     mov rdi, rax       ; move syscall number into 1st parameter
     mov rsi, rbx       ; move 1st parameter of user function into second parameter of kernel handler
-                    ; rdx and rcx contain user function parameters 3 and 4
     mov rax, rsp       ; move stack pointer into rax
     mov rsp, 0         ; stack pointer zero
     push rax           ; save stack pointer
@@ -63,6 +60,5 @@ syscall_portal:
     
     popaq
 
-    sti
     o64 sysret
          

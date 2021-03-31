@@ -38,6 +38,12 @@
 #define SYSCALL_OBJMGR_GET_DEVICE_BY_NAME 2800
 #define SYSCALL_OBJMGR_GET_DEVICE_BY_HANDLE 2801
 
-uint64_t syscall(uint64_t syscall, uint64_t param1, uint64_t param2, uint64_t param3);
+struct syscall_args {
+    uint64_t arg1;
+    uint64_t arg2;
+    uint64_t arg3;
+} __attribute__((packed));
+
+uint64_t syscall(uint64_t syscall, struct syscall_args* args);
 
 #endif

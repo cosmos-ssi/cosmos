@@ -5,9 +5,23 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/kprintf/kprintf.h>
-#include <sys/syscall/syscall.h>
-uint64_t invalid_syscall(uint64_t syscall_id, struct syscall_args* args) {
-    kprintf("Invalid syscall %llu\n", syscall_id);
-    return 0;
-}
+#ifndef _TREE_HPP
+#define _TREE_HPP
+
+#include <types.h>
+
+template <typename T> class Tree {
+  private:
+    T* value;
+    uint64_t key;
+    Tree* left;
+    Tree* right;
+
+  public:
+    Tree();
+    ~Tree();
+    void insert(uint64_t key, T* value);
+    T* search(uint64_t key);
+};
+
+#endif

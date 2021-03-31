@@ -5,14 +5,26 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _SYSCALLS_MEMORY_H
-#define _SYSCALLS_MEMORY_H
+#ifndef _ARRAYLIST_HPP
+#define _ARRAYLIST_HPP
 
-#include <sys/syscall/syscall.h>
+#include <collection/array.hpp>
 #include <types.h>
 
-uint64_t syscall_memory_malloc(uint64_t syscall_id, struct syscall_args* args);
-uint64_t syscall_memory_free(uint64_t syscall_id, struct syscall_args* args);
-uint64_t syscall_memory_realloc(uint64_t syscall_id, struct syscall_args* args);
+template <typename T> class ArrayList {
+  private:
+    class Array<T> arr;
+    uint32_t count;
+
+  public:
+    ArrayList();
+    ~ArrayList();
+    uint32_t getCount();
+    uint32_t getSize();
+    uint32_t add(T* value);
+    void set(uint32_t position, T* value);
+    T* get(uint32_t position);
+    void remove(uint32_t position);
+};
 
 #endif

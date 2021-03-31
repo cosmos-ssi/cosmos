@@ -5,23 +5,20 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _COSMOS_HPP
-#define _COSMOS_HPP
-
-extern "C" {
-#include <malloc.h>
 #include <mem.h>
-#include <start.h>
-#include <types.h>
-}
-#include <assert.hpp>
-#include <collection/array.hpp>
-#include <collection/arraylist.hpp>
-#include <collection/tree.hpp>
-#include <heap.hpp>
-#include <new.hpp>
-#include <object/objects.hpp>
-#include <process.hpp>
-#include <string.hpp>
 
-#endif
+uint8_t* memcpy(uint8_t* dstptr, const uint8_t* srcptr, uint64_t size) {
+    for (uint64_t i = 0; i < size; i++)
+        dstptr[i] = srcptr[i];
+    return dstptr;
+}
+
+uint8_t* memset(uint8_t* bufptr, uint8_t value, uint64_t size) {
+    for (uint64_t i = 0; i < size; i++)
+        bufptr[i] = (unsigned char)value;
+    return bufptr;
+}
+
+uint8_t* memzero(uint8_t* bufptr, uint64_t size) {
+    return memset(bufptr, 0, size);
+}

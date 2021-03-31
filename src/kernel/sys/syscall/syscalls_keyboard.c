@@ -9,9 +9,10 @@
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_keyboard.h>
 #include <sys/obj/objectmgr/objectmgr.h>
+#include <sys/syscall/syscalls_keyboard.h>
 
-uint64_t syscall_keyboard_read(uint64_t syscall_id, uint64_t arg1, uint64_t arg2, uint64_t arg3) {
-    struct object* keyboard_obj = objectmgr_find_object_by_handle(arg1);
+uint64_t syscall_keyboard_read(uint64_t syscall_id, struct syscall_args* args) {
+    struct object* keyboard_obj = objectmgr_find_object_by_handle(args->arg1);
     if (0 != keyboard_obj) {
         struct objectinterface_keyboard* api = (struct objectinterface_keyboard*)keyboard_obj->api;
         (*api->read)(keyboard_obj);

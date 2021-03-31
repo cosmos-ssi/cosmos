@@ -5,9 +5,13 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <sys/kprintf/kprintf.h>
-#include <sys/syscall/syscall.h>
-uint64_t invalid_syscall(uint64_t syscall_id, struct syscall_args* args) {
-    kprintf("Invalid syscall %llu\n", syscall_id);
-    return 0;
-}
+#ifndef _MEM_H
+#define _MEM_H
+
+#include <types.h>
+
+uint8_t* memcpy(uint8_t* dstptr, const uint8_t* srcptr, uint64_t size);
+uint8_t* memset(uint8_t* bufptr, uint8_t value, uint64_t size);
+uint8_t* memzero(uint8_t* bufptr, uint64_t size);
+
+#endif

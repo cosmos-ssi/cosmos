@@ -5,14 +5,31 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _SYSCALLS_MEMORY_H
-#define _SYSCALLS_MEMORY_H
+/*
+* GUI uses the canvas object to draw the GUI
+*/
+#ifndef _GUI_HPP
+#define _GUI_HPP
 
-#include <sys/syscall/syscall.h>
 #include <types.h>
+class tga;
+class bmp;
+class Window;
 
-uint64_t syscall_memory_malloc(uint64_t syscall_id, struct syscall_args* args);
-uint64_t syscall_memory_free(uint64_t syscall_id, struct syscall_args* args);
-uint64_t syscall_memory_realloc(uint64_t syscall_id, struct syscall_args* args);
+class GUI {
+  public:
+    uint32_t background_color;
+    Canvas* canvas;
+    psf1_font* font;
+    ArrayList<Window>* windows;
+    tga* background_image;
+
+    void init();
+    void draw();
+
+    Window* new_window(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
+};
+
+extern GUI* gui;
 
 #endif
