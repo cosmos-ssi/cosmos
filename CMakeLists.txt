@@ -13,5 +13,4 @@ add_subdirectory(src/kernel)
 add_subdirectory(src/util/mkinitrd)
 
 # target: hda Compose the bootimage, kernel and initrd into a bootable disk image that qemu can load
-include(cmake/hda.cmake)
-make_hda(bootimage kernel initrd)
+add_subdirectory(src/img/hda)
