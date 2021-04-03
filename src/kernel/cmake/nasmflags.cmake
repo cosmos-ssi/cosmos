@@ -1,5 +1,6 @@
-set(NASM_FLAGS 
+set(NASM_FLAGS
     -O0
     -g
-    -F dwarf
+    -F
+    dwarf
 )

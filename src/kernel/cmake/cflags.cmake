@@ -1,6 +1,6 @@
-set(C_FLAGS 
-    -fPIC 
-    -O0 
+set(C_FLAGS
+    -fPIC
+    -O0
     -gdwarf-4
     -c
     -m64
@@ -12,4 +12,3 @@ set(C_FLAGS
     -Wreturn-type
     -Wparentheses
 )
-
