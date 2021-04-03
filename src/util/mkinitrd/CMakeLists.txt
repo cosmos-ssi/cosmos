@@ -1,10 +1,13 @@
-cmake_minimum_required(VERSION 3.16)
-project(initrd LANGUAGES C)
+cmake_minimum_required(version 3.16)
+project(initrd languages C)
 
-file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
-    "*.c"
-    "*.h"
+file(
+  glob_recurse
+  SRCS
+  configure_depends
+  "*.c"
+  "*.h"
 )
 
 # build target
-add_library(initrd STATIC ${SRCS})
+add_library(initrd static ${SRCS})
