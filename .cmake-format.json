@@ -125,5 +125,9 @@
       "decisions. See the documentation for more information."
     ],
     "layout_passes": {}
+  },
+  "_help_markup": "Options affecting comment reflow and formatting.",
+  "markup": {
+    "enable_markup": false
   }
 }
