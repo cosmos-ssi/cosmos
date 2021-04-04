@@ -17,7 +17,7 @@ file(
 )
 list(REMOVE_ITEM GENERIC_SRCS ${_IGNORE}})
 
-# Building kernel archive
+# compile the kernel into an archive
 add_library(kernel_archive STATIC ${PLATFORM_SRCS} ${GENERIC_SRCS})
 target_include_directories(kernel_archive PRIVATE .)
 target_compile_options(
@@ -43,8 +43,7 @@ target_compile_options(
 target_compile_definitions(kernel_archive PRIVATE COMPILE_PLATFORM_${CMAKE_HOST_SYSTEM_NAME})
 target_compile_definitions(kernel_archive PRIVATE TARGET_PLATFORM_${CMAKE_SYSTEM_PROCESSOR})
 
-# Building kernel elf
-set(MAPFILE ${CMAKE_CURRENT_BINARY_DIR}/cosmos.map)
+# link the kernel archive into an elf file
 set(LD_FLAGS
     -m
     elf_x86_64
@@ -52,13 +51,39 @@ set(LD_FLAGS
     --no-relax
 )
 set(LINKER_SCRIPT ${PROJECT_SOURCE_DIR}/cosmos.ld)
+set(MAP_FILE ${CMAKE_CURRENT_BINARY_DIR}/cosmos.map)
 set(ELF_FILE ${CMAKE_CURRENT_BINARY_DIR}/cosmos.elf)
 
 add_custom_target(
   kernel_elf ALL
   BYPRODUCTS ${ELF_FILE} ${MAPFILE}
-  COMMAND ${CMAKE_LD} ${LD_FLAGS} -T ${LINKER_SCRIPT} -Map ${MAPFILE} -o ${ELF_FILE} $<TARGET_FILE:kernel_archive>
+  COMMAND ${CMAKE_LD} ${LD_FLAGS} -T ${LINKER_SCRIPT} -Map ${MAP_FILE} -o ${ELF_FILE} $<TARGET_FILE:kernel_archive>
   DEPENDS kernel_archive
   COMMENT "Building ${ELF_FILE}"
   VERBATIM
 )
+
+# objcopy the elf into a bin file
+set(OBJCOPY_FLAGS -O binary)
+set(BIN_FILE ${CMAKE_CURRENT_BINARY_DIR}/cosmos.bin)
+
+add_custom_target(
+  kernel_bin ALL
+  BYPRODUCTS ${BIN_FILE}
+  COMMAND ${CMAKE_OBJCOPY} ${OBJCOPY_FLAGS} ${ELF_FILE} ${BIN_FILE}
+  DEPENDS kernel_elf
+  COMMENT "Building ${BIN_FILE}"
+  VERBATIM
+)
+
+# Create a library target for the kernel bin
+add_library(
+  kernel
+  STATIC
+  IMPORTED
+  GLOBAL
+)
+add_dependencies(kernel kernel_bin)
+
+# Specify where the library is located
+set_target_properties(kernel PROPERTIES IMPORTED_LOCATION ${BIN_FILE})
