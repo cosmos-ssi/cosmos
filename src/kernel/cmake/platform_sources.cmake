@@ -1,5 +1,4 @@
-function(LOAD_PLATFORM PLATFORM)
-
+function(LOAD_PLATFORM_SOURCES PLATFORM)
   # enum of available target platforms
   list(
     APPEND
@@ -8,7 +7,7 @@ function(LOAD_PLATFORM PLATFORM)
     "arm"
   )
 
-  # target platform sources
+  # search for target platform-specific files
   file(
     GLOB_RECURSE
     PLATFORM_SRCS
@@ -21,7 +20,8 @@ function(LOAD_PLATFORM PLATFORM)
     "obj/${PLATFORM}/*.asm"
   )
 
-  # all platform sources (used for excludes)
+  # search for platform-specific files for all platforms except our target
+  list(REMOVE_ITEM PLATFORMS ${PLATFORM}})
   foreach(ITR ${PLATFORMS})
     file(
       GLOB_RECURSE
@@ -37,31 +37,13 @@ function(LOAD_PLATFORM PLATFORM)
     list(APPEND ALL_PLATFORM_SRCS ${_IGNORE})
   endforeach(ITR)
 
-  # platform specific flags
-  include("cmake/${PLATFORM}/flags.cmake")
-
-  # layout
-  set(PLATFORM_LAYOUT "cosmos.ld")
-
   # Export our output variables
   set(PLATFORM_SRCS
       ${PLATFORM_SRCS}
       PARENT_SCOPE
   )
-  set(PLATFORM_LAYOUT
-      ${PLATFORM_LAYOUT}
+  set(_IGNORE
+      ${_IGNORE}
       PARENT_SCOPE
   )
-  set(ALL_PLATFORM_SRCS
-      ${ALL_PLATFORM_SRCS}
-      PARENT_SCOPE
-  )
-  set(ISA_C_FLAGS
-      ${ISA_C_FLAGS}
-      PARENT_SCOPE
-  )
-  set(ISA_ASM_FLAGS
-      ${ISA_ASM_FLAGS}
-      PARENT_SCOPE
-  )
-endfunction(LOAD_PLATFORM)
+endfunction(LOAD_PLATFORM_SOURCES)

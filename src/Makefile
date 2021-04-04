@@ -13,15 +13,15 @@ CRUFT_FILES=$(shell find . -type f \( -name "dump.dat" -o \
 all: subsystems
 .PHONY: clean header-check header-fix
 
-bootimage: header-check lint subsystems blank-disk
+bootimage: lint subsystems blank-disk
 	# make a file
 	#$(DD) if=/dev/zero of=$(BOOTIMAGE) bs=32768 count=129024
 	test -f $(BOOTIMAGE) || $(DD) if=/dev/zero of=$(BOOTIMAGE) bs=32768 count=129024 
 
 	# write boot loader
-	$(DD) if=boot/x86-64/boot.bin of=$(BOOTIMAGE) conv=notrunc bs=512 
-	$(DD) if=boot/x86-64/boot2.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=1
-	$(DD) if=boot/x86-64/boot3.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=3
+	$(DD) if=boot/x86_64/boot.bin of=$(BOOTIMAGE) conv=notrunc bs=512 
+	$(DD) if=boot/x86_64/boot2.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=1
+	$(DD) if=boot/x86_64/boot3.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=3
 
 	# write kernel
 	$(DD) if=kernel/cosmos.bin of=$(BOOTIMAGE) conv=notrunc bs=512 seek=4
@@ -35,7 +35,7 @@ blank-disk:
 	$(DD) if=/dev/zero of=$(BLANK_DISK) bs=1024 count=10240
 
 boot-subsystem:
-	cd boot/x86-64 && $(MAKE)
+	cd boot/x86_64 && $(MAKE)
 	
 kernel-subsystem:
 	cd kernel && $(MAKE) all
@@ -55,7 +55,7 @@ kernel-clean:
 	cd kernel && $(MAKE) clean
 
 boot-clean:
-	cd boot/x86-64 && $(MAKE) clean
+	cd boot/x86_64 && $(MAKE) clean
 
 user-clean:
 	cd user && $(MAKE) clean
