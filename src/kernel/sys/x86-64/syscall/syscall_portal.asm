@@ -1,11 +1,12 @@
 BITS 64
 
 ; we do not push or pop rax, since that's where the return value goes
+; we do not push rsp b/c we save it and pop it and then popaq overwrites it...
 %macro pushaq 0
 push rbx
 push rcx
 push rdx
-push rsp
+;push rsp
 push rbp
 push rdi
 push rsi
@@ -31,7 +32,7 @@ pop r8
 pop rsi
 pop rdi
 pop rbp
-pop rsp
+;pop rsp
 pop rdx
 pop rcx
 pop rbx
