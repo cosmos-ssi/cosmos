@@ -4,6 +4,12 @@ global syscall_portal;
 
 extern syscall_dispatcher;
 
+; x86_64 calling convention uses these registers for the 1st 6 args: rdi, rsi, rdx, rcx, r8, r9
+; we have 2 args syscall # in rdi and the address of the args struct in rsi
+
+; x86_64 syscall uses rdi, rsi, rdx, r10, r8, r9; slightly different.  rax is teh syscall #.
+; therefore rsi (the struct*) needs to come from rdi
+
 syscall_portal:
 
     mov r12, rsp;      ; move rsp into r12
@@ -11,8 +17,8 @@ syscall_portal:
     push r11           ; save rflags
     push rcx           ; save RIP
 
+    mov rsi, rdi       ; move 1st parameter of user function into second parameter of kernel handler (this is a struct*)
     mov rdi, rax       ; move syscall number into 1st parameter
-    mov rsi, rbx       ; move 1st parameter of user function into second parameter of kernel handler (this is a struct*)
 
     call syscall_dispatcher
 
