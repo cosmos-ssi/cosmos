@@ -1,7 +1,37 @@
 cmake_minimum_required(VERSION 3.16)
-project(CosmOS VERSION 1.0)
+project(
+  CosmOS
+  VERSION 1.0
+  LANGUAGES C CXX ASM_NASM
+)
 
-set(TARGET_PLATFORM "x86-64")
+# global flags to be set automatically on all targets
+set(warnings
+    -Wall
+    -Werror
+    -Wuninitialized
+    -Wunused-variable
+    -Wreturn-type
+    -Wparentheses
+)
+
+set(CMAKE_C_FLAGS
+    -c
+    -m64
+    -mno-red-zone
+    -ffreestanding
+    ${warnings}
+)
+
+set(CMAKE_CXX_FLAGS
+    -c
+    -m64
+    -mno-red-zone
+    -ffreestanding
+    ${warnings}
+)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
 
 # target: bootimage Build a TARGET_PLATFORM specific bootimage binary
 add_subdirectory(src/boot)

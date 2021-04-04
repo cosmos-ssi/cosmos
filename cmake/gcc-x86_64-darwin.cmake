@@ -1,0 +1,19 @@
+# set target for crosscompile
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR x86_64)
+
+# build system configuration
+set(CMAKE_C_COMPILER x86_64-elf-gcc)
+set(CMAKE_CXX_COMPILER x86_64-elf-g++)
+set(CMAKE_ASM_NASM_COMPILER nasm)
+
+set(CMAKE_AR x86_64-elf-ar)
+set(CMAKE_OBJCOPY x86_64-elf-objcopy)
+set(CMAKE_RANLIB x86_64-elf-ranlib)
+set(CMAKE_SIZE_UTIL x86_64-elf-size)
+set(CMAKE_STRIP x86_64-elf-strip)
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)

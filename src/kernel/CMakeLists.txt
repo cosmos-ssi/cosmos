@@ -7,7 +7,7 @@ include("cmake/cflags.cmake")
 include("cmake/nasmflags.cmake")
 
 # load our platform specific sources and flags
-load_platform("${TARGET_PLATFORM}")
+load_platform("${CMAKE_SYSTEM_PROCESSOR}")
 
 # process generic sources
 file(
