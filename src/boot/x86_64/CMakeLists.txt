@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 3.16)
-project("bootloader-x86_64")
+project("bootloader-x86_64" LANGUAGES ASM_NASM)
 
 # set flags
-set(CMAKE_ASM_NASM_OBJECT_FORMAT bin)
 add_compile_options(-O0)
 
-# let cmake know to expect NASM assembler files
-enable_language(ASM_NASM)
+# If a parent project has already enabled ASM_NASM, cmake will have already set the object format to elf64. For the
+# bootloader we want bin, but cmake requires some coercion to change the inherited setting.
+# https://www.debugcn.com/en/article/34859001.html
+set(CMAKE_ASM_NASM_OBJECT_FORMAT bin)
+set(CMAKE_ASM_NASM_COMPILE_OBJECT "<CMAKE_ASM_NASM_COMPILER> <INCLUDES> <FLAGS> -o <OBJECT> <SOURCE>")
 
 # build object files individually
 add_library(boot OBJECT boot.asm)

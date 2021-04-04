@@ -5,31 +5,7 @@ project(
   LANGUAGES C CXX ASM_NASM
 )
 
-# global flags to be set automatically on all targets
-set(warnings
-    -Wall
-    -Werror
-    -Wuninitialized
-    -Wunused-variable
-    -Wreturn-type
-    -Wparentheses
-)
-
-set(CMAKE_C_FLAGS
-    -c
-    -m64
-    -mno-red-zone
-    -ffreestanding
-    ${warnings}
-)
-
-set(CMAKE_CXX_FLAGS
-    -c
-    -m64
-    -mno-red-zone
-    -ffreestanding
-    ${warnings}
-)
+# set dialects
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
 

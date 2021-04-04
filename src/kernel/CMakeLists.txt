@@ -6,8 +6,14 @@ include("cmake/load_platform.cmake")
 include("cmake/cflags.cmake")
 include("cmake/nasmflags.cmake")
 
+add_compile_options(-Werror)
+
+# set(CMAKE_C_FLAGS -c -m64 -mno-red-zone -ffreestanding ${warnings} ) set(CMAKE_CXX_FLAGS -c -m64 -mno-red-zone
+# -ffreestanding ${warnings} ) NASMARGS=-O0 -f elf64 -g -F dwarf
+#
+
 # load our platform specific sources and flags
-load_platform("${CMAKE_SYSTEM_PROCESSOR}")
+load_platform(${CMAKE_SYSTEM_PROCESSOR})
 
 # process generic sources
 file(
