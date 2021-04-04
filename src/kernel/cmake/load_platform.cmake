@@ -4,7 +4,7 @@ function(LOAD_PLATFORM PLATFORM)
   list(
     APPEND
     PLATFORMS
-    "x86-64"
+    "x86_64"
     "arm"
   )
 

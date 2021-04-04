@@ -5,8 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/x86-64/acpi/ebda.h>
-#include <obj/x86-64/acpi/rsdp.h>
+#include <obj/x86_64/acpi/ebda.h>
+#include <obj/x86_64/acpi/rsdp.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <tests/obj/test_bda.h>

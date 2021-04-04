@@ -6,7 +6,7 @@
 // ****************************************************************
 
 #include <obj/logical/serializer/serializer_util.h>
-#include <obj/x86-64/smbios/smbios.h>
+#include <obj/x86_64/smbios/smbios.h>
 #include <sys/collection/dynabuffer/dynabuffer.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>

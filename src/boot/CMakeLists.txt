@@ -3,4 +3,4 @@ project(bootloader)
 
 # TODO: do we still need to build ARM?
 
-add_subdirectory(x86-64)
+add_subdirectory(x86_64)

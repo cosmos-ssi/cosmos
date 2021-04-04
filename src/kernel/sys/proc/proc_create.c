@@ -11,8 +11,8 @@
 #include <sys/proc/proc.h>
 #include <sys/string/mem.h>
 #include <sys/sync/sync.h>
-#include <sys/x86-64/mm/mm.h>
-#include <sys/x86-64/mm/pagetables.h>
+#include <sys/x86_64/mm/mm.h>
+#include <sys/x86_64/mm/pagetables.h>
 #include <types.h>
 
 void proc_adjust_kernel_stack(pttentry cr3);

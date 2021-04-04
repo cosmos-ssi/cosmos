@@ -8,7 +8,7 @@
 #ifndef _VNIC_H
 #define _VNIC_H
 
-#include <sys/x86-64/idt/irq.h>
+#include <sys/x86_64/idt/irq.h>
 #include <types.h>
 
 struct virtq;

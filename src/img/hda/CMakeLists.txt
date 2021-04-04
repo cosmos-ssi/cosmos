@@ -10,7 +10,7 @@ add_custom_command(
   # init the file
   COMMAND dd if=/dev/zero of=${HDA_FILE} bs=32768 count=129024 status=none
   # write boot loader
-  COMMAND dd if=$<TARGET_FILE:bootimage> of=${HDA_FILE} conv=notrunc bs=512 status=none status=none
+  COMMAND dd if=$<TARGET_FILE:bootimage> of=${HDA_FILE} conv=notrunc bs=512 status=none
   # # write kernel
   COMMAND dd if=$<TARGET_FILE:kernel> of=${HDA_FILE} conv=notrunc bs=512 seek=4 status=none
   # # write initrd fs at offset of 10MB

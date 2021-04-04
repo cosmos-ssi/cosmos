@@ -25,9 +25,9 @@
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
-#include <sys/x86-64/idt/idt.h>
-#include <sys/x86-64/mm/mm.h>
-#include <sys/x86-64/syscall/syscall.h>
+#include <sys/x86_64/idt/idt.h>
+#include <sys/x86_64/mm/mm.h>
+#include <sys/x86_64/syscall/syscall.h>
 #include <tests/tests.h>
 #include <types.h>
 

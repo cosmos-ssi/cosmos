@@ -12,7 +12,7 @@
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
-#include <sys/x86-64/mm/pagetables.h>
+#include <sys/x86_64/mm/pagetables.h>
 
 #define SIXTY_FOUR_MEGA_BYTES 0x4000000
 

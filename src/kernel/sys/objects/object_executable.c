@@ -12,8 +12,8 @@
 #include <sys/objects/objects.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
-#include <sys/x86-64/mm/mm.h>
-#include <sys/x86-64/mm/pagetables.h>
+#include <sys/x86_64/mm/mm.h>
+#include <sys/x86_64/mm/pagetables.h>
 #include <types.h>
 
 object_handle_t object_executable_create_from_presentation(object_handle_t pres_handle) {

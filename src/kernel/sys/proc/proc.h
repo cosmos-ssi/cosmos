@@ -9,7 +9,7 @@
 #define _SYS_PROC_H
 
 #include <sys/collection/dtable/dtable.h>
-#include <sys/x86-64/mm/pagetables.h>
+#include <sys/x86_64/mm/pagetables.h>
 #include <types.h>
 
 #define LOAD_BASE_VIRTUAL 0

@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/x86-64/ata/ata_dma.h>
+#include <obj/x86_64/ata/ata_dma.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <tests/obj/test_ata.h>

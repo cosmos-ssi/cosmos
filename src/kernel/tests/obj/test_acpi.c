@@ -5,7 +5,7 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#include <obj/x86-64/acpi/acpi.h>
+#include <obj/x86_64/acpi/acpi.h>
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
 #include <sys/kprintf/kprintf.h>
