@@ -8,6 +8,7 @@ set(CMAKE_CXX_COMPILER x86_64-elf-g++)
 set(CMAKE_ASM_NASM_COMPILER nasm)
 
 set(CMAKE_AR x86_64-elf-ar)
+set(CMAKE_LD x86_64-elf-ld)
 set(CMAKE_OBJCOPY x86_64-elf-objcopy)
 set(CMAKE_RANLIB x86_64-elf-ranlib)
 set(CMAKE_SIZE_UTIL x86_64-elf-size)

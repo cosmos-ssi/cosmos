@@ -8,6 +8,7 @@ set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_ASM_NASM_COMPILER nasm)
 
 set(CMAKE_AR ar)
+set(CMAKE_LD ld)
 set(CMAKE_OBJCOPY objcopy)
 set(CMAKE_RANLIB ranlib)
 set(CMAKE_SIZE_UTIL size)
