@@ -14,7 +14,7 @@
 #include <sys/x86_64/mm/pagetables.h>
 #include <types.h>
 
-#ifdef COMPILE_PLATFORM_LINUX
+#ifdef COMPILE_PLATFORM_Linux
 pttentry* extract_cr3_base_address(pttentry cr3) __attribute__((alias("extract_pttentry_base_address")));
 #else
 pttentry* extract_cr3_base_address(pttentry entry) {

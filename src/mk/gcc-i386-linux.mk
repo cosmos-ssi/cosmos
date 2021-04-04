@@ -6,7 +6,7 @@
 # ****************************************************************
 
 # platform flags
-COMPILE_PLATFORM=COMPILE_PLATFORM_LINUX
+COMPILE_PLATFORM=COMPILE_PLATFORM_Linux
 TARGET_PLATFORM=TARGET_PLATFORM_x86_64
 
 # cc (GCC tool chain)
