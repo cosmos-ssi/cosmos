@@ -7,7 +7,7 @@
 
 #include <types.h>
 
-#ifdef TARGET_PLATFORM_i386
+#ifdef TARGET_PLATFORM_x86_64
 
 void asm_wrmsr(uint64_t reg, uint64_t val) {
     uint32_t eax, edx;

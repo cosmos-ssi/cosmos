@@ -7,7 +7,7 @@
 
 #include <types.h>
 
-#ifdef TARGET_PLATFORM_i386
+#ifdef TARGET_PLATFORM_x86_64
 
 uint8_t asm_in_b(uint16_t port) {
     uint8_t data;

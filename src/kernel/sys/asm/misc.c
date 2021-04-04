@@ -7,7 +7,7 @@
 
 #include <sys/x86_64/mm/mm.h>
 
-#ifdef TARGET_PLATFORM_i386
+#ifdef TARGET_PLATFORM_x86_64
 
 void asm_hlt() {
     asm volatile("hlt");
