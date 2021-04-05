@@ -1,64 +1,31 @@
-BITS 64
-
-; we do not push or pop rax, since that's where the return value goes
-%macro pushaq 0
-push rbx
-push rcx
-push rdx
-push rsp
-push rbp
-push rdi
-push rsi
-push r8
-push r9
-push r10
-push r11
-push r12
-push r13
-push r14
-push r15
-%endmacro
-
-%macro popaq 0
-pop r15
-pop r14
-pop r13
-pop r12
-pop r11
-pop r10
-pop r9
-pop r8
-pop rsi
-pop rdi
-pop rbp
-pop rsp
-pop rdx
-pop rcx
-pop rbx
-%endmacro
+[BITS 64]
 
 global syscall_portal;
 
 extern syscall_dispatcher;
 
-syscall_portal:
-    pushaq
+; x86_64 calling convention uses these registers for the 1st 6 args: rdi, rsi, rdx, rcx, r8, r9
+; we have 2 args syscall # in rdi and the address of the args struct in rsi
 
+; x86_64 syscall uses rdi, rsi, rdx, r10, r8, r9; slightly different.  rax is teh syscall #.
+; therefore rsi (the struct*) needs to come from rdi
+
+syscall_portal:
+
+    mov r12, rsp;      ; move rsp into r12
+    push r12           ; save rsp
+    push r11           ; save rflags
+    push rcx           ; save RIP
+
+    mov rsi, rdi       ; move 1st parameter of user function into second parameter of kernel handler (this is a struct*)
     mov rdi, rax       ; move syscall number into 1st parameter
-    mov rsi, rbx       ; move 1st parameter of user function into second parameter of kernel handler
-    mov rax, rsp       ; move stack pointer into rax
-    mov rsp, 0         ; stack pointer zero
-    push rax           ; save stack pointer
 
     call syscall_dispatcher
-    
-    ;no need to move return value--SysV ABI will place return from
-    ;syscall_dispatcher into rax, which is also where it goes in
-    ;CosmOS syscall ABI
 
-    pop rsp            ; get back the stack pointer
+    pop rcx             ; restore RIP
+    pop r11             ; restore rflags
+    pop r12             ; restore rsp into r12
+    mov rsp, r12        ; restore rsp
     
-    popaq
-
     o64 sysret
          
