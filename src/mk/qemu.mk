@@ -35,7 +35,7 @@ QEMUARGS=                                                 \
   -vga std
 
   # -drive file=img/hda.img,index=0,format=raw              \
-  # -drive file=../build/hda.img,index=0,format=raw              \
+  # -drive file=../build/src/img/hda/hda.img,index=0,format=raw              \
 
 #   -drive file=img/root.img,index=3,format=raw          \
 
