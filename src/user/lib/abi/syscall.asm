@@ -1,6 +1,7 @@
 [BITS 64]
 
 global syscall;
+; https://wiki.osdev.org/Calling_Conventions
 ; x86_64 calling convention uses these registers for the 1st 6 args: rdi, rsi, rdx, rcx, r8, r9
 ; we have 2 args syscall # in rdi and the address of the args struct in rsi
 
