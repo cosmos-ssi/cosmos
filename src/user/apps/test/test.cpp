@@ -37,7 +37,7 @@ void writestr(uint64_t serial0_device_handle, const uint8_t* str) {
     while (str[i] != 0) {
         uint8_t c = str[i];
         c = c + 1;
-        //        syscall_serial_writechar(serial0_device_handle, str[i]);
+        syscall_serial_writechar(serial0_device_handle, c);
         i = i + 1;
     }
     syscall_serial_writechar(serial0_device_handle, 'Q');
