@@ -35,7 +35,9 @@ uint8_t init_load(uint8_t* fs_name, uint8_t* binary_name) {
 
     uint16_t text_section = elf_get_section_by_name(file_data, file_len, ELF_SECTION_TEXT);
     ASSERT_NOT_NULL(text_section);
-    kprintf(".text is section %llu\n", text_section);
+    struct elf_section_header* text_section_header = elf_get_section_header(file_data, file_len, text_section);
+    ASSERT_NOT_NULL(text_section_header);
+    kprintf(".text is section %llu at address %#llX\n", text_section, text_section_header->addr);
 
     uint64_t text_size = elf_get_section_size(file_data, file_len, text_section);
     ASSERT_NOT_NULL(text_size);
