@@ -5,11 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
-#ifndef _INIT_H
-#define _INIT_C
+#ifndef _LOADER_H
+#define _LOADER_H
 
+#include <sys/loader/elf.h>
 #include <types.h>
 
-uint8_t init_load(uint8_t* fs_name, uint8_t* binary_name);
+void loader_load(uint8_t* fs_name, uint8_t* binary_name, struct elf_binary* elf_binary);
 
 #endif

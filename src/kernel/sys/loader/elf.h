@@ -16,6 +16,11 @@
 #define ELF_SECTION_BSS ".bss"
 #define ELF_SECTION_DATA ".data"
 
+struct elf_binary {
+    uint8_t* binary;
+    uint32_t len;
+};
+
 struct elf_section_header {
     uint32_t name;
     uint32_t type;
@@ -66,17 +71,18 @@ struct elf_header {
     uint16_t shstrndx;
 };
 
-struct elf_header* elf_get_elf_header(uint8_t* binary, uint32_t len);
-uint8_t elf_is_elf_binary(uint8_t* binary, uint32_t len);
-void elf_dump(uint8_t* binary, uint32_t len);
-uint16_t elf_count_program_headers(uint8_t* binary, uint32_t len);
-uint16_t elf_count_section_headers(uint8_t* binary, uint32_t len);
-struct elf_section_header* elf_get_section_header(uint8_t* binary, uint32_t len, uint16_t idx);
-struct elf_program_header* elf_get_program_header(uint8_t* binary, uint32_t len, uint16_t idx);
-uint8_t* elf_get_section(uint8_t* binary, uint32_t len, uint16_t idx);
-uint64_t elf_get_section_size(uint8_t* binary, uint32_t len, uint16_t idx);
-uint8_t* elf_get_section_name(uint8_t* binary, uint32_t len, uint16_t idx);
-uint16_t elf_get_section_by_name(uint8_t* binary, uint32_t len, uint8_t* section_name);
-uint64_t elf_get_entry(uint8_t* binary, uint32_t len);
-
+struct elf_header* elf_get_elf_header(struct elf_binary* elf_binary);
+uint8_t elf_is_elf_binary(struct elf_binary* elf_binary);
+void elf_dump(struct elf_binary* elf_binary);
+uint16_t elf_count_program_headers(struct elf_binary* elf_binary);
+uint16_t elf_count_section_headers(struct elf_binary* elf_binary);
+struct elf_section_header* elf_get_section_header(struct elf_binary* elf_binary, uint16_t idx);
+struct elf_program_header* elf_get_program_header(struct elf_binary* elf_binary, uint16_t idx);
+uint8_t* elf_get_section(struct elf_binary* elf_binary, uint16_t idx);
+uint64_t elf_get_section_size(struct elf_binary* elf_binary, uint16_t idx);
+uint8_t* elf_get_section_name(struct elf_binary* elf_binary, uint16_t idx);
+uint16_t elf_get_section_by_name(struct elf_binary* elf_binary, uint8_t* section_name);
+uint64_t elf_get_entry(struct elf_binary* elf_binary);
+void elf_delete(struct elf_binary* elf_binary);
+struct elf_binary* elf_new();
 #endif
