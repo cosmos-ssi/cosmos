@@ -9,29 +9,27 @@ global syscall;
 ; therefore rsi (the struct*) needs to be in rdi
 
 syscall:
-    push rdi        ; preserve rdi   
-    push rdx
-    push rcx
+    ; save the "preserve" registers
     push rbx
-    push rsi
-    push r10
-    push r9
-    push r8
+    push rbp
+    push rsp
+    push r12
+    push r13
+    push r14
+    push r15
 
+    ; rax and rdi are scrap registers, so we can change them...
+    ; the syscall will change rcx and r11, those are scrap registers too...
     mov rax, rdi    ; 1st param from userland function is in rdi: the syscall #
-    mov rdi, rsi    ; put the 2nd param from userland function into rbx
-    mov rdx, 0
-    mov r10, 0
-    mov r8, 0
-    mov r9, 0
+    mov rdi, rsi    ; put the 2nd param from userland function into rdi
     syscall
 
-    pop r8
-    pop r9
-    pop r10
-    pop rsi
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rsp
+    pop rbp
     pop rbx
-    pop rcx
-    pop rdx
-    pop rdi         ; restore rdi
+
     ret             ; return value is in rax
