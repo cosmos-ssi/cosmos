@@ -5,7 +5,7 @@ extern "C" {
 
 void writestr(uint64_t serial0_device_handle, const uint8_t* str);
 
-int main(int argc, char* argv[]) {
+uint64_t main(uint64_t argc, uint8_t* argv[]) {
     uint64_t serial0_device_handle = syscall_objectmgr_get_device_by_name("serial0");
 
     writestr(serial0_device_handle, (const uint8_t*)"Welcome to userland\n");

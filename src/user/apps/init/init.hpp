@@ -12,6 +12,8 @@
 #ifndef _INIT_HPP
 #define _INIT_HPP
 
-int main(int argc, char* argv[]);
+#include <cosmos.hpp>
+
+uint64_t main(uint64_t argc, uint8_t* argv[]);
 
 #endif

@@ -10,7 +10,7 @@
 #include <start.h>
 
 // "main" exported by the userland application
-extern int main(int argc, char* argv[]);
+extern uint64_t main(uint64_t argc, uint8_t* argv[]);
 
 // this is the entry point
 void _start() {
