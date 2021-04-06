@@ -14,6 +14,8 @@ extern uint64_t main(uint64_t argc, uint8_t* argv[]);
 
 // this is the entry point
 void _start() {
-    uint64_t ret = main(0, 0);
-    syscall_process_exit(ret);
+    //  uint64_t ret = main(0, 0);
+    //  syscall_process_exit(ret);
+
+    asm volatile("hlt");
 }

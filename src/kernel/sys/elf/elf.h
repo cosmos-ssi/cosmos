@@ -77,4 +77,6 @@ uint8_t* elf_get_section(uint8_t* binary, uint32_t len, uint16_t idx);
 uint64_t elf_get_section_size(uint8_t* binary, uint32_t len, uint16_t idx);
 uint8_t* elf_get_section_name(uint8_t* binary, uint32_t len, uint16_t idx);
 uint16_t elf_get_section_by_name(uint8_t* binary, uint32_t len, uint8_t* section_name);
+uint64_t elf_get_entry(uint8_t* binary, uint32_t len);
+
 #endif

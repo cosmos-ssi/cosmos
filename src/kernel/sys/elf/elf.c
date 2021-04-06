@@ -58,12 +58,20 @@ void elf_dump(uint8_t* binary, uint32_t len) {
 
     kprintf("Program headers %llu\n", elf_count_program_headers(binary, len));
     kprintf("Section headers %llu\n", elf_count_section_headers(binary, len));
-
+    kprintf("Entry point %#llX\n", elf->entry);
     for (uint32_t i = 0; i < elf_count_section_headers(binary, len); i++) {
         uint64_t size = elf_get_section_size(binary, len, i);
         uint8_t* name = elf_get_section_name(binary, len, i);
         kprintf("section %llu %s size %llu\n", i, name, size);
     }
+}
+
+uint64_t elf_get_entry(uint8_t* binary, uint32_t len) {
+    ASSERT_NOT_NULL(binary);
+    ASSERT_NOT_NULL(len);
+    struct elf_header* elf = elf_get_elf_header(binary, len);
+    ASSERT_NOT_NULL(elf);
+    return elf->entry;
 }
 
 /*
@@ -78,12 +86,16 @@ struct elf_header* elf_get_elf_header(uint8_t* binary, uint32_t len) {
 }
 
 uint16_t elf_count_program_headers(uint8_t* binary, uint32_t len) {
+    ASSERT_NOT_NULL(binary);
+    ASSERT_NOT_NULL(len);
     struct elf_header* elf = elf_get_elf_header(binary, len);
     ASSERT_NOT_NULL(elf);
     return elf->phnum;
 }
 
 uint16_t elf_count_section_headers(uint8_t* binary, uint32_t len) {
+    ASSERT_NOT_NULL(binary);
+    ASSERT_NOT_NULL(len);
     struct elf_header* elf = elf_get_elf_header(binary, len);
     ASSERT_NOT_NULL(elf);
     return elf->shnum;
