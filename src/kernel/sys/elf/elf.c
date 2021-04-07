@@ -240,9 +240,9 @@ void elf_parse(struct elf_binary* elf_binary) {
     ASSERT_NOT_NULL(elf_binary->entry_point);
     kprintf("Entry point %#llX\n", elf_binary->entry_point);
 
-    uint8_t* text_data_aka_the_program = elf_get_section(elf_binary, elf_binary->text_section);
-    ASSERT_NOT_NULL(text_data_aka_the_program);
-    debug_show_memblock(text_data_aka_the_program, elf_binary->text_size);
+    elf_binary->text = elf_get_section(elf_binary, elf_binary->text_section);
+    ASSERT_NOT_NULL(elf_binary->text);
+    //   debug_show_memblock(elf_binary->text, elf_binary->text_size);
 }
 
 struct elf_binary* elf_load_file(uint8_t* fs_name, uint8_t* binary_name) {
