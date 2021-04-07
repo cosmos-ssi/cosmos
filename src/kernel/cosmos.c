@@ -158,7 +158,6 @@ void CosmOS() {
     /*
     * start telnet
     */
-
     struct object* telnet = objectmgr_find_object_by_name("telnet0");
     kprintf("\n");
     kprintf("***** Starting Kernel Telnet *****\n");

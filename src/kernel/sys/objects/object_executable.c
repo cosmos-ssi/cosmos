@@ -31,6 +31,9 @@ object_handle_t object_executable_create_from_presentation(object_handle_t pres_
 
     exe_obj = (object_executable_t*)kmalloc(sizeof(obj_executable_t));
 
+    /*
+    * set name
+    */
     name_len = strlen(node->name);
     exe_obj->exe_name = (char*)kmalloc(sizeof(char) * (name_len + 1));
     strncpy((uint8_t*)exe_obj->exe_name, (uint8_t*)node->name, name_len + 1);
