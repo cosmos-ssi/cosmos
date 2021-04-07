@@ -179,7 +179,7 @@ void CosmOS() {
 */
 void load_init_binary() {
     uint8_t init_binary_name[] = {"test.elf"};
-    struct elf_binary* bin = elf_load("fs0", init_binary_name);
+    struct elf_binary* bin = elf_load_file("fs0", init_binary_name);
     kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, "fs0");
     elf_delete(bin);
 }

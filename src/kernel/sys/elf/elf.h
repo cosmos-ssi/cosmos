@@ -16,6 +16,8 @@
 #define ELF_SECTION_BSS ".bss"
 #define ELF_SECTION_DATA ".data"
 
+struct filesystem_node;
+
 struct elf_binary {
     uint8_t* binary;
     uint32_t len;
@@ -89,6 +91,7 @@ uint16_t elf_get_section_by_name(struct elf_binary* elf_binary, uint8_t* section
 uint64_t elf_get_entry(struct elf_binary* elf_binary);
 void elf_delete(struct elf_binary* elf_binary);
 struct elf_binary* elf_new();
-struct elf_binary* elf_load(uint8_t* fs_name, uint8_t* binary_name);
+struct elf_binary* elf_load_file(uint8_t* fs_name, uint8_t* binary_name);
+struct elf_binary* elf_load_node(struct filesystem_node* fs_node);
 
 #endif

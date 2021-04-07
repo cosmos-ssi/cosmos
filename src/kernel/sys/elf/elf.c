@@ -12,6 +12,7 @@
 #include <sys/fs/fs_facade.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/string/string.h>
 
 uint8_t ELF_MAGIC[] = {0x7F, 'E', 'L', 'F'};
@@ -223,21 +224,7 @@ struct elf_binary* elf_new() {
     return (struct elf_binary*)kmalloc(sizeof(struct elf_binary));
 }
 
-struct elf_binary* elf_load(uint8_t* fs_name, uint8_t* binary_name) {
-    ASSERT_NOT_NULL(fs_name);
-    ASSERT_NOT_NULL(binary_name);
-    struct elf_binary* elf_binary = elf_new();
-
-    elf_binary->len = 0;
-    elf_binary->binary = file_util_read_file(fs_name, binary_name, &(elf_binary->len));
-    ASSERT_NOT_NULL(elf_binary->len);
-    ASSERT_NOT_NULL(elf_binary->binary);
-
-    uint8_t is_elf = elf_is_elf_binary(elf_binary);
-    if (1 != is_elf) {
-        kprintf("'%s' is not an ELF binary\n", binary_name);
-        PANIC("oops!");
-    }
+void elf_parse(struct elf_binary* elf_binary) {
 
     elf_binary->text_section = elf_get_section_by_name(elf_binary, ELF_SECTION_TEXT);
     ASSERT_NOT_NULL(elf_binary->text_section);
@@ -256,6 +243,46 @@ struct elf_binary* elf_load(uint8_t* fs_name, uint8_t* binary_name) {
     uint8_t* text_data_aka_the_program = elf_get_section(elf_binary, elf_binary->text_section);
     ASSERT_NOT_NULL(text_data_aka_the_program);
     debug_show_memblock(text_data_aka_the_program, elf_binary->text_size);
+}
+
+struct elf_binary* elf_load_file(uint8_t* fs_name, uint8_t* binary_name) {
+    ASSERT_NOT_NULL(fs_name);
+    ASSERT_NOT_NULL(binary_name);
+    struct elf_binary* elf_binary = elf_new();
+
+    elf_binary->len = 0;
+    elf_binary->binary = file_util_read_file(fs_name, binary_name, &(elf_binary->len));
+    ASSERT_NOT_NULL(elf_binary->len);
+    ASSERT_NOT_NULL(elf_binary->binary);
+
+    uint8_t is_elf = elf_is_elf_binary(elf_binary);
+    if (1 != is_elf) {
+        kprintf("'%s' is not an ELF binary\n", binary_name);
+        PANIC("oops!");
+    }
+
+    elf_parse(elf_binary);
+
+    return elf_binary;
+}
+
+struct elf_binary* elf_load_node(struct filesystem_node* fs_node) {
+    ASSERT_NOT_NULL(fs_node);
+    struct elf_binary* elf_binary = elf_new();
+
+    elf_binary->len = fsfacade_size(fs_node);
+    elf_binary->binary = kmalloc(elf_binary->len);
+    fsfacade_read(fs_node, elf_binary->binary, elf_binary->len);
+
+    ASSERT_NOT_NULL(elf_binary->len);
+    ASSERT_NOT_NULL(elf_binary->binary);
+    uint8_t is_elf = elf_is_elf_binary(elf_binary);
+    if (1 != is_elf) {
+        kprintf("'%s' is not an ELF binary\n", fs_node->name);
+        PANIC("oops!");
+    }
+
+    elf_parse(elf_binary);
 
     return elf_binary;
 }

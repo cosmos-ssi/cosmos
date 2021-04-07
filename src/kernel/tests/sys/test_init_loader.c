@@ -17,7 +17,7 @@ void test_init_loader() {
     // boot disk.....
     uint8_t devicename[] = {"disk0"};
     uint8_t init_file_name[] = {"test.elf"};
-    struct elf_binary* bin = elf_load(devicename, init_file_name);
+    struct elf_binary* bin = elf_load_file(devicename, init_file_name);
     kprintf("Loaded '%s' ELF binary\n", init_file_name);
     elf_delete(bin);
 }
