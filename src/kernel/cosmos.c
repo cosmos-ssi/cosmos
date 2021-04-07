@@ -9,13 +9,13 @@
 #include <obj/logical/fs/initrd/initrd.h>
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
+#include <sys/elf/elf.h>
 #include <sys/fs/file_util.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/gui/gui.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/loader/loader.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_console.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
@@ -179,8 +179,7 @@ void CosmOS() {
 */
 void load_init_binary() {
     uint8_t init_binary_name[] = {"test.elf"};
-    struct elf_binary* bin = elf_new();
-    loader_load("fs0", init_binary_name, bin);
+    struct elf_binary* bin = elf_load("fs0", init_binary_name);
     kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, "fs0");
     elf_delete(bin);
 }

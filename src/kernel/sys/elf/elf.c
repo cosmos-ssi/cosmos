@@ -7,9 +7,11 @@
 
 #include <sys/debug/assert.h>
 #include <sys/debug/debug.h>
+#include <sys/elf/elf.h>
+#include <sys/fs/file_util.h>
+#include <sys/fs/fs_facade.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/loader/elf.h>
 #include <sys/string/string.h>
 
 uint8_t ELF_MAGIC[] = {0x7F, 'E', 'L', 'F'};
@@ -219,4 +221,41 @@ void elf_delete(struct elf_binary* elf_binary) {
 
 struct elf_binary* elf_new() {
     return (struct elf_binary*)kmalloc(sizeof(struct elf_binary));
+}
+
+struct elf_binary* elf_load(uint8_t* fs_name, uint8_t* binary_name) {
+    ASSERT_NOT_NULL(fs_name);
+    ASSERT_NOT_NULL(binary_name);
+    struct elf_binary* elf_binary = elf_new();
+
+    elf_binary->len = 0;
+    elf_binary->binary = file_util_read_file(fs_name, binary_name, &(elf_binary->len));
+    ASSERT_NOT_NULL(elf_binary->len);
+    ASSERT_NOT_NULL(elf_binary->binary);
+
+    uint8_t is_elf = elf_is_elf_binary(elf_binary);
+    if (1 != is_elf) {
+        kprintf("'%s' is not an ELF binary\n", binary_name);
+        PANIC("oops!");
+    }
+
+    elf_binary->text_section = elf_get_section_by_name(elf_binary, ELF_SECTION_TEXT);
+    ASSERT_NOT_NULL(elf_binary->text_section);
+    struct elf_section_header* text_section_header = elf_get_section_header(elf_binary, elf_binary->text_section);
+    ASSERT_NOT_NULL(text_section_header);
+    kprintf(".text is section %llu at address %#llX\n", elf_binary->text_section, text_section_header->addr);
+
+    elf_binary->text_size = elf_get_section_size(elf_binary, elf_binary->text_section);
+    ASSERT_NOT_NULL(elf_binary->text_size);
+    kprintf(".text section length %llu\n", elf_binary->text_size);
+
+    elf_binary->entry_point = elf_get_entry(elf_binary);
+    ASSERT_NOT_NULL(elf_binary->entry_point);
+    kprintf("Entry point %#llX\n", elf_binary->entry_point);
+
+    uint8_t* text_data_aka_the_program = elf_get_section(elf_binary, elf_binary->text_section);
+    ASSERT_NOT_NULL(text_data_aka_the_program);
+    debug_show_memblock(text_data_aka_the_program, elf_binary->text_size);
+
+    return elf_binary;
 }

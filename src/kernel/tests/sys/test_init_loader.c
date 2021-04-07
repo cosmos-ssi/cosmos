@@ -6,8 +6,8 @@
 // ****************************************************************
 
 #include <sys/debug/assert.h>
+#include <sys/elf/elf.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/loader/loader.h>
 #include <tests/sys/test_init_loader.h>
 #include <types.h>
 
@@ -17,8 +17,7 @@ void test_init_loader() {
     // boot disk.....
     uint8_t devicename[] = {"disk0"};
     uint8_t init_file_name[] = {"test.elf"};
-    struct elf_binary* bin = elf_new();
-    loader_load(devicename, init_file_name, bin);
+    struct elf_binary* bin = elf_load(devicename, init_file_name);
     kprintf("Loaded '%s' ELF binary\n", init_file_name);
     elf_delete(bin);
 }

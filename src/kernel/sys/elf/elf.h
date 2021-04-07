@@ -19,6 +19,10 @@
 struct elf_binary {
     uint8_t* binary;
     uint32_t len;
+    uint64_t entry_point;
+    uint16_t text_section;
+    uint64_t text_size;
+    uint8_t* text;
 };
 
 struct elf_section_header {
@@ -85,4 +89,6 @@ uint16_t elf_get_section_by_name(struct elf_binary* elf_binary, uint8_t* section
 uint64_t elf_get_entry(struct elf_binary* elf_binary);
 void elf_delete(struct elf_binary* elf_binary);
 struct elf_binary* elf_new();
+struct elf_binary* elf_load(uint8_t* fs_name, uint8_t* binary_name);
+
 #endif
