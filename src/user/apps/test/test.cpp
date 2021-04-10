@@ -5,7 +5,7 @@ extern "C" {
 
 void writestr(uint64_t serial0_device_handle, const uint8_t* str);
 
-int main(int argc, char* argv[]) {
+uint64_t main(uint64_t argc, uint8_t* argv[]) {
     uint64_t serial0_device_handle = syscall_objectmgr_get_device_by_name("serial0");
 
     writestr(serial0_device_handle, (const uint8_t*)"Welcome to userland\n");
@@ -27,19 +27,10 @@ int main(int argc, char* argv[]) {
 }
 
 void writestr(uint64_t serial0_device_handle, const uint8_t* str) {
-    syscall_serial_writechar(serial0_device_handle, 'X');
-
-    uint64_t len = 10;
-    for (int i = 0; i < len; i++) {
-    }
-
     uint64_t i = 0;
-    i = i + 1;
-    // while (str[i] != 0) {
-    //   uint8_t c = str[i];
-    //   c = c + 1;
-    //        syscall_serial_writechar(serial0_device_handle, str[i]);
-    //    i = i + 1;
-    // }
-    syscall_serial_writechar(serial0_device_handle, 'Q');
+    while (str[i] != 0) {
+        uint8_t c = str[i];
+        syscall_serial_writechar(serial0_device_handle, c);
+        i = i + 1;
+    }
 }

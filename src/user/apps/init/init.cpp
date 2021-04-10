@@ -16,7 +16,7 @@
 /*
 * we are in user-land context here.  This is the entry point to userland that the kernel code calls
 */
-int main(int argc, char* argv[]) {
+uint64_t main(uint64_t argc, uint8_t* argv[]) {
     SerialObject* serialDevice = (SerialObject*)Object::find(INIT_SERIAL_DEVICE);
     if (0 != serialDevice) {
         serialDevice->writeln("Hello from user land");

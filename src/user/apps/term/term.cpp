@@ -52,7 +52,7 @@ void Term::run() {
     }
 }
 
-int main(int argc, char* argv[]) {
+uint64_t main(uint64_t argc, uint8_t* argv[]) {
     //   Term* term = new Term();
     // term->run();
     return 0;

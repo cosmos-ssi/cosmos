@@ -9,10 +9,10 @@
 #include <obj/logical/fs/initrd/initrd.h>
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
+#include <sys/elf/elf.h>
 #include <sys/fs/file_util.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/gui/gui.h>
-#include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
@@ -158,7 +158,6 @@ void CosmOS() {
     /*
     * start telnet
     */
-
     struct object* telnet = objectmgr_find_object_by_name("telnet0");
     kprintf("\n");
     kprintf("***** Starting Kernel Telnet *****\n");
@@ -179,8 +178,9 @@ void CosmOS() {
 */
 void load_init_binary() {
     uint8_t init_binary_name[] = {"test.elf"};
-    init_load("fs0", init_binary_name);
+    struct elf_binary* bin = elf_load_file("fs0", init_binary_name);
     kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, "fs0");
+    elf_delete(bin);
 }
 
 /*

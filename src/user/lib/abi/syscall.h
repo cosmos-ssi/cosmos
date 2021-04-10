@@ -42,7 +42,7 @@ struct syscall_args {
     uint64_t arg1;
     uint64_t arg2;
     uint64_t arg3;
-} __attribute__((packed));
+} __attribute__((packed, aligned(8)));
 
 uint64_t syscall(uint64_t syscall, struct syscall_args* args);
 
