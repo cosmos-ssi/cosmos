@@ -27,8 +27,8 @@ add_subdirectory(src/img/initrd)
 add_subdirectory(src/img/hda)
 
 # set up convenience target to boot in qemu (if available)
-find_program(QEMU qemu-system-x86_64)
-if(QEMU)
+find_program(QEMU_BIN qemu-system-x86_64)
+if(QEMU_BIN)
   # cmake-format: off
   set (QEMU_ARGS 
     -accel tcg,thread=single                               
@@ -56,9 +56,9 @@ if(QEMU)
   # cmake-format: on
 
   add_custom_target(
-    run-qemu
-    COMMAND ${QEMU} ${QEMU_ARGS}
+    qemu
+    COMMAND ${QEMU_BIN} ${QEMU_ARGS}
     BYPRODUCTS qemu.log net0.dat
   )
-  add_dependencies(run-qemu hda)
+  add_dependencies(qemu hda)
 endif()
