@@ -17,15 +17,21 @@ file(
 )
 list(REMOVE_ITEM GENERIC_SRCS ${_IGNORE}})
 
+# set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+# set(CMAKE_C_LINK_EXECUTABLE
+#     "<${CMAKE_LD}> <FLAGS> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> <OBJECTS>  -o <TARGET> <LINK_LIBRARIES>"
+# )
+
 # compile the kernel into an archive
-add_library(kernel_archive STATIC ${PLATFORM_SRCS} ${GENERIC_SRCS})
-target_include_directories(kernel_archive PRIVATE .)
+add_executable(kernel ${PLATFORM_SRCS} ${GENERIC_SRCS})
+target_include_directories(kernel PRIVATE .)
 target_compile_options(
-  kernel_archive
-  PRIVATE $<$<COMPILE_LANGUAGE:C>:-fPIC>
-          $<$<COMPILE_LANGUAGE:C>:-O0>
+  kernel
+  PRIVATE $<$<COMPILE_LANGUAGE:C>:-O0>
           $<$<COMPILE_LANGUAGE:C>:-gdwarf-4>
-          $<$<COMPILE_LANGUAGE:C>:-c>
+          $<$<COMPILE_LANGUAGE:C>:-fPIC>
+          # $<$<COMPILE_LANGUAGE:C>:-c>
+          # $<$<COMPILE_LANGUAGE:C>:-shared>
           $<$<COMPILE_LANGUAGE:C>:-m64>
           $<$<COMPILE_LANGUAGE:C>:-mno-red-zone>
           $<$<COMPILE_LANGUAGE:C>:-ffreestanding>
@@ -40,50 +46,25 @@ target_compile_options(
 
 ## set compile definitions
 ## CMAKE_HOST_SYSTEM_NAME resolves to Linux or Darwin depending on build system
-target_compile_definitions(kernel_archive PRIVATE COMPILE_PLATFORM_${CMAKE_HOST_SYSTEM_NAME})
-target_compile_definitions(kernel_archive PRIVATE TARGET_PLATFORM_${CMAKE_SYSTEM_PROCESSOR})
+target_compile_definitions(kernel PRIVATE COMPILE_PLATFORM_${CMAKE_HOST_SYSTEM_NAME})
+target_compile_definitions(kernel PRIVATE TARGET_PLATFORM_${CMAKE_SYSTEM_PROCESSOR})
 
-# link the kernel archive into an elf file
-set(LD_FLAGS
-    -m
-    elf_x86_64
-    -nostdlib
-    --no-relax
-)
-set(LINKER_SCRIPT ${PROJECT_SOURCE_DIR}/cosmos.ld)
-set(MAP_FILE ${CMAKE_CURRENT_BINARY_DIR}/cosmos.map)
-set(ELF_FILE ${CMAKE_CURRENT_BINARY_DIR}/cosmos.elf)
-
-add_custom_target(
-  kernel_elf ALL
-  BYPRODUCTS ${ELF_FILE} ${MAPFILE}
-  COMMAND ${CMAKE_LD} ${LD_FLAGS} -T ${LINKER_SCRIPT} -Map ${MAP_FILE} -o ${ELF_FILE} $<TARGET_FILE:kernel_archive>
-  DEPENDS kernel_archive
-  COMMENT "Building ${ELF_FILE}"
-  VERBATIM
-)
-
-# objcopy the elf into a bin file
-set(OBJCOPY_FLAGS -O binary)
-set(BIN_FILE ${CMAKE_CURRENT_BINARY_DIR}/cosmos.bin)
-
-add_custom_target(
-  kernel_bin ALL
-  BYPRODUCTS ${BIN_FILE}
-  COMMAND ${CMAKE_OBJCOPY} ${OBJCOPY_FLAGS} ${ELF_FILE} ${BIN_FILE}
-  DEPENDS kernel_elf
-  COMMENT "Building ${BIN_FILE}"
-  VERBATIM
-)
-
-# Create a library target for the kernel bin
-add_library(
+# configure the linker.
+# the -Wl syntax is used to pass flags directly to the linker, even if gcc doesn't understand them
+target_link_options(
   kernel
-  STATIC
-  IMPORTED
-  GLOBAL
+  PRIVATE
+  -v
+  -Wl,-nostdlib
+  -Wl,-T,${PROJECT_SOURCE_DIR}/cosmos.ld
+  -Wl,-Map,${CMAKE_CURRENT_BINARY_DIR}/cosmos.map
+  -Wl,--no-relax
+  -Wl,--start-group
 )
-add_dependencies(kernel kernel_bin)
 
-# Specify where the library is located
-set_target_properties(kernel PROPERTIES IMPORTED_LOCATION ${BIN_FILE})
+# add_custom_command(
+#     TARGET kernel.${TUTORIAL}.${BOARD} POST_BUILD
+#     COMMAND ${CMAKE_OBJCOPY} ./kernel.${TUTORIAL}.${BOARD}${CMAKE_EXECUTABLE_SUFFIX} -O binary ./kernel.${TUTORIAL}.${BOARD}.img
+#     COMMAND ${CMAKE_OBJDUMP} -l -S -D ./kernel.${TUTORIAL}.${BOARD}${CMAKE_EXECUTABLE_SUFFIX} > ./kernel.${TUTORIAL}.${BOARD}.asm
+#     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+#     COMMENT "Convert the ELF output file to a binary image" )
