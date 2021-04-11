@@ -49,6 +49,7 @@ target_link_options(
   PRIVATE
   -nostdlib
   -nolibc
+  -nodefaultlibs
   -Wl,-T,${PROJECT_SOURCE_DIR}/cosmos.ld
   -Wl,-Map,${CMAKE_CURRENT_BINARY_DIR}/cosmos.map
   -Wl,--no-relax
