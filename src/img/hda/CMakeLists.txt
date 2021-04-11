@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(hda)
 
-set(HDA_FILE hda.img)
+set(HDA_FILE ${CMAKE_BINARY_DIR}/hda.img)
 
 # define a custom command to concatenate the object files in sequence into a bootimage.
 add_custom_command(

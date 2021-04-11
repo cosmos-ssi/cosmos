@@ -56,11 +56,12 @@ target_link_options(
 )
 
 # Extract the binary image from the ELF file to a kernel image.
+set(ELF_FILE ${CMAKE_BINARY_DIR}/kernel.elf)
 add_custom_command(
   TARGET kernel
   POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:kernel> kernel.elf
-  COMMAND ${CMAKE_OBJCOPY} kernel.elf -O binary $<TARGET_FILE:kernel>
-  BYPRODUCTS kernel.elf
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:kernel> ${ELF_FILE}
+  COMMAND ${CMAKE_OBJCOPY} ${ELF_FILE} -O binary $<TARGET_FILE:kernel>
+  BYPRODUCTS ${ELF_FILE}
   COMMENT "Convert the ELF output file to a binary image"
 )

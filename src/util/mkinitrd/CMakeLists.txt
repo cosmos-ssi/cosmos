@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(initrd LANGUAGES C)
+project(mkinitrd LANGUAGES C)
 
 file(
   GLOB_RECURSE
@@ -9,5 +9,5 @@ file(
   "*.h"
 )
 
-# build target
-add_library(initrd STATIC ${SRCS})
+# build the initrd utility
+add_executable(mkinitrd ${SRCS})
