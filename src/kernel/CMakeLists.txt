@@ -43,6 +43,7 @@ target_compile_definitions(libkernel PRIVATE TARGET_PLATFORM_${CMAKE_SYSTEM_PROC
 add_executable(kernel cosmos.c)
 target_include_directories(kernel PRIVATE .)
 target_link_libraries(kernel libkernel)
+set_target_properties(kernel PROPERTIES SUFFIX .bin)
 target_link_options(
   kernel
   PRIVATE
@@ -57,7 +58,8 @@ target_link_options(
 add_custom_command(
   TARGET kernel
   POST_BUILD
-  COMMAND ${CMAKE_OBJCOPY} $<TARGET_FILE:kernel> -O binary ./cosmos.bin
-  # WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:kernel> kernel.elf
+  COMMAND ${CMAKE_OBJCOPY} kernel.elf -O binary $<TARGET_FILE:kernel>
+  BYPRODUCTS kernel.elf
   COMMENT "Convert the ELF output file to a binary image"
 )
