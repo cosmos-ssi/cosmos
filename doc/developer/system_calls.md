@@ -25,4 +25,6 @@ structure "under the hood."
 ## System Call Numbers
 Call mnemonic|#|Handler function and file|Arguments
 -------------|-|-------------------------|---------
-exit|0|sys/syscall/exit.c: sys_exit()|uint64_t exit_code
+exit|0|sys/syscall/syscalls.c: syscall_exit()|uint64_t exit_code
+print_console|1|sys/syscall/syscalls.c: syscall_print_console()|char *buf
+sleep|5|sys/syscall/syscalls.c: syscall_sleep()|uint64_t secs
