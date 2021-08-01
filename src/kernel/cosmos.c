@@ -137,8 +137,8 @@ void CosmOS() {
 
     load_init_binary();
 
-    gui_init();
-    gui_draw();
+    /*gui_init();
+    gui_draw();*/
 
     object_handle_t idle_kernel_work;
     object_handle_t idle_process;
