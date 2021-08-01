@@ -11,7 +11,6 @@
 #include <tests/fs/test_swap.h>
 #include <tests/fs/test_voh.h>
 #include <tests/obj/test_ata.h>
-#include <tests/obj/test_bda.h>
 #include <tests/obj/test_kernelmap.h>
 #include <tests/obj/test_null.h>
 #include <tests/obj/test_ramdisk.h>
@@ -44,7 +43,6 @@ void tests_run() {
     test_voh();
     test_devfs();
     test_gpt();
-    test_bda();
     test_smbios();
     test_ramdisk();
     test_swap();

@@ -39,7 +39,6 @@ void objecttypes_init() {
     objecttypes_add(objecttype_new("disk", OBJECT_TYPE_DISK));
     objecttypes_add(objecttype_new("parallel", OBJECT_TYPE_PARALLEL));
     objecttypes_add(objecttype_new("bda", OBJECT_TYPE_BDA));
-    objecttypes_add(objecttype_new("acpi", OBJECT_TYPE_ACPI));
     objecttypes_add(objecttype_new("swap", OBJECT_TYPE_SWAP));
     objecttypes_add(objecttype_new("fs", OBJECT_TYPE_FILESYSTEM));
     objecttypes_add(objecttype_new("pt", OBJECT_TYPE_PARTITION_TABLE));

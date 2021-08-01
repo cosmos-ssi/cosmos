@@ -6,7 +6,6 @@
 // ****************************************************************
 
 #include <obj/logical/virtio/virtio.h>
-#include <obj/x86-64/acpi/acpi.h>
 #include <obj/x86-64/ata/ata_controller.h>
 #include <obj/x86-64/bda/bda.h>
 #include <obj/x86-64/bga/bga.h>
@@ -118,7 +117,6 @@ void objectmgr_init_objects() {
      * BDA, EBDA
      */
     objectregistry_iterate_type(OBJECT_TYPE_BDA, obj_initIterator);
-    objectregistry_iterate_type(OBJECT_TYPE_ACPI, obj_initIterator);
     /*
      * PIC first
      */
@@ -251,7 +249,6 @@ void objectmgr_register_objects() {
     pci_ehci_objectmgr_register_objects();
     parallel_objectmgr_register_objects();
     bda_objectmgr_register_objects();
-    acpi_objectmgr_register_objects();
     smbios_objectmgr_register_objects();
     kernelmap_objectmgr_register_objects();
 }

@@ -36,7 +36,6 @@
 #define OBJECT_TYPE_DISK 0x15             // disk0 objecttype_block
 #define OBJECT_TYPE_PARALLEL 0x16         // parallel0 objecttype_parallel
 #define OBJECT_TYPE_BDA 0x17              // bda0
-#define OBJECT_TYPE_ACPI 0x18             // acpi0
 #define OBJECT_TYPE_SWAP 0x19             // swap0 objecttype_swap
 #define OBJECT_TYPE_FILESYSTEM 0x1A       // fs0 objecttype_filesytem
 #define OBJECT_TYPE_PARTITION_TABLE 0x1B  // pt0 objecttype_part_table
