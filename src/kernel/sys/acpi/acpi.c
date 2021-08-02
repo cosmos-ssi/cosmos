@@ -5,6 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/acpi/xsdt.h>
+
 void acpi_init() {
     return;
 }
