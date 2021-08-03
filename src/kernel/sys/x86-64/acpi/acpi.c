@@ -5,15 +5,20 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/acpi/xsdt.h>
-#include <sys/string/string.h>
+#include <sys/debug/assert.h>
+#include <sys/kprintf/kprintf.h>
+#include <sys/panic/panic.h>
+#include <sys/x86-64/acpi/xsdt.h>
+#include <types.h>
 
-rsdp_t* find_rsdp_address() {
-    /* Returns address of RSDP struct--NOT address of RSDT/XSDT.  Read the RSDP
-     * struct to find that.
-     */
+void acpi_init() {
+    rsdp_t* rsdp;
 
-    // RSDP can be found in one of two areas--either the first KB of the extended BIOS data area
+    kprintf("\tSearching for RSDP...");
 
-    return 0;
+    rsdp = find_rsdp_address();
+    ASSERT_NOT_NULL(rsdp);
+
+    kprintf("found at 0x%llX\n", (uint64_t)rsdp);
+    return;
 }
