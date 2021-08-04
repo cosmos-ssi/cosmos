@@ -6,7 +6,7 @@
  *****************************************************************/
 
 #include <sys/string/mem.h>
-#include <sys/x86-64/acpi/xsdt.h>
+#include <sys/x86-64/acpi/rsdt.h>
 #include <sys/x86-64/mm/pagetables.h>
 
 rsdp_t* find_rsdp_address() {

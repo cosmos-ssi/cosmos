@@ -5,8 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#ifndef _XSDT_H
-#define _XSDT_H
+#ifndef _RSDT_H
+#define _RSDT_H
 
 #include <types.h>
 
