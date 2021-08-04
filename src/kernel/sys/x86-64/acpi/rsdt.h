@@ -19,22 +19,22 @@
 #define RSDP_SEARCH_BASE 0xE0000
 #define RSDP_SEARCH_TOP 0xFFFFF
 
-typedef struct rsdp_t {
+typedef struct acpi_rsdp_t {
     char signature[8];
     uint8_t checksum;
     char oem_id[6];
     uint8_t revision;
     uint32_t rsdp_address;
-} __attribute__((packed)) rsdp_t;
+} __attribute__((packed)) acpi_rsdp_t;
 
-typedef struct rsdp_2_t {
-    rsdp_t rsdp;
+typedef struct acpi_rsdp_2_t {
+    acpi_rsdp_t rsdp;
     uint32_t length;
     uint64_t xsdt_address;
     uint8_t extended_checksum;
     uint8_t reserved[3];
-} __attribute__((packed)) rsdp_2_t;
+} __attribute__((packed)) acpi_rsdp_2_t;
 
-rsdp_t* find_rsdp_address();
+acpi_rsdp_t* find_rsdp_address();
 
 #endif

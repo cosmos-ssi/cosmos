@@ -9,7 +9,7 @@
 #include <sys/x86-64/acpi/rsdt.h>
 #include <sys/x86-64/mm/pagetables.h>
 
-rsdp_t* find_rsdp_address() {
+acpi_rsdp_t* find_rsdp_address() {
     /* Returns PHYSICAL address of RSDP struct--NOT address of RSDT/XSDT.  Read the RSDP
      * struct to find that.
      */
@@ -24,13 +24,13 @@ rsdp_t* find_rsdp_address() {
     for (i = EBDA_BASE; i < (EBDA_BASE + 1024); i += 16) {
         // We have to use memcmp and not str(n)cmp because the signature is not null-terminated
         if (!memcmp(CONV_PHYS_ADDR((void*)i), RSDP_SIGNATURE, 8)) {
-            return (rsdp_t*)i;
+            return (acpi_rsdp_t*)i;
         }
     }
 
     for (i = RSDP_SEARCH_BASE; i < RSDP_SEARCH_TOP; i += 16) {
         if (!memcmp(CONV_PHYS_ADDR((void*)i), RSDP_SIGNATURE, 8)) {
-            return (rsdp_t*)i;
+            return (acpi_rsdp_t*)i;
         }
     }
 
