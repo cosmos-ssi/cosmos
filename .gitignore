@@ -87,3 +87,4 @@ src/mk/qemu.mk~
 /src/user/mkroot/.rootfs
 /doc/doxygen
 src/kernel/gdb.script
+.vscode/c_cpp_properties.json
