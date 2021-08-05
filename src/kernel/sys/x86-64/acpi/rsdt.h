@@ -35,6 +35,19 @@ typedef struct acpi_rsdp_2_t {
     uint8_t reserved[3];
 } __attribute__((packed)) acpi_rsdp_2_t;
 
+typedef struct acpi_sdt_header_t{
+    char signature[4];
+    uint32_t length;
+    uint8_t revision;
+    uint8_t checksum;
+    char oem_id[6];
+    char oem_table_id[8];
+    uint32_t oem_revision;
+    uint32_t creator_id;
+    uint32_t creator_revision;
+    uint32_t entries[];
+} __attribute__((packed)) acpi_sdt_header_t;
+
 acpi_rsdp_t* find_rsdp_address();
 
 #endif
