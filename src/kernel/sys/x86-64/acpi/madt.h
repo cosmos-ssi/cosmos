@@ -5,15 +5,17 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#ifndef _ACPI_H
-#define _ACPI_H
+#ifndef _MADT_H
+#define _MADT_H
 
-typedef enum acpi_table_types_t { RSDP, RSDT, XSDT, MADT } acpi_table_types_t;
+#include <sys/x86-64/acpi/acpi.h>
+#include <sys/x86-64/acpi/rsdt.h>
+#include <types.h>
 
-// These must be in the same order as their respective types are in
-// acpi_table_types_t
-char* acpi_table_signatures[] = {"RSD PTR ", "RSDT", "XSDT", "MADT"};
-
-void acpi_init();
+typedef struct acpi_madt_t {
+    acpi_sdt_header_t header;
+    uint32_t local_apic_address;
+    uint32_t flags;
+} __attribute__((packed)) acpi_madt_t;
 
 #endif

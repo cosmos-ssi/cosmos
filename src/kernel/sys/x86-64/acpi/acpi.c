@@ -8,8 +8,13 @@
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
+#include <sys/x86-64/acpi/acpi.h>
 #include <sys/x86-64/acpi/rsdt.h>
 #include <types.h>
+
+void* acpi_find_table(acpi_table_types_t type) {
+    return 0;
+}
 
 void acpi_init() {
     acpi_rsdp_t* rsdp;
