@@ -19,7 +19,7 @@ void acpi_init() {
 
     kprintf("\tSearching for RSDP...");
 
-    rsdp = find_rsdp_address();
+    rsdp = acpi_find_rsdp_address();
     ASSERT_NOT_NULL(rsdp);
 
     kprintf("found at 0x%llX\n", (uint64_t)rsdp);
@@ -30,24 +30,29 @@ void acpi_init() {
     if (rsdp->revision == 2) {
         kprintf("\tThis is an ACPI 2.0+ RSDP\n");
         rsdp_2 = (acpi_rsdp_2_t*)rsdp;
-    } else {
-        kprintf("\tThis is an ACPI 1.0 RSDP\n");
-    }
 
-    // Whether it's a 32-bit RSDP or 64-bit XSDP, because this is a 64-bit OS
-    // it'll be stored within the kernel in a pointer of the same size.
-
-    if (rsdp_2) {
-        rsdt = (acpi_sdt_t)(rsdp_2->xsdt_address);
+        // This is what the value of the length field in the SDT is divided by
+        // to get the number of indices into the entries field.
         divisor = SDT_ENTRY_DIVISOR_XSDT;
+
+        // Farther down we print a diagnostic message with the address of the
+        // root SDT; we go ahead and print the initial "X" (for XSDT) or "R"
+        // (for RSDT) here, as appropriate, so we don't have to do another
+        // comparison later on.
         kprintf("\tX");
     } else {
-        rsdt = (acpi_sdt_t)(uint64_t)(rsdp->rsdt_address);
+        kprintf("\tThis is an ACPI 1.0 RSDP\n");
         divisor = SDT_ENTRY_DIVISOR_RSDT;
         kprintf("\tR");
     }
 
+#define RSDP (rsdp_2 ? (void*)rsdp_2 : (void*)rsdp)
+
+    rsdt = acpi_get_rsdt(RSDP);
+
     kprintf("SDT at 0x%llX\n", rsdt);
+
+#undef RSDP
 
     return;
 }

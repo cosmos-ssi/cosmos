@@ -9,7 +9,7 @@
 #include <sys/x86-64/acpi/rsdt.h>
 #include <sys/x86-64/mm/pagetables.h>
 
-acpi_rsdp_t* find_rsdp_address() {
+acpi_rsdp_t* acpi_find_rsdp_address() {
     /* Returns PHYSICAL address of RSDP struct--NOT address of RSDT/XSDT.  Read the RSDP
      * struct to find that.
      */
@@ -35,4 +35,16 @@ acpi_rsdp_t* find_rsdp_address() {
     }
 
     return 0;  // RSDP not found
+}
+
+acpi_sdt_t acpi_get_rsdt(void* rsdp) {
+
+    if (((acpi_rsdp_t*)rsdp)->revision == 2) {
+        // cast to a rsdp_2, return xsdt_address cast to a pointer to a sdt
+        return (acpi_sdt_t)((acpi_rsdp_2_t*)rsdp)->xsdt_address;
+    } else {
+        // cast to a rsdp, access 32-bit rsdt_address, cast rsdt_address to a
+        // 64-bit integer, then cast this to a pointer to a sdt
+        return (acpi_sdt_t)((uint64_t)((acpi_rsdp_t*)rsdp)->rsdt_address);
+    }
 }

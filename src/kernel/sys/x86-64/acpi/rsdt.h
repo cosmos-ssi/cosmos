@@ -61,6 +61,7 @@ typedef struct acpi_xsdt_t {
     uint64_t entries[];
 } __attribute__((packed)) acpi_xsdt_t;
 
-acpi_rsdp_t* find_rsdp_address();
+acpi_rsdp_t* acpi_find_rsdp_address();
+acpi_sdt_t acpi_get_rsdt(void* rsdp);
 
 #endif
