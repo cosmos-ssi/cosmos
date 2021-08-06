@@ -14,6 +14,7 @@
 void acpi_init() {
     acpi_rsdp_t* rsdp;
     acpi_rsdp_2_t* rsdp_2 = 0;
+    acpi_sdt_t rsdt;
 
     kprintf("\tSearching for RSDP...");
 
@@ -31,6 +32,17 @@ void acpi_init() {
     } else {
         kprintf("\tThis is an ACPI 1.0 RSDT\n");
     }
+
+    // Whether it's a 32-bit RSDP or 64-bit XSDP, because this is a 64-bit OS
+    // it'll be stored within the kernel in a pointer of the same size.
+
+    if (rsdp_2) {
+        rsdt = (acpi_sdt_t)(rsdp_2->xsdt_address);
+    } else {
+        rsdt = (acpi_sdt_t)(uint64_t)(rsdp->rsdt_address);
+    }
+
+    kprintf("\tR/XSDT at 0x%llX\n", rsdt);
 
     return;
 }

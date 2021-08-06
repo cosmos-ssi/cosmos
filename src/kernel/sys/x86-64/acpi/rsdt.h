@@ -19,12 +19,14 @@
 #define RSDP_SEARCH_BASE 0xE0000
 #define RSDP_SEARCH_TOP 0xFFFFF
 
+typedef void* acpi_sdt_t;
+
 typedef struct acpi_rsdp_t {
     char signature[8];
     uint8_t checksum;
     char oem_id[6];
     uint8_t revision;
-    uint32_t rsdp_address;
+    uint32_t rsdt_address;
 } __attribute__((packed)) acpi_rsdp_t;
 
 typedef struct acpi_rsdp_2_t {
@@ -35,7 +37,7 @@ typedef struct acpi_rsdp_2_t {
     uint8_t reserved[3];
 } __attribute__((packed)) acpi_rsdp_2_t;
 
-typedef struct acpi_sdt_header_t{
+typedef struct acpi_sdt_header_t {
     char signature[4];
     uint32_t length;
     uint8_t revision;
@@ -45,8 +47,17 @@ typedef struct acpi_sdt_header_t{
     uint32_t oem_revision;
     uint32_t creator_id;
     uint32_t creator_revision;
-    uint32_t entries[];
 } __attribute__((packed)) acpi_sdt_header_t;
+
+typedef struct acpi_rsdt_t {
+    acpi_sdt_header_t header;
+    uint32_t entries[];
+} __attribute__((packed)) acpi_rsdt_t;
+
+typedef struct acpi_xsdt_t {
+    acpi_sdt_header_t header;
+    uint64_t entries[];
+} __attribute__((packed)) acpi_xsdt_t;
 
 acpi_rsdp_t* find_rsdp_address();
 
