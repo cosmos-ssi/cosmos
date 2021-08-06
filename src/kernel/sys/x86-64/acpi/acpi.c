@@ -15,6 +15,7 @@ void acpi_init() {
     acpi_rsdp_t* rsdp;
     acpi_rsdp_2_t* rsdp_2 = 0;
     acpi_sdt_t rsdt;
+    sdt_entry_divisor_t divisor;
 
     kprintf("\tSearching for RSDP...");
 
@@ -30,7 +31,7 @@ void acpi_init() {
         kprintf("\tThis is an ACPI 2.0+ RSDP\n");
         rsdp_2 = (acpi_rsdp_2_t*)rsdp;
     } else {
-        kprintf("\tThis is an ACPI 1.0 RSDT\n");
+        kprintf("\tThis is an ACPI 1.0 RSDP\n");
     }
 
     // Whether it's a 32-bit RSDP or 64-bit XSDP, because this is a 64-bit OS
@@ -38,11 +39,15 @@ void acpi_init() {
 
     if (rsdp_2) {
         rsdt = (acpi_sdt_t)(rsdp_2->xsdt_address);
+        divisor = SDT_ENTRY_DIVISOR_XSDT;
+        kprintf("\tX");
     } else {
         rsdt = (acpi_sdt_t)(uint64_t)(rsdp->rsdt_address);
+        divisor = SDT_ENTRY_DIVISOR_RSDT;
+        kprintf("\tR");
     }
 
-    kprintf("\tR/XSDT at 0x%llX\n", rsdt);
+    kprintf("SDT at 0x%llX\n", rsdt);
 
     return;
 }

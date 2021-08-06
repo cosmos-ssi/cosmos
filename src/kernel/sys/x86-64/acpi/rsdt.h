@@ -21,6 +21,8 @@
 
 typedef void* acpi_sdt_t;
 
+typedef enum sdt_entry_divisor_t { SDT_ENTRY_DIVISOR_RSDT = 4, SDT_ENTRY_DIVISOR_XSDT = 8 } sdt_entry_divisor_t;
+
 typedef struct acpi_rsdp_t {
     char signature[8];
     uint8_t checksum;
