@@ -18,7 +18,7 @@ QEMUARGS=                                                 \
   -accel tcg,thread=single                                \
   -cpu core2duo                                           \
   -m 4096                                                \
-  -smp 1                                                  \
+  -smp sockets=1,cores=2,threads=2                                             \
   -drive file=img/hda.img,index=0,format=raw              \
   -drive file=img/root.img,index=1,format=raw           \
   -drive file=img/gpt_fat.img,index=2,format=raw          \
