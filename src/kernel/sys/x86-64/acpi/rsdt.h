@@ -10,8 +10,6 @@
 
 #include <types.h>
 
-#define RSDP_SIGNATURE "RSD PTR "
-
 // Despite the name, the EBDA is also searched for the RSDP signature
 #define EBDA_BASE 0x80000
 #define EBDA_TOP 0x9FFFF

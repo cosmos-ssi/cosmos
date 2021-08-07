@@ -6,6 +6,7 @@
  *****************************************************************/
 
 #include <sys/string/mem.h>
+#include <sys/x86-64/acpi/acpi.h>
 #include <sys/x86-64/acpi/rsdt.h>
 #include <sys/x86-64/mm/pagetables.h>
 
@@ -23,13 +24,13 @@ acpi_rsdp_t* acpi_find_rsdp_address() {
 
     for (i = EBDA_BASE; i < (EBDA_BASE + 1024); i += 16) {
         // We have to use memcmp and not str(n)cmp because the signature is not null-terminated
-        if (!memcmp(CONV_PHYS_ADDR((void*)i), RSDP_SIGNATURE, 8)) {
+        if (!memcmp(CONV_PHYS_ADDR((void*)i), acpi_table_signatures[ACPI_RSDP], 8)) {
             return (acpi_rsdp_t*)i;
         }
     }
 
     for (i = RSDP_SEARCH_BASE; i < RSDP_SEARCH_TOP; i += 16) {
-        if (!memcmp(CONV_PHYS_ADDR((void*)i), RSDP_SIGNATURE, 8)) {
+        if (!memcmp(CONV_PHYS_ADDR((void*)i), acpi_table_signatures[ACPI_RSDP], 8)) {
             return (acpi_rsdp_t*)i;
         }
     }
