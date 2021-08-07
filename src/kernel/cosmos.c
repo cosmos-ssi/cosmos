@@ -43,9 +43,6 @@ void CosmOS() {
      */
     kprintf("Loading CosmOS 0.1\n");
 
-    kprintf("Initializing IDT...\n");
-    idt_init();
-
     /*
      * switch to new GDT.  causes GPF currently.....
      */
@@ -59,6 +56,9 @@ void CosmOS() {
 
     kprintf("Initializing ACPI...\n");
     acpi_init();
+
+    kprintf("Initializing IDT...\n");
+    idt_init();
 
     kprintf("Initializing Interrupt Routing...\n");
     interrupt_router_init();
