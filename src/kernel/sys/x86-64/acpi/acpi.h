@@ -14,6 +14,7 @@ typedef enum acpi_table_types_t { ACPI_RSDP, ACPI_RSDT, ACPI_XSDT, ACPI_MADT } a
 // acpi_table_types_t
 extern const char* acpi_table_signatures[];
 
+void* acpi_find_table(acpi_table_types_t type);
 void acpi_init();
 
 #endif

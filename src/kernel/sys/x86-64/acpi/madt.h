@@ -18,4 +18,6 @@ typedef struct acpi_madt_t {
     uint32_t flags;
 } __attribute__((packed)) acpi_madt_t;
 
+void* acpi_get_local_apic_address();
+
 #endif

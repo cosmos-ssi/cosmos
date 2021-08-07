@@ -25,6 +25,7 @@
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
 #include <sys/x86-64/acpi/acpi.h>
+#include <sys/x86-64/acpi/madt.h>
 #include <sys/x86-64/idt/idt.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/syscall/syscall.h>
