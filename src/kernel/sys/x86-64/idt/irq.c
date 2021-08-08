@@ -5,9 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <obj/x86-64/pic/pic.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/x86-64/idt/irq.h>
+#include <sys/x86-64/interrupts/pic.h>
 
 void irq0_handler(stack_frame* frame) {
     interrupt_router_route_interrupt(0, frame);

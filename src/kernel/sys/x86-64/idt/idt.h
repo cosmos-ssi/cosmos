@@ -8,7 +8,7 @@
 #ifndef _IDT_H
 #define _IDT_H
 
-#include <obj/x86-64/pic/pic.h>
+#include <sys/x86-64/interrupts/pic.h>
 #include <types.h>
 
 typedef enum intVectors {

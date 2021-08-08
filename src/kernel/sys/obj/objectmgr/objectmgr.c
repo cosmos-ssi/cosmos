@@ -20,7 +20,6 @@
 #include <obj/x86-64/parallel/parallel.h>
 #include <obj/x86-64/pci/pci.h>
 #include <obj/x86-64/pci_ehci/pci_ehci.h>
-#include <obj/x86-64/pic/pic.h>
 #include <obj/x86-64/pit/pit.h>
 #include <obj/x86-64/rtc/rtc.h>
 #include <obj/x86-64/sdhci/sdhci.h>
@@ -39,6 +38,7 @@
 #include <sys/obj/objecttypes/objecttypes.h>
 #include <sys/panic/panic.h>
 #include <sys/string/string.h>
+#include <sys/x86-64/interrupts/pic.h>
 
 #define MAX_DEVICE_NAME_LENGTH 128
 

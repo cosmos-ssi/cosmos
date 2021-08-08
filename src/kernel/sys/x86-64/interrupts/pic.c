@@ -5,13 +5,13 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <obj/x86-64/pic/pic.h>
 #include <sys/asm/io.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
+#include <sys/x86-64/interrupts/pic.h>
 
 // I/O ports
 #define PIC_PRIMARY_COMMAND 0x20
