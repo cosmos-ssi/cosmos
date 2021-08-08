@@ -29,10 +29,8 @@
 /*
  * perform device instance specific init here
  */
-uint8_t pic_obj_init(struct object* obj) {
-    ASSERT_NOT_NULL(obj);
-    kprintf("Init %s (%s)\n", obj->description, obj->name);
-
+uint8_t pic_init() {
+    kprintf("Setting up PIC...\n");
     // send init command to prim/sec PICs
     asm_out_b(PIC_PRIMARY_COMMAND, PIC_INIT);
     asm_out_b(PIC_SECONDARY_COMMAND, PIC_INIT);
@@ -53,19 +51,6 @@ uint8_t pic_obj_init(struct object* obj) {
     asm_out_b(PIC_PRIMARY_DATA, PIC_MODE_8086);
     asm_out_b(PIC_SECONDARY_DATA, PIC_MODE_8086);
     return 1;
-}
-
-void pic_objectmgr_register_objects() {
-    /*
-     * register device
-     */
-    struct object* objectinstance = object_new_object();
-    objectmgr_set_object_description(objectinstance, "8259 PIC");
-    objectinstance->objectype = OBJECT_TYPE_PIC;
-    objectinstance->init = &pic_obj_init;
-    objectmgr_register_object(objectinstance);
-
-    return;
 }
 
 void pic_send_eoi(uint8_t irq) {

@@ -27,6 +27,7 @@
 #include <sys/x86-64/acpi/acpi.h>
 #include <sys/x86-64/acpi/madt.h>
 #include <sys/x86-64/idt/idt.h>
+#include <sys/x86-64/interrupts/apic.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/syscall/syscall.h>
 #include <tests/tests.h>
@@ -57,6 +58,9 @@ void CosmOS() {
 
     kprintf("Initializing ACPI...\n");
     acpi_init();
+
+    kprintf("Initializing APIC...\n");
+    apic_init();
 
     kprintf("Initializing IDT...\n");
     idt_init();

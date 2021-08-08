@@ -5,18 +5,9 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <sys/debug/assert.h>
-#include <sys/x86-64/acpi/madt.h>
-#include <sys/x86-64/interrupts/pic.h>
+#ifndef _APIC_H
+#define _APIC_H
 
-void* apic_register_base;
+void apic_init();
 
-void apic_init() {
-    pic_init();
-
-    apic_register_base = acpi_get_local_apic_address();
-
-    ASSERT_NOT_NULL(apic_register_base);
-
-    return;
-}
+#endif

@@ -118,10 +118,6 @@ void objectmgr_init_objects() {
      */
     objectregistry_iterate_type(OBJECT_TYPE_BDA, obj_initIterator);
     /*
-     * PIC first
-     */
-    objectregistry_iterate_type(OBJECT_TYPE_PIC, obj_initIterator);
-    /*
      * Serial next
      */
     objectregistry_iterate_type(OBJECT_TYPE_SERIAL, obj_initIterator);
@@ -206,10 +202,6 @@ void objectmgr_register_objects() {
      * scan the PCI bus first
      */
     pci_init();
-    /*
-     * register up the pic next
-     */
-    pic_objectmgr_register_objects();
     /*
      * and then RS232
      */
