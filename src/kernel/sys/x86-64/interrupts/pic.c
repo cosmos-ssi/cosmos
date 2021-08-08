@@ -29,7 +29,7 @@
 /*
  * perform device instance specific init here
  */
-uint8_t pic_init() {
+void pic_init() {
     kprintf("Setting up PIC...\n");
     // send init command to prim/sec PICs
     asm_out_b(PIC_PRIMARY_COMMAND, PIC_INIT);
@@ -50,7 +50,7 @@ uint8_t pic_init() {
     // and then set the PICs to 8086 mode
     asm_out_b(PIC_PRIMARY_DATA, PIC_MODE_8086);
     asm_out_b(PIC_SECONDARY_DATA, PIC_MODE_8086);
-    return 1;
+    return;
 }
 
 void pic_send_eoi(uint8_t irq) {

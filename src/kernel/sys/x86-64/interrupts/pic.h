@@ -14,7 +14,7 @@
 #define PIC_PRIMARY_VECTOR_OFFSET 0x20
 #define PIC_SECONDARY_VECTOR_OFFSET PIC_PRIMARY_VECTOR_OFFSET + 8
 
-uint8_t pic_init();
+void pic_init();
 void pic_send_eoi(uint8_t irq);
 
 #endif
