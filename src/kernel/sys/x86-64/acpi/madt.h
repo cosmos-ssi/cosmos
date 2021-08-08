@@ -10,6 +10,7 @@
 
 #include <sys/x86-64/acpi/acpi.h>
 #include <sys/x86-64/acpi/rsdt.h>
+#include <sys/x86-64/interrupts/apic.h>
 #include <types.h>
 
 typedef struct acpi_madt_t {
@@ -18,6 +19,6 @@ typedef struct acpi_madt_t {
     uint32_t flags;
 } __attribute__((packed)) acpi_madt_t;
 
-void* acpi_get_local_apic_address();
+apic_register_t* acpi_get_local_apic_address();
 
 #endif

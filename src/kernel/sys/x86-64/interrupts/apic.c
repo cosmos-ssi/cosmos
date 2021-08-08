@@ -7,9 +7,10 @@
 
 #include <sys/debug/assert.h>
 #include <sys/x86-64/acpi/madt.h>
+#include <sys/x86-64/interrupts/apic.h>
 #include <sys/x86-64/interrupts/pic.h>
 
-void* apic_register_base;
+apic_register_t* apic_register_base;
 
 void apic_init() {
     // Initialize PIC so we can remap IRQs, then mask all interrupts

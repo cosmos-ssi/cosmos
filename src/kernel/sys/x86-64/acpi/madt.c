@@ -7,8 +7,9 @@
 
 #include <sys/x86-64/acpi/acpi.h>
 #include <sys/x86-64/acpi/madt.h>
+#include <sys/x86-64/interrupts/apic.h>
 
-void* acpi_get_local_apic_address() {
+apic_register_t* acpi_get_local_apic_address() {
     // this returns the PHYSICAL address
     acpi_madt_t* madt;
 

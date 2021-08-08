@@ -8,6 +8,8 @@
 #ifndef _APIC_H
 #define _APIC_H
 
+typedef uint16_t apic_register_t;
+
 void apic_init();
 
 #endif
