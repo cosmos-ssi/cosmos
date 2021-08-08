@@ -12,7 +12,9 @@
 void* apic_register_base;
 
 void apic_init() {
+    // Initialize PIC so we can remap IRQs, then mask all interrupts
     pic_init();
+    pic_disable();
 
     apic_register_base = acpi_get_local_apic_address();
 

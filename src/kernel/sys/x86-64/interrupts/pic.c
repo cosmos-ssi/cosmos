@@ -26,9 +26,13 @@
 #define PIC_INIT 0x11
 #define PIC_EOI 0x20
 
-/*
- * perform device instance specific init here
- */
+void pic_disable() {
+    // we disable the 8259 PIC by masking all interrupts
+    asm_out_b(PIC_PRIMARY_DATA, 0xFF);
+    asm_out_b(PIC_SECONDARY_DATA, 0xFF);
+
+    return;
+}
 void pic_init() {
     kprintf("Setting up PIC...\n");
     // send init command to prim/sec PICs
