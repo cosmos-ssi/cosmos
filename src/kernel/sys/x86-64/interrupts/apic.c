@@ -33,5 +33,7 @@ void apic_init() {
     siv |= 0x1FF;
     APIC_REGISTER(0xF) = siv;
 
+    acpi_enumerate_ioapic();
+
     return;
 }

@@ -14,7 +14,7 @@
 #include <types.h>
 
 // per https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#i-o-apic-structure
-typedef enum acpi_madt_record_types_t {
+typedef enum __attribute__((packed)) acpi_madt_record_types_t {
     ACPI_MADT_RECORD_PROCESSOR_LAPIC = 0,  // be careful that you don't confuse this with LSAPIC below
     ACPI_MADT_RECORD_IOAPIC =
         1,  // be careful especially if using an editor with auto-complete, this is very similar to IOSAPIC below
@@ -36,12 +36,25 @@ typedef enum acpi_madt_record_types_t {
     ACPI_MADT_RECORD_MULTIPROCESSOR_WAKEUP = 16
 } acpi_madt_record_types_t;
 
+typedef struct acpi_madt_record_prologue_t {
+    acpi_madt_record_types_t type;
+    uint8_t length;
+} __attribute__((packed)) acpi_madt_record_prologue_t;
+
+typedef struct acpi_madt_record_ioapic_t {
+    uint8_t id;
+    uint8_t reserved;
+    uint32_t address;  // physical address
+    uint32_t gsi_base;
+} __attribute__((packed)) acpi_madt_record_ioapic_t;
+
 typedef struct acpi_madt_t {
     acpi_sdt_header_t header;
     uint32_t local_apic_address;
     uint32_t flags;
 } __attribute__((packed)) acpi_madt_t;
 
+acpi_madt_record_ioapic_t** acpi_enumerate_ioapic();
 apic_register_t* acpi_get_local_apic_address();
 
 #endif
