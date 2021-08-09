@@ -8,7 +8,11 @@
 #ifndef _APIC_H
 #define _APIC_H
 
-typedef uint16_t apic_register_t;
+// APIC registers are 32-bits wide, but they're spaced 16 bytes (128 bits)
+// apart.  This will take care of calculating the proper offset for us.
+#define APIC_REGISTER(x) (apic_register_base[(x)*4])
+
+typedef uint32_t apic_register_t;
 
 void apic_init();
 
