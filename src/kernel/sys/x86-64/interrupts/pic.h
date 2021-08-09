@@ -11,7 +11,7 @@
 #include <types.h>
 
 // IRQ vector offsets for remapping
-#define PIC_PRIMARY_VECTOR_OFFSET 0x20
+#define PIC_PRIMARY_VECTOR_OFFSET 0xE0
 #define PIC_SECONDARY_VECTOR_OFFSET PIC_PRIMARY_VECTOR_OFFSET + 8
 
 void pic_disable();
