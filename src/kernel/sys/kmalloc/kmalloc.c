@@ -274,10 +274,13 @@ kmalloc_block* new_kmalloc_block(kmalloc_block* last, uint64_t size) {
 
 void* krealloc(void* ptr, uint64_t size) {
     ASSERT(0 != size);
-    ASSERT_NOT_NULL(ptr);
     void* new_block = 0;
     BYTE *dest, *src;
     uint64_t i;
+
+    if (!ptr) {
+        return kmalloc(size);
+    }
 
     kmalloc_block* b = kmalloc_block_from_address(ptr);
     // only realloc used blocks
