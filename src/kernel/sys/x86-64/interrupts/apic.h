@@ -8,24 +8,25 @@
 #ifndef _APIC_H
 #define _APIC_H
 
+#include <sys/x86-64/acpi/madt.h>
+#include <sys/x86-64/interrupts/apic_register.h>
 #include <types.h>
 
 // APIC registers are 32-bits wide, but they're spaced 16 bytes (128 bits)
 // apart.  This will take care of calculating the proper offset for us.
 #define APIC_REGISTER(x) (apic_register_base[(x)*4])
 
-typedef uint32_t apic_register_t;
-
 typedef struct ioapic_t {
     uint32_t* IOREGSEL;
     uint32_t* IOREGWIN;
-    uint8_t apic_id;
+    uint8_t acpi_id;
     uint32_t gsi_base;
 } ioapic_t;
 
-extern ioapic_t** ioapic;
+extern ioapic_t* ioapic;
+extern uint64_t num_ioapic;
 
 void apic_init();
-void ioapic_init(uint8_t acpi_id, uint32_t* base_address, uint32_t gsi_base);
+void ioapic_init(acpi_madt_record_ioapic_t** madt_ioapic);
 
 #endif

@@ -10,7 +10,7 @@
 
 #include <sys/x86-64/acpi/acpi.h>
 #include <sys/x86-64/acpi/rsdt.h>
-#include <sys/x86-64/interrupts/apic.h>
+#include <sys/x86-64/interrupts/apic_register.h>
 #include <types.h>
 
 // per https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#i-o-apic-structure

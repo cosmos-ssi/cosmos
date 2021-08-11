@@ -18,9 +18,9 @@ apic_register_t* apic_register_base;
 void apic_init() {
     uint32_t siv;
     acpi_madt_record_ioapic_t** madt_ioapic;
-    uint8_t i = 0;
 
     ioapic = NULL;
+    num_ioapic = 0;
 
     // Initialize PIC so we can remap IRQs, then mask all interrupts
     pic_init();
@@ -39,13 +39,7 @@ void apic_init() {
 
     madt_ioapic = acpi_enumerate_ioapic();
     ASSERT_NOT_NULL(madt_ioapic);
-
-    while (madt_ioapic[i]) {
-        kprintf("\tIOAPIC %hu, ACPI ID %hu, base address 0x%llX, GSI base %lu\n", i, madt_ioapic[i]->id,
-                (uint64_t)madt_ioapic[i]->address, madt_ioapic[i]->gsi_base);
-        ioapic_init(madt_ioapic[i]->id, (uint32_t*)(uint64_t)(madt_ioapic[i]->address), madt_ioapic[i]->gsi_base);
-        i++;
-    }
+    ioapic_init(madt_ioapic);
 
     return;
 }
