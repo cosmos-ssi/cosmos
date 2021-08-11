@@ -20,7 +20,8 @@ typedef struct ioapic_t {
     uint32_t* IOREGSEL;
     uint32_t* IOREGWIN;
     uint8_t acpi_id;
-    uint32_t gsi_base;
+    uint32_t irq_low;
+    uint32_t irq_high;
 } ioapic_t;
 
 extern ioapic_t* ioapic;
