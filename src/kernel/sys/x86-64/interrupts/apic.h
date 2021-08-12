@@ -18,6 +18,8 @@
 
 #define IOAPIC_REGISTER_SELECT(x, y) (*((x).IOREGSEL) = (y))
 
+#define IOAPICVER_EXTRACT_MAXREDIR(x) (((x)&0xFF0000) >> 16)
+
 typedef enum ioapic_registers_t {
     IOAPICID = 0x0,
     IOAPICVER = 0x01,
