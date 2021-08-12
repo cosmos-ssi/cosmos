@@ -42,8 +42,7 @@ void ioapic_init(acpi_madt_record_ioapic_t** madt_ioapic) {
          * irq_high of 23, and 0-23 is 24 distinct values.
          */
 
-        *(ioapic[j].IOREGSEL) = 0x01;
-        ioapic[j].irq_high = (((*(ioapic[j].IOREGWIN)) & 0xFF0000) >> 16) + ioapic[j].irq_low;
+        ioapic[j].irq_high = ((ioapic_register_read(ioapic[j], IOAPICVER) & 0xFF0000) >> 16) + ioapic[j].irq_low;
     }
 
     madt_iso = acpi_enumerate_interrupt_source_override();
@@ -56,4 +55,10 @@ void ioapic_init(acpi_madt_record_ioapic_t** madt_ioapic) {
     }
 
     return;
+}
+
+uint32_t ioapic_register_read(ioapic_t ioapic, ioapic_registers_t reg) {
+    IOAPIC_REGISTER_SELECT(ioapic, reg);
+
+    return *(ioapic.IOREGWIN);
 }
