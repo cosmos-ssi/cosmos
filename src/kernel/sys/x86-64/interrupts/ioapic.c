@@ -34,8 +34,16 @@ void ioapic_init(acpi_madt_record_ioapic_t** madt_ioapic) {
         ioapic[j].IOREGSEL = CONV_PHYS_ADDR((uint32_t*)(uint64_t)madt_ioapic[j]->address);
         ioapic[j].IOREGWIN = CONV_PHYS_ADDR((uint32_t*)(uint64_t)madt_ioapic[j]->address + 0x10);
 
+        /* 
+         * The value stored in the register is # of input pins - 1.  This is the
+         * correct value, without adjustment, to add to irq_low to specify the
+         * full range.  For example, if irq_low is 0, and the register value is
+         * 23 (meaning 24 input pins), then we add 23 to irq_low to get an
+         * irq_high of 23, and 0-23 is 24 distinct values.
+         */
+
         *(ioapic[j].IOREGSEL) = 0x01;
-        ioapic[j].irq_high = ((*(ioapic[j].IOREGWIN)) & 0xFF0000) >> 16;
+        ioapic[j].irq_high = (((*(ioapic[j].IOREGWIN)) & 0xFF0000) >> 16) + ioapic[j].irq_low;
     }
 
     madt_iso = acpi_enumerate_interrupt_source_override();
