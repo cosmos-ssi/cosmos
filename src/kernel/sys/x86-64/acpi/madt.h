@@ -48,12 +48,20 @@ typedef struct acpi_madt_record_ioapic_t {
     uint32_t gsi_base;
 } __attribute__((packed)) acpi_madt_record_ioapic_t;
 
+typedef struct acpi_madt_record_interrupt_source_override_t {
+    uint8_t bus;
+    uint8_t source;
+    uint32_t gsi;
+    uint16_t flags;
+} __attribute__((packed)) acpi_madt_record_interrupt_source_override_t;
+
 typedef struct acpi_madt_t {
     acpi_sdt_header_t header;
     uint32_t local_apic_address;
     uint32_t flags;
 } __attribute__((packed)) acpi_madt_t;
 
+acpi_madt_record_interrupt_source_override_t** acpi_enumerate_interrupt_source_override();
 acpi_madt_record_ioapic_t** acpi_enumerate_ioapic();
 apic_register_t* acpi_get_local_apic_address();
 

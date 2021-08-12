@@ -16,6 +16,7 @@ ioapic_t* ioapic;
 uint64_t num_ioapic;
 
 void ioapic_init(acpi_madt_record_ioapic_t** madt_ioapic) {
+    acpi_madt_record_interrupt_source_override_t** madt_iso;
     uint64_t i = 0;
     uint64_t j = 0;
 
@@ -35,6 +36,15 @@ void ioapic_init(acpi_madt_record_ioapic_t** madt_ioapic) {
 
         *(ioapic[j].IOREGSEL) = 0x01;
         ioapic[j].irq_high = ((*(ioapic[j].IOREGWIN)) & 0xFF0000) >> 16;
+    }
+
+    madt_iso = acpi_enumerate_interrupt_source_override();
+
+    i = 0;
+    while (madt_iso[i]) {
+        kprintf("\tIRQ %hu is remapped to GSI %lu with flags %u\n", madt_iso[i]->source, madt_iso[i]->gsi,
+                madt_iso[i]->flags);
+        i++;
     }
 
     return;
