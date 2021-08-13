@@ -62,3 +62,11 @@ uint32_t ioapic_register_read(ioapic_t ioapic, ioapic_registers_t reg) {
 
     return *(ioapic.IOREGWIN);
 }
+
+void ioapic_register_write(ioapic_t ioapic, ioapic_registers_t reg, uint32_t val) {
+    IOAPIC_REGISTER_SELECT(ioapic, reg);
+
+    *(ioapic.IOREGWIN) = val;
+
+    return;
+}

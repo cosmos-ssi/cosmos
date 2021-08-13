@@ -88,5 +88,6 @@ extern uint64_t num_ioapic;
 void apic_init();
 void ioapic_init(acpi_madt_record_ioapic_t** madt_ioapic);
 uint32_t ioapic_register_read(ioapic_t ioapic, ioapic_registers_t reg);
+void ioapic_register_write(ioapic_t ioapic, ioapic_registers_t reg, uint32_t val);
 
 #endif
