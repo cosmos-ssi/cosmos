@@ -36,6 +36,9 @@
 // This one operates on the high-order dword
 #define IOAPIC_REDTBL_DEST_SET(entry, dest) ((entry) |= (dest << 24))  // Destination CPU/group
 
+// The values are correct--they are multiplied by 16 to get the byte offset into the register area, thus 0xB becomes 0xB0
+typedef enum apic_register_id_t { APIC_REGISTER_EOI = 0xB, APIC_REGISTER_SIV = 0xF } apic_register_id_t;
+
 typedef enum ioapic_redtbl_delmod_t {
     IOREDTBL_DELMOD_FIXED = 0b000,
     IOREDTBL_DELMOD_LOWPRI = 0b001,
