@@ -8,9 +8,8 @@
 #ifndef _IDT_H
 #define _IDT_H
 
-#include <sys/x86-64/interrupts/pic.h>
+#include <sys/x86-64/interrupts/apic.h>
 #include <types.h>
-
 typedef enum intVectors {
     DE = 0,
     DEBUG = 1,
@@ -34,7 +33,7 @@ typedef enum intVectors {
     SIMD_FPE = 0x13,
     VIRTUALIZATION = 0x14,
     SECURITY = 0x1e,
-    IRQ0 = PIC_PRIMARY_VECTOR_OFFSET,
+    IRQ0 = IOAPIC_REDIR_BASE_VEC,
     IRQ1,
     IRQ2,
     IRQ3,
@@ -42,7 +41,7 @@ typedef enum intVectors {
     IRQ5,
     IRQ6,
     IRQ7,
-    IRQ8 = PIC_SECONDARY_VECTOR_OFFSET,
+    IRQ8,
     IRQ9,
     IRQ10,
     IRQ11,

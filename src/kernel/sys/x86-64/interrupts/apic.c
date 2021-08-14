@@ -19,9 +19,6 @@ void apic_init() {
     uint32_t siv;
     acpi_madt_record_ioapic_t** madt_ioapic;
 
-    ioapic = NULL;
-    num_ioapic = 0;
-
     // Initialize PIC so we can remap IRQs, then mask all interrupts
     pic_init();
     pic_disable();

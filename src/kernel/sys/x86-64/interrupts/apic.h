@@ -20,6 +20,48 @@
 
 #define IOAPICVER_EXTRACT_MAXREDIR(x) (((x)&0xFF0000) >> 16)
 
+#define IOAPIC_REDIR_BASE_VEC 0x20
+
+#define LEGACY_IRQ_MAX 0xF
+
+// macros to construct redirection table entries
+// This first group operates on the low-order dword
+#define IOAPIC_REDTBL_INTVEC_SET(entry, vec) ((entry) |= (uint32_t)(vec))        // Set interrupt vector
+#define IOAPIC_REDTBL_DELMOD_SET(entry, mode) ((entry) |= (mode << 8))           // Set delivery mode
+#define IOAPIC_REDTBL_DESTMOD_SET(entry, mode) ((entry) |= (mode << 11))         // Set destination mode
+#define IOAPIC_REDTBL_INTPOL_SET(entry, polarity) ((entry) |= (polarity << 13))  // Set polarity
+#define IOAPIC_REDTBL_TRIGMODE_SET(entry, mode) ((entry) |= (mode << 15))        // Set trigger mode
+#define IOAPIC_REDTBL_INTMASK_SET(entry, mask) ((entry) |= (mask << 16))         // Set interrupt mask
+
+// This one operates on the high-order dword
+#define IOAPIC_REDTBL_DEST_SET(entry, dest) ((entry) |= (dest << 24))  // Destination CPU/group
+
+typedef enum ioapic_redtbl_delmod_t {
+    IOREDTBL_DELMOD_FIXED = 0b000,
+    IOREDTBL_DELMOD_LOWPRI = 0b001,
+    IOREDTBL_DELMOD_SMI = 0b010,
+    IOREDTBL_DELMOD_NMI = 0b100,
+    IOREDTBL_DELMOD_INIT = 0b101,
+    IOREDTBL_DELMOD_EXTINT = 0b111
+} ioapic_redtbl_delmod_t;
+
+typedef enum ioapic_redtbl_destmod_t {
+    IOREDTBL_DESTMOD_PHYSICAL = 0,
+    IOREDTBL_DESTMOD_LOGICAL = 1
+} ioapic_redtbl_destmod_t;
+
+typedef enum ioapic_redtbl_intmask_t {
+    IOREDTBL_INTMASK_ACTIVE = 0,
+    IOREDTBL_INTMASK_MASKED = 1
+} ioapic_redtbl_intmask_t;
+
+typedef enum ioapic_redtbl_intpol_t { IOREDTBL_INTPOL_HIGH = 0, IOREDTBL_INTPOL_LOW = 1 } ioapic_redtbl_intpol_t;
+
+typedef enum ioapic_redtbl_trigmode_t {
+    IOREDTBL_TRIGMODE_EDGE = 0,
+    IOREDTBL_TRIGMODE_LEVEL = 1
+} ioapic_redtbl_trigmode_t;
+
 typedef enum ioapic_registers_t {
     IOAPICID = 0x0,
     IOAPICVER = 0x01,
@@ -80,10 +122,8 @@ typedef struct ioapic_t {
     uint8_t acpi_id;
     uint32_t irq_low;
     uint32_t irq_high;
+    uint32_t max_redir;
 } ioapic_t;
-
-extern ioapic_t* ioapic;
-extern uint64_t num_ioapic;
 
 void apic_init();
 void ioapic_init(acpi_madt_record_ioapic_t** madt_ioapic);
