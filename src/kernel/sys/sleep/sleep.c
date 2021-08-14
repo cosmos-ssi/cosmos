@@ -35,7 +35,7 @@ void sleep_wait(uint64_t milliseconds) {
 
     sleep_countdown = tc;
 
-    // rtc_subscribe(&sleep_update);
+    //rtc_subscribe(&sleep_update);
 
     while (sleep_countdown) {
         asm_hlt();

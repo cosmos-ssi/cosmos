@@ -38,7 +38,6 @@ uint64_t tickcount = 0;
 void pit_handle_irq(stack_frame* frame) {
     ASSERT_NOT_NULL(pitEvents);
     ASSERT_NOT_NULL(frame);
-    kprintf("@");
     tickcount = tickcount + 1;
 }
 

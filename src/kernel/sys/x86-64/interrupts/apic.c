@@ -30,9 +30,9 @@ void apic_init() {
     // Read spurious interrupt vector register, then set bit 8 for software
     // LAPIC enable and set the low-order byte to 0xFF to use that as the
     // spurious interrupt vector
-    siv = APIC_REGISTER(0xF0);
+    siv = APIC_REGISTER(0xF);
     siv |= 0x1FF;
-    APIC_REGISTER(0xF0) = siv;
+    APIC_REGISTER(0xF) = siv;
 
     madt_ioapic = acpi_enumerate_ioapic();
     ASSERT_NOT_NULL(madt_ioapic);
@@ -42,7 +42,7 @@ void apic_init() {
 }
 
 void apic_send_eoi() {
-    APIC_REGISTER(0xB0) = 0;
+    APIC_REGISTER(0xB) = 0;
 
     return;
 }
