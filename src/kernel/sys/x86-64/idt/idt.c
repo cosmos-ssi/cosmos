@@ -42,13 +42,13 @@ void idt_init() {
     idt_add_ISR(isrDE, DE);
     idt_add_ISR(isrPFE, PFE);
     idt_add_ISR(isrDebug, DEBUG);
-    idt_add_ISR(isrGeneric, NMI);
+    idt_add_ISR(isrNMI, NMI);
     idt_add_ISR(isrBreakpoint, BREAKPOINT);
-    idt_add_ISR(isrGeneric, OVERFLOW);
-    idt_add_ISR(isrGeneric, BOUND_RANGE_EXCEEDED);
+    idt_add_ISR(isrOverflow, OVERFLOW);
+    idt_add_ISR(isrBoundRangeExceeded, BOUND_RANGE_EXCEEDED);
     idt_add_ISR(isrInvalidOpcode, INVALID_OPCODE);
-    idt_add_ISR(isrGeneric, DEVICE_NOT_AVAILABLE);
-    idt_add_ISR(isrGeneric, DOUBLE_FAULT);
+    idt_add_ISR(isrDeviceNotAvailable, DEVICE_NOT_AVAILABLE);
+    idt_add_ISR(isrDoubleFault, DOUBLE_FAULT);
     idt_add_ISR(isrGeneric, COPROCESSOR_SEGMENT_OVERRUN);
     idt_add_ISR(isrGeneric, INVALID_TSS);
     idt_add_ISR(isrGeneric, SEGMENT_NOT_PRESENT);

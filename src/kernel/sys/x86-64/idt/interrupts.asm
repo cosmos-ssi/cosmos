@@ -53,13 +53,18 @@ global irq13;
 global irq14;
 global irq15;
 
-global isrDE;
-global isrPFE;
-global isrGeneric;
-global isrGPF;
-global isrDebug;
-global isrInvalidOpcode;
-global isrBreakpoint;
+global isrBoundRangeExceeded
+global isrDE
+global isrDeviceNotAvailable
+global isrDoubleFault
+global isrPFE
+global isrGeneric
+global isrGPF
+global isrDebug
+global isrInvalidOpcode
+global isrNMI
+global isrOverflow
+global isrBreakpoint
 
 extern irq0_handler
 extern irq1_handler
@@ -78,13 +83,18 @@ extern irq13_handler
 extern irq14_handler
 extern irq15_handler
  
+extern isrBoundRangeExceeded_handler
 extern isrDE_handler
+extern isrDeviceNotAvailable_handler
+extern isrDoubleFault_handler
 extern isrPFE_handler
 extern isrGeneric_handler
-extern isrDebug_handler;
-extern isrGPF_handler;
+extern isrDebug_handler
+extern isrGPF_handler
 extern isrInvalidOpcode_handler
-extern isrBreakpoint_handler;
+extern isrNMI_handler
+extern isrOverflow_handler
+extern isrBreakpoint_handler
 
 irq0:
     cli
@@ -112,7 +122,7 @@ irq1:
     popaq
     iretq
  
- irq2:
+irq2:
     cli
     pushaq
     xor rax, rax
@@ -125,7 +135,7 @@ irq1:
     popaq
     iretq
 
- irq3:
+irq3:
     cli
     pushaq
     xor rax, rax
@@ -138,7 +148,7 @@ irq1:
     popaq
     iretq
 
- irq4:
+irq4:
     cli
     pushaq
     xor rax, rax
@@ -151,7 +161,7 @@ irq1:
     popaq
     iretq
 
- irq5:
+irq5:
     cli
     pushaq
     xor rax, rax
@@ -164,7 +174,7 @@ irq1:
     popaq
     iretq
 
- irq6:
+irq6:
     cli
     pushaq
     xor rax, rax
@@ -177,7 +187,7 @@ irq1:
     popaq
     iretq
 
- irq7:
+irq7:
     cli
     pushaq
     xor rax, rax
@@ -190,7 +200,7 @@ irq1:
     popaq
     iretq
 
- irq8:
+irq8:
     cli
     pushaq
     xor rax, rax
@@ -216,7 +226,7 @@ irq9:
     popaq
     iretq
 
- irq10:
+irq10:
     cli
     pushaq
     xor rax, rax
@@ -229,7 +239,7 @@ irq9:
     popaq
     iretq
 
- irq11:
+irq11:
     cli
     pushaq
     xor rax, rax
@@ -242,7 +252,7 @@ irq9:
     popaq
     iretq
 
- irq12:
+irq12:
     cli
     pushaq
     xor rax, rax
@@ -255,7 +265,7 @@ irq9:
     popaq
     iretq
 
- irq13:
+irq13:
     cli
     pushaq
     xor rax, rax
@@ -268,7 +278,7 @@ irq9:
     popaq
     iretq
 
- irq14:
+irq14:
     cli
     pushaq
     xor rax, rax
@@ -281,7 +291,7 @@ irq9:
     popaq
     iretq
 
- irq15:
+irq15:
     cli
     pushaq
     xor rax, rax
@@ -294,7 +304,22 @@ irq9:
     popaq
     iretq
 
- isrDE:
+
+
+isrBoundRangeExceeded:
+    cli
+    pushaq
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
+    cld
+    xor rax, rax
+    mov rdi, rsp
+    call isrBoundRangeExceeded_handler
+    popaq
+    iretq
+    
+isrDE:
     cli
     pushaq
     xor rax, rax
@@ -304,6 +329,33 @@ irq9:
     xor rax, rax
     mov rdi, rsp
     call isrDE_handler
+    popaq
+    iretq
+
+isrDoubleFault:
+    cli
+    pushaq
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
+    cld
+    xor rax, rax
+    mov rdi, rsp
+    call isrDoubleFault_handler
+    popaq
+    iretq
+
+
+isrDeviceNotAvailable:
+    cli
+    pushaq
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
+    cld
+    xor rax, rax
+    mov rdi, rsp
+    call isrDeviceNotAvailable_handler
     popaq
     iretq
 
@@ -350,6 +402,32 @@ isrInvalidOpcode:
     xor rax, rax
     mov rdi, rsp
     call isrInvalidOpcode_handler
+    popaq
+    iretq
+
+isrNMI:
+    cli
+    pushaq
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
+    cld
+    xor rax, rax
+    mov rdi, rsp
+    call isrNMI_handler
+    popaq
+    iretq
+
+isrOverflow:
+    cli
+    pushaq
+    xor rax, rax
+    mov es, rax
+    mov ds, rax
+    cld
+    xor rax, rax
+    mov rdi, rsp
+    call isrOverflow_handler
     popaq
     iretq
 

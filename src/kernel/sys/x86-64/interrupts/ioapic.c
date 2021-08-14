@@ -192,7 +192,7 @@ void ioapic_setup_redir_tables(acpi_madt_record_interrupt_source_override_t** ma
 
             kprintf("\tIRQ/GSI %hu on vector %hu\n", cur_gsi, vec_redir);
 
-            IOAPIC_REDTBL_INTVEC_SET(redent_lo, vec_redir);
+            IOAPIC_REDTBL_INTVEC_SET(redent_lo, vec_redir + IOAPIC_REDIR_BASE_VEC);
             IOAPIC_REDTBL_DELMOD_SET(redent_lo, IOREDTBL_DELMOD_FIXED);
             IOAPIC_REDTBL_DESTMOD_SET(redent_lo, IOREDTBL_DESTMOD_PHYSICAL);
             IOAPIC_REDTBL_INTPOL_SET(redent_lo, ioapic_gsi_polarity(cur_gsi, madt_iso));
