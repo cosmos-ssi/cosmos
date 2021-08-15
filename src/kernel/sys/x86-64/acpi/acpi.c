@@ -15,7 +15,7 @@
 #include <sys/x86-64/mm/pagetables.h>
 #include <types.h>
 
-const char* acpi_table_signatures[] = {"RSD PTR ", "RSDT", "XSDT", "APIC"};
+const char* acpi_table_signatures[] = {"RSD PTR ", "RSDT", "XSDT", "APIC", "HPET"};
 
 acpi_sdt_t rsdt;
 
