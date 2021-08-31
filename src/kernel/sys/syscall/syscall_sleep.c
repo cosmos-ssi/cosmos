@@ -5,18 +5,18 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/sched/sched.h>
 #include <types.h>
 
-void* kernel_idle(void* arg) {
-    // We don't actually use the argument, but the kernel_work object requires
-    // that the function take one, so it's probably best to just pass it NULL.
+uint64_t syscall_sleep(uint64_t syscall_id, void* args) {
+    // return 0 on failure, 1 on success
+    kprintf("Sleeping...\n");
 
-    kprintf("kernel idle\n");
+    linkedlist* task;
 
-    while (1) {
-        asm("hlt");
-    }
+    task = get_current_task(CUR_CPU, CUR_CORE);
 
-    return NULL;
+    return 0;
 }

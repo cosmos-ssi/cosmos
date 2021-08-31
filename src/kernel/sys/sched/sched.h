@@ -29,6 +29,7 @@ typedef enum scheduler_state_t {
     SCHED_IOWAIT,     // awaiting IO, do not schedule until received
     SCHED_ZOMBIE,     // In your he-ead, in your he-e-e-ead...
     SCHED_TERMINATE,  // Terminated, waiting for kernel tasklet to clean up
+    SCHED_SYSWAIT,    // awaiting system action (e.g. a non-IO-related syscall), do not schedule while in this state
     SCHED_LASTRESORT  // only schedule if no other schedulable tasks
 } scheduler_state_t;
 
@@ -65,7 +66,7 @@ extern linkedlist*** task_list;
 
 // sched.c
 void sched_set_state(object_handle_t obj, scheduler_state_t state);
-void sched_switch();
+void sched_switch(linkedlist* task);
 
 // sched_add.c
 linkedlist* sched_add(uint64_t cpu, uint64_t core, pid_t pid, object_handle_t obj);

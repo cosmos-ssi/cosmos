@@ -59,8 +59,3 @@ uint64_t syscall_realloc(uint64_t syscall_id, void* args) {
     kprintf("syscall %llu\n not implemented", syscall_id);
     return 0;
 }
-
-uint64_t syscall_sleep(uint64_t syscall_id, void* args) {
-    kprintf("syscall %llu\n not implemented", syscall_id);
-    return 0;
-}
