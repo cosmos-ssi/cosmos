@@ -21,6 +21,29 @@ typedef void* acpi_sdt_t;
 
 typedef enum sdt_entry_divisor_t { SDT_ENTRY_DIVISOR_RSDT = 4, SDT_ENTRY_DIVISOR_XSDT = 8 } sdt_entry_divisor_t;
 
+typedef enum gas_address_space_t {
+    GAS_AS_SYSTEM_MEMORY = 0x0,
+    GAS_AS_SYSTEM_IO = 0x1,
+    GAS_AS_PCI = 0x2,  // PCI Configuration space
+    GAS_AS_EMBEDDED = 0x3,
+    GAS_AS_SMBUS = 0x4,
+    GAS_AS_CMOS = 0x5,
+    GAS_AS_PCIBAR = 0x6,
+    GAS_AS_IPMI = 0x7,
+    GAS_AS_GPIO = 0x8,  // General-purpose I/O
+    GAS_AS_GENERIC_SERIAL = 0x9,
+    GAS_AS_PCC = 0xA,  // Platform Communications Channel
+    GAS_AS_FFH = 0x7F  // Functional Fixed Hardware
+} __attribute__((packed)) gas_address_space_t;
+
+typedef enum gas_access_size_t {
+    GAS_ACCESS_UNDEFINED = 0,
+    GAS_ACCESS_BYTE = 1,
+    GAS_ACCESS_WORD = 2,
+    GAS_ACCESS_DWORD = 3,
+    GAS_ACCESS_QWORD = 4
+} __attribute__((packed)) gas_access_size_t;
+
 typedef struct acpi_rsdp_t {
     char signature[8];
     uint8_t checksum;
@@ -48,6 +71,14 @@ typedef struct acpi_sdt_header_t {
     uint32_t creator_id;
     uint32_t creator_revision;
 } __attribute__((packed)) acpi_sdt_header_t;
+
+typedef struct acpi_gas_t {
+    gas_address_space_t address_space;
+    uint8_t bit_width;
+    uint8_t bit_offset;
+    gas_access_size_t access_size;
+    void* address;
+} acpi_gas_t;
 
 typedef struct acpi_rsdt_t {
     acpi_sdt_header_t header;
