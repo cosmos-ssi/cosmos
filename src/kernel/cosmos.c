@@ -24,6 +24,7 @@
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
 #include <sys/sync/sync.h>
+#include <sys/timing/timing.h>
 #include <sys/x86-64/acpi/acpi.h>
 #include <sys/x86-64/acpi/madt.h>
 #include <sys/x86-64/idt/idt.h>
@@ -38,6 +39,7 @@ void load_init_binary();
 void dump_VOH();
 void video_write(const uint8_t* s);
 filesystem_node_t* load_test_binary();
+void subsystem_init();
 
 void CosmOS() {
     /*
@@ -67,6 +69,9 @@ void CosmOS() {
 
     kprintf("Initializing Interrupt Routing...\n");
     interrupt_router_init();
+
+    kprintf("Initializing kernel subsystems...\n");
+    subsystem_init();
 
     kprintf("Initializing IO buffers...\n");
     iobuffers_init();
@@ -183,6 +188,11 @@ void CosmOS() {
 
     // we never get here currently... well.... eventually the telnet over serial needs to be a on a thread
     sched_switch(task_select());
+}
+
+void subsystem_init() {
+    timing_init();
+    return;
 }
 
 filesystem_node_t* load_test_binary() {

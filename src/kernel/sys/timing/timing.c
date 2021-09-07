@@ -7,12 +7,7 @@
 
 #include <sys/kprintf/kprintf.h>
 #include <sys/timing/timing.h>
-#include <sys/x86-64/acpi/acpi.h>
-#include <sys/x86-64/acpi/rsdt.h>
 
-TIMER_SOURCE_INIT(hpet, "HPET", hpet_init)
-
-void hpet_init() {
-    kprintf("hpet_init\n");
-    return;
+void timing_init() {
+    kprintf("Timing initializing\n");
 }
