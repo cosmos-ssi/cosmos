@@ -13,8 +13,15 @@
 // defines subsystem_list_t enum, for used in automated subsystem/driver
 // registration, as well as various linker set macros
 
+typedef struct driver_list_entry_t driver_list_entry_t;
+
+typedef struct driver_list_entry_t {
+    uint64_t driver_interface_version;  // currently at version 1
+    void* driver_info;
+} driver_list_entry_t;
+
 // function pointer type for driver initialization functions
-typedef void (*driver_initialization_function_t)(void*);
+typedef void (*driver_initialization_function_t)(driver_list_entry_t*);
 
 // N.B. that numbering of items in this enum is done automatically, which means
 // that modules that reference it will not retain binary-compatibility if the
@@ -32,11 +39,6 @@ typedef struct driver_info_1_t {
     subsystem_list_t subsystem;
     driver_initialization_function_t init_func;
 } driver_info_1_t;
-
-typedef struct driver_list_entry_t {
-    uint64_t driver_interface_version;  // currently at version 1
-    void* driver_info;
-} driver_list_entry_t;
 
 #define SUBSYSTEM_LIST_START                                                                                           \
     driver_list_entry_t driver_list_start __attribute__((section(".driverlist.tag.start"))) = {0}

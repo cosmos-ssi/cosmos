@@ -21,6 +21,6 @@ typedef struct acpi_hpet_t {
     uint8_t page_protection;
 } __attribute__((packed)) acpi_hpet_t;
 
-void hpet_init(void* driver_info);
+void hpet_init(driver_list_entry_t* driver_list_entry);
 
 #endif
