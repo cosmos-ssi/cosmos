@@ -8,11 +8,6 @@
 #ifndef _SYS_TIMING_H
 #define _SYS_TIMING_H
 
-#define TIMER_SOURCE_INIT(name, string_label, initfunc)                                                                \
-    void timer_source_init_##name() {                                                                                  \
-        return;                                                                                                        \
-    }
-
-void timing_init();
+void timing_init(driver_list_entry_t** drivers);
 
 #endif

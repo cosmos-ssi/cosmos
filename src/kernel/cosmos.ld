@@ -34,5 +34,12 @@ SECTIONS
 		_debug_end = .;
 		. = ALIGN(4096);
 	}
+	.driverlist :
+	{
+		*(.driverlist.tag.start)
+		*(.driverlist.body.*)
+		*(.driverlist.tag.end)
+		. = ALIGN(4096);
+	}
 	_end = .;
 }

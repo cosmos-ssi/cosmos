@@ -5,9 +5,21 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <dev/timing/hpet.h>
+#include <subsystems.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/timing/timing.h>
 
-void timing_init() {
-    kprintf("Timing initializing\n");
+void timing_init(driver_list_entry_t** drivers) {
+    uint64_t i = 0;
+
+    kprintf("Initializing timing subsystem...\n");
+
+    while (drivers[i]) {
+        i++;
+    }
+
+    kprintf("\tNumber of timing drivers: %llu\n", i);
+
+    return;
 }

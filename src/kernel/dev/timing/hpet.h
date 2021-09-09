@@ -20,4 +20,6 @@ typedef struct acpi_hpet_t {
     uint8_t page_protection;
 } __attribute__((packed)) acpi_hpet_t;
 
+void hpet_init();
+
 #endif

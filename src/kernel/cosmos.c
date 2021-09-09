@@ -6,7 +6,9 @@
  *****************************************************************/
 
 #include <cosmos_logical_objs.h>
+#include <dev/timing/hpet.h>
 #include <obj/logical/fs/initrd/initrd.h>
+#include <subsystems.h>
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
 #include <sys/fs/fs_facade.h>
@@ -34,12 +36,16 @@
 #include <tests/tests.h>
 #include <types.h>
 
+SUBSYSTEM_LIST_START;
+SUBSYSTEM_LIST_END;
+
 void dev_tests();
 void load_init_binary();
 void dump_VOH();
 void video_write(const uint8_t* s);
 filesystem_node_t* load_test_binary();
 void subsystem_init();
+driver_list_entry_t** subsystem_enumerate_drivers(subsystem_list_t subsystem);
 
 void CosmOS() {
     /*
@@ -191,8 +197,48 @@ void CosmOS() {
 }
 
 void subsystem_init() {
-    timing_init();
+    kprintf("Initializing subsystems...\n");
+    timing_init(subsystem_enumerate_drivers(SUBSYSTEM_ID_TIMER));
     return;
+}
+
+//extern driver_info_1_t driver_info_hpet;
+//extern driver_list_entry_t driver_entry_hpet;
+
+driver_list_entry_t** subsystem_enumerate_drivers(subsystem_list_t subsystem) {
+    driver_list_entry_t* cur = NULL;
+    void* driver_info = NULL;
+    uint8_t numDrivers = 0;
+    driver_list_entry_t** ret = NULL;
+
+    cur = &driver_list_start + 1;
+    while (cur < &driver_list_end) {
+        driver_info = cur->driver_info;
+
+        switch (cur->driver_interface_version) {
+            case 1:
+                if (((driver_info_1_t*)driver_info)->subsystem == subsystem) {
+                    ret = krealloc(ret, (numDrivers + 1) * sizeof(driver_list_entry_t*));
+                    ret[numDrivers] = cur;
+                    numDrivers++;
+
+                    kprintf("Loading %s driver (%s), by %s <%s>\n", ((driver_info_1_t*)driver_info)->longname,
+                            ((driver_info_1_t*)driver_info)->description, ((driver_info_1_t*)driver_info)->authors,
+                            ((driver_info_1_t*)driver_info)->contact);
+                }
+                break;
+            default:
+                PANIC("Invalid driver interface version specified");
+                break;
+        }
+        cur++;
+    }
+
+    // add a NULL sentinel to the end
+    ret = krealloc(ret, (numDrivers + 1) * sizeof(driver_list_entry_t*));
+    ret[numDrivers] = NULL;
+
+    return ret;
 }
 
 filesystem_node_t* load_test_binary() {
