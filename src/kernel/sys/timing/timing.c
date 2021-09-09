@@ -8,6 +8,7 @@
 #include <dev/timing/hpet.h>
 #include <subsystems.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/panic/panic.h>
 #include <sys/timing/timing.h>
 
 void timing_init(driver_list_entry_t** drivers) {
@@ -16,10 +17,16 @@ void timing_init(driver_list_entry_t** drivers) {
     kprintf("Initializing timing subsystem...\n");
 
     while (drivers[i]) {
+        switch (drivers[i]->driver_interface_version) {
+            case 1:
+                ((driver_info_1_t*)drivers[i]->driver_info)->init_func(drivers[i]);
+                break;
+            default:
+                PANIC("Invalid driver version");
+                break;
+        }
         i++;
     }
-
-    kprintf("\tNumber of timing drivers: %llu\n", i);
 
     return;
 }

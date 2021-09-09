@@ -202,9 +202,6 @@ void subsystem_init() {
     return;
 }
 
-//extern driver_info_1_t driver_info_hpet;
-//extern driver_list_entry_t driver_entry_hpet;
-
 driver_list_entry_t** subsystem_enumerate_drivers(subsystem_list_t subsystem) {
     driver_list_entry_t* cur = NULL;
     void* driver_info = NULL;
@@ -221,10 +218,6 @@ driver_list_entry_t** subsystem_enumerate_drivers(subsystem_list_t subsystem) {
                     ret = krealloc(ret, (numDrivers + 1) * sizeof(driver_list_entry_t*));
                     ret[numDrivers] = cur;
                     numDrivers++;
-
-                    kprintf("Loading %s driver (%s), by %s <%s>\n", ((driver_info_1_t*)driver_info)->longname,
-                            ((driver_info_1_t*)driver_info)->description, ((driver_info_1_t*)driver_info)->authors,
-                            ((driver_info_1_t*)driver_info)->contact);
                 }
                 break;
             default:

@@ -8,6 +8,7 @@
 #ifndef _HPET_H
 #define _HPET_H
 
+#include <subsystems.h>
 #include <sys/x86-64/acpi/rsdt.h>
 #include <types.h>
 
@@ -20,6 +21,6 @@ typedef struct acpi_hpet_t {
     uint8_t page_protection;
 } __attribute__((packed)) acpi_hpet_t;
 
-void hpet_init();
+void hpet_init(void* driver_info);
 
 #endif

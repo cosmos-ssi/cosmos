@@ -14,7 +14,7 @@
 // registration, as well as various linker set macros
 
 // function pointer type for driver initialization functions
-typedef void (*driver_initialization_function_t)(void);
+typedef void (*driver_initialization_function_t)(void*);
 
 // N.B. that numbering of items in this enum is done automatically, which means
 // that modules that reference it will not retain binary-compatibility if the
