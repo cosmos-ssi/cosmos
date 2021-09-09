@@ -13,8 +13,8 @@
 #include <sys/x86-64/acpi/rsdt.h>
 
 SUBSYSTEM_DRIVER(hpet, "High-Performance Event Timer", "High-Performance Event Timer", "Kurt M. Weber",
-                 "weberk294@gmail.com", 0xb7a2e515a3f4c2a3, 0x5b47216f5833f1de, 0x879c22ee8cf15ff5, 0x7e23d05814a1cfb5,
-                 SUBSYSTEM_ID_TIMER, &hpet_init);
+                 "weberk294@gmail.com", "0.1", 0xb7a2e515a3f4c2a3, 0x5b47216f5833f1de, 0x879c22ee8cf15ff5,
+                 0x7e23d05814a1cfb5, SUBSYSTEM_ID_TIMER, &hpet_init);
 
 void hpet_init() {
     kprintf("hpet_init\n");

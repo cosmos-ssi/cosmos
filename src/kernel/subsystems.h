@@ -27,6 +27,7 @@ typedef struct driver_info_1_t {
     const char* description;
     const char* authors;
     const char* contact;
+    const char* version;
     uint64_t id[4];  // 256-bit unique value; I suggest using https://www.random.org/bytes/
     subsystem_list_t subsystem;
     driver_initialization_function_t init_func;
@@ -42,10 +43,10 @@ typedef struct driver_list_entry_t {
 
 #define SUBSYSTEM_LIST_END driver_list_entry_t driver_list_end __attribute__((section(".driverlist.tag.end"))) = {0}
 
-#define SUBSYSTEM_DRIVER(identifier, longname, description, authors, contact, id1, id2, id3, id4, subsystem,           \
+#define SUBSYSTEM_DRIVER(identifier, longname, description, authors, contact, version, id1, id2, id3, id4, subsystem,  \
                          init_func)                                                                                    \
-    driver_info_1_t driver_info_##identifier = {#identifier,          longname,  description, authors, contact,        \
-                                                {id1, id2, id3, id4}, subsystem, init_func};                           \
+    driver_info_1_t driver_info_##identifier = {                                                                       \
+        #identifier, longname, description, authors, contact, version, {id1, id2, id3, id4}, subsystem, init_func};    \
     driver_list_entry_t driver_entry_##identifier                                                                      \
         __attribute__((section(".driverlist.body." #identifier))) = {1, &driver_info_##identifier};
 
