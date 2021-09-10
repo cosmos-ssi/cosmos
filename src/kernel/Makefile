@@ -24,6 +24,8 @@ SRCS_C=$(shell find $(SRC_DIR) -type f -iname '*.c' | grep -v "$(IGNORE_DIRS)" |
 HEADERS_C=$(shell find $(SRC_DIR) -type f -iname '*.h' | grep -v "$(IGNORE_DIRS)" | sort)
 SRCS_ASM=$(shell find $(SRC_DIR) -type f -iname '*.asm' | grep -v "$(IGNORE_DIRS)" | sort)
 
+HEADER_DEPENDENCIES=$(subst .c,.d,$(SRCS_C))
+
 # object files
 OBJS_C=$(subst $(SRC_DIR)/, , $(SRCS_C:.c=.o))
 OBJS_ASM=$(subst $(SRC_DIR)/, , $(SRCS_ASM:.asm=.o))
@@ -47,9 +49,14 @@ endif
 $(ARCHIVE_FILE): $(ARCHIVES) $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
 
+generate_header_dependencies: $(HEADER_DEPENDENCIES)
+
+include $(SRCS_C:.c=.d)
+
 # C files	
-%.o: %.c $(HEADERS_C)
+%.o: %.c
 	$(CC) $(KERNEL_CFLAGS) $(EXTRA_CFLAGS) -c -o $@ $<
+
 
 # asm files	
 %.o: %.asm
@@ -61,3 +68,9 @@ clean:
 	$(RM) $(KERNEL_ELF)
 	$(RM) $(KERNEL_BIN)
 	$(RM) $(KERNEL_MAP)
+	$(RM) $(HEADER_DEPENDENCIES)
+
+%.d: %.c
+	$(CC) $(KERNEL_CFLAGS) $(EXTRA_CFLAGS) -M $< | $(SED) 's,\($(notdir $*)\.o\) *:,$(dir $@)\1 $@: ,' > $@.tmp
+	$(MV) $@.tmp $@
+

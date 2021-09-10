@@ -19,6 +19,10 @@ LD=ld
 KERNEL_LDFLAGS=-m elf_x86_64 -T $(LINKER_SCRIPT) -Map $(MAPFILE) -nostdlib --no-relax --whole-archive
 USER_LDFLAGS=-m elf_x86_64 -nostdlib --no-relax
 
+SED=sed
+
+MV=mv
+
 # objcopy
 OBJCOPY=objcopy
 OBJCOPYFLAGS=-O binary

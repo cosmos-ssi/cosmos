@@ -88,3 +88,4 @@ src/mk/qemu.mk~
 /doc/doxygen
 src/kernel/gdb.script
 .vscode/c_cpp_properties.json
+**/.depend
