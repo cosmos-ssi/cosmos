@@ -22,7 +22,10 @@ acpi_sdt_t rsdt;
 #define RSDT_PTR(x) ((acpi_rsdt_t*)(x))
 #define XSDT_PTR(x) ((acpi_xsdt_t*)(x))
 
+// Returns the direct-map address, so it is directly usable.  Remember to
+// convert in situations where the physical address is needed.
 void* acpi_find_table(acpi_table_types_t type) {
+
     sdt_entry_divisor_t divisor;
     uint64_t entries;
     uint64_t i;

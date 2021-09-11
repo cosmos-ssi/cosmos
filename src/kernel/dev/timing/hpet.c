@@ -17,10 +17,16 @@ SUBSYSTEM_DRIVER(hpet, "High-Performance Event Timer", "High-Performance Event T
                  0x7e23d05814a1cfb5, SUBSYSTEM_ID_TIMER, &hpet_init);
 
 void hpet_init(driver_list_entry_t* driver_list_entry) {
-    driver_info_1_t* di = (driver_info_1_t*)(driver_list_entry->driver_info);
+    acpi_hpet_t* acpi_hpet;
+    driver_info_1_t* di;
+
+    di = (driver_info_1_t*)(driver_list_entry->driver_info);
 
     kprintf("\t%s: %s driver (%s) version %s loaded.  Contact %s <%s>.\n", di->shortname, di->longname, di->description,
             di->version, di->authors, di->contact);
+
+    acpi_hpet = acpi_find_table(ACPI_HPET);
+    kprintf("\tHPET table at 0x%llX\n", (uint64_t)acpi_hpet);
 
     return;
 }
