@@ -9,6 +9,7 @@
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/interrupt_router/interrupt_router.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <types.h>
 
@@ -53,6 +54,8 @@ void interrupt_router_register_interrupt_handler(int interruptNumber, interrupt_
 void interrupt_router_route_interrupt(int interruptNumber, stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     ASSERT_NOT_NULL(interrupt_handlers);
+
+    //kprintf("Routing IRQ %llu\n", (uint64_t)interruptNumber);
 
     //if ((8 != interruptNumber) && (0 != interruptNumber)) {
     //   kprintf("Routing IRQ %llu\n", interruptNumber);

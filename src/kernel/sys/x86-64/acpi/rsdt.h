@@ -78,7 +78,7 @@ typedef struct acpi_gas_t {
     uint8_t bit_offset;
     gas_access_size_t access_size;
     void* address;
-} acpi_gas_t;
+} __attribute__((packed)) acpi_gas_t;
 
 typedef struct acpi_rsdt_t {
     acpi_sdt_header_t header;

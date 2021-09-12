@@ -124,7 +124,7 @@ void objectmgr_init_objects() {
     /*
      * the PIT
      */
-    objectregistry_iterate_type(OBJECT_TYPE_PIT, obj_initIterator);
+    //objectregistry_iterate_type(OBJECT_TYPE_PIT, obj_initIterator);
     /*
      * CMOS
      */
@@ -209,7 +209,7 @@ void objectmgr_register_objects() {
     /*
      * and the then the PIT
      */
-    pit_objectmgr_register_objects();
+    //pit_objectmgr_register_objects();
     /*
      * we need the CMOS
      */
