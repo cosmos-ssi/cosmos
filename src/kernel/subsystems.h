@@ -21,7 +21,7 @@ typedef struct driver_list_entry_t {
 } driver_list_entry_t;
 
 // function pointer type for driver initialization functions
-typedef void (*driver_initialization_function_t)(driver_list_entry_t*);
+typedef void* (*driver_initialization_function_t)(driver_list_entry_t*, void*);
 
 // N.B. that numbering of items in this enum is done automatically, which means
 // that modules that reference it will not retain binary-compatibility if the

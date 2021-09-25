@@ -73,7 +73,7 @@ uint8_t rtc_obj_init(struct object* obj) {
 
     asm_sti();
 
-    interrupt_router_register_interrupt_handler(RTC_IRQ_NUMBER, &rtc_handle_irq);
+    //interrupt_router_register_interrupt_handler(RTC_IRQ_NUMBER, &rtc_handle_irq);
     return 1;
 }
 

@@ -9,8 +9,14 @@
 #define _HPET_H
 
 #include <subsystems.h>
+#include <sys/timing/timing.h>
 #include <sys/x86-64/acpi/rsdt.h>
 #include <types.h>
+
+extern const uint64_t hpet_max_period;
+
+#define HPET_PERIOD_SCALE_VALUE 100000000000
+#define HPET_MIN_FREQ 10000000
 
 typedef struct acpi_hpet_t {
     acpi_sdt_header_t header;
@@ -56,6 +62,6 @@ typedef struct hpet_main_registers_t {
 #define HPET_LEGACY_ENABLE(x) ((x) |= (1 << 1));
 #define HPET_LEGACY_DISABLE(x) ((x) &= 0xFFFFFFFFFFFFFFFD)
 
-void hpet_init(driver_list_entry_t* driver_list_entry);
+void* hpet_init(driver_list_entry_t* driver_list_entry, void* driver_info);
 
 #endif
