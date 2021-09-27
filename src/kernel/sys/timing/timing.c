@@ -12,6 +12,8 @@
 #include <sys/panic/panic.h>
 #include <sys/timing/timing.h>
 
+const uint64_t one_billion = 1000000000;
+
 struct {
     timing_source_t* sources;
     uint64_t count;
@@ -22,7 +24,7 @@ struct {
     uint64_t count;
 } timing_driver_info;
 
-uint64_t max_timing_source_id;
+timing_source_descriptor timing_select_best_source(uint64_t interval_ns);
 
 void timing_init(driver_list_entry_t** drivers) {
     uint64_t i = 0, j = 0;
@@ -62,9 +64,48 @@ void timing_init(driver_list_entry_t** drivers) {
 
     timing_driver_info.count = i;
 
+    timer_set_alarm_relative(69);
+
     return;
 }
 
+timing_source_descriptor timing_select_best_source(uint64_t interval_ns) {
+    /* 
+     * Timers are generally a trade-off between precision and accuracy, so we
+     * choose the timer with the lowest precision (lowest frequency) that gives
+     * us the resolution we need for the requested interval.  After that, if
+     * there are multiple such sources, we choose the one with the fewest active
+     * requests, to distribute the load.
+     */
+    uint64_t i;
+    uint64_t source_interval_ns = 0, best_source_interval_ns = 0;
+    uint64_t best_descriptor;
+
+    for (i = 0; i < timing_sources.count; i++) {
+        source_interval_ns = one_billion / timing_sources.sources[i].frequency;
+
+        /*
+         * We want the largest interval (lowest frequency, which generally means
+         * higher accuracy) that is smaller than the requested interval (so we
+         * don't wait too long)
+         */
+        if ((source_interval_ns <= interval_ns) && (source_interval_ns > best_source_interval_ns)) {
+            best_source_interval_ns = source_interval_ns;
+            best_descriptor = i;
+        }
+
+        // TODO: Handle the case where no source interval is less than the requested interval
+    }
+
+    // TODO: Balance the load evenly among equally-good sources.
+
+    /*kprintf("Best, frequency, interval, request: %llu, %llu, %llu, %llu\n", best_descriptor,
+            timing_sources.sources[best_descriptor].frequency,
+            one_billion / timing_sources.sources[best_descriptor].frequency, interval_ns);*/
+    return best_descriptor;
+}
+
 void timer_set_alarm_relative(uint64_t ns) {
+    timing_select_best_source(ns);
     return;
 }

@@ -11,6 +11,10 @@
 #include <subsystems.h>
 #include <types.h>
 
+extern const uint64_t one_billion;
+
+typedef uint64_t timing_source_descriptor;
+
 typedef enum timing_source_type_t {
     TIMING_SOURCE_HPET,
     TIMING_SOURCE_LAPIC,
