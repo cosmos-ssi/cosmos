@@ -29,15 +29,21 @@ typedef struct timing_request_t {
     uint64_t delay_nsec;
 } timing_request_t;
 
+typedef struct timing_driver_api_t {
+    bool (*calibrate)(uint64_t);
+    uint64_t (*set_frequency)(uint64_t);
+    bool (*set_deadline_absolute)(timing_request_t* deadline);
+    bool (*set_deadline_relative)(timing_request_t* deadline);
+    uint64_t (*get_value)(void);
+} timing_driver_api_t;
+
 typedef struct timing_driver_t {
     timing_source_type_t type;
     uint64_t driver_id[4];
     uint64_t num_sources;
+    timing_driver_api_t api;
 
-    bool (*calibrate)(uint64_t);
-    uint64_t (*set_frequency)(uint64_t);
-    bool (*set_deadline)(timing_request_t* deadline);
-    uint64_t (*get_value)(void);
+    driver_list_entry_t* list_entry;
 } timing_driver_t;
 
 typedef struct timing_source_t {
@@ -49,7 +55,8 @@ typedef struct timing_source_t {
     bool calibrated;
 } timing_source_t;
 
+timing_request_t* timing_create_request(uint64_t delay_nsec);
 void timing_init(driver_list_entry_t** drivers);
-void timer_set_alarm_relative(uint64_t ns);
+void timer_set_alarm_relative(timing_request_t* req);
 
 #endif

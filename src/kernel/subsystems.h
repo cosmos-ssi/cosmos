@@ -52,4 +52,6 @@ typedef struct driver_info_1_t {
     driver_list_entry_t driver_entry_##identifier                                                                      \
         __attribute__((section(".driverlist.body." #identifier))) = {1, &driver_info_##identifier};
 
+bool driver_compare_id(uint64_t id1[4], uint64_t id2[4]);
+
 #endif

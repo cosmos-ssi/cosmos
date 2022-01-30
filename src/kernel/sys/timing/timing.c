@@ -1,3 +1,4 @@
+
 /*****************************************************************
  * This file is part of CosmOS                                   *
  * Copyright (C) 2021 Kurt M. Weber                              *
@@ -7,13 +8,14 @@
 
 #include <dev/timing/hpet.h>
 #include <subsystems.h>
+#include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
+#include <sys/sync/sync.h>
 #include <sys/timing/timing.h>
 
 const uint64_t one_billion = 1000000000;
-
 struct {
     timing_source_t* sources;
     uint64_t count;
@@ -24,7 +26,45 @@ struct {
     uint64_t count;
 } timing_driver_info;
 
+timing_driver_t* timing_find_driver(uint64_t id[4]);
+uint64_t timing_get_request_id();
 timing_source_descriptor timing_select_best_source(uint64_t interval_ns);
+
+timing_request_t* timing_create_request(uint64_t delay_nsec) {
+    timing_request_t* req;
+
+    req = kmalloc(sizeof(timing_request_t));
+
+    req->delay_nsec = delay_nsec;
+    req->request_id = timing_get_request_id();
+
+    return req;
+}
+
+uint64_t timing_get_request_id() {
+    static function_spinlock lock = false;
+    static uint64_t request_next = 0;
+    uint64_t retval;
+
+    FUNCTION_SPINLOCK_ACQUIRE(lock);
+    retval = request_next;
+    request_next++;
+    FUNCTION_SPINLOCK_RELEASE(lock);
+
+    return retval;
+}
+
+timing_driver_t* timing_find_driver(uint64_t id[4]) {
+    uint64_t i;
+
+    for (i = 0; i < timing_driver_info.count; i++) {
+        if (driver_compare_id(id, timing_driver_info.info[i].driver_id)) {
+            return &timing_driver_info.info[i];
+        }
+    }
+
+    return NULL;
+}
 
 void timing_init(driver_list_entry_t** drivers) {
     uint64_t i = 0, j = 0;
@@ -64,7 +104,7 @@ void timing_init(driver_list_entry_t** drivers) {
 
     timing_driver_info.count = i;
 
-    timer_set_alarm_relative(69);
+    //timer_set_alarm_relative(69);
 
     return;
 }
@@ -105,7 +145,17 @@ timing_source_descriptor timing_select_best_source(uint64_t interval_ns) {
     return best_descriptor;
 }
 
-void timer_set_alarm_relative(uint64_t ns) {
-    timing_select_best_source(ns);
+void timer_set_alarm_relative(timing_request_t* req) {
+    timing_source_descriptor tsd;
+    timing_driver_t* driver;
+
+    tsd = timing_select_best_source(req->delay_nsec);
+
+    ASSERT(tsd <= timing_sources.count);
+
+    driver = timing_find_driver(timing_sources.sources[tsd].driver_id);
+
+    driver->api.set_deadline_relative(req);
+
     return;
 }

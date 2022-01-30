@@ -9,7 +9,10 @@
 #include <types.h>
 
 uint64_t system_sleep(uint64_t ns) {
-    timer_set_alarm_relative(ns);
+    timing_request_t* req;
+
+    req = timing_create_request(ns);
+    timer_set_alarm_relative(req);
 
     return 0;
 }

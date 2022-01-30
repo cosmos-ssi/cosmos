@@ -15,6 +15,10 @@ kernel_spinlock page_table_lock;
 kernel_spinlock proc_table_lock;
 kernel_spinlock task_list_lock;
 
+void spinlock_module_init(module_spinlock* lock) {
+    return;
+}
+
 void spinlocks_init() {
     dma_buf_lock = false;
     dma_list_lock = false;

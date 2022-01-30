@@ -90,13 +90,14 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
 
     kprintf("Frequency: %llu Hz\n", hpet_calc_frequency(hpet_registers));
 
-    td->calibrate = NULL;
+    td->api.calibrate = NULL;
     td->driver_id[0] = di->id[0];
     td->driver_id[1] = di->id[1];
     td->driver_id[2] = di->id[2];
     td->driver_id[3] = di->id[3];
     td->num_sources = 2;
     td->type = TIMING_SOURCE_HPET;
+    td->list_entry = driver_list_entry;
 
     sources = kmalloc(3 * sizeof(timing_source_t));
     for (i = 0; i < 3; i++) {

@@ -7,8 +7,19 @@
 
 #include <types.h>
 
-typedef volatile bool
+typedef volatile bool generic_spinlock;
+typedef volatile generic_spinlock
     kernel_spinlock;  // 64 bytes to take up a full cache line, which improves performance on atomic operations
+typedef volatile generic_spinlock module_spinlock;
+typedef volatile generic_spinlock function_spinlock;
+
+#define FUNCTION_SPINLOCK_INIT(lock) spinlock_initialize((generic_spinlock*)&lock)
+#define FUNCTION_SPINLOCK_ACQUIRE(lock) spinlock_acquire((generic_spinlock*)&lock)
+#define FUNCTION_SPINLOCK_RELEASE(lock) spinlock_release((generic_spinlock*)&lock)
+
+#define MODULE_SPINLOCK_INIT(lock) spinlock_initialize((generic_spinlock*)&lock)
+#define MODULE_SPINLOCK_ACQUIRE(lock) spinlock_acquire((generic_spinlock*)&lock)
+#define MODULE_SPINLOCK_RELEASE(lock) spinlock_release((generic_spinlock*)&lock)
 
 // spinlock.c
 extern kernel_spinlock dma_buf_lock;
