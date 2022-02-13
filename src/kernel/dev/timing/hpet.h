@@ -45,14 +45,14 @@ typedef struct hpet_main_registers_t {
     // It is volatile--in that it can conceivably be changed by the system,
     // independent of the code--and it is const in that we should not be
     // modifying it ourselves.
-    const volatile hpet_general_capabilities_id_register_t general_capabilities_id;  // 0x000-0x007
-    uint64_t reserved1;                                                              // 0x008-0x00F
-    uint64_t general_configuration;                                                  // 0x010-0x017
-    uint64_t reserved2;                                                              // 0x018-0x01F
-    uint64_t general_interrupt_status;                                               // 0x020-0x027
-    uint64_t reserved3[25];                                                          // 0x028-0x0EF
-    uint64_t main_counter_value;                                                     // 0x0F0-0x0F7
-    uint64_t reserved4;                                                              // 0x0F8-0x0FF
+    hpet_general_capabilities_id_register_t general_capabilities_id;  // 0x000-0x007
+    uint64_t reserved1;                                               // 0x008-0x00F
+    uint64_t general_configuration;                                   // 0x010-0x017
+    uint64_t reserved2;                                               // 0x018-0x01F
+    uint64_t general_interrupt_status;                                // 0x020-0x027
+    uint64_t reserved3[25];                                           // 0x028-0x0EF
+    uint64_t main_counter_value;                                      // 0x0F0-0x0F7
+    uint64_t reserved4;                                               // 0x0F8-0x0FF
     hpet_timer_registers_t timer_registers[];
 } __attribute__((packed)) hpet_main_registers_t;
 

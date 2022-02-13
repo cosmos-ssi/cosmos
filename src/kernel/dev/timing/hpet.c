@@ -23,8 +23,12 @@ SUBSYSTEM_DRIVER(hpet, "High-Precision Event Timer", "High-Precision Event Timer
 
 const uint64_t hpet_max_period = 0x05F5E100;
 
+hpet_main_registers_t* hpet_registers;
+
 void hpet_interrupt_irq_0();
 void hpet_interrupt_irq_8();
+uint64_t hpet_read_main_counter_val();
+bool hpet_set_deadline_relative(timing_request_t* deadline);
 
 uint64_t hpet_calc_frequency(hpet_main_registers_t* hpet_registers) {
     uint64_t scaled_max_period;
@@ -68,7 +72,6 @@ uint64_t hpet_calc_frequency(hpet_main_registers_t* hpet_registers) {
 void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
     acpi_hpet_t* acpi_hpet;
     driver_info_1_t* di;
-    hpet_main_registers_t* hpet_registers;
     timing_driver_t* td;
     timing_source_t* sources;
     uint64_t i;
@@ -84,13 +87,22 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
     hpet_registers = (hpet_main_registers_t*)CONV_PHYS_ADDR(acpi_hpet->address.address);
     kprintf("\tHPET register base at 0x%llX\n", hpet_registers);
 
-    kprintf("\tRevision, flags, ID, period: %hu, %hu, %u, %lu\n", hpet_registers->general_capabilities_id.revision,
-            hpet_registers->general_capabilities_id.flags, hpet_registers->general_capabilities_id.vendor_id,
-            hpet_registers->general_capabilities_id.period);
+    // For some reason, there are...issues...accessing the members of
+    // general_capabilities_id (other than period, which is returned correctly)
+    // via the struct.  So for now, we'll copy it into a variable and access
+    // those via masks and shifts.
+    // TODO: Fix it
+    hpet_general_capabilities_id_register_t* gcap = &(hpet_registers->general_capabilities_id);
+    uint64_t gcap_val = *(uint64_t*)gcap;
+    kprintf("gcap_val: 0x%llX\n", gcap_val);
+    kprintf("\tRevision, flags, ID, period: 0x%hX, 0x%hX, 0x%X, 0x%lX\n", gcap_val & 0x00000000000000FF,
+            (gcap_val & 0x000000000000FF00) >> 8, (gcap_val & 0x00000000FFFF0000) >> 16,
+            (gcap_val & 0xFFFFFFFF00000000) >> 32);
 
     kprintf("Frequency: %llu Hz\n", hpet_calc_frequency(hpet_registers));
 
     td->api.calibrate = NULL;
+    td->api.set_deadline_relative = hpet_set_deadline_relative;
     td->driver_id[0] = di->id[0];
     td->driver_id[1] = di->id[1];
     td->driver_id[2] = di->id[2];
@@ -111,7 +123,7 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
         sources[i].frequency = hpet_calc_frequency(hpet_registers);
     }
 
-    //HPET_MAIN_ENABLE(hpet_registers->general_configuration);
+    HPET_MAIN_ENABLE(hpet_registers->general_configuration);
 
     //HPET_LEGACY_ENABLE(hpet_registers->general_configuration);
 
@@ -129,4 +141,16 @@ void hpet_interrupt_irq_0() {
 void hpet_interrupt_irq_8() {
     //kprintf("RTC HPET\n");
     return;
+}
+
+uint64_t hpet_read_main_counter_val() {
+    return hpet_registers->main_counter_value;
+}
+
+bool hpet_set_deadline_relative(timing_request_t* deadline) {
+    uint64_t cur_val;
+
+    cur_val = hpet_read_main_counter_val();
+
+    return false;
 }
