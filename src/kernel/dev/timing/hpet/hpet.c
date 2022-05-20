@@ -1,11 +1,12 @@
 /*****************************************************************
  * This file is part of CosmOS                                   *
- * Copyright (C) 2021 Kurt M. Weber                              *
+ * Copyright (C) 2021-2022 Kurt M. Weber                         *
  * Released under the stated terms in the file LICENSE           *
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <dev/timing/hpet.h>
+#include <dev/timing/hpet/hpet.h>
+#include <dev/timing/hpet/hpet_request_queue.h>
 #include <subsystems.h>
 #include <sys/debug/assert.h>
 #include <sys/interrupt_router/interrupt_router.h>
@@ -23,8 +24,15 @@ SUBSYSTEM_DRIVER(hpet, "High-Precision Event Timer", "High-Precision Event Timer
 
 const uint64_t hpet_max_period = 0x05F5E100;
 
+// The timing API takes requests in nanosecond increments; we use this to
+// account for the fact that timer frequency/resolution is very likely something
+// other than a nanosecond
+uint64_t hpet_main_freq_divisor;
+
+uint64_t hpet_main_counter_frequency;
 hpet_main_registers_t* hpet_registers;
 
+void hpet_init_useful_values();
 void hpet_interrupt_irq_0();
 void hpet_interrupt_irq_8();
 uint64_t hpet_read_main_counter_val();
@@ -91,15 +99,16 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
     // general_capabilities_id (other than period, which is returned correctly)
     // via the struct.  So for now, we'll copy it into a variable and access
     // those via masks and shifts.
-    // TODO: Fix it
+    // TODO: #80 Fix it
     hpet_general_capabilities_id_register_t* gcap = &(hpet_registers->general_capabilities_id);
     uint64_t gcap_val = *(uint64_t*)gcap;
-    kprintf("gcap_val: 0x%llX\n", gcap_val);
     kprintf("\tRevision, flags, ID, period: 0x%hX, 0x%hX, 0x%X, 0x%lX\n", gcap_val & 0x00000000000000FF,
             (gcap_val & 0x000000000000FF00) >> 8, (gcap_val & 0x00000000FFFF0000) >> 16,
             (gcap_val & 0xFFFFFFFF00000000) >> 32);
 
-    kprintf("Frequency: %llu Hz\n", hpet_calc_frequency(hpet_registers));
+    hpet_init_useful_values();
+
+    kprintf("Frequency: %llu Hz\n", hpet_main_counter_frequency);
 
     td->api.calibrate = NULL;
     td->api.set_deadline_relative = hpet_set_deadline_relative;
@@ -133,6 +142,17 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
     return (void*)sources;
 }
 
+void hpet_init_useful_values() {
+    // Precalculates some useful values that need to be referred to again and
+    // again, and should not change for the duration of the operating system
+    // session
+
+    hpet_main_counter_frequency = hpet_calc_frequency(hpet_registers);
+
+    // If the counter frequency is greater than one gigahertz, this will be zero
+    hpet_main_freq_divisor = one_billion / hpet_main_counter_frequency;
+}
+
 void hpet_interrupt_irq_0() {
     //kprintf("PIT HPET\n");
     return;
@@ -148,9 +168,23 @@ uint64_t hpet_read_main_counter_val() {
 }
 
 bool hpet_set_deadline_relative(timing_request_t* deadline) {
-    uint64_t cur_val;
+    uint64_t cur_val, deadline_val;
+    uint64_t deadline_adjustment;  // this is expressed in HPET frequency units
+
+    // If the HPET frequency is less than one gigahertz, we need to scale the delay down accordingly
+    if (hpet_main_freq_divisor) {
+        deadline_adjustment = deadline->delay_nsec / hpet_main_freq_divisor;
+    }
 
     cur_val = hpet_read_main_counter_val();
+
+    kprintf("HPET current: %llu\n", cur_val);
+
+    deadline_val = cur_val + deadline_adjustment;
+
+    hpet_request_queue_add(deadline, deadline_val);
+
+    kprintf("Deadline: %llu\n", deadline_val);
 
     return false;
 }

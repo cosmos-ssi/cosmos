@@ -24,9 +24,17 @@ typedef enum timing_source_type_t {
     TIMING_SOURCE_OTHER
 } timing_source_type_t;
 
+typedef enum timing_request_status_t {
+    TIMING_REQUEST_STATUS_INITIATED,
+    TIMING_REQUEST_STATUS_SUBMITTED,
+    TIMING_REQUEST_STATUS_EXPIRED,
+    TIMING_REQUEST_STATUS_DELIVERED
+} timing_request_status_t;
+
 typedef struct timing_request_t {
     uint64_t request_id;
     uint64_t delay_nsec;
+    timing_request_status_t status;
 } timing_request_t;
 
 typedef struct timing_driver_api_t {

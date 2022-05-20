@@ -6,13 +6,14 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <dev/timing/hpet.h>
+#include <dev/timing/hpet/hpet.h>
 #include <subsystems.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
 #include <sys/panic/panic.h>
 #include <sys/sync/sync.h>
+#include <sys/timing/timerapi.h>
 #include <sys/timing/timing.h>
 
 const uint64_t one_billion = 1000000000;
@@ -37,6 +38,7 @@ timing_request_t* timing_create_request(uint64_t delay_nsec) {
 
     req->delay_nsec = delay_nsec;
     req->request_id = timing_get_request_id();
+    req->status = TIMING_REQUEST_STATUS_INITIATED;
 
     return req;
 }
@@ -104,7 +106,7 @@ void timing_init(driver_list_entry_t** drivers) {
 
     timing_driver_info.count = i;
 
-    //timer_set_alarm_relative(69);
+    system_sleep(1);
 
     return;
 }
@@ -119,7 +121,7 @@ timing_source_descriptor timing_select_best_source(uint64_t interval_ns) {
      */
     uint64_t i;
     uint64_t source_interval_ns = 0, best_source_interval_ns = 0;
-    uint64_t best_descriptor;
+    uint64_t best_descriptor = 0;
 
     for (i = 0; i < timing_sources.count; i++) {
         source_interval_ns = one_billion / timing_sources.sources[i].frequency;

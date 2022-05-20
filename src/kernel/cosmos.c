@@ -6,7 +6,7 @@
  *****************************************************************/
 
 #include <cosmos_logical_objs.h>
-#include <dev/timing/hpet.h>
+#include <dev/timing/hpet/hpet.h>
 #include <obj/logical/fs/initrd/initrd.h>
 #include <subsystems.h>
 #include <sys/asm/misc.h>
