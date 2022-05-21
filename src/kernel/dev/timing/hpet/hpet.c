@@ -6,7 +6,7 @@
  *****************************************************************/
 
 #include <dev/timing/hpet/hpet.h>
-#include <dev/timing/hpet/hpet_request_queue.h>
+#include <dev/timing/hpet/request_queue.h>
 #include <subsystems.h>
 #include <sys/debug/assert.h>
 #include <sys/interrupt_router/interrupt_router.h>
@@ -50,6 +50,11 @@ void hpet_add_oneshot(uint64_t num_timer, uint64_t deadline) {
     // will be called again with the proper deadline value if necessary.
 
     MODULE_SPINLOCK_ACQUIRE(comparator_spinlock);
+
+    if (deadline >= hpet_registers->timer_registers[num_timer].comparator_value) {
+        MODULE_SPINLOCK_RELEASE(comparator_spinlock);
+        return;
+    }
 
     kprintf("Deadline before: %llu\n", hpet_registers->timer_registers[num_timer].comparator_value);
     hpet_registers->timer_registers[num_timer].comparator_value = deadline;
@@ -167,6 +172,8 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
     for (i = 0; i < 2; i++) {
     }
 
+    hpet_request_queue_init();
+
     HPET_MAIN_ENABLE(hpet_registers->general_configuration);
 
     HPET_LEGACY_ENABLE(hpet_registers->general_configuration);
@@ -189,6 +196,10 @@ void hpet_init_useful_values() {
 }
 
 void hpet_interrupt_irq_0() {
+    uint64_t current_time;
+
+    current_time = hpet_registers->main_counter_value;
+
     kprintf("PIT HPET\n");
     return;
 }
