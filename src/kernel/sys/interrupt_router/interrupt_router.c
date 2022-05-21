@@ -55,7 +55,7 @@ void interrupt_router_route_interrupt(int interruptNumber, stack_frame* frame) {
     ASSERT_NOT_NULL(frame);
     ASSERT_NOT_NULL(interrupt_handlers);
 
-    //kprintf("Routing IRQ %llu\n", (uint64_t)interruptNumber);
+    kprintf("Routing IRQ %llu\n", (uint64_t)interruptNumber);
 
     //if ((8 != interruptNumber) && (0 != interruptNumber)) {
     //   kprintf("Routing IRQ %llu\n", interruptNumber);

@@ -12,6 +12,7 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
+#include <sys/sync/sync.h>
 #include <sys/timing/timing.h>
 #include <sys/x86-64/acpi/acpi.h>
 #include <sys/x86-64/acpi/rsdt.h>
@@ -32,11 +33,35 @@ uint64_t hpet_main_freq_divisor;
 uint64_t hpet_main_counter_frequency;
 hpet_main_registers_t* hpet_registers;
 
+kernel_spinlock comparator_spinlock;
+
 void hpet_init_useful_values();
 void hpet_interrupt_irq_0();
 void hpet_interrupt_irq_8();
 uint64_t hpet_read_main_counter_val();
 bool hpet_set_deadline_relative(timing_request_t* deadline);
+void hpet_add_oneshot(uint64_t num_timer, uint64_t deadline);
+
+void hpet_add_oneshot(uint64_t num_timer, uint64_t deadline) {
+    spinlock_acquire(&comparator_spinlock);
+
+    // Only actually do anything if the deadline is less than the current value
+    // of the comparator (i.e. if the deadline is going to be the next one that
+    // is reached as things currently stand).  Otherwise, do nothing and this
+    // will be called again with the proper deadline value if necessary.
+
+    kprintf("Deadline before: %llu\n", hpet_registers->timer_registers[num_timer].comparator_value);
+    hpet_registers->timer_registers[num_timer].comparator_value = deadline;
+    kprintf("Deadline after: %llu\n", hpet_registers->timer_registers[num_timer].comparator_value);
+
+    kprintf("Capability before: 0x%llX\n", hpet_registers->timer_registers[num_timer].configuration_capability);
+    hpet_registers->timer_registers[num_timer].configuration_capability |= (1 << 2);
+    kprintf("Capability before: 0x%llX\n", hpet_registers->timer_registers[num_timer].configuration_capability);
+
+    spinlock_release(&comparator_spinlock);
+
+    return;
+}
 
 uint64_t hpet_calc_frequency(hpet_main_registers_t* hpet_registers) {
     uint64_t scaled_max_period;
@@ -84,6 +109,9 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
     timing_source_t* sources;
     uint64_t i;
 
+    // initialize driver spinlocks
+    spinlock_initialize(&comparator_spinlock);
+
     td = (timing_driver_t*)timing_driver;
     di = (driver_info_1_t*)(driver_list_entry->driver_info);
 
@@ -110,6 +138,7 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
 
     kprintf("Frequency: %llu Hz\n", hpet_main_counter_frequency);
 
+    // Set up the driver information struct
     td->api.calibrate = NULL;
     td->api.set_deadline_relative = hpet_set_deadline_relative;
     td->driver_id[0] = di->id[0];
@@ -120,6 +149,7 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
     td->type = TIMING_SOURCE_HPET;
     td->list_entry = driver_list_entry;
 
+    // Initialize the list of timing sources
     sources = kmalloc(3 * sizeof(timing_source_t));
     for (i = 0; i < 3; i++) {
         sources[i].type = TIMING_SOURCE_HPET;
@@ -132,11 +162,15 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
         sources[i].frequency = hpet_calc_frequency(hpet_registers);
     }
 
+    // We only use HPET timers 1 and 2, so we only bother to configure those
+    for (i = 0; i < 2; i++) {
+    }
+
     HPET_MAIN_ENABLE(hpet_registers->general_configuration);
 
-    //HPET_LEGACY_ENABLE(hpet_registers->general_configuration);
+    HPET_LEGACY_ENABLE(hpet_registers->general_configuration);
 
-    //interrupt_router_register_interrupt_handler(0, hpet_interrupt_irq_0);
+    interrupt_router_register_interrupt_handler(0, hpet_interrupt_irq_0);
     //interrupt_router_register_interrupt_handler(8, hpet_interrupt_irq_8);
 
     return (void*)sources;
@@ -154,12 +188,12 @@ void hpet_init_useful_values() {
 }
 
 void hpet_interrupt_irq_0() {
-    //kprintf("PIT HPET\n");
+    kprintf("PIT HPET\n");
     return;
 }
 
 void hpet_interrupt_irq_8() {
-    //kprintf("RTC HPET\n");
+    kprintf("RTC HPET\n");
     return;
 }
 
@@ -183,6 +217,8 @@ bool hpet_set_deadline_relative(timing_request_t* deadline) {
     deadline_val = cur_val + deadline_adjustment;
 
     hpet_request_queue_add(deadline, deadline_val);
+
+    hpet_add_oneshot(0, deadline_val);
 
     kprintf("Deadline: %llu\n", deadline_val);
 
