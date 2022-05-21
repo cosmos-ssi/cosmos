@@ -17,7 +17,7 @@ typedef volatile generic_spinlock function_spinlock;
 #define FUNCTION_SPINLOCK_ACQUIRE(lock) spinlock_acquire((generic_spinlock*)&lock)
 #define FUNCTION_SPINLOCK_RELEASE(lock) spinlock_release((generic_spinlock*)&lock)
 
-#define MODULE_SPINLOCK_INIT(lock) spinlock_initialize((generic_spinlock*)&lock)
+#define MODULE_SPINLOCK_INIT(lock) spinlock_module_init((generic_spinlock*)&lock)
 #define MODULE_SPINLOCK_ACQUIRE(lock) spinlock_acquire((generic_spinlock*)&lock)
 #define MODULE_SPINLOCK_RELEASE(lock) spinlock_release((generic_spinlock*)&lock)
 
@@ -32,3 +32,5 @@ extern kernel_spinlock task_list_lock;
 void spinlocks_init();
 void spinlock_acquire(kernel_spinlock* lock);
 void spinlock_release(kernel_spinlock* lock);
+
+void spinlock_module_init(module_spinlock* lock);

@@ -16,6 +16,8 @@ kernel_spinlock proc_table_lock;
 kernel_spinlock task_list_lock;
 
 void spinlock_module_init(module_spinlock* lock) {
+    *lock = false;
+
     return;
 }
 

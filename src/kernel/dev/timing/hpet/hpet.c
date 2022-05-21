@@ -43,12 +43,13 @@ bool hpet_set_deadline_relative(timing_request_t* deadline);
 void hpet_add_oneshot(uint64_t num_timer, uint64_t deadline);
 
 void hpet_add_oneshot(uint64_t num_timer, uint64_t deadline) {
-    spinlock_acquire(&comparator_spinlock);
 
     // Only actually do anything if the deadline is less than the current value
     // of the comparator (i.e. if the deadline is going to be the next one that
     // is reached as things currently stand).  Otherwise, do nothing and this
     // will be called again with the proper deadline value if necessary.
+
+    MODULE_SPINLOCK_ACQUIRE(comparator_spinlock);
 
     kprintf("Deadline before: %llu\n", hpet_registers->timer_registers[num_timer].comparator_value);
     hpet_registers->timer_registers[num_timer].comparator_value = deadline;
@@ -58,7 +59,7 @@ void hpet_add_oneshot(uint64_t num_timer, uint64_t deadline) {
     hpet_registers->timer_registers[num_timer].configuration_capability |= (1 << 2);
     kprintf("Capability before: 0x%llX\n", hpet_registers->timer_registers[num_timer].configuration_capability);
 
-    spinlock_release(&comparator_spinlock);
+    MODULE_SPINLOCK_RELEASE(comparator_spinlock);
 
     return;
 }
@@ -110,7 +111,7 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
     uint64_t i;
 
     // initialize driver spinlocks
-    spinlock_initialize(&comparator_spinlock);
+    MODULE_SPINLOCK_INIT(comparator_spinlock);
 
     td = (timing_driver_t*)timing_driver;
     di = (driver_info_1_t*)(driver_list_entry->driver_info);
