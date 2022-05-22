@@ -141,13 +141,6 @@ hpet_request_queue_t* hpet_request_queue_slice_deadline(uint64_t deadline) {
 
     hpet_request_queue_t *first, *cur;
 
-    /*// If the deadline is less than the first entry in the queue, then either
-    // the queue was not constructed properly or the deadline being passed was
-    // never entered in the queue in the first place; either way, something has
-    // gone wrong.
-    ASSERT(deadline >= request_queue->deadline);
-    */
-
     // In theory, this shouldn't happen if the queue is set up properly.  It
     // seems that, nevertheless, one HPET interrupt fires before I've even set a
     // timer.  It remains to be seen if the problem is with my test environment,

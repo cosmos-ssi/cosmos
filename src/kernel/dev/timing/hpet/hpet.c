@@ -193,8 +193,6 @@ void hpet_interrupt_irq_0() {
     uint64_t i = 0;
     hpet_request_queue_t* queue;
 
-    kprintf("PIT HPET\n");
-
     current_time = hpet_registers->main_counter_value;
 
     queue = hpet_request_queue_slice_deadline(current_time);
@@ -205,11 +203,6 @@ void hpet_interrupt_irq_0() {
     // Zero the comparator value.  This is necessary because hpet_add_oneshot
     expired_requests = hpet_request_queue_next_expired_request(queue);
     hpet_install_next_deadline(0);
-
-    while (expired_requests[i]) {
-        kprintf("Request #%llu expired\n", expired_requests[i]->request_id);
-        i++;
-    }
 
     kfree(expired_requests);
     return;
@@ -235,15 +228,11 @@ bool hpet_set_deadline_relative(timing_request_t* deadline) {
 
     cur_val = hpet_read_main_counter_val();
 
-    kprintf("HPET current: %llu\n", cur_val);
-
     deadline_val = cur_val + deadline_adjustment;
 
     hpet_request_queue_add(deadline, deadline_val);
 
     hpet_install_next_deadline(0);
-
-    kprintf("Deadline: %llu\n", deadline_val);
 
     return false;
 }
