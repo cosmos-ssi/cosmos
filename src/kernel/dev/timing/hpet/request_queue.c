@@ -28,6 +28,7 @@ void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
 
     if (!request_queue) {
         request_queue = new;
+        MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
         return;
     }
 
@@ -47,6 +48,7 @@ void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
     if (cur->deadline > new->deadline) {
         new->next = cur;
         request_queue = new;
+        MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
         return;
     }
 
@@ -59,6 +61,7 @@ void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
         if (cur->next->deadline > new->deadline) {
             new->next = cur->next;
             cur->next = new;
+            MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
             return;
         }
 
@@ -87,6 +90,45 @@ void hpet_request_queue_dump() {
     return;
 }
 
+timing_request_t* hpet_request_queue_extract_request(hpet_request_queue_t* entry) {
+    ASSERT_NOT_NULL(entry);
+    return entry->request;
+}
+
+uint64_t hpet_request_queue_first_deadline() {
+    ASSERT_NOT_NULL(request_queue);
+
+    return request_queue->deadline;
+}
+
+timing_request_t** hpet_request_queue_next_expired_request(hpet_request_queue_t* expired_queue) {
+    // !!!CALLER IS RESPONSIBLE FOR FREEING RETURNED POINTER!!!
+
+    timing_request_t** array = 0;
+    hpet_request_queue_t *cur, *next;
+    uint64_t i = 0;
+
+    ASSERT_NOT_NULL(expired_queue);
+
+    cur = expired_queue;
+
+    while (cur) {
+        array = krealloc(array, (i + 1) * sizeof(timing_request_t*));
+
+        array[i] = hpet_request_queue_extract_request(cur);
+
+        next = cur->next;
+        kfree(cur);
+        cur = next;
+        i++;
+    }
+
+    array = krealloc(array, (i + 1) * sizeof(timing_request_t*));
+    array[i] = 0;
+
+    return array;
+}
+
 void hpet_request_queue_init() {
     MODULE_SPINLOCK_INIT(hpet_request_queue_lock);
 
@@ -99,11 +141,23 @@ hpet_request_queue_t* hpet_request_queue_slice_deadline(uint64_t deadline) {
 
     hpet_request_queue_t *first, *cur;
 
-    // If the deadline is less than the first entry in the queue, then either
+    /*// If the deadline is less than the first entry in the queue, then either
     // the queue was not constructed properly or the deadline being passed was
     // never entered in the queue in the first place; either way, something has
     // gone wrong.
     ASSERT(deadline >= request_queue->deadline);
+    */
+
+    // In theory, this shouldn't happen if the queue is set up properly.  It
+    // seems that, nevertheless, one HPET interrupt fires before I've even set a
+    // timer.  It remains to be seen if the problem is with my test environment,
+    // my code, or my understanding.  Nevertheless, for now we'll just ignore it
+    // if this happens.
+
+    // TODO: fix it
+    if (deadline < request_queue->deadline) {
+        return NULL;
+    }
 
     MODULE_SPINLOCK_ACQUIRE(hpet_request_queue_lock);
 
@@ -125,4 +179,15 @@ hpet_request_queue_t* hpet_request_queue_slice_deadline(uint64_t deadline) {
     MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
     request_queue = 0;
     return first;
+}
+
+bool hpet_request_queue_valid() {
+    // returns true if there is at least one valid entry in the request queue,
+    // otherwise false
+
+    if (request_queue) {
+        return true;
+    } else {
+        return false;
+    }
 }

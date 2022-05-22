@@ -107,10 +107,6 @@ void timing_init(driver_list_entry_t** drivers) {
 
     timing_driver_info.count = i;
 
-    system_sleep(10000000000);
-    system_sleep(30000000000);
-    asm_sti();
-
     return;
 }
 

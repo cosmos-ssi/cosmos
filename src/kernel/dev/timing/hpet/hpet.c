@@ -43,26 +43,10 @@ bool hpet_set_deadline_relative(timing_request_t* deadline);
 void hpet_add_oneshot(uint64_t num_timer, uint64_t deadline);
 
 void hpet_add_oneshot(uint64_t num_timer, uint64_t deadline) {
-
-    // Only actually do anything if the deadline is less than the current value
-    // of the comparator (i.e. if the deadline is going to be the next one that
-    // is reached as things currently stand).  Otherwise, do nothing and this
-    // will be called again with the proper deadline value if necessary.
-
     MODULE_SPINLOCK_ACQUIRE(comparator_spinlock);
 
-    if (deadline >= hpet_registers->timer_registers[num_timer].comparator_value) {
-        MODULE_SPINLOCK_RELEASE(comparator_spinlock);
-        return;
-    }
-
-    kprintf("Deadline before: %llu\n", hpet_registers->timer_registers[num_timer].comparator_value);
     hpet_registers->timer_registers[num_timer].comparator_value = deadline;
-    kprintf("Deadline after: %llu\n", hpet_registers->timer_registers[num_timer].comparator_value);
-
-    kprintf("Capability before: 0x%llX\n", hpet_registers->timer_registers[num_timer].configuration_capability);
     hpet_registers->timer_registers[num_timer].configuration_capability |= (1 << 2);
-    kprintf("Capability before: 0x%llX\n", hpet_registers->timer_registers[num_timer].configuration_capability);
 
     MODULE_SPINLOCK_RELEASE(comparator_spinlock);
 
@@ -195,12 +179,39 @@ void hpet_init_useful_values() {
     hpet_main_freq_divisor = one_billion / hpet_main_counter_frequency;
 }
 
+void hpet_install_next_deadline(uint64_t timer) {
+    if (hpet_request_queue_valid()) {
+        hpet_add_oneshot(timer, hpet_request_queue_first_deadline());
+    }
+
+    return;
+}
+
 void hpet_interrupt_irq_0() {
     uint64_t current_time;
+    timing_request_t** expired_requests;
+    uint64_t i = 0;
+    hpet_request_queue_t* queue;
+
+    kprintf("PIT HPET\n");
 
     current_time = hpet_registers->main_counter_value;
 
-    kprintf("PIT HPET\n");
+    queue = hpet_request_queue_slice_deadline(current_time);
+    if (!queue) {
+        return;
+    }
+
+    // Zero the comparator value.  This is necessary because hpet_add_oneshot
+    expired_requests = hpet_request_queue_next_expired_request(queue);
+    hpet_install_next_deadline(0);
+
+    while (expired_requests[i]) {
+        kprintf("Request #%llu expired\n", expired_requests[i]->request_id);
+        i++;
+    }
+
+    kfree(expired_requests);
     return;
 }
 
@@ -230,7 +241,7 @@ bool hpet_set_deadline_relative(timing_request_t* deadline) {
 
     hpet_request_queue_add(deadline, deadline_val);
 
-    hpet_add_oneshot(0, deadline_val);
+    hpet_install_next_deadline(0);
 
     kprintf("Deadline: %llu\n", deadline_val);
 

@@ -99,6 +99,11 @@ void CosmOS() {
     kprintf("Initializing object manager...\n");
     object_init();
 
+    // We enable interrupts here so that various hardware initialization and
+    // checks can work.  Most importantly of these are the timer interrupts,
+    // which are usable now that the timing has already been set up.
+    asm_sti();
+
     /*
      * Register all devices
      */

@@ -19,6 +19,10 @@ typedef struct hpet_request_queue_t {
 
 void hpet_request_queue_add(timing_request_t* request, uint64_t deadline);
 void hpet_request_queue_dump();
+uint64_t hpet_request_queue_first_deadline();
 void hpet_request_queue_init();
+timing_request_t** hpet_request_queue_next_expired_request(hpet_request_queue_t* expired_queue);
+hpet_request_queue_t* hpet_request_queue_slice_deadline(uint64_t deadline);
+bool hpet_request_queue_valid();
 
 #endif
