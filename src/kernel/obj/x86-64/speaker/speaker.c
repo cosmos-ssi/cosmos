@@ -14,7 +14,7 @@
 #include <sys/obj/objectinterface/objectinterface_speaker.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
-#include <sys/sleep/sleep.h>
+#include <sys/timing/timerapi.h>
 #include <types.h>
 
 // https://wiki.osdev.org/PC_Speaker
@@ -57,7 +57,7 @@ void play_sound(uint32_t frequency) {
 void speaker_beep(struct object* obj, uint32_t frequency, uint32_t milliseconds) {
     ASSERT_NOT_NULL(obj);
     play_sound(frequency);
-    sleep_wait(milliseconds);
+    system_sleep(milliseconds * 1000000);
     nosound();
     // set_PIT_2(old_frequency);
 }

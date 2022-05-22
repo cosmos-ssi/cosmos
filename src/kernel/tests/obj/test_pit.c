@@ -9,7 +9,7 @@
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_pit.h>
 #include <sys/obj/objectmgr/objectmgr.h>
-#include <sys/sleep/sleep.h>
+#include <sys/timing/timerapi.h>
 #include <tests/obj/test_pit.h>
 #include <types.h>
 
@@ -23,7 +23,7 @@ void test_pit() {
         // show the tick count, since we can
         uint64_t tc = (*tickcount_func)(pit);
         kprintf("Ticks: %llu\n", tc);
-        sleep_wait(1000);
+        system_sleep(1000000000);
         tc = (*tickcount_func)(pit);
         kprintf("Ticks: %llu\n", tc);
     } else {

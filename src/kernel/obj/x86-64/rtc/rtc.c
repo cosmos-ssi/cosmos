@@ -18,7 +18,7 @@
 #include <sys/obj/objectinterface/objectinterface_rtc.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
-#include <sys/sleep/sleep.h>
+#include <sys/timing/timerapi.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 
@@ -49,7 +49,7 @@ void rtc_handle_irq(stack_frame* frame) {
         (*rtcEvent)();
     }
 
-    sleep_update();
+    // sleep_update();
     // have to read status register C in order for irq to fire again
     cmos_read_register(RTC_REGISTER_STATUS_C);
     return;

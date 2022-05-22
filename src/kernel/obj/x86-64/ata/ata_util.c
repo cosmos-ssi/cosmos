@@ -9,7 +9,7 @@
 #include <obj/x86-64/ata/ata_util.h>
 #include <sys/asm/io.h>
 #include <sys/panic/panic.h>
-#include <sys/sleep/sleep.h>
+#include <sys/timing/timerapi.h>
 
 //#define ATA_UTIL_DEBUG
 
@@ -145,7 +145,7 @@ uint16_t ata_register_port_number(struct ata_controller* controller, uint8_t cha
 
 void ata_detect_atapi(struct ata_controller* controller, uint8_t channel) {
     ata_register_write(controller, channel, ATA_REGISTER_COMMAND, ATA_COMMAND_IDENTIFY_PACKET);
-    sleep_wait(1);
+    system_sleep(1000000);
     return;
 }
 
@@ -185,7 +185,7 @@ bool ata_select_device(struct ata_controller* controller, uint8_t channel, uint8
     controller->channels[channel].selected_device = device;
 
     ata_register_write(controller, channel, ATA_REGISTER_HDDEVSEL, 0xA0 | (device << 4));
-    sleep_wait(1);
+    system_sleep(1000000);
 
     return true;
 }

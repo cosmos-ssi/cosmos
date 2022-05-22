@@ -6,11 +6,14 @@
  *****************************************************************/
 
 #include <sys/asm/asm.h>
+#include <sys/kprintf/kprintf.h>
 #include <sys/timing/timing.h>
 #include <types.h>
 
 uint64_t system_sleep(uint64_t ns) {
     timing_request_t* req;
+
+    kprintf("system_sleep called");
 
     req = timing_create_request(ns);
     timer_set_alarm_relative(req);

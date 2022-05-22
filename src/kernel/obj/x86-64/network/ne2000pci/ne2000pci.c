@@ -21,7 +21,7 @@
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/panic/panic.h>
-#include <sys/sleep/sleep.h>
+#include <sys/timing/timerapi.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 
@@ -210,7 +210,7 @@ void ne2000pci_objectmgr_register_objects() {
 
 void ne2000pci_init() {
     asm_out_b(CR, (CR_PAGE0 | CR_NODMA | CR_STOP));      // set page 0, turn off DMA, tell the NIC to stop
-    sleep_wait(10);                                      // wait for traffic to complete
+    system_sleep(10000000);                              // wait for traffic to complete
     asm_out_b(DCR, DCR_BYTEDMA | DCR_NOLPBK | DCR_ARM);  // we want byte-wide DMA, automatic DMA transfers,
     asm_out_b(RBCR0, 0x00);                              // byte count zero
     asm_out_b(RBCR1, 0x00);                              // byte count zero

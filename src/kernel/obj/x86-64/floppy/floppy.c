@@ -17,7 +17,7 @@
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/panic/panic.h>
-#include <sys/sleep/sleep.h>
+#include <sys/timing/timerapi.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 
@@ -142,13 +142,13 @@ void resetFloppy() {
      */
     uint8_t currentDOR = asm_in_b(FLOPPY_DIGITAL_OUTPUT_REGISTER);
     asm_out_b(FLOPPY_DIGITAL_OUTPUT_REGISTER, 0x00);
-    sleep_wait(5);
+    system_sleep(5000000);
     asm_out_b(FLOPPY_DIGITAL_OUTPUT_REGISTER, currentDOR);
     /*
      * wait for IRQ
      */
     while (irq_count < current_irq_count + 1) {
-        sleep_wait(10);
+        system_sleep(10000000);
     }
     /*
      *  floppy is reset
@@ -188,7 +188,7 @@ uint8_t floppy_obj_init(struct object* obj) {
     asm_out_b(FLOPPY_DIGITAL_OUTPUT_REGISTER | FLOPPY_DOR_IRQ_BIT, FLOPPY_DOR_MOTA_BIT);
 
     // sleep FLOPPY_MOTOR_DELAY_MS_35 ms to let the motor spin up
-    sleep_wait(FLOPPY_MOTOR_DELAY_MS_35);
+    system_sleep(FLOPPY_MOTOR_DELAY_MS_35 * 1000000);
 
     // reset
     resetFloppy();

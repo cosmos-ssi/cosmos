@@ -19,22 +19,22 @@
         speaker_beep_function beep_func = speaker_api->beep;
         //	(*beep_func)(speaker, 4000, 50);
         (*beep_func)(speaker, NOTE_G5, 200);
-        sleep_wait(100);
+        system_sleep(100000000);
         (*beep_func)(speaker, NOTE_G5, 200);
-        sleep_wait(100);
+        system_sleep(100000000);
         (*beep_func)(speaker, NOTE_G5, 200);
-        sleep_wait(100);
+        system_sleep(100000000);
         (*beep_func)(speaker, NOTE_DS5, 400);
-        sleep_wait(400);
+        system_sleep(400000000);
 
         (*beep_func)(speaker, NOTE_F5, 200);
-        sleep_wait(100);
+        system_sleep(100000000);
         (*beep_func)(speaker, NOTE_F5, 200);
-        sleep_wait(100);
+        system_sleep(100000000);
         (*beep_func)(speaker, NOTE_F5, 200);
-        sleep_wait(100);
+        system_sleep(100000000);
         (*beep_func)(speaker, NOTE_D5, 400);
-        sleep_wait(100);
+        system_sleep(100000000);
     } else {
         kprintf("Unable to find speaker0\n");
     }

@@ -111,22 +111,19 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
     acpi_hpet = acpi_find_table(ACPI_HPET);
 
     hpet_registers = (hpet_main_registers_t*)CONV_PHYS_ADDR(acpi_hpet->address.address);
-    kprintf("\tHPET register base at 0x%llX\n", hpet_registers);
 
     // For some reason, there are...issues...accessing the members of
     // general_capabilities_id (other than period, which is returned correctly)
     // via the struct.  So for now, we'll copy it into a variable and access
-    // those via masks and shifts.
-    // TODO: #80 Fix it
-    hpet_general_capabilities_id_register_t* gcap = &(hpet_registers->general_capabilities_id);
-    uint64_t gcap_val = *(uint64_t*)gcap;
-    kprintf("\tRevision, flags, ID, period: 0x%hX, 0x%hX, 0x%X, 0x%lX\n", gcap_val & 0x00000000000000FF,
-            (gcap_val & 0x000000000000FF00) >> 8, (gcap_val & 0x00000000FFFF0000) >> 16,
-            (gcap_val & 0xFFFFFFFF00000000) >> 32);
+    // those via masks and shifts. TODO: #80 Fix it
+
+    // hpet_general_capabilities_id_register_t* gcap = &(hpet_registers->general_capabilities_id);
+
+    // Don't remove this comment or commented-out line because it indicates
+    // something I need to work out, even if the variable itself is unused for
+    // the moment.
 
     hpet_init_useful_values();
-
-    kprintf("Frequency: %llu Hz\n", hpet_main_counter_frequency);
 
     // Set up the driver information struct
     td->api.calibrate = NULL;
@@ -190,7 +187,6 @@ void hpet_install_next_deadline(uint64_t timer) {
 void hpet_interrupt_irq_0() {
     uint64_t current_time;
     timing_request_t** expired_requests;
-    uint64_t i = 0;
     hpet_request_queue_t* queue;
 
     current_time = hpet_registers->main_counter_value;
@@ -200,7 +196,11 @@ void hpet_interrupt_irq_0() {
         return;
     }
 
-    // Zero the comparator value.  This is necessary because hpet_add_oneshot
+    // TODO: Call the appropriate function to process expired requests.  Not
+    // needed at time of writing because the only timer requests come from
+    // system_sleep(), which requires no processing as it is entirely
+    // synchronous and blocking and internal to the kernel.  Once we get
+    // multitasking and userspace going, that will change.
     expired_requests = hpet_request_queue_next_expired_request(queue);
     hpet_install_next_deadline(0);
 

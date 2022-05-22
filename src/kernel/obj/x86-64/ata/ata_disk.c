@@ -17,8 +17,8 @@
 #include <sys/obj/objectinterface/objectinterface_block.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
-#include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
+#include <sys/timing/timerapi.h>
 
 // https://wiki.osdev.org/PCI_IDE_Controller
 
@@ -97,7 +97,7 @@ uint32_t ata_rw(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t 
     }
 
     while (ata_register_read(diskdata->controller, diskdata->channel, ATA_REGISTER_STATUS) & ATA_STATUS_BUSY) {
-        sleep_wait(1);
+        system_sleep(1000000);
     }
 
     //	kprintf("fff %llu\n",ata_register_read(diskdata->controller, diskdata->channel, ATA_REGISTER_STATUS) & ATA_STATUS_BUSY);

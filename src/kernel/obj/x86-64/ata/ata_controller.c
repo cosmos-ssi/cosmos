@@ -21,7 +21,7 @@
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/panic/panic.h>
-#include <sys/sleep/sleep.h>
+#include <sys/timing/timerapi.h>
 #include <types.h>
 
 void ata_detect_devices(struct object* object, struct ata_controller* controller);
@@ -154,7 +154,7 @@ void ata_detect_devices(struct object* object, struct ata_controller* controller
             ata_select_device(controller, i, j);
 
             ata_register_write(controller, i, ATA_REGISTER_COMMAND, ATA_COMMAND_IDENTIFY);
-            sleep_wait(1);
+            system_sleep(1000000);
 
             status = ata_register_read(controller, i, ATA_REGISTER_STATUS);
             if (!status) {  // no device found

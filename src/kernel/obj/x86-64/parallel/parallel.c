@@ -16,7 +16,7 @@
 #include <sys/obj/objectinterface/objectinterface_parallel.h>
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
-#include <sys/sleep/sleep.h>
+#include <sys/timing/timerapi.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 
@@ -47,7 +47,7 @@ void parallel_device_ready(struct object* obj) {
     ASSERT_NOT_NULL(obj->object_data);
     struct parallel_objectdata* object_data = (struct parallel_objectdata*)(obj->object_data);
     while (!(asm_in_b(object_data->address + PARALLEL_DEVICE_REGISTER_STATUS) & 0x80)) {
-        sleep_wait(10);
+        system_sleep(10000000);
     }
 }
 
@@ -87,7 +87,7 @@ void parallel_write(struct object* obj, uint8_t* data, uint16_t size) {
          */
         uint8_t lControl = asm_in_b(object_data->address + PARALLEL_DEVICE_REGISTER_CONTROL);
         asm_out_b(object_data->address + PARALLEL_DEVICE_REGISTER_CONTROL, lControl | 1);
-        sleep_wait(10);
+        system_sleep(10000000);
         asm_out_b(object_data->address + PARALLEL_DEVICE_REGISTER_CONTROL, lControl);
     }
 }

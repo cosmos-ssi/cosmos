@@ -12,9 +12,9 @@
 #include <sys/kprintf/kprintf.h>
 #include <sys/obj/object/object.h>
 #include <sys/obj/objectinterface/objectinterface_serial.h>
-#include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
 #include <sys/string/string.h>
+#include <sys/timing/timerapi.h>
 #include <types.h>
 
 #define TELNET_LINE_LEN 255
@@ -44,7 +44,7 @@ void telnet_read_line(struct object* serial_object, uint8_t* line, uint16_t size
         * read more
         */
         while (0 == (*serial_api->avail)(serial_object)) {
-            sleep_wait(100);
+            system_sleep(100000000);
         }
         uint8_t c = (*serial_api->readchar)(serial_object);
         if (c == TELNET_CR) {

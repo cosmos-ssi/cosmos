@@ -19,8 +19,8 @@
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/panic/panic.h>
-#include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
+#include <sys/timing/timerapi.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 
@@ -146,7 +146,7 @@ void sb16_reset(struct object* obj) {
     struct sb16_objectdata* sb16_data = (struct sb16_objectdata*)obj->object_data;
     ASSERT_NOT_NULL(sb16_data);
     asm_out_b(sb16_data->port + SB16_PORT_RESET, 0x01);
-    sleep_wait(100);
+    system_sleep(100000000);
     asm_out_b(sb16_data->port + SB16_PORT_RESET, 0x0);
 }
 

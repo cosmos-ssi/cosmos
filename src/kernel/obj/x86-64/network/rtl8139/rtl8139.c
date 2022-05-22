@@ -23,8 +23,8 @@
 #include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/obj/objecttype/objectype.h>
 #include <sys/panic/panic.h>
-#include <sys/sleep/sleep.h>
 #include <sys/string/mem.h>
+#include <sys/timing/timerapi.h>
 #include <sys/x86-64/idt/irq.h>
 #include <types.h>
 
@@ -92,7 +92,7 @@ void rtl8139_reset(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     rtl8139_write_byte(obj, RTL8139_REGISTER_CMD, 0x10);
     while ((rtl8139_read_byte(obj, RTL8139_REGISTER_CMD) & 0x10) != 0) {
-        sleep_wait(10);
+        system_sleep(10000000);
     }
 }
 
@@ -238,7 +238,7 @@ void rtl8139_ethernet_write(struct object* obj, uint8_t* data, uint16_t size) {
     uint32_t stat = rtl8139_read_word(obj, txstatus);
 
     while (0 == (stat & (1 << 15))) {
-        sleep_wait(10);
+        system_sleep(10000000);
         stat = rtl8139_read_word(obj, txstatus);
     }
 }
