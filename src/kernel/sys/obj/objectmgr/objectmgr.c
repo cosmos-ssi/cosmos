@@ -222,7 +222,6 @@ void objectmgr_register_objects() {
      * rest of this stuff can really happen in any order
      */
     //   swap_objectmgr_register_objects();
-    rtc_objectmgr_register_objects();
     keyboard_objectmgr_register_objects();
     //  vga_objectmgr_register_objects();
     bga_objectmgr_register_objects();
