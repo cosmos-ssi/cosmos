@@ -18,6 +18,8 @@ void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
     hpet_request_queue_t* new;
     hpet_request_queue_t* cur;
 
+    asm_cli();
+
     new = kmalloc(sizeof(hpet_request_queue_t));
     ASSERT_NOT_NULL(new);
     new->next = 0;
@@ -29,6 +31,7 @@ void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
     if (!request_queue) {
         request_queue = new;
         MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
+        asm_sti();
         return;
     }
 
@@ -49,6 +52,7 @@ void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
         new->next = cur;
         request_queue = new;
         MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
+        asm_sti();
         return;
     }
 
@@ -62,6 +66,7 @@ void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
             new->next = cur->next;
             cur->next = new;
             MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
+            asm_sti();
             return;
         }
 
@@ -73,6 +78,7 @@ void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
     cur->next = new;
 
     MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
+    asm_sti();
 
     return;
 }
@@ -152,6 +158,8 @@ hpet_request_queue_t* hpet_request_queue_slice_deadline(uint64_t deadline) {
         return NULL;
     }
 
+    asm_cli();
+
     MODULE_SPINLOCK_ACQUIRE(hpet_request_queue_lock);
 
     cur = first = request_queue;
@@ -161,6 +169,7 @@ hpet_request_queue_t* hpet_request_queue_slice_deadline(uint64_t deadline) {
             request_queue = cur->next;
             cur->next = 0;
             MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
+            asm_sti();
             return first;
         }
 
@@ -169,8 +178,9 @@ hpet_request_queue_t* hpet_request_queue_slice_deadline(uint64_t deadline) {
 
     // If we get here, then the deadline passed as an argument > the deadline of
     // every entry in the queue, so we return the entire list and reset it
-    MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
     request_queue = 0;
+    MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
+    asm_sti();
     return first;
 }
 

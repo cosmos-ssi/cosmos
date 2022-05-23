@@ -5,6 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/asm/asm.h>
 #include <sys/sync/sync.h>
 #include <types.h>
 

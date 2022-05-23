@@ -13,8 +13,6 @@
 uint64_t system_sleep(uint64_t ns) {
     timing_request_t* req;
 
-    kprintf("system_sleep called");
-
     req = timing_create_request(ns);
     timer_set_alarm_relative(req);
     asm_hlt();

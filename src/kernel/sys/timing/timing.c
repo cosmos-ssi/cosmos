@@ -31,6 +31,7 @@ struct {
 timing_driver_t* timing_find_driver(uint64_t id[4]);
 uint64_t timing_get_request_id();
 timing_source_descriptor timing_select_best_source(uint64_t interval_ns);
+void timing_init_kernel_tick();
 
 timing_request_t* timing_create_request(uint64_t delay_nsec) {
     timing_request_t* req;
@@ -106,6 +107,17 @@ void timing_init(driver_list_entry_t** drivers) {
     }
 
     timing_driver_info.count = i;
+
+    timing_init_kernel_tick();
+
+    return;
+}
+
+void timing_init_kernel_tick() {
+    // right now, HPET timer #1 is always used for the kernel tick, regardless
+    // of what else is available.  This may change later.
+
+    hpet_init_kernel_tick();
 
     return;
 }

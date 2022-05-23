@@ -97,7 +97,7 @@ uint32_t ata_rw(struct object* obj, uint8_t* data, uint32_t data_size, uint32_t 
     }
 
     while (ata_register_read(diskdata->controller, diskdata->channel, ATA_REGISTER_STATUS) & ATA_STATUS_BUSY) {
-        system_sleep(1000000);
+        system_sleep(1000000000);
     }
 
     //	kprintf("fff %llu\n",ata_register_read(diskdata->controller, diskdata->channel, ATA_REGISTER_STATUS) & ATA_STATUS_BUSY);

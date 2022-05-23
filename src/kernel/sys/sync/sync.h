@@ -5,6 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <sys/asm/asm.h>
 #include <types.h>
 
 typedef volatile bool generic_spinlock;
@@ -14,12 +15,22 @@ typedef volatile generic_spinlock module_spinlock;
 typedef volatile generic_spinlock function_spinlock;
 
 #define FUNCTION_SPINLOCK_INIT(lock) spinlock_initialize((generic_spinlock*)&lock)
-#define FUNCTION_SPINLOCK_ACQUIRE(lock) spinlock_acquire((generic_spinlock*)&lock)
-#define FUNCTION_SPINLOCK_RELEASE(lock) spinlock_release((generic_spinlock*)&lock)
+#define FUNCTION_SPINLOCK_ACQUIRE(lock)                                                                                \
+    asm_cli();                                                                                                         \
+    spinlock_acquire((generic_spinlock*)&lock);
+
+#define FUNCTION_SPINLOCK_RELEASE(lock)                                                                                \
+    spinlock_release((generic_spinlock*)&lock);                                                                        \
+    asm_sti();
 
 #define MODULE_SPINLOCK_INIT(lock) spinlock_module_init((generic_spinlock*)&lock)
-#define MODULE_SPINLOCK_ACQUIRE(lock) spinlock_acquire((generic_spinlock*)&lock)
-#define MODULE_SPINLOCK_RELEASE(lock) spinlock_release((generic_spinlock*)&lock)
+#define MODULE_SPINLOCK_ACQUIRE(lock)                                                                                  \
+    asm_cli();                                                                                                         \
+    spinlock_acquire((generic_spinlock*)&lock);
+
+#define MODULE_SPINLOCK_RELEASE(lock)                                                                                  \
+    spinlock_release((generic_spinlock*)&lock);                                                                        \
+    asm_sti();
 
 // spinlock.c
 extern kernel_spinlock dma_buf_lock;

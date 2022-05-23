@@ -63,5 +63,6 @@ typedef struct hpet_main_registers_t {
 #define HPET_LEGACY_DISABLE(x) ((x) &= 0xFFFFFFFFFFFFFFFD)
 
 void* hpet_init(driver_list_entry_t* driver_list_entry, void* driver_info);
+void hpet_init_kernel_tick();
 
 #endif

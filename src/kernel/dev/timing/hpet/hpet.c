@@ -160,9 +160,34 @@ void* hpet_init(driver_list_entry_t* driver_list_entry, void* timing_driver) {
     HPET_LEGACY_ENABLE(hpet_registers->general_configuration);
 
     interrupt_router_register_interrupt_handler(0, hpet_interrupt_irq_0);
-    //interrupt_router_register_interrupt_handler(8, hpet_interrupt_irq_8);
+    interrupt_router_register_interrupt_handler(8, hpet_interrupt_irq_8);
 
     return (void*)sources;
+}
+
+void hpet_init_kernel_tick() {
+    // Per the spec, first we should disable the counter to avoid missed
+    // interrupts
+    HPET_MAIN_DISABLE(hpet_registers->general_configuration);
+    hpet_registers->main_counter_value = 0;
+
+    // set periodic mode
+    hpet_registers->timer_registers[1].configuration_capability |= (1 << 3);
+
+    // enable interrupts on this timer
+    hpet_registers->timer_registers[1].configuration_capability |= (1 << 2);
+
+    // enable software write of counter--this will automatically be reset to 0
+    // after we do the write
+    hpet_registers->timer_registers[1].configuration_capability |= (1 << 6);
+
+    // tick is 1000 Hz
+    hpet_registers->timer_registers[1].comparator_value =
+        hpet_registers->main_counter_value + (hpet_main_counter_frequency / 1000);
+    hpet_registers->timer_registers[1].comparator_value = hpet_main_counter_frequency / 1000;
+
+    // enable HPET
+    HPET_MAIN_ENABLE(hpet_registers->general_configuration);
 }
 
 void hpet_init_useful_values() {
@@ -209,7 +234,7 @@ void hpet_interrupt_irq_0() {
 }
 
 void hpet_interrupt_irq_8() {
-    kprintf("RTC HPET\n");
+    //kprintf("RTC HPET\n");
     return;
 }
 
