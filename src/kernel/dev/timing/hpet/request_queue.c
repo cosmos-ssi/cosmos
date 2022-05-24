@@ -11,7 +11,7 @@
 #include <sys/sync/sync.h>
 #include <sys/timing/timing.h>
 
-hpet_request_queue_t* request_queue = 0;
+hpet_request_queue_t* hpet_request_queue = 0;
 module_spinlock hpet_request_queue_lock;
 
 void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
@@ -28,21 +28,21 @@ void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
 
     MODULE_SPINLOCK_ACQUIRE(hpet_request_queue_lock);
 
-    if (!request_queue) {
-        request_queue = new;
+    if (!hpet_request_queue) {
+        hpet_request_queue = new;
         MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
         asm_sti();
         return;
     }
 
-    ASSERT_NOT_NULL(request_queue);
+    ASSERT_NOT_NULL(hpet_request_queue);
 
     // We insert the new item in its location in the queue in ascending order of
     // deadline. If we the first item is > deadline, then we know right way that
     // the new entry is first.  If all items are < deadline, we know it goes to
     // the end.
 
-    cur = request_queue;
+    cur = hpet_request_queue;
 
     // Test the deadline of the first entry in the queue.  If it's >
     // new->deadline, we know that new becomes the new first item, so we set up
@@ -50,7 +50,7 @@ void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
     // new) and return.
     if (cur->deadline > new->deadline) {
         new->next = cur;
-        request_queue = new;
+        hpet_request_queue = new;
         MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
         asm_sti();
         return;
@@ -86,7 +86,7 @@ void hpet_request_queue_add(timing_request_t* request, uint64_t deadline) {
 void hpet_request_queue_dump() {
     hpet_request_queue_t* cur;
 
-    cur = request_queue;
+    cur = hpet_request_queue;
 
     while (cur) {
         kprintf("%llu: %llu\n", cur->request->request_id, cur->deadline);
@@ -102,9 +102,9 @@ timing_request_t* hpet_request_queue_extract_request(hpet_request_queue_t* entry
 }
 
 uint64_t hpet_request_queue_first_deadline() {
-    ASSERT_NOT_NULL(request_queue);
+    ASSERT_NOT_NULL(hpet_request_queue);
 
-    return request_queue->deadline;
+    return hpet_request_queue->deadline;
 }
 
 timing_request_t** hpet_request_queue_next_expired_request(hpet_request_queue_t* expired_queue) {
@@ -154,7 +154,7 @@ hpet_request_queue_t* hpet_request_queue_slice_deadline(uint64_t deadline) {
     // if this happens.
 
     // TODO: fix it
-    if (deadline < request_queue->deadline) {
+    if (deadline < hpet_request_queue->deadline) {
         return NULL;
     }
 
@@ -162,11 +162,11 @@ hpet_request_queue_t* hpet_request_queue_slice_deadline(uint64_t deadline) {
 
     MODULE_SPINLOCK_ACQUIRE(hpet_request_queue_lock);
 
-    cur = first = request_queue;
+    cur = first = hpet_request_queue;
 
     while (cur->next) {
         if (cur->next->deadline > deadline) {
-            request_queue = cur->next;
+            hpet_request_queue = cur->next;
             cur->next = 0;
             MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
             asm_sti();
@@ -178,7 +178,7 @@ hpet_request_queue_t* hpet_request_queue_slice_deadline(uint64_t deadline) {
 
     // If we get here, then the deadline passed as an argument > the deadline of
     // every entry in the queue, so we return the entire list and reset it
-    request_queue = 0;
+    hpet_request_queue = 0;
     MODULE_SPINLOCK_RELEASE(hpet_request_queue_lock);
     asm_sti();
     return first;
@@ -188,7 +188,7 @@ bool hpet_request_queue_valid() {
     // returns true if there is at least one valid entry in the request queue,
     // otherwise false
 
-    if (request_queue) {
+    if (hpet_request_queue) {
         return true;
     } else {
         return false;
