@@ -33,6 +33,7 @@ QEMUARGS=                                                 \
   -D qemu.log                                               \
   -d guest_errors,trace:*net*,trace:*virtio*,trace:*eth*,trace:*pci*,trace:*ioapic*   \
   -vga std
+  
 
 #   -drive file=img/root.img,index=3,format=raw          \
 

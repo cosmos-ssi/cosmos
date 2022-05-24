@@ -136,23 +136,17 @@ void CosmOS() {
     /*
      * standard suite of tests to make sure things are as expected
      */
-    tests_run();
+    /* tests_run();
 
     kprintf("\n");
     kprintf("***** Sanity Tests Complete *****\n");
-    kprintf("\n");
-
-    /*
-     * enable interrupts
-     */
-    kprintf("Enabling Interrupts...\n");
-    asm_sti();
+    kprintf("\n");*/
 
     kprintf("\n");
     kprintf("***** Welcome to CosmOS! *****\n");
     kprintf("\n");
 
-    // any dev tests we want to run
+    /*// any dev tests we want to run
     dev_tests();
 
     // load the init binary.  next step here would be to map it into memory and jump to userland
@@ -160,7 +154,7 @@ void CosmOS() {
     kprintf("***** Loading Userland init from %s *****\n", "disk0");
     kprintf("\n");
 
-    load_init_binary();
+    load_init_binary();*/
 
     /*gui_init();
     gui_draw();*/
