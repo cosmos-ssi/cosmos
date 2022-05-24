@@ -15,9 +15,6 @@
 
 #include <sys/collection/dtable/dtable.h>
 #include <sys/collection/linkedlist/linkedlist.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-
-#include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <types.h>
 
 // given a handle, retrieve object from table and return its data member

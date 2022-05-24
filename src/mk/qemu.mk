@@ -21,7 +21,6 @@ QEMUARGS=                                                 \
   -smp sockets=1,cores=2,threads=2                                             \
   -drive file=img/hda.img,index=0,format=raw              \
   -drive file=img/root.img,index=1,format=raw           \
-  -drive file=img/gpt_fat.img,index=2,format=raw          \
   -device sdhci-pci                                     \
   -device virtio-net-pci,netdev=net0                   \
   -netdev user,id=net0,hostfwd=tcp::8080-:80             \
@@ -34,6 +33,7 @@ QEMUARGS=                                                 \
   -d guest_errors,trace:*net*,trace:*virtio*,trace:*eth*,trace:*pci*,trace:*ioapic*   \
   -vga std
   
+  #-drive file=img/gpt_fat.img,index=2,format=raw          
 
 #   -drive file=img/root.img,index=3,format=raw          \
 

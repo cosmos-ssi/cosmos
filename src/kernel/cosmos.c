@@ -17,11 +17,6 @@
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/object/object.h>
-#include <sys/obj/objectinterface/objectinterface_console.h>
-#include <sys/obj/objectinterface/objectinterface_filesystem.h>
-#include <sys/obj/objectinterface/objectinterface_telnet.h>
-#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/objects/objects.h>
 #include <sys/proc/proc.h>
 #include <sys/sched/sched.h>
@@ -101,63 +96,17 @@ void CosmOS() {
     kprintf("Initializing scheduler...\n");
     sched_init();
 
-    kprintf("Initializing object manager...\n");
-    object_init();
-
-    /*
-     * Register all devices
-     */
-    objectmgr_register_objects();
-    //   kprintf("Registered %llu devices\n", objectmgr_object_count());
-
-    /*
-     * Init all devices
-     */
-    objectmgr_init_objects();
-    //  kprintf("There are %llu devices\n", objectmgr_object_count());
     kprintf("\n");
     kprintf("***** Hardware Initialization Complete *****\n");
     kprintf("\n");
-
-    /*
-     * mount logical objects
-     */
-    attach_logical_objects();
-
-    /*
-     * say hi on the VGA console
-     */
-    //  video_write("Welcome to Cosmos");
 
     kprintf("\n");
     kprintf("***** Kernel Initialization Complete *****\n");
     kprintf("\n");
 
-    /*
-     * standard suite of tests to make sure things are as expected
-     */
-    /* tests_run();
-
-    kprintf("\n");
-    kprintf("***** Sanity Tests Complete *****\n");
-    kprintf("\n");*/
-
     kprintf("\n");
     kprintf("***** Welcome to CosmOS! *****\n");
     kprintf("\n");
-
-    /*// any dev tests we want to run
-    dev_tests();
-
-    // load the init binary.  next step here would be to map it into memory and jump to userland
-    kprintf("\n");
-    kprintf("***** Loading Userland init from %s *****\n", "disk0");
-    kprintf("\n");
-
-    load_init_binary();*/
-
-    /*gui_init();
-    gui_draw();*/
 
     object_handle_t idle_kernel_work;
     object_handle_t idle_process;

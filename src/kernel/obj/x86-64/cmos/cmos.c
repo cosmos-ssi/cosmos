@@ -10,9 +10,6 @@
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/object/object.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-#include <sys/obj/objecttype/objectype.h>
 
 void cmos_write_register(uint8_t reg, uint8_t val) {
     uint8_t pv;
@@ -38,33 +35,4 @@ uint8_t cmos_read_register(uint8_t reg) {
     asm_sti();
 
     return b;
-}
-
-/*
- * perform device instance specific init here
- */
-
-uint8_t cmos_obj_init(struct object* obj) {
-    ASSERT_NOT_NULL(obj);
-    kprintf("Init %s (%s)\n", obj->description, obj->name);
-    return 1;
-}
-
-void cmos_objectmgr_register_objects() {
-    /*
-     * register device
-     */
-    struct object* objectinstance = object_new_object();
-    objectmgr_set_object_description(objectinstance, "i386 CMOS");
-    objectinstance->objectype = OBJECT_TYPE_CMOS;
-    objectinstance->init = &cmos_obj_init;
-    /*
-     * api
-     */
-    //    struct objectinterface_cmos* api = (struct objectinterface_cmos*)kmalloc(sizeof(struct objectinterface_cmos));
-    //    objectinstance->api = api;
-    /*
-     * register
-     */
-    objectmgr_register_object(objectinstance);
 }
