@@ -7,13 +7,9 @@
 
 #include <cosmos_logical_objs.h>
 #include <dev/timing/hpet/hpet.h>
-#include <obj/logical/fs/initrd/initrd.h>
 #include <subsystems.h>
 #include <sys/asm/misc.h>
 #include <sys/debug/assert.h>
-#include <sys/fs/fs_facade.h>
-#include <sys/gui/gui.h>
-#include <sys/init/init.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kprintf/kprintf.h>

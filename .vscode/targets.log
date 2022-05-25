@@ -8,12 +8,12 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon May 23 22:02:25 2022
+# Make data base, printed on Wed May 25 00:03:04 2022
 
 # Variables
 
 # environment
-JAVA_HOME = /usr/lib64/java/jre
+JAVA_HOME = /usr/lib64/zulu-openjdk17
 # environment
 GDK_BACKEND = x11
 # environment
@@ -25,9 +25,9 @@ GTK_RC_FILES = /etc/gtk/gtkrc:/home/kmw/.gtkrc:/home/kmw/.config/gtkrc
 # environment
 VBOX_PROGRAM_PATH = /usr/lib64/virtualbox/
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-5053a8f7-5120-4667-a583-e0f430afcef8.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-10dd98ed-657d-4ff8-b9f8-83ac038df77e.sock
 # environment
-GNOME_KEYRING_CONTROL = /home/kmw/.cache/keyring-F9BKM1
+GNOME_KEYRING_CONTROL = /home/kmw/.cache/keyring-T6N8L1
 # environment
 VSCODE_CWD = /home/kmw
 # default
@@ -73,7 +73,7 @@ CURDIR := /home/kmw/CosmOS
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 LESSOPEN = |lesspipe.sh %s
 # automatic
@@ -101,21 +101,21 @@ LC_COLLATE = C
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 55077
+VSCODE_PID = 4982
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/borodin.local:@/tmp/.ICE-unix/2146,unix/borodin.local:/tmp/.ICE-unix/2146
+SESSION_MANAGER = local/borodin.local:@/tmp/.ICE-unix/2149,unix/borodin.local:/tmp/.ICE-unix/2149
 # automatic
 *F = $(notdir $*)
 # environment
-MANPATH = /usr/local/man:/usr/man:/usr/lib64/jdk11-11.0.8/man:/usr/lib64/java/jre/man
+MANPATH = /usr/local/man:/usr/man:/usr/lib64/jdk11-11.0.8/man:/usr/lib64/java/jre/man:/usr/lib64/zulu-openjdk17/man
 # environment
 CHROME_DESKTOP = code-url-handler.desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:abstract=/tmp/dbus-AFumvzILsD,guid=acdbd361c654845d52e920cc6282d7d5
+DBUS_SESSION_BUS_ADDRESS = unix:abstract=/tmp/dbus-jWGysIJdPn,guid=0615fb0682ada3cb60df9d4e628da180
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # environment
@@ -127,13 +127,15 @@ SHELL = /bin/sh
 # default
 MAKECMDGOALS := all
 # environment
+LD_LIBRARY_PATH = :/usr/lib64/zulu-openjdk17/lib/server:/usr/lib64/zulu-openjdk17/lib/server:/usr/lib64/zulu-openjdk17/lib/server:/usr/lib64/zulu-openjdk17/lib/server
+# environment
 SHLVL = 0
 # environment
 MAKELEVEL := 0
 # default
 MAKE = $(MAKE_COMMAND)
 # environment
-PATH = /usr/local/bin:/usr/bin:/bin:/usr/games:/usr/share/ant/bin:/usr/lib64/jdk11-11.0.8/bin:/usr/lib64/libexec/kf5:/usr/lib64/kde4/libexec:/usr/lib64/java/jre/bin:/usr/lib64/qt5/bin
+PATH = /usr/local/bin:/usr/bin:/bin:/usr/games:/usr/share/ant/bin:/usr/lib64/jdk11-11.0.8/bin:/usr/lib64/libexec/kf5:/usr/lib64/kde4/libexec:/usr/lib64/java/jre/bin:/usr/lib64/qt5/bin:/usr/lib64/zulu-openjdk17/bin
 # default
 MAKEFILES := 
 # automatic
@@ -237,7 +239,7 @@ KDE_FULL_SESSION = true
 # environment
 T1LIB_CONFIG = /usr/share/t1lib/t1lib.config
 # variable set hash-table stats:
-# Load=112/1024=11%, Rehash=0, Collisions=9/139=6%
+# Load=113/1024=11%, Rehash=0, Collisions=9/140=6%
 
 # Pattern-specific Variable Values
 
@@ -245,7 +247,7 @@ T1LIB_CONFIG = /usr/share/t1lib/t1lib.config
 
 # Directories
 
-# . (device 2049, inode 8519843): 18 files, no impossibilities.
+# . (device 2049, inode 8519847): 18 files, no impossibilities.
 
 # 18 files, no impossibilities in 1 directories.
 
@@ -282,6 +284,7 @@ makefile:
 #  File has been updated.
 #  Failed to be updated.
 
+ 
 # Not a target:
 GNUmakefile:
 #  Implicit rule search has been done.
@@ -290,7 +293,6 @@ GNUmakefile:
 #  Failed to be updated.
 
 # files hash-table stats:
- 
 # Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
 
@@ -304,6 +306,6 @@ GNUmakefile:
 # strcache performance: lookups = 29 / hit rate = 10%
 # hash-table stats:
 # Load=26/8192=0%, Rehash=0, Collisions=0/29=0%
-# Finished Make data base on Mon May 23 22:02:25 2022
+# Finished Make data base on Wed May 25 00:03:04 2022
 
  

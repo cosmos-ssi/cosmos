@@ -89,3 +89,4 @@ src/mk/qemu.mk~
 src/kernel/gdb.script
 .vscode/c_cpp_properties.json
 **/.depend
+src/img/gpt_fat.img
