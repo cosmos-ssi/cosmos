@@ -16,11 +16,20 @@ typedef enum syscap_interfaces_t {
      */
     SYSCAP_INTERFACE_NULL = 0,
     SYSCAP_INTERFACE_GENERIC = 1,
+    SYSCAP_INTERFACE_ENUMERABLE,
     SYSCAP_INTERFACE_BLOCK_CONSUMER,
     SYSCAP_INTERFACE_BLOCK_PRODUCER,
     SYSCAP_INTERFACE_CHAR_CONSUMER,
     SYSCAP_INTERFACE_SEEKABLE,
     SYSCAP_INTERFACE_MAX
 } syscap_interface_t;
+
+typedef void* implemented_interfaces_list[SYSCAP_INTERFACE_MAX + 1];
+
+#define BEGIN_INTERFACE_LIST(driver)                                                                                   \
+    implemented_interfaces_list driver_driver_interfaces = {NULL};                                                     \
+    void driver_initialize_interfaces() {
+
+#define EXPORTED_INTERFACE(driver, interface)
 
 #endif

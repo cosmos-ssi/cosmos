@@ -8,8 +8,8 @@
 #ifndef _ATA_CONTROLLER_H
 #define _ATA_CONTROLLER_H
 
-#include <obj/x86-64/ata/ata.h>
-#include <obj/x86-64/ata/ata_dma.h>
+#include <dev/block/ata/ata.h>
+#include <dev/block/ata/ata_dma.h>
 #include <types.h>
 
 struct object;

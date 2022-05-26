@@ -5,6 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#include <dev/bus/pci/pci.h>
 #include <dev/timing/hpet/hpet.h>
 #include <subsystems.h>
 #include <sys/asm/misc.h>
@@ -28,10 +29,6 @@
 SUBSYSTEM_LIST_START;
 SUBSYSTEM_LIST_END;
 
-void dev_tests();
-void load_init_binary();
-void dump_VOH();
-void video_write(const uint8_t* s);
 //filesystem_node_t* load_test_binary();
 void subsystem_init();
 driver_list_entry_t** subsystem_enumerate_drivers(subsystem_list_t subsystem);
@@ -64,6 +61,9 @@ void CosmOS() {
 
     kprintf("Initializing Interrupt Routing...\n");
     interrupt_router_init();
+
+    kprintf("Initializing system buses...\n");
+    pci_init();
 
     kprintf("Initializing kernel subsystems...\n");
     subsystem_init();

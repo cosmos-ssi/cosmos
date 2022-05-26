@@ -8,7 +8,7 @@
 #ifndef _ATA_IDENTITY_H
 #define _ATA_IDENTITY_H
 
-#include <obj/x86-64/ata/ata.h>
+#include <dev/block/ata/ata.h>
 #include <types.h>
 
 struct ata_controller;

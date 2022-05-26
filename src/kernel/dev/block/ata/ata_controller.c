@@ -5,26 +5,26 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#if 0
-
-#include <obj/x86-64/ata/ata.h>
-#include <obj/x86-64/ata/ata_controller.h>
-#include <obj/x86-64/ata/ata_disk.h>
-#include <obj/x86-64/ata/ata_dma.h>
-#include <obj/x86-64/ata/ata_identity.h>
-#include <obj/x86-64/ata/ata_util.h>
-#include <obj/x86-64/pci/devicetree.h>
-#include <obj/x86-64/pci/pci.h>
-#include <obj/x86-64/pci/pci_device.h>
+#include <dev/block/ata/ata.h>
+#include <dev/block/ata/ata_controller.h>
+#include <dev/block/ata/ata_disk.h>
+#include <dev/block/ata/ata_dma.h>
+#include <dev/block/ata/ata_identity.h>
+#include <dev/block/ata/ata_util.h>
+#include <dev/bus/pci/devicetree.h>
+#include <dev/bus/pci/pci.h>
+#include <dev/bus/pci/pci_device.h>
+#include <subsystems.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/object/object.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-#include <sys/obj/objecttype/objectype.h>
 #include <sys/panic/panic.h>
 #include <sys/timing/timerapi.h>
 #include <types.h>
+
+SUBSYSTEM_DRIVER(ata, "ATA Controller", "ATA Controller", "Kurt M. Weber", "weberk294@gmail.com", "0.1",
+                 0xc81c4c364c81f9d1, 0x281796614fc32b79, 0x4399a93b996b2d0a, 0xb76b57edfb77140a, SUBSYSTEM_ID_BLOCK,
+                 &ata_init);
 
 void ata_detect_devices(struct object* object, struct ata_controller* controller);
 #define IDE_SERIAL_IRQ 14
@@ -86,7 +86,7 @@ void ata_detect_addresses(struct object* obj) {
 /*
  * init ATA controller
  */
-uint8_t obj_init_ata(struct object* obj) {
+uint8_t ata_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     struct ata_controller* controller = (struct ata_controller*)obj->object_data;
@@ -199,5 +199,3 @@ struct ata_device* ata_get_disk(struct object* obj, uint8_t channel, uint8_t dis
     struct ata_controller* controller = (struct ata_controller*)obj->object_data;
     return &(controller->channels[channel].devices[disk]);
 }
-
-#endif

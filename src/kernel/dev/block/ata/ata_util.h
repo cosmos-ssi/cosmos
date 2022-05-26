@@ -8,7 +8,7 @@
 #ifndef _ATA_UTIL_H
 #define _ATA_UTIL_H
 
-#include <obj/x86-64/ata/ata.h>
+#include <dev/block/ata/ata.h>
 #include <types.h>
 
 struct ata_controller;

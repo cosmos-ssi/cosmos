@@ -8,7 +8,7 @@
 #ifndef _PCI_DEVICE_H
 #define _PCI_DEVICE_H
 
-#include <obj/x86-64/pci/devicetree.h>
+#include <dev/bus/pci/devicetree.h>
 #include <types.h>
 
 struct pci_device {
