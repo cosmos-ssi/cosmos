@@ -5,7 +5,7 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <obj/x86-64/serial/com1.h>
+#include <dev/communications/serial/com1.h>
 #include <sys/asm/misc.h>
 #include <sys/panic/panic.h>
 #include <sys/string/string.h>

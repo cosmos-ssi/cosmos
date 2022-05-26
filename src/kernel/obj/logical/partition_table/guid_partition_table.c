@@ -7,6 +7,8 @@
 
 // https://wiki.osdev.org/GPT
 
+#if 0
+
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/fs_util.h>
 #include <obj/logical/partition_table/guid_partition_table.h>
@@ -388,3 +390,5 @@ void guid_partition_type_to_string(uint8_t* type, uint8_t* string, uint16_t len)
     i += 2;
     ASSERT(i == 36);  // total length we need, minus null
 }
+
+#endif

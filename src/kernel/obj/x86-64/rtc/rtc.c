@@ -5,6 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#if 0
+
 #include <obj/x86-64/cmos/cmos.h>
 #include <obj/x86-64/rtc/rtc.h>
 #include <sys/asm/io.h>
@@ -85,3 +87,5 @@ rtc_time_t rtc_time(struct object* obj) {
 
     return b;
 }
+
+#endif

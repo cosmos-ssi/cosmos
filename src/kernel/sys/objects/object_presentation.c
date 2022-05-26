@@ -4,7 +4,7 @@
  * Released under the stated terms in the file LICENSE           *
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
-
+#if 0
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/obj/objectinterface/objectinterface_filesystem.h>
 #include <sys/objects/objects.h>
@@ -27,3 +27,4 @@ object_handle_t object_presentation_create(filesystem_node_t* node) {
 
     return object_create(OBJECT_PRESENTATION, (void*)obj_data);
 }
+#endif

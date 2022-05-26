@@ -5,15 +5,12 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#if 0
+
 #include <obj/logical/console/vga_console.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/object/object.h>
-#include <sys/obj/objectinterface/objectinterface_console.h>
-#include <sys/obj/objectinterface/objectinterface_vga.h>
-#include <sys/obj/objectmgr/objectmgr.h>
-#include <sys/obj/objecttype/objectype.h>
 #include <sys/string/mem.h>
 #include <types.h>
 
@@ -32,7 +29,6 @@ struct vga_console_objectdata {
  */
 uint8_t vga_console_dev_init(struct object* obj) {
     ASSERT_NOT_NULL(obj);
-    ASSERT_NOT_NULL(obj->object_data);
     struct vga_console_objectdata* object_data = (struct vga_console_objectdata*)obj->object_data;
     kprintf("Init %s on %s (%s)\n", obj->description, object_data->vga_device->name, obj->name);
 
@@ -199,3 +195,5 @@ void vga_console_detach(struct object* obj) {
     */
     objectmgr_detach_object(obj);
 }
+
+#endif

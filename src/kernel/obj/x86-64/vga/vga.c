@@ -5,6 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#if 0
+
 #include <obj/x86-64/pci/devicetree.h>
 #include <obj/x86-64/pci/pci_device.h>
 #include <obj/x86-64/vga/vga.h>
@@ -192,3 +194,5 @@ void vga_search_cb(struct pci_device* dev) {
 void vga_objectmgr_register_objects() {
     pci_objectmgr_search_objectype(PCI_CLASS_DISPLAY, PCI_DISPLAY_SUBCLASS_VGA, &vga_search_cb);
 }
+
+#endif

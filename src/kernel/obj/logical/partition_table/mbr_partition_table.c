@@ -9,6 +9,8 @@
 // https://wiki.osdev.org/MBR_(x86)
 // https://en.wikipedia.org/wiki/Master_boot_record
 
+#if 0
+
 #include <obj/logical/fs/block_util.h>
 #include <obj/logical/fs/fs_util.h>
 #include <obj/logical/partition_table/mbr_partition_table.h>
@@ -237,3 +239,5 @@ void mbr_pt_detach(struct object* obj) {
     */
     objectmgr_detach_object(obj);
 }
+
+#endif

@@ -64,7 +64,7 @@ typedef struct object_presentation_t {
      * For now just encapsulate enough to use the initrd driver directly, once
      * voh develops switch to that
      */
-    filesystem_node_t* node;
+    // filesystem_node_t* node;
 } object_presentation_t;
 
 #include <sys/proc/proc.h>
@@ -96,7 +96,7 @@ void object_init();
 object_handle_t object_kernel_work_create(void* (*work_func)(void*), void* arg);
 
 // object_presentation.c
-object_handle_t object_presentation_create(filesystem_node_t* node);
+//object_handle_t object_presentation_create(filesystem_node_t* node);
 
 // object_process.c
 object_handle_t object_process_create(object_handle_t exe);

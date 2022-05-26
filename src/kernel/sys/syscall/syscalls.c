@@ -7,9 +7,6 @@
 
 #include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/kprintf/kprintf.h>
-#include <sys/obj/object/object.h>
-#include <sys/obj/objectinterface/objectinterface_console.h>
-#include <sys/obj/objectmgr/objectmgr.h>
 #include <sys/sched/sched.h>
 #include <sys/syscall/syscalls.h>
 
@@ -38,11 +35,11 @@ uint64_t syscall_exit(uint64_t syscall_id, void* args) {
 }
 
 uint64_t syscall_print_console(uint64_t syscall_id, void* args) {
-    struct object* console_obj = objectmgr_find_object_by_name("con0");
-    if (0 != console_obj) {
-        struct objectinterface_console* api = (struct objectinterface_console*)console_obj->api;
-        (*api->write)(console_obj, "Hello from console\n");
-    }
+    //struct object* console_obj = objectmgr_find_object_by_name("con0");
+    //if (0 != console_obj) {
+    //struct objectinterface_console* api = (struct objectinterface_console*)console_obj->api;
+    //(*api->write)(console_obj, "Hello from console\n");
+    //}
     return 0;
 }
 

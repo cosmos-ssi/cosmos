@@ -5,6 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#if 0
+
 #include <obj/logical/fs/fs_util.h>
 #include <obj/x86-64/ata/ata.h>
 #include <obj/x86-64/ata/ata_controller.h>
@@ -217,3 +219,5 @@ void ata_register_disk(struct object* controllerDevice, uint8_t channel, uint8_t
      */
     objectmgr_register_object(objectinstance);
 }
+
+#endif

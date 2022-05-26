@@ -26,7 +26,7 @@ typedef void* (*driver_initialization_function_t)(driver_list_entry_t*, void*);
 // N.B. that numbering of items in this enum is done automatically, which means
 // that modules that reference it will not retain binary-compatibility if the
 // ordering of elements is ever changed.
-typedef enum subsystem_list_t { SUBSYSTEM_ID_TIMER, SUBSYSTEM_ID_MAX } subsystem_list_t;
+typedef enum subsystem_list_t { SUBSYSTEM_ID_COMMUNICATIONS, SUBSYSTEM_ID_TIMER, SUBSYSTEM_ID_MAX } subsystem_list_t;
 
 typedef struct driver_info_1_t {
     const char* shortname;

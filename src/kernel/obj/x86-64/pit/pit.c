@@ -5,6 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#if 0
+
 #include <obj/x86-64/pit/pit.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
@@ -90,3 +92,5 @@ void pit_objectmgr_register_objects() {
      */
     objectmgr_register_object(objectinstance);
 }
+
+#endif

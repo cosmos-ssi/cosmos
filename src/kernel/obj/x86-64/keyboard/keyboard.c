@@ -5,6 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#if 0
+
 #include <obj/x86-64/keyboard/abstract_keyboard.h>
 #include <obj/x86-64/keyboard/keyboard.h>
 #include <sys/asm/io.h>
@@ -214,3 +216,4 @@ void keyboard_objectmgr_register_objects() {
      */
     objectmgr_register_object(objectinstance);
 }
+#endif

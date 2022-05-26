@@ -5,6 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#if 0
+
 #include <obj/logical/partition_table/partition_table_util.h>
 #include <sys/debug/assert.h>
 #include <sys/obj/object/object.h>
@@ -59,3 +61,5 @@ uint32_t partition_table_util_total_size(struct object* partition_table_object, 
     uint64_t sectors = partition_table_util_get_sector_count(partition_table_object, partition_index);
     return sector_size * sectors;
 }
+
+#endif

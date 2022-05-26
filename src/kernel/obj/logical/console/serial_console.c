@@ -5,6 +5,8 @@
 // See the file "LICENSE" in the source distribution for details  *
 // ****************************************************************
 
+#if 0
+
 #include <obj/logical/console/serial_console.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
@@ -121,3 +123,5 @@ void serial_console_detach(struct object* obj) {
     */
     objectmgr_detach_object(obj);
 }
+
+#endif

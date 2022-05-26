@@ -5,6 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#if 0
+
 #include <obj/x86-64/ata/ata.h>
 #include <obj/x86-64/ata/ata_controller.h>
 #include <obj/x86-64/ata/ata_disk.h>
@@ -197,3 +199,5 @@ struct ata_device* ata_get_disk(struct object* obj, uint8_t channel, uint8_t dis
     struct ata_controller* controller = (struct ata_controller*)obj->object_data;
     return &(controller->channels[channel].devices[disk]);
 }
+
+#endif

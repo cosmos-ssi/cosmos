@@ -5,7 +5,6 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <cosmos_logical_objs.h>
 #include <dev/timing/hpet/hpet.h>
 #include <subsystems.h>
 #include <sys/asm/misc.h>
@@ -24,7 +23,6 @@
 #include <sys/x86-64/interrupts/apic.h>
 #include <sys/x86-64/mm/mm.h>
 #include <sys/x86-64/syscall/syscall.h>
-#include <tests/tests.h>
 #include <types.h>
 
 SUBSYSTEM_LIST_START;
@@ -34,7 +32,7 @@ void dev_tests();
 void load_init_binary();
 void dump_VOH();
 void video_write(const uint8_t* s);
-filesystem_node_t* load_test_binary();
+//filesystem_node_t* load_test_binary();
 void subsystem_init();
 driver_list_entry_t** subsystem_enumerate_drivers(subsystem_list_t subsystem);
 
@@ -77,11 +75,6 @@ void CosmOS() {
 
     kprintf("Initializing IO buffers...\n");
     iobuffers_init();
-    /*
-     * init the object manager
-     */
-    kprintf("Initializing Object Manager...\n");
-    objectmgr_init();
 
     kprintf("Initializing system call handler...\n");
     syscall_init();
@@ -104,7 +97,7 @@ void CosmOS() {
     kprintf("***** Welcome to CosmOS! *****\n");
     kprintf("\n");
 
-    object_handle_t idle_kernel_work;
+    /*object_handle_t idle_kernel_work;
     object_handle_t idle_process;
     object_handle_t idle_task;
 
@@ -119,7 +112,7 @@ void CosmOS() {
 
     test_exe = object_executable_create_from_presentation(object_presentation_create(load_test_binary()));
     test_process = object_process_create(test_exe);
-    test_task = object_task_create(test_process);
+    test_task = object_task_create(test_process);*/
 
     /*
     * start telnet
@@ -178,7 +171,7 @@ driver_list_entry_t** subsystem_enumerate_drivers(subsystem_list_t subsystem) {
     return ret;
 }
 
-filesystem_node_t* load_test_binary() {
+/*filesystem_node_t* load_test_binary() {
     struct object* voh_dev;
     filesystem_node_t *voh_node, *initrd_node, *file_node;
 
@@ -200,20 +193,20 @@ filesystem_node_t* load_test_binary() {
 /*
 * load the init binary from the initrd fs
 */
-void load_init_binary() {
+/*void load_init_binary() {
     uint8_t init_binary_name[] = {"init"};
     init_load(INITRD_DISK, init_binary_name);
     kprintf("Loaded init binary '%s' from disk %s\n", init_binary_name, INITRD_DISK);
-}
+}*/
 
 /*
  * write to vga console which we created earlier (will be console0)
  */
-void video_write(const uint8_t* s) {
+/*void video_write(const uint8_t* s) {
     struct object* vga_console = objectmgr_find_object_by_name("console0");
     struct objectinterface_console* console0_api = (struct objectinterface_console*)vga_console->api;
     (*console0_api->write)(vga_console, s);
-}
+}*/
 
 void dev_tests() {
     //	floppyread();

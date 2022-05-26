@@ -4,7 +4,7 @@
  * Released under the stated terms in the file LICENSE           *
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
-
+#if 0
 #include <sys/debug/assert.h>
 #include <sys/fs/fs_facade.h>
 #include <sys/kmalloc/kmalloc.h>
@@ -57,3 +57,5 @@ object_handle_t object_executable_create_from_presentation(object_handle_t pres_
 
     return exe_handle;
 }
+
+#endif
