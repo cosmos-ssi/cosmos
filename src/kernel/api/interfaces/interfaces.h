@@ -5,8 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#ifndef _API_SYSCAP_INTERFACES_H
-#define _API_SYSCAP_INTERFACES_H
+#ifndef _API_INTERFACES_H
+#define _API_INTERFACES_H
 
 typedef enum syscap_interfaces_t {
     /*
@@ -14,22 +14,24 @@ typedef enum syscap_interfaces_t {
      * 1; after that, list interfaces in alphabetical order and let them be
      * auto-numbered.  INTERFACE_MAX should always be last.
      */
-    SYSCAP_INTERFACE_NULL = 0,
-    SYSCAP_INTERFACE_GENERIC = 1,
-    SYSCAP_INTERFACE_ENUMERABLE,
-    SYSCAP_INTERFACE_BLOCK_CONSUMER,
-    SYSCAP_INTERFACE_BLOCK_PRODUCER,
-    SYSCAP_INTERFACE_CHAR_CONSUMER,
-    SYSCAP_INTERFACE_SEEKABLE,
-    SYSCAP_INTERFACE_MAX
+    API_INTERFACE_NULL = 0,
+    API_INTERFACE_GENERIC = 1,
+    API_INTERFACE_ENUMERABLE,
+    API_INTERFACE_BLOCK_CONSUMER,
+    API_INTERFACE_BLOCK_PRODUCER,
+    API_INTERFACE_CHAR_CONSUMER,
+    API_INTERFACE_SEEKABLE,
+    API_INTERFACE_MAX
 } syscap_interface_t;
 
-typedef void* implemented_interfaces_list[SYSCAP_INTERFACE_MAX + 1];
+typedef void* implemented_interfaces_list[API_INTERFACE_MAX + 1];
 
+#if 0
 #define BEGIN_INTERFACE_LIST(driver)                                                                                   \
     implemented_interfaces_list driver_driver_interfaces = {NULL};                                                     \
     void driver_initialize_interfaces() {
 
 #define EXPORTED_INTERFACE(driver, interface)
+#endif
 
 #endif

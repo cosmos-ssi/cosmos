@@ -5,8 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <obj/x86-64/ata/ata_controller.h>
-#include <obj/x86-64/ata/ata_util.h>
+#include <dev/block/ata/ata_controller.h>
+#include <dev/block/ata/ata_util.h>
 #include <sys/asm/io.h>
 #include <sys/panic/panic.h>
 #include <sys/timing/timerapi.h>

@@ -28,7 +28,7 @@ struct pci_device {
 typedef void (*pciobjectSearchCallback)(struct pci_device* dev);
 void pci_objectmgr_search_device(pci_class_codes pci_class, uint8_t pci_subclass, uint16_t vendor_id,
                                  uint16_t device_id, pciobjectSearchCallback cb);
-void pci_objectmgr_search_objectype(pci_class_codes pci_class, uint8_t pci_subclass, pciobjectSearchCallback cb);
+struct arraylist* pci_search_class_subclass(pci_class_codes pci_class, uint8_t pci_subclass, struct arraylist* out);
 
 // calc PCI base address
 uint64_t pci_calcbar(struct pci_device* pci_dev);

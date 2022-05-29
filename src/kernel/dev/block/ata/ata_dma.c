@@ -5,8 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <obj/x86-64/ata/ata_disk.h>
-#include <obj/x86-64/ata/ata_dma.h>
+#include <dev/block/ata/ata_disk.h>
+#include <dev/block/ata/ata_dma.h>
 #include <sys/collection/linkedlist/linkedlist.h>
 #include <sys/iobuffers/iobuffers.h>
 #include <sys/kmalloc/kmalloc.h>

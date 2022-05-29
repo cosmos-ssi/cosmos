@@ -5,8 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#include <obj/x86-64/pci/pci.h>
-#include <obj/x86-64/pci/pci_device.h>
+#include <dev/bus/pci/pci.h>
+#include <dev/bus/pci/pci_device.h>
 #include <sys/collection/arraylist/arraylist.h>
 #include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>

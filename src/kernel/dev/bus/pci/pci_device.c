@@ -26,13 +26,29 @@ void pci_objectmgr_search_device(pci_class_codes pci_class, uint8_t pci_subclass
     }
 }
 
-void pci_objectmgr_search_objectype(pci_class_codes pci_class, uint8_t pci_subclass, pciobjectSearchCallback cb) {
-    ASSERT_NOT_NULL(pci_devices);
+struct arraylist* pci_objectmgr_search_objectype(pci_class_codes pci_class, uint8_t pci_subclass,
+                                                 struct arraylist* out) {
+    // If out is null, return a newly-allocated arraylist with results;
+    // otherwise, add results to out and return it
     uint16_t i = 0;
+    struct arraylist* results;
+
+    ASSERT_NOT_NULL(pci_devices);
+
+    if (!out) {
+        results = arraylist_new();
+        ASSERT_NOT_NULL(results);
+    } else {
+        results = out;
+    }
+
     for (i = 0; i < arraylist_count(pci_devices); i++) {
         struct pci_device* dev = (struct pci_device*)arraylist_get(pci_devices, i);
+
         if ((dev->pci_class == pci_class) && (dev->pci_subclass == pci_subclass)) {
-            (*cb)(dev);
+            arraylist_add(results, dev);
         }
     }
+
+    return results;
 }

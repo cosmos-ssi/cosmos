@@ -9,6 +9,7 @@
 #include <dev/timing/hpet/hpet.h>
 #include <subsystems.h>
 #include <sys/asm/misc.h>
+#include <sys/block/block.h>
 #include <sys/debug/assert.h>
 #include <sys/interrupt_router/interrupt_router.h>
 #include <sys/iobuffers/iobuffers.h>
@@ -135,7 +136,9 @@ void CosmOS() {
 
 void subsystem_init() {
     kprintf("Initializing subsystems...\n");
+
     timing_init(subsystem_enumerate_drivers(SUBSYSTEM_ID_TIMER));
+    block_init(subsystem_enumerate_drivers(SUBSYSTEM_ID_BLOCK));
     return;
 }
 

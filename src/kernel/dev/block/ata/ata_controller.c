@@ -5,6 +5,8 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
+#if 0
+
 #include <dev/block/ata/ata.h>
 #include <dev/block/ata/ata_controller.h>
 #include <dev/block/ata/ata_disk.h>
@@ -27,12 +29,13 @@ SUBSYSTEM_DRIVER(ata, "ATA Controller", "ATA Controller", "Kurt M. Weber", "webe
                  &ata_init);
 
 void ata_detect_devices(struct object* object, struct ata_controller* controller);
+void ata_search_cb(struct pci_device* dev)
 #define IDE_SERIAL_IRQ 14
 
-/*
+    /*
  * detect all the addresses on a ATA controller
  */
-void ata_detect_addresses(struct object* obj) {
+    void ata_detect_addresses(struct object* obj) {
     ASSERT_NOT_NULL(obj);
     ASSERT_NOT_NULL(obj->object_data);
     ASSERT_NOT_NULL(obj->pci);
@@ -87,9 +90,10 @@ void ata_detect_addresses(struct object* obj) {
  * init ATA controller
  */
 uint8_t ata_init(struct object* obj) {
-    ASSERT_NOT_NULL(obj);
-    ASSERT_NOT_NULL(obj->object_data);
+
     struct ata_controller* controller = (struct ata_controller*)obj->object_data;
+
+    pci_search_class_subclass(PCI_CLASS_MASS_STORAGE, PCI_MASS_STORAGE_SUBCLASS_IDE, &ata_search_cb);
 
     kprintf("Init %s at IRQ %llu Vendor %#hX Device %#hX (%s)\n", obj->description, obj->pci->irq, obj->pci->vendor_id,
             obj->pci->device_id, obj->name);
@@ -142,7 +146,7 @@ void ata_search_cb(struct pci_device* dev) {
 }
 
 void ata_objectmgr_register_objects() {
-    pci_objectmgr_search_objectype(PCI_CLASS_MASS_STORAGE, PCI_MASS_STORAGE_SUBCLASS_IDE, &ata_search_cb);
+    pci_search_class_subclass(PCI_CLASS_MASS_STORAGE, PCI_MASS_STORAGE_SUBCLASS_IDE, &ata_search_cb);
 }
 
 void ata_detect_devices(struct object* object, struct ata_controller* controller) {
@@ -199,3 +203,5 @@ struct ata_device* ata_get_disk(struct object* obj, uint8_t channel, uint8_t dis
     struct ata_controller* controller = (struct ata_controller*)obj->object_data;
     return &(controller->channels[channel].devices[disk]);
 }
+
+#endif
