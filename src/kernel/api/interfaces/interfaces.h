@@ -8,7 +8,7 @@
 #ifndef _API_INTERFACES_H
 #define _API_INTERFACES_H
 
-typedef enum syscap_interfaces_t {
+typedef enum api_interfaces_t {
     /*
      * INTERFACE_NULL should always be 0 and INTERFACE_GENERIC should always be
      * 1; after that, list interfaces in alphabetical order and let them be
@@ -22,7 +22,7 @@ typedef enum syscap_interfaces_t {
     API_INTERFACE_CHAR_CONSUMER,
     API_INTERFACE_SEEKABLE,
     API_INTERFACE_MAX
-} syscap_interface_t;
+} api_interface_t;
 
 typedef void* implemented_interfaces_list[API_INTERFACE_MAX + 1];
 
