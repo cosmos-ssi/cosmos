@@ -75,6 +75,7 @@ void ata_dma_init() {
     return;
 }
 
+#if 0
 void ata_dma_read(struct object* obj, uint64_t start, uint64_t count, BYTE* buf) {
     /*
      * Reads *count* sectors from device *dev* into *buf*, starting at LBA
@@ -98,3 +99,4 @@ void ata_dma_read(struct object* obj, uint64_t start, uint64_t count, BYTE* buf)
 
     return;
 }
+#endif

@@ -7,6 +7,7 @@
 
 #include <api/api_object.h>
 #include <api/interfaces/interfaces.h>
+#include <sys/debug/assert.h>
 #include <sys/kmalloc/kmalloc.h>
 
 api_object_t** api_objects = 0;

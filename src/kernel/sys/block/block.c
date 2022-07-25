@@ -16,7 +16,7 @@ api_object_t** block_devices = NULL;
 void block_init(driver_list_entry_t** drivers) {
     uint64_t i = 0;
     void* tmp;
-    api_object_t* new_api_object;
+    //api_object_t* new_api_object;
 
     kprintf("Initializing block subsystem...\n");
 

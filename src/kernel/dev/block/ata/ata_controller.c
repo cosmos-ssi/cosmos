@@ -5,8 +5,6 @@
  * See the file "LICENSE" in the source distribution for details *
  *****************************************************************/
 
-#if 0
-
 #include <dev/block/ata/ata.h>
 #include <dev/block/ata/ata_controller.h>
 #include <dev/block/ata/ata_disk.h>
@@ -24,9 +22,7 @@
 #include <sys/timing/timerapi.h>
 #include <types.h>
 
-SUBSYSTEM_DRIVER(ata, "ATA Controller", "ATA Controller", "Kurt M. Weber", "weberk294@gmail.com", "0.1",
-                 0xc81c4c364c81f9d1, 0x281796614fc32b79, 0x4399a93b996b2d0a, 0xb76b57edfb77140a, SUBSYSTEM_ID_BLOCK,
-                 &ata_init);
+#if 0
 
 void ata_detect_devices(struct object* object, struct ata_controller* controller);
 void ata_search_cb(struct pci_device* dev)
